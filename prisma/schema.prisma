@@ -7,34 +7,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Modelo de Usuario (User) 
+// Define los posibles tipos de publicaciones (Tus tipos preferidos)
+enum PostType {
+  Challenge // Reto técnico
+  Question // Pregunta
+  Resource // Recurso útil
+  EventMeetup // Evento o meetup
+  Poll // Encuesta
+}
+
+// Modelo de Usuario (User)
 model User {
-  id            String  @id @default(uuid()) // ID único, generado automáticamente como UUID.
-  email         String  @unique // Correo electrónico, debe ser único.
-  password_hash String? // Hash de la contraseña (opcional para logins sociales).
-  username      String  @unique // Nombre de usuario único. 
+  id       String  @id @unique // ID de usuario de Clerk.
+  email    String  @unique // Correo del usuario.
+  username String? @unique // Nombre de usuario (Clerk permite username o email para login).
 
-  profile    Profile? // Relación uno-a-uno con Profile (un usuario puede tener un perfil).
-  challenges Challenge[] // Relación uno-a-muchos con Challenge (un usuario puede publicar muchos retos).
+  profile Profile?
+  posts   Post[] // <-- Relación a 'posts'
 
-  created_at DateTime @default(now()) // Fecha y hora de creación del usuario.
-  updated_at DateTime @updatedAt // Fecha y hora de la última actualización.
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   @@map("users") // Mapea este modelo a una tabla llamada "users" en la base de datos.
 }
 
-// Modelo de Perfil (Profile) 
+// Modelo de Perfil (Profile)
 model Profile {
   id     String @id @default(uuid()) // ID único para el perfil.
-  userId String @unique // Clave foránea para el usuario, debe ser única (relación 1:1).
+  userId String @unique // Clave foránea para el usuario (ID de Clerk).
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade) // Define la relación con el modelo User.
-  // onDelete: Cascade significa que si un usuario se elimina, su perfil también.
 
   avatar_url   String? // URL a la imagen del avatar (opcional).
   city         String? // Ciudad del usuario (opcional).
   country      String? // País del usuario (opcional).
   description  String?  @db.Text // Descripción/biografía del usuario (permite texto largo).
-  technologies String[] // Array de Strings para tecnologías, se mapeará a JSONB en PostgreSQL.
+  technologies String[] // Array de Strings para tecnologías.
 
   created_at DateTime @default(now()) // Fecha y hora de creación del perfil.
   updated_at DateTime @updatedAt // Fecha y hora de la última actualización.
@@ -42,20 +49,23 @@ model Profile {
   @@map("profiles") // Mapea este modelo a una tabla llamada "profiles" en la base de datos.
 }
 
-// Modelo de Reto (Challenge) 
-model Challenge {
-  id          String @id @default(uuid()) // ID único para el reto.
-  publisherId String // Clave foránea para el usuario que publicó el reto.
+// Modelo de Publicación (Ahora llamado Post)
+model Post {
+  id          String @id @default(uuid()) // ID único para la publicación.
+  publisherId String // Clave foránea para el usuario que publicó.
   publisher   User   @relation(fields: [publisherId], references: [id], onDelete: Cascade) // Define la relación con el modelo User.
-  // onDelete: Cascade significa que si el publicador se elimina, sus retos también.
 
-  title        String // Título del reto.
-  description  String @db.Text // Descripción detallada del reto (permite texto largo).
-  language     String // Lenguaje de programación o tecnología del reto.
-  code_snippet String @db.Text // Fragmento de código inicial del reto (permite texto largo).
+  type         PostType // Tipo de publicación (Reto, Pregunta, etc.)
+  title        String // Título de la publicación.
+  description  String   @db.Text // Descripción/contenido de la publicación.
+  language     String? // Lenguaje de programación (opcional, para retos).
+  code_snippet String?  @db.Text // Fragmento de código (opcional, para retos).
+  url          String? // URL (opcional, para recursos/eventos).
 
-  created_at DateTime @default(now()) // Fecha y hora de publicación del reto.
-  updated_at DateTime @updatedAt // Fecha y hora de la última actualización.
+  pollOptions String[] // Opciones de la encuesta (vacío si no es encuesta).
 
-  @@map("challenges") // Mapea este modelo a una tabla llamada "challenges" en la base de datos.
+  created_at DateTime @default(now()) // <-- ¡Aquí están! Con @default(now())
+  updated_at DateTime @updatedAt // <-- ¡Y aquí! Con @updatedAt
+
+  @@map("posts") // <-- Mapeo explícito a la tabla 'posts'
 }
