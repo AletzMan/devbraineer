@@ -1,17 +1,21 @@
-"use client"; // Este es un Client Component.
+"use client";
 
-import { useUser } from "@clerk/nextjs"; // Para obtener información del usuario autenticado de Clerk
-import { useRouter } from "next/navigation"; // Para redirigir después de crear el post
-import { useState } from "react"; // Hook de React para estado local
-import axios from "axios"; // Para hacer la petición POST a la API
-import { PostType } from "@prisma/client"; // Importa el enum PostType para las opciones del formulario
-import Link from "next/link"; // Para el enlace de regreso al feed
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import axios from "axios";
+import { PostType } from "@prisma/client";
+import { TypePost, supportedLanguages } from "@/lib/constants";
+import { LinkIcon, XIcon } from "lucide-react";
 
-export default function CreatePost() {
+interface CreatePostProps {
+    type: PostType;
+    onClose: () => void;
+}
+
+export default function CreatePost({ type, onClose }: CreatePostProps) {
     const { isSignedIn, isLoaded } = useUser();
     const router = useRouter();
-
-    const [type, setType] = useState<PostType>(PostType.Challenge);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [language, setLanguage] = useState("");
@@ -91,161 +95,148 @@ export default function CreatePost() {
         setPollOptions(newOptions);
     };
 
+    const handleCancel = () => {
+        setTitle("");
+        setDescription("");
+        setLanguage("");
+        setCodeSnippet("");
+        setPollOptions(["", ""]);
+        setUrl("");
+        onClose();
+    };
+
 
     return (
-        <div className="p-4 max-w-2xl mx-auto bg-gray-900 text-white min-h-screen">
-            <h1 className="text-3xl font-bold mb-6 text-center text-purple-400">Crear Nueva Publicación</h1>
-
-            <div className="mb-6">
-                <Link href="/" className="text-blue-400 hover:underline">
-                    &larr; Volver al Feed
-                </Link>
-            </div>
-
-            {error && (
-                <div className="bg-red-800 text-red-200 p-4 rounded-md mb-6">
-                    {error}
-                </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                    <label htmlFor="type" className="block text-sm font-medium text-gray-300 mb-1">
-                        Tipo de Publicación
-                    </label>
-                    <select
-                        id="type"
-                        value={type}
-                        onChange={(e) => setType(e.target.value as PostType)}
-                        className="block w-full p-3 bg-gray-800 border border-gray-700 rounded-md text-white focus:ring-blue-500 focus:border-blue-500"
-                        required
-                    >
-                        {Object.values(PostType).map((postType) => (
-                            <option key={postType} value={postType}>
-                                {postType.replace(/([A-Z])/g, ' $1').trim()}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-
-                <div>
-                    <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-1">
-                        Título
-                    </label>
+        <div className="text-white w-[90svw]">
+            <h1 className="flex items-center gap-2 text-lg font-semibold mb-2 text-center text-blue-200">{TypePost[PostType[type]].icon}{`  ${TypePost[PostType[type]].title}`}</h1>
+            <div className="divider divider-neutral"></div>
+            <form onSubmit={handleSubmit} className="space-y-2 w-full max-h-[90svh]">
+                <fieldset className="fieldset">
+                    <legend className="fieldset-legend text-start">Título</legend>
                     <input
                         type="text"
-                        id="title"
+                        placeholder="Escribe aquí el título de tu publicación"
+                        className="input input-neutral w-full placeholder:italic"
                         value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        className="block w-full p-3 bg-gray-800 border border-gray-700 rounded-md text-white focus:ring-blue-500 focus:border-blue-500"
                         required
+                        onChange={(e) => setTitle(e.target.value)}
                     />
-                </div>
-
-                <div>
-                    <label htmlFor="description" className="block text-sm font-medium text-gray-300 mb-1">
-                        Descripción
-                    </label>
+                </fieldset>
+                <fieldset className="fieldset">
+                    <legend className="fieldset-legend text-start">Descripción</legend>
                     <textarea
+                        placeholder="Describe aquí los detalles de tu publicación"
+                        className="textarea textarea-neutral w-full placeholder:italic"
                         id="description"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         rows={6}
-                        className="block w-full p-3 bg-gray-800 border border-gray-700 rounded-md text-white focus:ring-blue-500 focus:border-blue-500"
                         required
-                    ></textarea>
-                </div>
-
+                    />
+                </fieldset>
                 {type === PostType.Challenge && (
-                    <div>
-                        <label htmlFor="language" className="block text-sm font-medium text-gray-300 mb-1">
-                            Lenguaje (Opcional para Retos)
-                        </label>
-                        <input
-                            type="text"
+                    <fieldset className="fieldset">
+                        <legend className="fieldset-legend text-start">Lenguaje</legend>
+                        <select
                             id="language"
                             value={language}
                             onChange={(e) => setLanguage(e.target.value)}
-                            className="block w-full p-3 bg-gray-800 border border-gray-700 rounded-md text-white focus:ring-blue-500 focus:border-blue-500"
-                        />
-                    </div>
+                            className={`select select-neutral w-full placeholder:italic ${language === '' ? 'italic text-white/50' : 'not-italic'}`}
+                        >
+                            <option value="">Selecciona un lenguaje</option>
+                            {supportedLanguages.map(lang => (
+                                <option key={lang} value={lang} className="text-white not-italic">{lang}</option>
+                            ))}
+                        </select>
+                    </fieldset>
                 )}
 
                 {type === PostType.Challenge && (
-                    <div>
-                        <label htmlFor="codeSnippet" className="block text-sm font-medium text-gray-300 mb-1">
-                            Fragmento de Código (Opcional para Retos)
-                        </label>
+                    <fieldset className="fieldset">
+                        <legend className="fieldset-legend text-start">Código</legend>
                         <textarea
+                            placeholder="Pega aquí el fragmento de código del reto"
+                            className="textarea textarea-neutral  w-full placeholder:italic"
                             id="codeSnippet"
                             value={codeSnippet}
                             onChange={(e) => setCodeSnippet(e.target.value)}
                             rows={8}
-                            className="block w-full p-3 bg-gray-800 border border-gray-700 rounded-md text-white font-mono focus:ring-blue-500 focus:border-blue-500"
-                        ></textarea>
-                    </div>
+                            required
+                        />
+                    </fieldset>
                 )}
 
                 {(type === PostType.Resource || type === PostType.EventMeetup) && (
-                    <div>
-                        <label htmlFor="url" className="block text-sm font-medium text-gray-300 mb-1">
-                            URL (Opcional para Recursos/Eventos)
+                    <fieldset className="fieldset flex gap-0 flex-col items-start ">
+                        <legend className="fieldset-legend text-start">URL</legend>
+                        <label className="input validator w-full placeholder:italic">
+                            <LinkIcon className="opacity-50" />
+                            <input
+                                type="url"
+                                placeholder={`Introduce la URL del ${TypePost[PostType[type]].title.split(" ")[2]}`}
+                                className="input input-neutral w-full placeholder:italic"
+                                pattern="^(https?://)?([a-zA-Z0-9]([a-zA-Z0-9\-].*[a-zA-Z0-9])?\.)+[a-zA-Z].*$"
+                                title="La URL debe ser válida (ej: https://miweb.com)"
+                                value={url}
+                                onChange={(e) => setUrl(e.target.value)}
+                                required
+                            />
                         </label>
-                        <input
-                            type="url"
-                            id="url"
-                            value={url}
-                            onChange={(e) => setUrl(e.target.value)}
-                            className="block w-full p-3 bg-gray-800 border border-gray-700 rounded-md text-white focus:ring-blue-500 focus:border-blue-500"
-                        />
-                    </div>
+                        <p className="validator-hint">Debe ser una URL válida (ej: https://miweb.com)</p>
+                    </fieldset>
                 )}
 
                 {type === PostType.Poll && (
-                    <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Opciones de Encuesta (Mínimo 2)
-                        </label>
-                        {pollOptions.map((option, index) => (
-                            <div key={index} className="flex items-center mb-3">
-                                <input
-                                    type="text"
-                                    value={option}
-                                    onChange={(e) => handlePollOptionChange(index, e.target.value)}
-                                    className="block w-full p-3 bg-gray-800 border border-gray-700 rounded-md text-white focus:ring-blue-500 focus:border-blue-500 mr-2"
-                                    required
-                                />
-                                {pollOptions.length > 2 && (
-                                    <button
-                                        type="button"
-                                        onClick={() => removePollOption(index)}
-                                        className="text-red-400 hover:text-red-500 focus:outline-none"
-                                        aria-label={`Eliminar opción ${index + 1}`}
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
-                                )}
-                            </div>
-                        ))}
+                    <div className="relative">
                         <button
                             type="button"
                             onClick={addPollOption}
-                            className="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out"
+                            className="btn btn-secondary btn-xs absolute right-0"
                         >
                             + Añadir Opción
                         </button>
+                        <fieldset className="fieldset h-66 overflow-y-auto">
+                            <legend className="fieldset-legend text-start">Opciones de Encuesta (Mínimo 2)</legend>
+                            {pollOptions.map((option, index) => (
+                                <div key={index} className="flex items-center mb-3 gap-2">
+                                    <input
+                                        placeholder={`Opción ${index + 1}`}
+                                        className="input input-neutral w-full placeholder:italic"
+                                        id="codeSnippet"
+                                        value={option}
+                                        onChange={(e) => handlePollOptionChange(index, e.target.value)}
+                                        required
+                                    />
+                                    {pollOptions.length > 2 && (
+                                        <button
+                                            type="button"
+                                            onClick={() => removePollOption(index)}
+                                            className="btn btn-square btn-error btn-soft btn-xs"
+                                            aria-label={`Eliminar opción ${index + 1}`}
+                                        >
+                                            <XIcon />
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                        </fieldset>
+
                     </div>
                 )}
 
-                <div>
+                <div className="flex justify-around">
+                    <button
+                        type="button"
+                        className="btn btn-secondary btn-outline"
+                        disabled={isSubmitting}
+                        onClick={handleCancel}
+                    >Cancelar</button>
                     <button
                         type="submit"
                         disabled={isSubmitting}
-                        className={`w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition duration-300 ease-in-out ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
-                            }`}
+                        className="btn btn-primary"
                     >
+                        {isSubmitting && <span className="loading loading-spinner"></span>}
                         {isSubmitting ? 'Publicando...' : 'Publicar'}
                     </button>
                 </div>
