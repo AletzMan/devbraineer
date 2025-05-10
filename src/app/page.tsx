@@ -1,103 +1,170 @@
-import Image from "next/image";
+"use client"; // Este es un Client Component.
 
-export default function Home() {
+import { useUser } from "@clerk/nextjs"; // Para obtener información del usuario autenticado de Clerk
+import { useEffect, useState } from "react"; // Hooks de React
+import Link from "next/link"; // Para navegación entre páginas
+import axios from "axios"; // Para hacer peticiones HTTP a nuestras APIs
+import { Post, PostType } from "@prisma/client"; // Importa los tipos de Prisma Client 
+
+
+import CreatePost from "./components/CreatePost";
+
+// Define un tipo para el Post incluyendo la relación con el publicador
+// Esto es necesario porque la API GET /api/posts incluye el publicador.
+type PostWithPublisher = Post & {
+  publisher: {
+    username: string | null;
+    profile: {
+      city: string | null;
+      country: string | null;
+      avatar_url: string | null;
+    } | null;
+  } | null;
+};
+
+
+export default function HomePage() {
+  const { isSignedIn, user, isLoaded } = useUser();
+  const [open, setOpen] = useState(false);
+  const [posts, setPosts] = useState<PostWithPublisher[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isLoaded) {
+      if (isSignedIn) {
+        const fetchPosts = async () => {
+          try {
+            setLoading(true);
+            setError(null);
+
+            // --- CAMBIO AQUÍ: Llama a la API GET /api/posts ---
+            const response = await axios.get("/api/posts");
+
+            // Asumiendo que tu capa de manejo de respuestas devuelve { error: boolean, response: any }
+            if (response.data && response.data.error === false) {
+              setPosts(response.data.response);
+            } else if (Array.isArray(response.data)) {
+              setPosts(response.data);
+            } else {
+              console.error("Unexpected API response format:", response.data);
+              setError("Failed to load posts due to unexpected response format.");
+            }
+
+          } catch (err: any) {
+            console.error("Error fetching posts:", err);
+            setError("Failed to load posts. Please try again later.");
+          } finally {
+            setLoading(false);
+          }
+        };
+
+        fetchPosts();
+
+      } else {
+        setLoading(false);
+      }
+    }
+  }, [isLoaded, isSignedIn]);
+
+  if (!isLoaded) {
+    return <div className="p-4 text-center text-gray-400">Cargando usuario...</div>;
+  }
+
+  if (!isSignedIn) {
+    return (
+      <div className="p-8 text-center flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
+        <h1 className="text-4xl font-bold mb-6">Bienvenido a DevBraineer</h1>
+        <p className="text-xl mb-8">La red social para ingenieros y desarrolladores.</p>
+        <Link href="/sign-in" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out">
+          Únete o Inicia Sesión
+        </Link>
+        <p className="mt-4 text-gray-400">Conecta, aprende y comparte conocimiento técnico.</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="p-4 max-w-3xl mx-auto bg-gray-900 text-white min-h-screen">
+      <h1 className="text-3xl font-bold mb-6 text-center text-purple-400">Feed de Publicaciones</h1>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <div className="mb-6 text-center"  >
+
+      </div>
+
+
+      {loading && <div className="text-center text-gray-400">Cargando publicaciones...</div>}
+      {error && <div className="text-center text-red-500">Error: {error}</div>}
+
+      {!loading && !error && posts.length > 0 && (
+        <div className="space-y-6">
+          {posts.map((post) => (
+            <div key={post.id} className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+              <div className="flex items-center mb-4">
+                {post.publisher?.profile?.avatar_url && (
+                  <img src={post.publisher.profile.avatar_url} alt={post.publisher.username || 'User'} className="w-10 h-10 rounded-full mr-4 object-cover" />
+                )}
+                <Link href={`/profile/${post.publisherId}`} className="font-semibold text-blue-400 hover:underline">
+                  {post.publisher?.username || 'Usuario Desconocido'}
+                </Link>
+                {post.publisher?.profile?.city && post.publisher?.profile?.country && (
+                  <span className="text-sm text-gray-500 ml-2">
+                    ({post.publisher.profile.city}, {post.publisher.profile.country})
+                  </span>
+                )}
+              </div>
+
+              <span className={`inline-block text-sm font-semibold px-3 py-1 rounded-full mb-3 ${post.type === PostType.Challenge ? 'bg-yellow-600 text-yellow-100' :
+                post.type === PostType.Question ? 'bg-blue-600 text-blue-100' :
+                  post.type === PostType.Resource ? 'bg-green-600 text-green-100' :
+                    post.type === PostType.EventMeetup ? 'bg-purple-600 text-purple-100' :
+                      post.type === PostType.Poll ? 'bg-pink-600 text-pink-100' : 'bg-gray-600 text-gray-100'
+                }`}>
+                {post.type.replace(/([A-Z])/g, ' $1').trim()}
+              </span>
+
+              <h2 className="text-xl font-bold mb-2 text-purple-300 hover:underline">
+                <Link href={`/posts/${post.id}`}>
+                  {post.title}
+                </Link>
+              </h2>
+
+              <p className="text-gray-300 mb-4">
+                {post.description.substring(0, 150)}{post.description.length > 150 ? '...' : ''}
+              </p>
+
+              {post.type === PostType.Challenge && post.language && (
+                <p className="text-sm text-gray-400 mb-2">Lenguaje: {post.language}</p>
+              )}
+              {post.type === PostType.Resource && post.url && (
+                <p className="text-sm text-gray-400 mb-2">Recurso: <a href={post.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">{post.url}</a></p>
+              )}
+              {post.type === PostType.EventMeetup && post.url && (
+                <p className="text-sm text-gray-400 mb-2">Evento: <a href={post.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">{post.url}</a></p>
+              )}
+              {post.type === PostType.Poll && post.pollOptions && post.pollOptions.length > 0 && (
+                <div className="mt-4">
+                  <p className="font-semibold text-gray-400 mb-2">Opciones de Encuesta:</p>
+                  <ul className="list-disc list-inside text-gray-300">
+                    {post.pollOptions.map((option, index) => (
+                      <li key={index}>{option}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <p className="text-xs text-gray-600 text-right">Publicado el: {new Date(post.created_at).toLocaleDateString()}</p>
+            </div>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      )}
+
+      {!loading && !error && posts.length === 0 && (
+        <div className="text-center text-gray-500 mt-8">
+          Aún no hay publicaciones. ¡Sé el primero en crear una!
+        </div>
+      )}
+
     </div>
   );
 }
