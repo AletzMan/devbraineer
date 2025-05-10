@@ -92,10 +92,9 @@ export default function HomePage() {
   }
 
   return (
-    <div className=" max-w-3xl mx-auto bg-gray-900 text-white min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">Feed de Publicaciones</h1>
-
-      <div className="mb-6 text-center"  >
+    <div className="max-w-3xl mx-auto bg-(--color-base-300) text-white min-h-screen border-l-1 border-r-1 border-(--color-base-100)">
+      <header className="flex justify-between items-center px-4 py-2 border-b-1 border-(--color-base-100) ">
+        <h1 className="text-2xl font-bold text-center text-(--color-base-content)">Feed de Publicaciones</h1>
         <div className="dropdown dropdown-bottom dropdown-end" >
           <button tabIndex={0} className="btn btn-primary m-1"><MessageSquarePlus size={22} />Create Post</button>
           <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
@@ -107,22 +106,22 @@ export default function HomePage() {
           </ul>
         </div>
         <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle" open={open}>
-          <div className="modal-box  bg-neutral-900" >
+          <div className="modal-box bg-(--color-base-300) border-l-1 border-r-1 border-(--color-base-100)" >
             <div className="modal-action mt-0">
               <CreatePost type={refTypePost.current} onClose={() => setOpen(false)} />
             </div>
           </div>
         </dialog>
-      </div>
+      </header>
 
 
       {loading && <div className="text-center text-gray-400">Cargando publicaciones...</div>}
       {error && <div className="text-center text-red-500">Error: {error}</div>}
 
       {!loading && !error && posts.length > 0 && (
-        <div className="space-y-6">
+        <div className="">
           {posts.map((post) => (
-            <div key={post.id} className="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+            <div key={post.id} className="p-6 shadow-md border-b-1 border-(--color-base-100) bg-(--color-base-300)">
               <div className="flex items-center mb-4">
                 {post.publisher?.profile?.avatar_url && (
                   <img src={post.publisher.profile.avatar_url} alt={post.publisher.username || 'User'} className="w-10 h-10 rounded-full mr-4 object-cover" />
