@@ -1,13 +1,14 @@
-"use client"; // Este es un Client Component.
+"use client";
 
 import { useUser } from "@clerk/nextjs"; // Para obtener información del usuario autenticado de Clerk
-import { useEffect, useState } from "react"; // Hooks de React
+import { useEffect, useRef, useState } from "react"; // Hooks de React
 import Link from "next/link"; // Para navegación entre páginas
 import axios from "axios"; // Para hacer peticiones HTTP a nuestras APIs
 import { Post, PostType } from "@prisma/client"; // Importa los tipos de Prisma Client 
 
 
 import CreatePost from "./components/CreatePost";
+import { Calendar1Icon, CalendarIcon, ChartBarIcon, CircleHelp, CodeIcon, LampIcon, LightbulbIcon, MessageCircleQuestionIcon, MessageSquarePlus, PlusIcon, PlusSquare } from "lucide-react";
 
 // Define un tipo para el Post incluyendo la relación con el publicador
 // Esto es necesario porque la API GET /api/posts incluye el publicador.
@@ -29,6 +30,7 @@ export default function HomePage() {
   const [posts, setPosts] = useState<PostWithPublisher[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const refTypePost = useRef<PostType>("Question");
 
   useEffect(() => {
     if (isLoaded) {
@@ -67,6 +69,11 @@ export default function HomePage() {
     }
   }, [isLoaded, isSignedIn]);
 
+  const handleCreatePost = (type: PostType) => {
+    refTypePost.current = type;
+    setOpen(true);
+  };
+
   if (!isLoaded) {
     return <div className="p-4 text-center text-gray-400">Cargando usuario...</div>;
   }
@@ -85,11 +92,27 @@ export default function HomePage() {
   }
 
   return (
-    <div className="p-4 max-w-3xl mx-auto bg-gray-900 text-white min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-center text-purple-400">Feed de Publicaciones</h1>
+    <div className=" max-w-3xl mx-auto bg-gray-900 text-white min-h-screen">
+      <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">Feed de Publicaciones</h1>
 
       <div className="mb-6 text-center"  >
-
+        <div className="dropdown dropdown-bottom dropdown-end" >
+          <button tabIndex={0} className="btn btn-primary m-1"><MessageSquarePlus size={22} />Create Post</button>
+          <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+            <li><button onClick={() => handleCreatePost('Challenge')} ><CodeIcon /> Reto</button></li>
+            <li><button onClick={() => handleCreatePost('Resource')} ><LightbulbIcon /> Recurso</button></li>
+            <li><button onClick={() => handleCreatePost('Question')} ><CircleHelp />Pregunta</button></li>
+            <li><button onClick={() => handleCreatePost('EventMeetup')} ><CalendarIcon />Evento</button></li>
+            <li><button onClick={() => handleCreatePost('Poll')} ><ChartBarIcon />Encuesta</button></li>
+          </ul>
+        </div>
+        <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle" open={open}>
+          <div className="modal-box  bg-neutral-900" >
+            <div className="modal-action mt-0">
+              <CreatePost type={refTypePost.current} onClose={() => setOpen(false)} />
+            </div>
+          </div>
+        </dialog>
       </div>
 
 
