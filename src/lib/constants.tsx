@@ -38,6 +38,7 @@ export const supportedLanguages = [
     'typescript',
 ];
 
+
 export const TypePost = {
     Challenge: {
         icon: <CodeIcon />,

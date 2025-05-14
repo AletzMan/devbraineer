@@ -1,7 +1,7 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs"; // Para obtener información del usuario autenticado de Clerk
-import { useEffect, useRef, useState } from "react"; // Hooks de React
+import { ReactElement, ReactSVGElement, cloneElement, useEffect, useRef, useState } from "react"; // Hooks de React
 import Link from "next/link"; // Para navegación entre páginas
 import axios from "axios"; // Para hacer peticiones HTTP a nuestras APIs
 import { Post, PostType } from "@prisma/client"; // Importa los tipos de Prisma Client 
@@ -9,6 +9,7 @@ import { Post, PostType } from "@prisma/client"; // Importa los tipos de Prisma 
 
 import CreatePost from "./components/CreatePost";
 import { Calendar1Icon, CalendarIcon, ChartBarIcon, CircleHelp, CodeIcon, LampIcon, LightbulbIcon, MessageCircleQuestionIcon, MessageSquarePlus, PlusIcon, PlusSquare } from "lucide-react";
+import { TypePost } from "@/lib/constants";
 
 // Define un tipo para el Post incluyendo la relación con el publicador
 // Esto es necesario porque la API GET /api/posts incluye el publicador.
@@ -121,39 +122,49 @@ export default function HomePage() {
       {!loading && !error && posts.length > 0 && (
         <div className="">
           {posts.map((post) => (
-            <div key={post.id} className="p-6 shadow-md border-b-1 border-(--color-base-100) bg-(--color-base-300)">
-              <div className="flex items-center mb-4">
-                {post.publisher?.profile?.avatar_url && (
-                  <img src={post.publisher.profile.avatar_url} alt={post.publisher.username || 'User'} className="w-10 h-10 rounded-full mr-4 object-cover" />
-                )}
-                <Link href={`/profile/${post.publisherId}`} className="font-semibold text-blue-400 hover:underline">
-                  {post.publisher?.username || 'Usuario Desconocido'}
-                </Link>
+            <div key={post.id} className="flex flex-col p-4 shadow-md border-b-1 border-(--color-base-100) bg-(--color-base-300)">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex gap-1.5 items-center">
+                  {post.publisher?.profile?.avatar_url && (
+                    <img src={post.publisher.profile.avatar_url} alt={post.publisher.username || 'User'} className="w-10 h-10 rounded-full mr-4 object-cover" />
+                  )}
+                  {!post.publisher?.profile?.avatar_url && (
+                    <div className="avatar avatar-placeholder">
+                      <div className="bg-neutral text-neutral-content w-10 rounded-full">
+                        <span>{post.publisher?.username?.split('')[0].toUpperCase()}</span>
+                      </div>
+                    </div>
+                  )}
+                  <Link href={`/profile/${post.publisherId}`} className="font-semibold text-blue-300 hover:underline">
+                    {post.publisher?.username || 'Usuario Desconocido'}
+                  </Link>
+                </div>
                 {post.publisher?.profile?.city && post.publisher?.profile?.country && (
                   <span className="text-sm text-gray-500 ml-2">
                     ({post.publisher.profile.city}, {post.publisher.profile.country})
                   </span>
                 )}
+                <div className={`self-end place-self-start badge badge-soft rounded-md py-1 ${post.type === PostType.Challenge ? 'badge-warning' :
+                  post.type === PostType.Question ? 'badge-info' :
+                    post.type === PostType.Resource ? 'badge-success' :
+                      post.type === PostType.EventMeetup ? 'badge-secondary' :
+                        post.type === PostType.Poll ? 'badge-accent' : 'badge-primary'
+                  }`}>{cloneElement((TypePost[PostType[post.type]].icon as ReactSVGElement), { className: 'size-4' })}
+                  <div className="text-xs">
+                    {`  ${post.type}`}</div>
+                </div>
               </div>
+              <div className="flex flex-col pl-12"  >
+                <h2 className="text-xl font-bold mb-2 text-gray-200 hover:underline">
+                  <Link href={`/posts/${post.id}`}>
+                    {post.title}
+                  </Link>
+                </h2>
 
-              <span className={`inline-block text-sm font-semibold px-3 py-1 rounded-full mb-3 ${post.type === PostType.Challenge ? 'bg-yellow-600 text-yellow-100' :
-                post.type === PostType.Question ? 'bg-blue-600 text-blue-100' :
-                  post.type === PostType.Resource ? 'bg-green-600 text-green-100' :
-                    post.type === PostType.EventMeetup ? 'bg-purple-600 text-purple-100' :
-                      post.type === PostType.Poll ? 'bg-pink-600 text-pink-100' : 'bg-gray-600 text-gray-100'
-                }`}>
-                {post.type.replace(/([A-Z])/g, ' $1').trim()}
-              </span>
-
-              <h2 className="text-xl font-bold mb-2 text-purple-300 hover:underline">
-                <Link href={`/posts/${post.id}`}>
-                  {post.title}
-                </Link>
-              </h2>
-
-              <p className="text-gray-300 mb-4">
-                {post.description.substring(0, 150)}{post.description.length > 150 ? '...' : ''}
-              </p>
+                <p className="text-gray-400 mb-4">
+                  {post.description.substring(0, 150)}{post.description.length > 150 ? '...' : ''}
+                </p>
+              </div>
 
               {post.type === PostType.Challenge && post.language && (
                 <p className="text-sm text-gray-400 mb-2">Lenguaje: {post.language}</p>
