@@ -1,18 +1,17 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs"; // Para obtener información del usuario autenticado de Clerk
-import { ReactElement, ReactSVGElement, cloneElement, useEffect, useRef, useState } from "react"; // Hooks de React
-import Link from "next/link"; // Para navegación entre páginas
-import axios from "axios"; // Para hacer peticiones HTTP a nuestras APIs
-import { Post, PostType } from "@prisma/client"; // Importa los tipos de Prisma Client 
+import { useUser } from "@clerk/nextjs";  
+import { ReactElement, ReactSVGElement, cloneElement, useEffect, useRef, useState } from "react";  
+import Link from "next/link";  
+import axios from "axios";  
+import { Post, PostType } from "@prisma/client"; 
 
 
 import CreatePost from "./components/CreatePost";
 import { Calendar1Icon, CalendarIcon, ChartBarIcon, CircleHelp, CodeIcon, LampIcon, LightbulbIcon, MessageCircleQuestionIcon, MessageSquarePlus, PlusIcon, PlusSquare } from "lucide-react";
 import { TypePost } from "@/lib/constants";
 
-// Define un tipo para el Post incluyendo la relación con el publicador
-// Esto es necesario porque la API GET /api/posts incluye el publicador.
+// Define un tipo para el Post incluyendo la relación con el publicador 
 type PostWithPublisher = Post & {
   publisher: {
     username: string | null;
@@ -40,12 +39,10 @@ export default function HomePage() {
           try {
             setLoading(true);
             setError(null);
-
-            // --- CAMBIO AQUÍ: Llama a la API GET /api/posts ---
+ 
             const response = await axios.get("/api/posts");
 
-            // Asumiendo que tu capa de manejo de respuestas devuelve { error: boolean, response: any }
-            if (response.data && response.data.error === false) {
+             if (response.data && response.data.error === false) {
               setPosts(response.data.response);
             } else if (Array.isArray(response.data)) {
               setPosts(response.data);
