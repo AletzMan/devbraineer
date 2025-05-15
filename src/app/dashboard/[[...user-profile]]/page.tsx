@@ -56,7 +56,8 @@ export default function DashboardPage() {
     }
 
     return (
-        <UserProfile appearance={{ baseTheme: dark }} />
-
+        <section className="bg-red-500 h-svh">
+            <UserProfile appearance={{ baseTheme: dark }}  />
+        </section> 
     );
 }
