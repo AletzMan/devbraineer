@@ -2,13 +2,21 @@
 
 @plugin "daisyui" {
   themes: light --default, dark, business;
-}
-
-;
+};
 
 
-
-body {
+  body {
   background: var(--color-base-300);
   color: var(--foreground);
-}
+  height: 100vh;
+  }
+
+
+  .cl-rootBox{
+    background-color: var(--color-base-300);
+    height: 100svh; 
+    font-family: var(--font-geist-sans);
+    &>div{
+      height: 100svh; 
+    }
+  }
