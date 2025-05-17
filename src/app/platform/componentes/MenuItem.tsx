@@ -20,21 +20,25 @@ export function MenuItem({ item, currentPath }: MenuItemProps) {
         return (
             <ul className={`menu rounded-box max-2xl:w-11 w-66 group-hover:max-2xl:w-66`}>
                 <li>
-                    <details open={isOpen} onToggle={(e) => setIsOpen(e.currentTarget.open)} name="sidebar-section">
-                        <summary className={`flex items-center gap-2 cursor-pointer ${isSectionActive ? 'font-semibold text-white' : 'text-gray-300'}`}>
+                    <details open={isOpen} onToggle={(e) => setIsOpen(e.currentTarget.open)} name="sidebar-section" className="max-2xl:hidden group-hover:max-2xl:block">
+                        <summary className={` cursor-pointer ${isSectionActive ? 'font-semibold text-white' : 'text-gray-300'} `}>
                             {IconComponent && <IconComponent className={`w-5 h-5 ${iconColorClass}`} />}
                             <span className="group-hover:max-2xl:block max-2xl:hidden">{item.label}</span>
                         </summary>
                         <ul className="ml-4">
-                            {item.children.map((child) => (
-                                <MenuItem
-                                    key={child.href || child.label}
-                                    item={child}
-                                    currentPath={currentPath}
-                                />
+                            {item.children.map((Child) => (
+                                <li key={Child.label}>
+                                    <Link href={Child.href}>
+                                        {Child.icon && <Child.icon className={`w-5 h-5 ${Child.color}`} />}
+                                        {Child.label}
+                                    </Link>
+                                </li>
                             ))}
                         </ul>
                     </details>
+                    <Link href={item.href || '#'} className={`max-2xl:block hidden group-hover:max-2xl:hidden ${isSectionActive ? 'menu-active' : ''}`}>
+                        {IconComponent && <IconComponent className={`w-5 h-5 ${iconColorClass}`} />}
+                    </Link>
                 </li>
             </ul>
         );
