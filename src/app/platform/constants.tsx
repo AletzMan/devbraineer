@@ -3,6 +3,8 @@ import {
     Bookmark, Settings, User, Cpu, Zap, Terminal, GitBranch, Database, Layers,
     Sliders, PenTool, Compass, HardDrive, OmegaIcon, SquareTerminalIcon,
     MonitorCogIcon, BoxIcon, LinkIcon, FileCode, FileJsonIcon, RegexIcon,
+    Boxes,
+    LayoutDashboard,
 } from "lucide-react";
 
 export interface IMenuItem {
@@ -15,9 +17,9 @@ export interface IMenuItem {
 
 export const menuData: IMenuItem[] = [
     {
-        label: 'Dashboard',
+        label: 'Platform',
         href: '/platform',
-        icon: Home,
+        icon: LayoutDashboard,
         color: 'text-gray-400',
     },
     {
