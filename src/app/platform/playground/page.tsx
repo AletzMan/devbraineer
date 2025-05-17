@@ -572,7 +572,6 @@ class Persona {
   const [consoleLanguage, setConsoleLanguage] = useState("python")
 
   const [output, setOutput] = useState("")
-  const [theme, setTheme] = useState("vs-dark")
   const [copied, setCopied] = useState(false)
   const [consoleOutput, setConsoleOutput] = useState<{ type: string; content: string }[]>([])
   const [isConsoleMaximized, setIsConsoleMaximized] = useState(false)
@@ -1015,31 +1014,29 @@ class Persona {
           let content = file.content
 
           // Reemplazar importaciones de archivos locales
-          content = content.replace(
-            /import\s+(\w+|\{[^}]+\})\s+from\s+['"]\.\/([^'"]+)['"]/g,
-            (match, importName, fileName) => {
-              // Buscar el archivo correspondiente
-              const importedFile = reactFiles.find((f) => {
-                const baseName = f.name.split(".")[0]
-                return baseName === fileName || f.name === fileName
-              })
+          content = content.replace(/import\s+(\w+|\{[^}]+\})\s+from\s+['"]\.\/([^'"]+)['"]/g, (match, importName: string, fileName: string) => {
+            // Buscar el archivo correspondiente
+            const importedFile = reactFiles.find((f) => {
+              const baseName = f.name.split(".")[0]
+              return baseName === fileName || f.name === fileName
+            })
 
-              if (importedFile) {
-                // Si es una importación con llaves, extraer los nombres
-                if (importName.startsWith("{")) {
-                  const names = importName
-                    .slice(1, -1)
-                    .split(",")
-                    .map((n) => n.trim())
-                  return `const ${importName} = requireModule('${importedFile.name}');`
-                } else {
-                  return `const ${importName} = requireModule('${importedFile.name}').default;`
-                }
+            if (importedFile) {
+              // Si es una importación con llaves, extraer los nombres
+              if (importName.startsWith("{")) {
+                const names = importName
+                  .slice(1, -1)
+                  .split(",")
+                  .map((n) => n.trim())
+                return `const ${importName} = requireModule('${importedFile.name}');`
+              } else {
+                return `const ${importName} = requireModule('${importedFile.name}').default;`
               }
+            }
 
-              // Si no se encuentra, mantener la importación original como comentario
-              return `// ${match} (No se encontró el archivo)`
-            },
+            // Si no se encuentra, mantener la importación original como comentario
+            return `// ${match} (No se encontró el archivo)`
+          },
           )
 
           // Reemplazar exportaciones
@@ -1076,14 +1073,14 @@ class Persona {
             <script type="${isTypeScript ? "text/typescript" : "text/babel"}">
             registerModule('${file.name}', function(exports) {
               ${file.processedContent}
-            });
+            }); 
             </script>
           `,
             )
             .join("\n")}
           
           <script type="${isTypeScript ? "text/typescript" : "text/babel"}">
-          ${mainFile.processedContent}
+          ${mainFile.content}
           </script>
           
           ${isTypeScript
@@ -2176,50 +2173,16 @@ ReactDOM.render(<App />, document.getElementById('root'));`,
       </div>}
       <div className="flex-1 max-w-[1600px] mx-auto p-4 w-full">
         <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-              <Code className="h-6 w-6 text-tech-blue" />
-              <span className="bg-clip-text text-transparent bg-gradient-tech">Playground de Código</span>
-            </h1>
-            <p className="text-muted-foreground">Experimenta con HTML, CSS y JavaScript en tiempo real</p>
-          </div>
           <div className="flex items-center gap-2">
-            <select
-              value={theme}
-              onChange={(e) => setTheme(e.target.value)}
-              className="select select-bordered w-full max-w-xs"
-            >
-              <option value="vs-dark">Oscuro</option>
-              <option value="light">Claro</option>
-            </select>
-
-            <div className="flex items-center gap-2">
-              <label htmlFor="tailwind-toggle" className="text-sm font-medium">
-                {useTailwind ? "Tailwind CSS" : "CSS Normal"}
-              </label>
-              <div className="relative inline-flex h-6 w-11 items-center rounded-full bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary">
-                <input
-                  type="checkbox"
-                  id="tailwind-toggle"
-                  className="peer absolute h-0 w-0 opacity-0"
-                  checked={useTailwind}
-                  onChange={() => setUseTailwind(!useTailwind)}
-                />
-                <span
-                  className={`${useTailwind ? "translate-x-5" : "translate-x-0"
-                    } inline-block h-5 w-5 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
-                  style={{ margin: "2px" }}
-                />
-              </div>
-            </div>
-            <select
-              value={mode}
-              onChange={(e) => setMode(e.target.value)}
-              className="select select-bordered w-full max-w-xs"
-            >
-              <option value="default">Plantilla por defecto</option>
-              <option value="landing">Landing Page</option>
-            </select>
+            <label className="label">
+              {useTailwind ? "Tailwind CSS" : "CSS Normal"}
+              <input
+                type="checkbox"
+                className="toggle toggle-info"
+                checked={useTailwind}
+                onChange={() => setUseTailwind(!useTailwind)}
+              />
+            </label>
           </div>
         </div>
 
@@ -2240,443 +2203,7 @@ ReactDOM.render(<App />, document.getElementById('root'));`,
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="space-y-4">
-            {mode === "web" ? (
-              <div className="flex items-center justify-between">
-                <div className="tabs tabs-boxed w-full">
-                  <button className={`tab ${webMode === 'html-css-js' ? 'tab-active' : ''}`} onClick={() => setWebMode('html-css-js')}>HTML/CSS/JS</button>
-                  <button className={`tab ${webMode === 'html-css-ts' ? 'tab-active' : ''}`} onClick={() => setWebMode('html-css-ts')}>HTML/CSS/TS</button>
-                  <button className={`tab ${webMode === 'react-js' ? 'tab-active' : ''}`} onClick={() => setWebMode('react-js')}>React JS</button>
-                  <button className={`tab ${webMode === 'react-ts' ? 'tab-active' : ''}`} onClick={() => setWebMode('react-ts')}>React TS</button>
-                </div>
-                <div className="flex items-center ml-2">
-                  <button
-                    onClick={() => setIsEditorMaximized(!isEditorMaximized)}
-                    className={isEditorMaximized ? "rounded-r-none " : "rounded-r-none "}
-                  >
-                    {isEditorMaximized ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="flex items-center justify-between">
-                <select className="select select-bordered w-[150px]" value={consoleLanguage} onChange={(e) => setConsoleLanguage(e.target.value)}>
-                  <option disabled selected>Lenguaje</option>
-                  <option value="python">Python</option>
-                  <option value="csharp">C#</option>
-                  <option value="java">Java</option>
-                </select>
-                <div className="flex items-center ml-2">
-                  <button
-                    onClick={() => setIsEditorMaximized(!isEditorMaximized)}
-                    className="h-8 w-8 btn btn-ghost"
-                  >
-                    {isEditorMaximized ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-                  </button>
-                </div>
-              </div>
-            )}
 
-            {/* Sistema de archivos */}
-            <div className="flex items-center justify-between bg-secondary/50 p-2 rounded-md">
-              <div className="text-sm font-medium">Archivos</div>
-              <div className="modal modal-bottom sm:modal-middle" tabIndex={-1} aria-hidden="true" role="dialog" aria-modal="true" style={{ display: isNewFileDialogOpen ? 'block' : 'none' }}>
-                <div className="modal-box">
-                  <h3 className="font-bold text-lg">Crear nuevo archivo</h3>
-                  <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <label htmlFor="name" className="text-right">
-                        Nombre:
-                      </label>
-                      <input
-                        id="name"
-                        type="text"
-                        value={newFileName}
-                        onChange={(e) => setNewFileName(e.target.value)}
-                        className="input input-bordered col-span-3"
-                      />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <label htmlFor="type" className="text-right">
-                        Tipo:
-                      </label>
-                      <select
-                        value={newFileType}
-                        onChange={(e) => setNewFileType(e.target.value)}
-                        className="select select-bordered col-span-3"
-                      >
-                        <option disabled selected>Tipo de archivo</option>
-                        <option value="html">HTML</option>
-                        <option value="css">CSS</option>
-                        <option value="js">JavaScript</option>
-                        <option value="ts">TypeScript</option>
-                        <option value="react-js">React JS</option>
-                        <option value="react-ts">React TS</option>
-                        <option value="python">Python</option>
-                        <option value="csharp">C#</option>
-                        <option value="java">Java</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="modal-action">
-                    <button className="btn" onClick={() => setIsNewFileDialogOpen(false)}>Cancelar</button>
-                    <button className="btn btn-primary" onClick={createNewFile}>Crear</button>
-                  </div>
-                </div>
-              </div>
-              <button className="btn btn-ghost btn-sm gap-1" onClick={() => setIsNewFileDialogOpen(true)}>
-                <Plus className="h-3.5 w-3.5" />
-                Nuevo
-              </button>
-            </div>
-
-            <div className="border border-border rounded-md overflow-hidden max-h-[200px] overflow-y-auto">
-              <div className="divide-y divide-border">
-                {/* Mostrar archivos según el modo actual */}
-                {mode === "web"
-                  ? webMode === "html-css-js"
-                    ? files
-                      .filter((file) => ["html", "css", "js"].includes(file.type))
-                      .map((file) => (
-                        <div
-                          key={file.id}
-                          className={`flex items-center justify-between p-2 cursor-pointer hover:bg-secondary/50 ${currentFileId === file.id ? "bg-secondary/80" : ""
-                            }`}
-                          onClick={() => setCurrentFileId(file.id)}
-                        >
-                          <div className="flex items-center gap-2">
-                            {getFileIcon(file.type)}
-                            <span className="text-sm">{file.name}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <button
-                              className="h-6 w-6 btn btn-ghost"
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                const newName = prompt("Nuevo nombre:", file.name)
-                                if (newName) renameFile(file.id, newName)
-                              }}
-                            >
-                              <Edit2 className="h-3.5 w-3.5" />
-                            </button>
-                            <button
-                              className="h-6 w-6 text-red-500 btn btn-ghost"
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                deleteFile(file.id)
-                              }}
-                            >
-                              <X className="h-3.5 w-3.5" />
-                            </button>
-                          </div>
-                        </div>
-                      ))
-                    : webMode === "html-css-ts"
-                      ? files
-                        .filter((file) => ["html", "css", "ts"].includes(file.type))
-                        .map((file) => (
-                          <div
-                            key={file.id}
-                            className={`flex items-center justify-between p-2 cursor-pointer hover:bg-secondary/50 ${currentFileId === file.id ? "bg-secondary/80" : ""
-                              }`}
-                            onClick={() => setCurrentFileId(file.id)}
-                          >
-                            <div className="flex items-center gap-2">
-                              {getFileIcon(file.type)}
-                              <span className="text-sm">{file.name}</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <button
-                                className="h-6 w-6 btn btn-ghost"
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  const newName = prompt("Nuevo nombre:", file.name)
-                                  if (newName) renameFile(file.id, newName)
-                                }}
-                              >
-                                <Edit2 className="h-3.5 w-3.5" />
-                              </button>
-                              <button
-                                className="h-6 w-6 btn btn-ghost"
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  deleteFile(file.id)
-                                }}
-                              >
-                                <X className="h-3.5 w-3.5" />
-                              </button>
-                            </div>
-                          </div>
-                        ))
-                      : webMode === "react-js"
-                        ? files
-                          .filter((file) => ["react-js", "css"].includes(file.type))
-                          .map((file) => (
-                            <div
-                              key={file.id}
-                              className={`flex items-center justify-between p-2 cursor-pointer hover:bg-secondary/50 ${currentFileId === file.id ? "bg-secondary/80" : ""
-                                }`}
-                              onClick={() => setCurrentFileId(file.id)}
-                            >
-                              <div className="flex items-center gap-2">
-                                {getFileIcon(file.type)}
-                                <span className="text-sm">{file.name}</span>
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <button
-                                  className="btn btn-ghost btn-square"
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    const newName = prompt("Nuevo nombre:", file.name)
-                                    if (newName) renameFile(file.id, newName)
-                                  }}
-                                >
-                                  <Edit2 className="h-3.5 w-3.5" />
-                                </button>
-                                <button
-                                  className="btn btn-ghost btn-square text-error"
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    deleteFile(file.id)
-                                  }}
-                                >
-                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                  </svg>
-                                </button>
-                              </div>
-                            </div>
-                          ))
-                        : files
-                          .filter((file) => ["react-ts", "css"].includes(file.type))
-                          .map((file) => (
-                            <div
-                              key={file.id}
-                              className={`flex items-center justify-between p-2 cursor-pointer hover:bg-secondary/50 ${currentFileId === file.id ? "bg-secondary/80" : ""
-                                }`}
-                              onClick={() => setCurrentFileId(file.id)}
-                            >
-                              <div className="flex items-center gap-2">
-                                {getFileIcon(file.type)}
-                                <span className="text-sm">{file.name}</span>
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <button
-                                  className="btn btn-ghost btn-square"
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    const newName = prompt("Nuevo nombre:", file.name)
-                                    if (newName) renameFile(file.id, newName)
-                                  }}
-                                >
-                                  <Edit2 className="h-3.5 w-3.5" />
-                                </button>
-                                <button
-                                  className="btn btn-ghost btn-square text-error"
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    deleteFile(file.id)
-                                  }}
-                                >
-                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                  </svg>
-                                </button>
-                              </div>
-                            </div>
-                          ))
-                  : files
-                    .filter((file) => file.type === consoleLanguage)
-                    .map((file) => (
-                      <div
-                        key={file.id}
-                        className={`flex items-center justify-between p-2 cursor-pointer hover:bg-secondary/50 ${currentFileId === file.id ? "bg-secondary/80" : ""
-                          }`}
-                        onClick={() => setCurrentFileId(file.id)}
-                      >
-                        <div className="flex items-center gap-2">
-                          {getFileIcon(file.type)}
-                          <span className="text-sm">{file.name}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <button
-                            className="btn btn-ghost btn-square"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              const newName = prompt("Nuevo nombre:", file.name)
-                              if (newName) renameFile(file.id, newName)
-                            }}
-                          >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                            </svg>
-                          </button>
-                          <button
-                            className="btn btn-ghost btn-square text-error"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              deleteFile(file.id)
-                            }}
-                          >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-              </div>
-            </div>
-
-            <div className={`border border-border rounded-md overflow-hidden ${isEditorMaximized ? "h-[70vh]" : ""}`}>
-              {currentFile && (
-                <Editor
-                  height={isEditorMaximized ? "70vh" : editorHeight}
-                  language={currentFile.language}
-                  value={currentFile.content}
-                  onChange={(value) => updateCurrentFile(value || "")}
-                  theme={theme}
-                  options={{
-                    minimap: { enabled: false },
-                    fontSize: 14,
-                    wordWrap: "on",
-                    automaticLayout: true,
-                    tabSize: 2,
-                    scrollBeyondLastLine: false,
-                    lineNumbers: "on",
-                    glyphMargin: false,
-                    folding: true,
-                    lineDecorationsWidth: 10,
-                    formatOnType: true,
-                    formatOnPaste: true,
-                  }}
-                />
-              )}
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2">
-              <button onClick={handleRun} className="btn btn-primary gap-1">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                </svg>
-                Ejecutar
-              </button>
-              <button onClick={handleCopy} className="btn btn-outline gap-1">
-                {copied ? (
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                ) : (
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                  </svg>
-                )}
-                {copied ? "Copiado" : "Copiar HTML"}
-              </button>
-              <button onClick={handleDownload} className="btn btn-outline gap-1">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                Descargar
-              </button>
-              <button onClick={handleSave} className="btn btn-outline gap-1">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                </svg>
-                Guardar
-              </button>
-              <button onClick={handleLoad} className="btn btn-outline gap-1">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-                Cargar
-              </button>
-              <button onClick={handleClear} className="btn btn-outline gap-1 ml-auto">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-                Limpiar
-              </button>
-            </div>
-
-            {!isEditorMaximized && (
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Terminal className="h-4 w-4 text-tech-cyan" />
-                    <h3 className="text-sm font-medium">Consola</h3>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <button onClick={clearConsole} className="btn btn-ghost btn-sm">
-                      Limpiar
-                    </button>
-                    <button
-                      onClick={() => setIsConsoleMaximized(!isConsoleMaximized)}
-                      className="btn btn-ghost btn-square"
-                    >
-                      {isConsoleMaximized ? (
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                        </svg>
-                      ) : (
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3c2.755 0 5.455.232 8.083.678.533.4.917 1.056.917 1.736V21l-.002-.03c-.083.396-.32 1.313-.889 2.258A48.62 48.62 0 0112 46c-2.749 0-5.454-.232-8.083-.678C3.217 44.986 2.275 44 2 44v-20c0-.68.39-1.333.917-1.736.483-.447.889-1.227.889-2.258l.002.03zM12 42c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4zm16-4c0 2.206-1.794 4-4 4s-4-1.794-4-4 1.794-4 4-4 4 1.794 4 4zM6 36c-2.206 0-4 1.794-4 4s1.794 4 4 4 4-1.794 4-4-1.794-4-4-4z" />
-                        </svg>
-                      )}
-                    </button>
-                  </div>
-                </div>
-                <div
-                  ref={consoleRef}
-                  className={`bg-secondary/80 backdrop-blur-sm rounded-md p-2 overflow-auto ${isConsoleMaximized ? "h-[300px]" : "h-[200px]"
-                    }`}
-                >
-                  {consoleOutput.length > 0 ? (
-                    consoleOutput.map((item, index) => renderConsoleItem(item, index))
-                  ) : (
-                    <div className="text-muted-foreground text-sm italic p-2">
-                      La consola está vacía. Usa console.log() en tu código JavaScript para ver mensajes aquí.
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="bg-white dark:bg-zinc-800 border border-border rounded-lg overflow-hidden h-[calc(100vh-200px)]">
-            <div className="p-2 bg-secondary/80 backdrop-blur-sm border-b border-border flex items-center">
-              <div className="flex space-x-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
-              </div>
-              <div className="mx-auto text-xs text-muted-foreground">{mode === "web" ? "Vista previa" : "Consola"}</div>
-            </div>
-            {mode === "web" ? (
-              <iframe
-                ref={iframeRef}
-                srcDoc={output}
-                title="preview"
-                className="w-full h-[calc(100%-32px)] border-none"
-                sandbox="allow-scripts"
-              ></iframe>
-            ) : (
-              <div
-                ref={consoleRef}
-                className="w-full h-[calc(100%-32px)] overflow-auto p-4 font-mono text-sm bg-zinc-900 text-zinc-100"
-              >
-                {consoleOutput.length > 0 ? (
-                  consoleOutput.map((item, index) => renderConsoleItem(item, index))
-                ) : (
-                  <div className="text-zinc-400 text-sm italic p-2">
-                    La consola está vacía. Ejecuta el código para ver la salida aquí.
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
       </div>
     </div>
   )
