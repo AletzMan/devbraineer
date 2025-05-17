@@ -6,7 +6,7 @@ export default function PlatformLayout({
     children: React.ReactNode;
 }) {
     return (
-        <section className="relative grid grid-cols-1 md:grid-cols-2 min-h-svh bg-(--color-base-300) text-white overflow-hidden">
+        <section className="relative grid grid-cols-[16.75em_1fr] max-2xl:grid-cols-[3.75em_1fr] max-lg:grid-cols-1 min-h-svh bg-(--color-base-300) text-white overflow-hidden w-full  transition-all duration-200">
             <Sidebar />
             {children}
         </section>
