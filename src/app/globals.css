@@ -8,13 +8,14 @@
 body {
   color: var(--foreground);
   height: 100vh;
+  font-family: var(--font-jost);
 }
 
 
 .cl-rootBox:not(.cl-signIn-root) {
   background-color: var(--color-base-300);
   height: 100svh;
-  font-family: var(--font-geist-sans);
+  font-family: var(--font-jost);
 
   &>div {
     height: 100svh;
