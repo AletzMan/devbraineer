@@ -1,22 +1,48 @@
 @import "tailwindcss";
 
 @plugin "daisyui" {
-  themes: light --default, dark, business;
-};
+  themes: light --default, dark, dark;
+}
 
 
-  body {
-  background: var(--color-base-300);
+body {
   color: var(--foreground);
   height: 100vh;
-  }
+}
 
 
-  .cl-rootBox{
-    background-color: var(--color-base-300);
-    height: 100svh; 
-    font-family: var(--font-geist-sans);
-    &>div{
-      height: 100svh; 
-    }
+.cl-rootBox:not(.cl-signIn-root) {
+  background-color: var(--color-base-300);
+  height: 100svh;
+  font-family: var(--font-geist-sans);
+
+  &>div {
+    height: 100svh;
   }
+}
+
+.cl-card.cl-signIn-start {
+  background: linear-gradient(135deg, var(--color-base-300), var(--color-base-100)) !important;
+}
+
+.main {
+  background: var(--color-base-300);
+  --gap: 5em;
+  --line: 1px;
+  --color: rgba(116, 116, 116, 0.2);
+
+  background-image: linear-gradient(-90deg,
+      transparent calc(var(--gap) - var(--line)),
+      var(--color) calc(var(--gap) - var(--line) + 1px),
+      var(--color) var(--gap)),
+    linear-gradient(0deg,
+      transparent calc(var(--gap) - var(--line)),
+      var(--color) calc(var(--gap) - var(--line) + 1px),
+      var(--color) var(--gap));
+  background-size: var(--gap) var(--gap);
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-base-100);
+}
