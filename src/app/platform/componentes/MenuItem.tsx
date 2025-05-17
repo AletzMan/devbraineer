@@ -49,7 +49,7 @@ export function MenuItem({ item, currentPath }: MenuItemProps) {
                 <li>
                     <Link
                         href={item.href || '#'}
-                        className={`${isActive ? "menu-active" : "text-gray-400"}`}>
+                        className={`${isActive ? "menu-active" : "text-gray-400"} `}>
                         {IconComponent && <IconComponent className={`w-5 h-5 ${iconColorClass}`} />}
                         <span className="max-2xl:hidden group-hover:max-2xl:block">{item.label}</span>
                     </Link>
