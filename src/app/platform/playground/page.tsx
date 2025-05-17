@@ -578,7 +578,13 @@ class Persona {
   const [isConsoleMaximized, setIsConsoleMaximized] = useState(false)
   const [isEditorMaximized, setIsEditorMaximized] = useState(false)
   const [editorHeight, setEditorHeight] = useState("400px")
-  const [consoleHeight, setConsoleHeight] = useState("200px")
+  const [toast, setToast] = useState({
+    title: "",
+    description: "",
+    variant: "info",
+    open: false,
+
+  })
 
   // Añadir un nuevo estado para controlar si se usa Tailwind o CSS normal
   const [useTailwind, setUseTailwind] = useState(false)
@@ -598,16 +604,31 @@ class Persona {
     )
   }
 
+  const timeOutToast = () => {
+    setTimeout(() => {
+      setToast({
+        title: "",
+        description: "",
+        variant: "info",
+        open: false,
+      })
+    }, 5000)
+  }
+
+
   // Función para crear un nuevo archivo
   const createNewFile = () => {
     if (!newFileName.trim()) {
-      toast({
+      setToast({
         title: "Error",
         description: "El nombre del archivo no puede estar vacío",
-        variant: "destructive",
+        variant: "error",
+        open: true,
       })
+      timeOutToast()
       return
     }
+
 
     // Determinar la extensión según el tipo
     let extension = ""
@@ -658,11 +679,13 @@ class Persona {
 
     // Verificar si ya existe un archivo con ese nombre
     if (files.some((file) => file.name === fileName && file.type === type)) {
-      toast({
+      setToast({
         title: "Error",
         description: "Ya existe un archivo con ese nombre",
-        variant: "destructive",
+        variant: "error",
+        open: true,
       })
+      timeOutToast()
       return
     }
 
@@ -680,10 +703,13 @@ class Persona {
     setNewFileName("")
     setIsNewFileDialogOpen(false)
 
-    toast({
+    setToast({
       title: "Archivo creado",
       description: `Se ha creado el archivo ${fileName}`,
+      variant: "success",
+      open: true,
     })
+    timeOutToast()
   }
 
   // Función para eliminar un archivo
@@ -694,11 +720,13 @@ class Persona {
 
     const filesOfSameType = files.filter((file) => file.type === fileToDelete.type)
     if (filesOfSameType.length <= 1) {
-      toast({
+      setToast({
         title: "Error",
         description: "No puedes eliminar el único archivo de este tipo",
-        variant: "destructive",
+        variant: "error",
+        open: true,
       })
+      timeOutToast()
       return
     }
 
@@ -715,10 +743,13 @@ class Persona {
       // Eliminar el archivo
       setFiles(files.filter((file) => file.id !== id))
 
-      toast({
+      setToast({
         title: "Archivo eliminado",
         description: `Se ha eliminado el archivo ${fileToDelete.name}`,
+        variant: "success",
+        open: true,
       })
+      timeOutToast()
     }
   }
 
@@ -766,11 +797,13 @@ class Persona {
 
     // Verificar si ya existe un archivo con ese nombre
     if (files.some((file) => file.name === fileName && file.type === fileToRename.type && file.id !== id)) {
-      toast({
+      setToast({
         title: "Error",
         description: "Ya existe un archivo con ese nombre",
-        variant: "destructive",
+        variant: "error",
+        open: true,
       })
+      timeOutToast()
       return
     }
 
@@ -784,10 +817,13 @@ class Persona {
       }),
     )
 
-    toast({
+    setToast({
       title: "Archivo renombrado",
       description: `Se ha renombrado el archivo a ${fileName}`,
+      variant: "success",
+      open: true,
     })
+    timeOutToast()
   }
 
   // Modificar la función updateOutput para incluir React y múltiples archivos
@@ -1185,11 +1221,13 @@ class Persona {
       executeConsoleCode()
     }
 
-    toast({
+    setToast({
       title: "Código ejecutado",
       description: "El código se ha ejecutado correctamente.",
-      variant: "default",
+      variant: "info",
+      open: true,
     })
+    timeOutToast()
   }
 
   // Escuchar mensajes del iframe (para la consola)
@@ -1242,10 +1280,13 @@ class Persona {
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
 
-    toast({
+    setToast({
       title: "Código copiado",
       description: "El código HTML completo se ha copiado al portapapeles.",
+      variant: "info",
+      open: true,
     })
+    timeOutToast()
   }
 
   // Descargar el código como archivo HTML
@@ -1260,10 +1301,13 @@ class Persona {
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
 
-    toast({
+    setToast({
       title: "Archivo descargado",
       description: "El archivo HTML se ha descargado correctamente.",
+      variant: "info",
+      open: true,
     })
+    timeOutToast()
   }
 
   // Limpiar todo el código
@@ -1287,15 +1331,19 @@ class Persona {
     try {
       localStorage.setItem("playground-files", JSON.stringify(files))
 
-      toast({
+      setToast({
         title: "Proyecto guardado",
         description: "Tu código se ha guardado en el navegador.",
+        variant: "success",
+        open: true,
       })
+      timeOutToast()
     } catch (error) {
-      toast({
+      setToast({
         title: "Error al guardar",
         description: "No se pudo guardar el código. Es posible que el almacenamiento esté lleno.",
-        variant: "destructive",
+        variant: "error",
+        open: true,
       })
     }
   }
@@ -1309,16 +1357,21 @@ class Persona {
         setCurrentFileId(JSON.parse(savedFiles)[0].id)
       }
 
-      toast({
+      setToast({
         title: "Proyecto cargado",
         description: "Tu código guardado se ha cargado correctamente.",
+        variant: "success",
+        open: true,
       })
+      timeOutToast()
     } catch (error) {
-      toast({
+      setToast({
         title: "Error al cargar",
         description: "No se pudo cargar el código guardado.",
-        variant: "destructive",
+        variant: "error",
+        open: true,
       })
+      timeOutToast()
     }
   }
 
@@ -2115,6 +2168,12 @@ ReactDOM.render(<App />, document.getElementById('root'));`,
 
   return (
     <div className="flex min-h-screen  ">
+      {toast.open && <div className="toast toast-top toast-end z-50 ">
+        <div className={`flex flex-col gap-1 items-start alert alert-${toast.variant}`}>
+          <span className="font-bold">{toast.title}</span>
+          <span>{toast.description}</span>
+        </div>
+      </div>}
       <div className="flex-1 max-w-[1600px] mx-auto p-4 w-full">
         <div className="flex items-center justify-between mb-6">
           <div>
