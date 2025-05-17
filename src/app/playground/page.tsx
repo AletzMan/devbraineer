@@ -2114,7 +2114,7 @@ ReactDOM.render(<App />, document.getElementById('root'));`,
     }, [])
 
     return (
-        <div className="flex min-h-screen bg-background tech-pattern">
+        <div className="flex min-h-screen bg-(--color-base-300)">
             <div className="flex-1 max-w-6xl mx-auto p-4 w-full">
                 <div className="flex items-center justify-between mb-6">
                     <div>
