@@ -1,6 +1,6 @@
 import { CSSIcon, HTML5Icon, JSIcon, ReactIcon, TSIcon } from "@/app/components/Icons"
 import { Editor } from "@monaco-editor/react"
-import { Edit2, FileCode, FileText, Maximize2, Minimize2, Plus, Terminal, X } from "lucide-react"
+import { Check, Copy, CopyCheck, Download, Edit2, FileCode, FileText, Loader, Maximize2, Minimize2, Play, Plus, RefreshCcw, Save, Terminal, TrashIcon, X } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 
 // Definir tipos para los archivos
@@ -544,11 +544,9 @@ export const WebMode = () => {
     // Estado para el archivo actualmente seleccionado
     const [currentFileId, setCurrentFileId] = useState<string>("html-1")
 
-    // Añadir estado para el modo actual (web o consola)
-    const [mode, setMode] = useState("web")
+
     // Añadir estado para el modo web actual
     const [webMode, setWebMode] = useState("html-css-js")
-    const [consoleLanguage, setConsoleLanguage] = useState("python")
 
     const [output, setOutput] = useState("")
     const [copied, setCopied] = useState(false)
@@ -689,20 +687,20 @@ export const WebMode = () => {
    `
 
         // Si estamos en modo web, generamos el HTML combinado
-        if (mode === "web") {
-            if (webMode === "html-css-js" || webMode === "html-css-ts") {
-                // Obtener el contenido de los archivos HTML, CSS y JS/TS
-                const htmlFiles = files.filter((file) => file.extension === "html" && file.type === webMode)
-                const cssFiles = files.filter((file) => file.extension === "css" && file.type === webMode)
-                const scriptFiles = files.filter((file) => file.extension === (webMode === "html-css-js" ? "js" : "ts"))
 
-                // Usar el primer archivo de cada tipo si no hay ninguno seleccionado
-                const htmlContent = htmlFiles.length > 0 ? htmlFiles[0].content : ""
-                const cssContent = cssFiles.length > 0 ? cssFiles.map((file) => file.content).join("\n") : ""
-                const scriptContent = scriptFiles.length > 0 ? scriptFiles[0].content : ""
-                const scriptType = webMode === "html-css-js" ? "javascript" : "text/typescript"
-                console.log(scriptContent)
-                const combinedOutput = `
+        if (webMode === "html-css-js" || webMode === "html-css-ts") {
+            // Obtener el contenido de los archivos HTML, CSS y JS/TS
+            const htmlFiles = files.filter((file) => file.extension === "html" && file.type === webMode)
+            const cssFiles = files.filter((file) => file.extension === "css" && file.type === webMode)
+            const scriptFiles = files.filter((file) => file.extension === (webMode === "html-css-js" ? "js" : "ts"))
+
+            // Usar el primer archivo de cada tipo si no hay ninguno seleccionado
+            const htmlContent = htmlFiles.length > 0 ? htmlFiles[0].content : ""
+            const cssContent = cssFiles.length > 0 ? cssFiles.map((file) => file.content).join("\n") : ""
+            const scriptContent = scriptFiles.length > 0 ? scriptFiles[0].content : ""
+            const scriptType = webMode === "html-css-js" ? "javascript" : "text/typescript"
+            console.log(scriptContent)
+            const combinedOutput = `
        <!DOCTYPE html>
        <html>
        <head>
@@ -717,7 +715,7 @@ export const WebMode = () => {
          ${scriptContent}
          </script>
          ${webMode === "html-css-ts"
-                        ? `
+                    ? `
          <script>
            // Compilar TypeScript
            var source = document.querySelector('script[type="text/typescript"]').textContent;
@@ -734,28 +732,28 @@ export const WebMode = () => {
            document.body.appendChild(script);
          </script>
          `
-                        : ""
-                    }
+                    : ""
+                }
        </body>
        </html>
      `
-                setOutput(combinedOutput)
-            } else if (webMode === "react-js" || webMode === "react-ts") {
-                // Para React, necesitamos incluir las bibliotecas React y ReactDOM
-                const reactFiles = files.filter((file) => file.type === webMode)
-                const cssFiles = files.filter((file) => file.extension === "css" && file.type === webMode)
+            setOutput(combinedOutput)
+        } else if (webMode === "react-js" || webMode === "react-ts") {
+            // Para React, necesitamos incluir las bibliotecas React y ReactDOM
+            const reactFiles = files.filter((file) => file.type === webMode)
+            const cssFiles = files.filter((file) => file.extension === "css" && file.type === webMode)
 
-                // Encontrar el archivo principal (App.jsx o App.tsx)
-                const mainFile = reactFiles.find((file) => file.name.toLowerCase().includes("app")) || reactFiles[0]
+            // Encontrar el archivo principal (App.jsx o App.tsx)
+            const mainFile = reactFiles.find((file) => file.name.toLowerCase().includes("app")) || reactFiles[0]
 
-                // Combinar CSS
-                const cssContent = cssFiles.length > 0 ? cssFiles.map((file) => file.content).join("\n") : ""
+            // Combinar CSS
+            const cssContent = cssFiles.length > 0 ? cssFiles.map((file) => file.content).join("\n") : ""
 
-                const isTypeScript = webMode === "react-ts"
+            const isTypeScript = webMode === "react-ts"
 
-                // Procesar los archivos para manejar importaciones
+            // Procesar los archivos para manejar importaciones
 
-                const combinedOutput = `
+            const combinedOutput = `
          <!DOCTYPE html>
          <html>
          <head>
@@ -777,7 +775,7 @@ export const WebMode = () => {
            </script>
            
            ${isTypeScript
-                        ? `
+                    ? `
            <script>
              // Compilar TypeScript con soporte para JSX
              var sources = document.querySelectorAll('script[type="text/typescript"]');
@@ -799,117 +797,28 @@ export const WebMode = () => {
              });
            </script>
            `
-                        : ""
-                    }
+                    : ""
+                }
          </body>
          </html>
        `
-                setOutput(combinedOutput)
-            }
+            setOutput(combinedOutput)
         }
+
     }
 
-    // Añadir función para ejecutar código de consola
-    const executeConsoleCode = () => {
-        setConsoleOutput([])
-
-        // Obtener el archivo actual de consola
-        const consoleFiles = files.filter((file) => file.type === consoleLanguage)
-        const currentConsoleFile = consoleFiles.find((file) => file.id === currentFileId) || consoleFiles[0]
-
-        if (!currentConsoleFile) return
-
-        const code = currentConsoleFile.content
-        const language = consoleLanguage
-
-        // Simulación de ejecución para demostración
-        // En una implementación real, usaríamos intérpretes/compiladores específicos
-
-        // Añadir mensaje de inicio
-        setConsoleOutput((prev) => [
-            ...prev,
-            {
-                type: "console-info",
-                content: `Ejecutando código ${language}...`,
-            },
-        ])
-
-        setTimeout(() => {
-            if (language === "python") {
-                // Simulación de salida de Python
-                setConsoleOutput((prev) => [
-                    ...prev,
-                    { type: "console-log", content: "El factorial de 1 es 1" },
-                    { type: "console-log", content: "El factorial de 2 es 2" },
-                    { type: "console-log", content: "El factorial de 3 es 6" },
-                    { type: "console-log", content: "El factorial de 4 es 24" },
-                    { type: "console-log", content: "El factorial de 5 es 120" },
-                    { type: "console-log", content: "Lista original: [1, 2, 3, 4, 5]" },
-                    { type: "console-log", content: "Lista al cuadrado: [1, 4, 9, 16, 25]" },
-                    { type: "console-log", content: "Información de la persona:" },
-                    { type: "console-log", content: "  nombre: María" },
-                    { type: "console-log", content: "  edad: 30" },
-                    { type: "console-log", content: "  profesion: Científica de datos" },
-                    { type: "console-error", content: "¡Error! No se puede dividir por cero." },
-                    { type: "console-log", content: "Este bloque siempre se ejecuta" },
-                ])
-            } else if (language === "csharp") {
-                // Simulación de salida de C#
-                setConsoleOutput((prev) => [
-                    ...prev,
-                    { type: "console-log", content: "¡Hola desde C#!" },
-                    { type: "console-log", content: "\nContando del 1 al 5:" },
-                    { type: "console-log", content: "Número: 1" },
-                    { type: "console-log", content: "Número: 2" },
-                    { type: "console-log", content: "Número: 3" },
-                    { type: "console-log", content: "Número: 4" },
-                    { type: "console-log", content: "Número: 5" },
-                    { type: "console-log", content: "\nSuma de array: 150" },
-                    { type: "console-log", content: "\nPersona: Carlos, 35 años" },
-                    { type: "console-log", content: "Hola, soy Carlos y tengo 35 años." },
-                ])
-            } else if (language === "java") {
-                // Simulación de salida de Java
-                setConsoleOutput((prev) => [
-                    ...prev,
-                    { type: "console-log", content: "¡Hola desde Java!" },
-                    { type: "console-log", content: "\nContando del 1 al 5:" },
-                    { type: "console-log", content: "Número: 1" },
-                    { type: "console-log", content: "Número: 2" },
-                    { type: "console-log", content: "Número: 3" },
-                    { type: "console-log", content: "Número: 4" },
-                    { type: "console-log", content: "Número: 5" },
-                    { type: "console-log", content: "\nSuma de array: 150" },
-                    { type: "console-log", content: "\nPersona: Laura, 32 años" },
-                    { type: "console-log", content: "Hola, soy Laura y tengo 32 años." },
-                ])
-            }
-
-            // Mensaje de finalización
-            setConsoleOutput((prev) => [
-                ...prev,
-                {
-                    type: "console-info",
-                    content: `Ejecución de ${language} completada.`,
-                },
-            ])
-        }, 500)
-    }
 
     // Modificar el handleRun para manejar ambos modos
     const handleRun = () => {
         // Limpiar la consola
         setConsoleOutput([])
 
-        if (mode === "web") {
-            // Actualizar el iframe para modo web
-            if (iframeRef.current) {
-                iframeRef.current.srcdoc = output
-            }
-        } else {
-            // Ejecutar código de consola
-            executeConsoleCode()
+
+        // Actualizar el iframe para modo web
+        if (iframeRef.current) {
+            iframeRef.current.srcdoc = output
         }
+
 
         setToast({
             title: "Código ejecutado",
@@ -943,7 +852,7 @@ export const WebMode = () => {
     // Actualizar el output cuando cambie el código
     useEffect(() => {
         updateOutput()
-    }, [files, mode, webMode, consoleLanguage, currentFileId, useTailwind])
+    }, [files, webMode, currentFileId, useTailwind])
 
     // Actualizar el modo web según el tipo de archivo seleccionado
     useEffect(() => {
@@ -957,9 +866,6 @@ export const WebMode = () => {
                 setWebMode("react-js")
             } else if (file.type === "react-ts") {
                 setWebMode("react-ts")
-            } else if (file.type === "python" || file.type === "csharp" || file.type === "java") {
-                setMode("console")
-                setConsoleLanguage(file.type)
             }
         }
     }, [currentFileId])
@@ -1093,7 +999,7 @@ export const WebMode = () => {
         }
 
         return (
-            <div key={index} className={`${className} font-mono text-sm py-1`}>
+            <div key={index} className={`${className} text-sm py-0.5 font-light text-gray-300 italic`} style={{ fontFamily: "var(--font-code)" }}>
                 {icon}
                 {item.content}
             </div>
@@ -1170,12 +1076,12 @@ export const WebMode = () => {
                     <div>
 
                         <div className="border-1 border-(--color-gray-700) border-b-0 rounded-t-sm  overflow-hidden max-w-max overflow-y-auto">
-                            <div className="flex flex-row divide-x divide-(--color-gray-700)">
+                            <div className="flex flex-row divide-x divide-(--color-gray-500)">
                                 {/* Mostrar archivos según el modo actual */}
                                 {files.filter((file) => file.type === webMode).map((file) => (
                                     <div
                                         key={file.id}
-                                        className={`flex w-[150px] items-center justify-between p-2 cursor-pointer bg-neutral/40 hover:bg-primary/50    transition-all duration-100 hover:opacity-100 ${currentFileId === file.id ? "bg-neutral/70 opacity-100" : "opacity-50"}`}
+                                        className={`flex w-[150px] items-center justify-between p-2 cursor-pointer   transition-all duration-100 hover:opacity-100 ${currentFileId === file.id ? "bg-(--color-gray-700) opacity-100" : "opacity-50 bg-(--color-gray-700) hover:bg-primary/50  "}`}
                                         onClick={() => setCurrentFileId(file.id)}>
                                         <div className="flex items-center gap-2">
                                             {getFileIcon(file.extension)}
@@ -1241,53 +1147,39 @@ export const WebMode = () => {
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2">
-                        <button onClick={handleRun} className="btn btn-primary gap-1">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                            </svg>
+                        <button onClick={handleRun} className="btn btn-success btn-sm">
+                            <Play className="size-4" />
                             Ejecutar
                         </button>
-                        <button onClick={handleCopy} className="btn btn-outline gap-1">
+                        <button onClick={handleCopy} className="btn btn-neutral btn-sm">
                             {copied ? (
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                </svg>
+                                <Check className="size-4" />
                             ) : (
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                                </svg>
+                                <Copy className="size-4" />
                             )}
                             {copied ? "Copiado" : "Copiar HTML"}
                         </button>
-                        <button onClick={handleDownload} className="btn btn-outline gap-1">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                            </svg>
+                        <button onClick={handleDownload} className="btn btn-neutral btn-sm">
+                            <Download className="size-4" />
                             Descargar
                         </button>
-                        <button onClick={handleSave} className="btn btn-outline gap-1">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                            </svg>
+                        <button onClick={handleSave} className="btn btn-neutral btn-sm">
+                            <Save className="size-4" />
                             Guardar
                         </button>
-                        <button onClick={handleLoad} className="btn btn-outline gap-1">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                            </svg>
+                        <button onClick={handleLoad} className="btn btn-neutral btn-sm">
+                            <RefreshCcw className="size-4" />
                             Cargar
                         </button>
-                        <button onClick={handleClear} className="btn btn-outline gap-1 ml-auto">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
+                        <button onClick={handleClear} className="btn btn-neutral btn-sm ml-auto">
+                            <TrashIcon className="size-4" />
                             Limpiar
                         </button>
                     </div>
 
                     {!isEditorMaximized && (
-                        <div className="space-y-2">
-                            <div className="flex items-center justify-between">
+                        <div className="border-1 border-(--color-gray-700) rounded-sm">
+                            <div className="bg-base-200 flex items-center justify-between px-2 rounded-t-sm">
                                 <div className="flex items-center gap-2">
                                     <Terminal className="h-4 w-4 text-tech-cyan" />
                                     <h3 className="text-sm font-medium">Consola</h3>
@@ -1296,25 +1188,11 @@ export const WebMode = () => {
                                     <button onClick={clearConsole} className="btn btn-ghost btn-sm">
                                         Limpiar
                                     </button>
-                                    <button
-                                        onClick={() => setIsConsoleMaximized(!isConsoleMaximized)}
-                                        className="btn btn-ghost btn-square"
-                                    >
-                                        {isConsoleMaximized ? (
-                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                            </svg>
-                                        ) : (
-                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3c2.755 0 5.455.232 8.083.678.533.4.917 1.056.917 1.736V21l-.002-.03c-.083.396-.32 1.313-.889 2.258A48.62 48.62 0 0112 46c-2.749 0-5.454-.232-8.083-.678C3.217 44.986 2.275 44 2 44v-20c0-.68.39-1.333.917-1.736.483-.447.889-1.227.889-2.258l.002.03zM12 42c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4zm16-4c0 2.206-1.794 4-4 4s-4-1.794-4-4 1.794-4 4-4 4 1.794 4 4zM6 36c-2.206 0-4 1.794-4 4s1.794 4 4 4 4-1.794 4-4-1.794-4-4-4z" />
-                                            </svg>
-                                        )}
-                                    </button>
                                 </div>
                             </div>
                             <div
                                 ref={consoleRef}
-                                className={`bg-secondary/80 backdrop-blur-sm rounded-md p-2 overflow-auto ${isConsoleMaximized ? "h-[300px]" : "h-[200px]"
+                                className={`bg-neutral backdrop-blur-sm rounded-b-sm p-2 overflow-auto ${isConsoleMaximized ? "h-[300px]" : "h-[200px]"
                                     }`}
                             >
                                 {consoleOutput.length > 0 ? (
@@ -1329,37 +1207,24 @@ export const WebMode = () => {
                     )}
                 </div>
 
-                <div className="bg-white dark:bg-zinc-800 border border-border rounded-lg overflow-hidden h-[calc(100vh-200px)]">
-                    <div className="p-2 bg-secondary/80 backdrop-blur-sm border-b border-border flex items-center">
+                <div className="bg-white dark:bg-zinc-800 border border-(--color-gray-700) rounded-sm overflow-hidden h-[calc(100vh-200px)]">
+                    <div className="p-2 bg-gray-800 backdrop-blur-sm border-b border-(--color-gray-700) flex items-center">
                         <div className="flex space-x-1.5">
                             <div className="w-3 h-3 rounded-full bg-red-500"></div>
                             <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                             <div className="w-3 h-3 rounded-full bg-green-500"></div>
                         </div>
-                        <div className="mx-auto text-xs text-muted-foreground">{mode === "web" ? "Vista previa" : "Consola"}</div>
+                        <div className="mx-auto text-xs text-muted-foreground">Vista previa</div>
                     </div>
-                    {mode === "web" ? (
-                        <iframe
-                            ref={iframeRef}
-                            srcDoc={output}
-                            title="preview"
-                            className="w-full h-[calc(100%-32px)] border-none"
-                            sandbox="allow-scripts"
-                        ></iframe>
-                    ) : (
-                        <div
-                            ref={consoleRef}
-                            className="w-full h-[calc(100%-32px)] overflow-auto p-4 font-mono text-sm bg-zinc-900 text-zinc-100"
-                        >
-                            {consoleOutput.length > 0 ? (
-                                consoleOutput.map((item, index) => renderConsoleItem(item, index))
-                            ) : (
-                                <div className="text-zinc-400 text-sm italic p-2">
-                                    La consola está vacía. Ejecuta el código para ver la salida aquí.
-                                </div>
-                            )}
-                        </div>
-                    )}
+
+                    <iframe
+                        ref={iframeRef}
+                        srcDoc={output}
+                        title="preview"
+                        className="w-full h-[calc(100%-32px)] border-none"
+                        sandbox="allow-scripts"
+                    ></iframe>
+
                 </div>
             </div>
         </div>
