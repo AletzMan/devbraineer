@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Jost, Josefin_Sans } from "next/font/google";
+import { Jost, Josefin_Sans, Inconsolata } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 
@@ -11,6 +11,11 @@ const jost = Jost({
 
 const josefinSans = Josefin_Sans({
   variable: "--font-josefin-sans",
+  subsets: ["latin"],
+});
+
+const code = Inconsolata({
+  variable: "--font-code",
   subsets: ["latin"],
 });
 
@@ -29,7 +34,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" data-theme="dark">
         <body
-          className={`${jost.variable} ${josefinSans.variable} antialiased`}
+          className={`${jost.variable} ${josefinSans.variable} ${code.variable} antialiased`}
         >
           {children}
         </body>
