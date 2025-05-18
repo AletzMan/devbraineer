@@ -1052,7 +1052,7 @@ export const WebMode = () => {
           <button role="tab" className={`tab [--tab-border-color:gray] [--tab-bg:#1D232A] ${webMode === 'react-ts' ? 'tab-active' : ''}`} onClick={() => setWebMode('react-ts')}>React TS</button>
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
         <div className="flex flex-col gap-2">
           <div>
             <div className="flex justify-between gap-2 mb-2">
@@ -1117,10 +1117,10 @@ export const WebMode = () => {
               </div>
             </div>
 
-            <div className={`border-1 border-(--color-gray-700) rounded-b-sm overflow-hidden ${isEditorMaximized ? "h-[70vh]" : ""}`}>
+            <div className={`border-1 border-(--color-gray-700) rounded-b-sm overflow-hidden h-[calc(100vh-510px)]`}>
               {currentFile && (
                 <Editor
-                  height={isEditorMaximized ? "70vh" : editorHeight}
+                  height={"100%"}
                   language={currentFile.language}
                   value={currentFile.content}
                   onChange={(value) => updateCurrentFile(value || "")}
@@ -1174,36 +1174,34 @@ export const WebMode = () => {
 
 
 
-          {!isEditorMaximized && (
-            <div className="border-1 border-(--color-gray-700) rounded-sm">
-              <div className="bg-base-200 flex items-center justify-between px-2 rounded-t-sm">
-                <div className="flex items-center gap-2">
-                  <Terminal className="h-4 w-4 text-tech-cyan" />
-                  <h3 className="text-sm font-medium">Consola</h3>
-                </div>
-                <div className="flex items-center gap-1">
-                  <button onClick={clearConsole} className="btn btn-ghost btn-sm">
-                    Limpiar
-                  </button>
-                </div>
+
+          <div className="border-1 border-(--color-gray-700) rounded-sm">
+            <div className="bg-base-200 flex items-center justify-between px-2 rounded-t-sm">
+              <div className="flex items-center gap-2">
+                <Terminal className="h-4 w-4 text-tech-cyan" />
+                <h3 className="text-sm font-medium">Consola</h3>
               </div>
-              <div
-                ref={consoleRef}
-                className={`bg-neutral backdrop-blur-sm rounded-b-sm p-2 overflow-auto ${isConsoleMaximized ? "h-[300px]" : "h-[200px]"
-                  }`}
-              >
-                {consoleOutput.length > 0 ? (
-                  consoleOutput.map((item, index) => renderConsoleItem(item, index))
-                ) : (
-                  <div className="text-muted-foreground text-xs text-gray-400 p-2" style={{ fontFamily: "consolas" }}>
-                    La consola está vacía. Usa console.log() en tu código JavaScript para ver mensajes aquí.
-                  </div>
-                )}
+              <div className="flex items-center gap-1">
+                <button onClick={clearConsole} className="btn btn-ghost btn-sm">
+                  Limpiar
+                </button>
               </div>
             </div>
-          )}
+            <div
+              ref={consoleRef}
+              className={`bg-neutral backdrop-blur-sm rounded-b-sm p-2 overflow-auto  h-50`}
+            >
+              {consoleOutput.length > 0 ? (
+                consoleOutput.map((item, index) => renderConsoleItem(item, index))
+              ) : (
+                <div className="text-muted-foreground text-xs text-gray-400 p-2" style={{ fontFamily: "consolas" }}>
+                  La consola está vacía. Usa console.log() en tu código JavaScript para ver mensajes aquí.
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-2 h-[calc(100vh-200px)]">
+        <div className="flex flex-col gap-2 h-[calc(100vh-194px)]">
           <div className="flex flex-wrap items-center gap-2">
             <button onClick={handleRun} className="btn btn-success btn-sm">
               <Play className="size-4" />
