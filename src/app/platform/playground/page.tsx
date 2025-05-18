@@ -32,7 +32,7 @@ export default function PlaygroundPage() {
           <span>{toast.description}</span>
         </div>
       </div>}
-      <div className="flex flex-col gap-4 flex-1 max-w-[1600px] mx-auto p-2 w-full">
+      <div className="flex flex-col gap-2 flex-1 max-w-[1600px] mx-auto p-2 w-full">
         {/* name of each tab group should be unique */}
         <div className="flex justify-end border-b-1 border-(--color-gray-700) pb-2">
           <div className="tabs tabs-box w-max self-end">
