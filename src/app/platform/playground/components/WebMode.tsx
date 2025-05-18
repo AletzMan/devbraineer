@@ -1,3 +1,4 @@
+import { CSSIcon, HTML5Icon, JSIcon, ReactIcon, TSIcon } from "@/app/components/Icons"
 import { Editor } from "@monaco-editor/react"
 import { Edit2, FileCode, FileText, Maximize2, Minimize2, Plus, Terminal, X } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
@@ -9,6 +10,7 @@ interface FileData {
     content: string
     language: string
     type: string
+    extension: string
 }
 
 
@@ -30,7 +32,8 @@ export const WebMode = () => {
    <div id="output"></div>
  </div>`,
             language: "html",
-            type: "html",
+            type: "html-css-js",
+            extension: "html"
         },
         {
             id: "css-1",
@@ -83,38 +86,78 @@ export const WebMode = () => {
    border-radius: 4px;
    min-height: 2rem;
  }
+  `,
+            language: "css",
+            type: "html-css-js",
+            extension: "css"
+        }, {
+            id: "html-2",
+            name: "index.html",
+            content: `<div class="container">
+   <h1>Playground de Código</h1>
+   <p>Edita el HTML, CSS y TypeScript para ver los cambios en tiempo real.</p>
+   <button id="demo-button">Haz clic aquí</button>
+   <div id="output"></div>
+ </div>`,
+            language: "html",
+            type: "html-css-ts",
+            extension: "html"
+        },
+        {
+            id: "css-2",
+            name: "styles.css",
+            content: `body {
+   font-family: system-ui, sans-serif;
+   line-height: 1.5;
+   padding: 2rem;
+ }
  
- /* Estilos para React */
- .card {
-   background-color: #ffffff;
+ .container {
+   max-width: 800px;
+   margin: 0 auto;
+   padding: 2rem;
    border-radius: 8px;
-   padding: 1.5rem;
-   margin-bottom: 1.5rem;
-   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+   background-color: #f9fafb;
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
  }
  
- .card h2 {
-   margin-top: 0;
+ h1 {
+   color: #111827;
    margin-bottom: 1rem;
-   color: #1f2937;
  }
  
- ul {
-   padding-left: 1.5rem;
+ p {
+   color: #4b5563;
    margin-bottom: 1.5rem;
  }
  
- li {
+ button {
+   background-color: #3b82f6;
+   color: white;
+   border: none;
+   padding: 0.5rem 1rem;
+   border-radius: 4px;
+   cursor: pointer;
+   transition: background-color 0.2s;
+   margin-right: 0.5rem;
    margin-bottom: 0.5rem;
  }
  
- .info {
-   font-size: 0.875rem;
-   color: #6b7280;
-   font-style: italic;
- }`,
+ button:hover {
+   background-color: #2563eb;
+ }
+ 
+ #output {
+   margin-top: 1rem;
+   padding: 1rem;
+   background-color: #f3f4f6;
+   border-radius: 4px;
+   min-height: 2rem;
+ }
+  `,
             language: "css",
-            type: "css",
+            type: "html-css-ts",
+            extension: "css"
         },
         {
             id: "js-1",
@@ -153,7 +196,8 @@ export const WebMode = () => {
    console.log('La suma es:', suma);
  });`,
             language: "javascript",
-            type: "js",
+            type: "html-css-js",
+            extension: "js"
         },
         {
             id: "ts-1",
@@ -191,7 +235,8 @@ export const WebMode = () => {
  console.log("Primer número:", primerElemento(numeros));
  console.log("Primer string:", primerElemento(["TypeScript", "es", "genial"]));`,
             language: "typescript",
-            type: "ts",
+            type: "html-css-ts",
+            extension: "ts"
         },
         {
             id: "react-js-1",
@@ -264,6 +309,7 @@ export const WebMode = () => {
  ReactDOM.render(<App />, document.getElementById('root'));`,
             language: "javascript",
             type: "react-js",
+            extension: "jsx"
         },
         {
             id: "react-ts-1",
@@ -342,206 +388,161 @@ export const WebMode = () => {
  ReactDOM.render(<App />, document.getElementById('root'));`,
             language: "typescript",
             type: "react-ts",
+            extension: "tsx"
         },
         {
-            id: "react-js-2",
-            name: "Header.jsx",
-            content: `// Componente Header para React
- function Header({ title }) {
-   return (
-     <header className="header">
-       <h1>{title}</h1>
-       <nav>
-         <ul>
-           <li><a href="#">Inicio</a></li>
-           <li><a href="#">Acerca de</a></li>
-           <li><a href="#">Contacto</a></li>
-         </ul>
-       </nav>
-     </header>
-   );
+            id: "css-3",
+            name: "styles.css",
+            content: `body {
+   font-family: system-ui, sans-serif;
+   line-height: 1.5;
+   padding: 2rem;
  }
  
- // Exportar el componente para usarlo en App.jsx
- // En un entorno real usaríamos: export default Header;`,
-            language: "javascript",
-            type: "react-js",
-        },
-        {
-            id: "react-ts-2",
-            name: "Header.tsx",
-            content: `// Componente Header para React con TypeScript
- interface HeaderProps {
-   title: string;
+ .container {
+   max-width: 800px;
+   margin: 0 auto;
+   padding: 2rem;
+   border-radius: 8px;
+   background-color: #f9fafb;
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
  }
  
- function Header({ title }: HeaderProps): JSX.Element {
-   return (
-     <header className="header">
-       <h1>{title}</h1>
-       <nav>
-         <ul>
-           <li><a href="#">Inicio</a></li>
-           <li><a href="#">Acerca de</a></li>
-           <li><a href="#">Contacto</a></li>
-         </ul>
-       </nav>
-     </header>
-   );
+ h1 {
+   color: #111827;
+   margin-bottom: 1rem;
+ }
+  
+ 
+ button {
+   background-color: #3b82f6;
+   color: white;
+   border: none;
+   padding: 0.5rem 1rem;
+   border-radius: 4px;
+   cursor: pointer;
+   transition: background-color 0.2s;
+   margin-right: 0.5rem;
+   margin-bottom: 0.5rem;
  }
  
- // Exportar el componente para usarlo en App.tsx
- // En un entorno real usaríamos: export default Header;`,
-            language: "typescript",
+ button:hover {
+   background-color: #2563eb;
+ }
+ 
+ 
+ 
+ .card {
+   background-color: #ffffff;
+   border-radius: 8px;
+   padding: 1.5rem;
+   margin-bottom: 1.5rem;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+ }
+ 
+ .card h2 {
+   margin-top: 0;
+   margin-bottom: 1rem;
+   color: #1f2937;
+ }
+ 
+ ul {
+   padding-left: 1.5rem;
+   margin-bottom: 1.5rem;
+ }
+ 
+ li {
+   margin-bottom: 0.5rem;
+ }
+ 
+ .info {
+   font-size: 0.875rem;
+   color: #6b7280;
+   font-style: italic;
+ }`,
+            language: "css",
             type: "react-ts",
+            extension: "css"
         },
         {
-            id: "python-1",
-            name: "main.py",
-            content: `# Ejemplo de código Python
- def factorial(n):
-     """Calcula el factorial de un número"""
-     if n == 0 or n == 1:
-         return 1
-     else:
-         return n * factorial(n-1)
- 
- # Calcular algunos factoriales
- for i in range(1, 6):
-     print(f"El factorial de {i} es {factorial(i)}")
- 
- # Ejemplo de listas
- numeros = [1, 2, 3, 4, 5]
- print("Lista original:", numeros)
- print("Lista al cuadrado:", [x**2 for x in numeros])
- 
- # Ejemplo de diccionario
- persona = {
-     "nombre": "María",
-     "edad": 30,
-     "profesion": "Científica de datos"
- }
- print("Información de la persona:")
- for clave, valor in persona.items():
-     print(f"  {clave}: {valor}")
- 
- # Ejemplo de manejo de excepciones
- try:
-     resultado = 10 / 0
- except ZeroDivisionError:
-     print("¡Error! No se puede dividir por cero.")
- finally:
-     print("Este bloque siempre se ejecuta")`,
-            language: "python",
-            type: "python",
-        },
-        {
-            id: "csharp-1",
-            name: "Program.cs",
-            content: `// Ejemplo de código C#
- using System;
- 
- class Program
- {
-     static void Main()
-     {
-         Console.WriteLine("¡Hola desde C#!");
-         
-         // Ejemplo de bucle for
-         Console.WriteLine("\\nContando del 1 al 5:");
-         for (int i = 1; i <= 5; i++)
-         {
-             Console.WriteLine($"Número: {i}");
-         }
-         
-         // Ejemplo de array
-         int[] numeros = { 10, 20, 30, 40, 50 };
-         Console.WriteLine("\\nSuma de array: " + numeros.Sum());
-         
-         // Ejemplo de clase
-         var persona = new Persona
-         {
-             Nombre = "Carlos",
-             Edad = 35
-         };
-         
-         Console.WriteLine($"\\nPersona: {persona.Nombre}, {persona.Edad} años");
-         persona.Saludar();
-     }
+            id: "css-4",
+            name: "styles.css",
+            content: `body {
+   font-family: system-ui, sans-serif;
+   line-height: 1.5;
+   padding: 2rem;
  }
  
- class Persona
- {
-     public string Nombre { get; set; }
-     public int Edad { get; set; }
-     
-     public void Saludar()
-     {
-         Console.WriteLine($"Hola, soy {Nombre} y tengo {Edad} años.");
-     }
+ .container {
+   max-width: 800px;
+   margin: 0 auto;
+   padding: 2rem;
+   border-radius: 8px;
+   background-color: #f9fafb;
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+ }
+ 
+ h1 {
+   color: #111827;
+   margin-bottom: 1rem;
+ }
+  
+ 
+ button {
+   background-color: #3b82f6;
+   color: white;
+   border: none;
+   padding: 0.5rem 1rem;
+   border-radius: 4px;
+   cursor: pointer;
+   transition: background-color 0.2s;
+   margin-right: 0.5rem;
+   margin-bottom: 0.5rem;
+ }
+ 
+ button:hover {
+   background-color: #2563eb;
+ }
+ 
+ 
+ 
+ .card {
+   background-color: #ffffff;
+   border-radius: 8px;
+   padding: 1.5rem;
+   margin-bottom: 1.5rem;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+ }
+ 
+ .card h2 {
+   margin-top: 0;
+   margin-bottom: 1rem;
+   color: #1f2937;
+ }
+ 
+ ul {
+   padding-left: 1.5rem;
+   margin-bottom: 1.5rem;
+ }
+ 
+ li {
+   margin-bottom: 0.5rem;
+ }
+ 
+ .info {
+   font-size: 0.875rem;
+   color: #6b7280;
+   font-style: italic;
  }`,
-            language: "csharp",
-            type: "csharp",
+            language: "css",
+            type: "react-js",
+            extension: "css"
         },
-        {
-            id: "java-1",
-            name: "Main.java",
-            content: `// Ejemplo de código Java
- public class Main {
-     public static void main(String[] args) {
-         System.out.println("¡Hola desde Java!");
-         
-         // Ejemplo de bucle for
-         System.out.println("\\nContando del 1 al 5:");
-         for (int i = 1; i <= 5; i++) {
-             System.out.println("Número: " + i);
-         }
-         
-         // Ejemplo de array
-         int[] numeros = {10, 20, 30, 40, 50};
-         int suma = 0;
-         for (int num : numeros) {
-             suma += num;
-         }
-         System.out.println("\\nSuma de array: " + suma);
-         
-         // Ejemplo de clase
-         Persona persona = new Persona("Laura", 32);
-         System.out.println("\\nPersona: " + persona.getNombre() + ", " + persona.getEdad() + " años");
-         persona.saludar();
-     }
- }
- 
- class Persona {
-     private String nombre;
-     private int edad;
-     
-     public Persona(String nombre, int edad) {
-         this.nombre = nombre;
-         this.edad = edad;
-     }
-     
-     public String getNombre() {
-         return nombre;
-     }
-     
-     public int getEdad() {
-         return edad;
-     }
-     
-     public void saludar() {
-         System.out.println("Hola, soy " + nombre + " y tengo " + edad + " años.");
-     }
- }`,
-            language: "java",
-            type: "java",
-        },
+
     ])
 
     // Estado para el archivo actualmente seleccionado
     const [currentFileId, setCurrentFileId] = useState<string>("html-1")
-    const [newFileName, setNewFileName] = useState<string>("")
-    const [isNewFileDialogOpen, setIsNewFileDialogOpen] = useState<boolean>(false)
 
     // Añadir estado para el modo actual (web o consola)
     const [mode, setMode] = useState("web")
@@ -567,6 +568,8 @@ export const WebMode = () => {
     // Obtener el archivo actual
     const currentFile = files.find((file) => file.id === currentFileId) || files[0]
 
+    console.log(currentFile)
+
     // Función para actualizar el contenido del archivo actual
     const updateCurrentFile = (content: string) => {
         setFiles(
@@ -590,119 +593,6 @@ export const WebMode = () => {
         }, 5000)
     }
 
-    // Función para eliminar un archivo
-    const deleteFile = (id: string) => {
-        // Verificar que no sea el único archivo de su tipo
-        const fileToDelete = files.find((file) => file.id === id)
-        if (!fileToDelete) return
-
-        const filesOfSameType = files.filter((file) => file.type === fileToDelete.type)
-        if (filesOfSameType.length <= 1) {
-            setToast({
-                title: "Error",
-                description: "No puedes eliminar el único archivo de este tipo",
-                variant: "error",
-                open: true,
-            })
-            timeOutToast()
-            return
-        }
-
-        // Confirmar eliminación
-        if (confirm(`¿Estás seguro de que quieres eliminar el archivo ${fileToDelete.name}?`)) {
-            // Si el archivo actual es el que se va a eliminar, seleccionar otro
-            if (currentFileId === id) {
-                const nextFile = files.find((file) => file.type === fileToDelete.type && file.id !== id)
-                if (nextFile) {
-                    setCurrentFileId(nextFile.id)
-                }
-            }
-
-            // Eliminar el archivo
-            setFiles(files.filter((file) => file.id !== id))
-
-            setToast({
-                title: "Archivo eliminado",
-                description: `Se ha eliminado el archivo ${fileToDelete.name}`,
-                variant: "success",
-                open: true,
-            })
-            timeOutToast()
-        }
-    }
-
-    // Función para renombrar un archivo
-    const renameFile = (id: string, newName: string) => {
-        if (!newName.trim()) return
-
-        const fileToRename = files.find((file) => file.id === id)
-        if (!fileToRename) return
-
-        // Determinar la extensión según el tipo
-        let extension = ""
-        switch (fileToRename.type) {
-            case "html":
-                extension = ".html"
-                break
-            case "css":
-                extension = ".css"
-                break
-            case "js":
-                extension = ".js"
-                break
-            case "ts":
-                extension = ".ts"
-                break
-            case "react-js":
-                extension = ".jsx"
-                break
-            case "react-ts":
-                extension = ".tsx"
-                break
-            case "python":
-                extension = ".py"
-                break
-            case "csharp":
-                extension = ".cs"
-                break
-            case "java":
-                extension = ".java"
-                break
-        }
-
-        // Verificar si el nombre ya tiene la extensión
-        const fileName = newName.endsWith(extension) ? newName : newName + extension
-
-        // Verificar si ya existe un archivo con ese nombre
-        if (files.some((file) => file.name === fileName && file.type === fileToRename.type && file.id !== id)) {
-            setToast({
-                title: "Error",
-                description: "Ya existe un archivo con ese nombre",
-                variant: "error",
-                open: true,
-            })
-            timeOutToast()
-            return
-        }
-
-        // Renombrar el archivo
-        setFiles(
-            files.map((file) => {
-                if (file.id === id) {
-                    return { ...file, name: fileName }
-                }
-                return file
-            }),
-        )
-
-        setToast({
-            title: "Archivo renombrado",
-            description: `Se ha renombrado el archivo a ${fileName}`,
-            variant: "success",
-            open: true,
-        })
-        timeOutToast()
-    }
 
     // Modificar la función updateOutput para incluir React y múltiples archivos
     const updateOutput = () => {
@@ -802,16 +692,16 @@ export const WebMode = () => {
         if (mode === "web") {
             if (webMode === "html-css-js" || webMode === "html-css-ts") {
                 // Obtener el contenido de los archivos HTML, CSS y JS/TS
-                const htmlFiles = files.filter((file) => file.type === "html")
-                const cssFiles = files.filter((file) => file.type === "css")
-                const scriptFiles = files.filter((file) => file.type === (webMode === "html-css-js" ? "js" : "ts"))
+                const htmlFiles = files.filter((file) => file.extension === "html" && file.type === webMode)
+                const cssFiles = files.filter((file) => file.extension === "css" && file.type === webMode)
+                const scriptFiles = files.filter((file) => file.extension === (webMode === "html-css-js" ? "js" : "ts"))
 
                 // Usar el primer archivo de cada tipo si no hay ninguno seleccionado
                 const htmlContent = htmlFiles.length > 0 ? htmlFiles[0].content : ""
                 const cssContent = cssFiles.length > 0 ? cssFiles.map((file) => file.content).join("\n") : ""
                 const scriptContent = scriptFiles.length > 0 ? scriptFiles[0].content : ""
                 const scriptType = webMode === "html-css-js" ? "javascript" : "text/typescript"
-
+                console.log(scriptContent)
                 const combinedOutput = `
        <!DOCTYPE html>
        <html>
@@ -853,11 +743,10 @@ export const WebMode = () => {
             } else if (webMode === "react-js" || webMode === "react-ts") {
                 // Para React, necesitamos incluir las bibliotecas React y ReactDOM
                 const reactFiles = files.filter((file) => file.type === webMode)
-                const cssFiles = files.filter((file) => file.type === "css")
+                const cssFiles = files.filter((file) => file.extension === "css" && file.type === webMode)
 
                 // Encontrar el archivo principal (App.jsx o App.tsx)
                 const mainFile = reactFiles.find((file) => file.name.toLowerCase().includes("app")) || reactFiles[0]
-                const otherFiles = reactFiles.filter((file) => file.id !== mainFile.id)
 
                 // Combinar CSS
                 const cssContent = cssFiles.length > 0 ? cssFiles.map((file) => file.content).join("\n") : ""
@@ -1176,148 +1065,6 @@ export const WebMode = () => {
         }
     }
 
-    // Cargar plantillas
-    const loadTemplate = (template: string) => {
-        if (template === "landing") {
-            // Buscar o crear archivos para la plantilla
-            const htmlFile = files.find((file) => file.type === "html")
-            const cssFile = files.find((file) => file.type === "css")
-            const jsFile = files.find((file) => file.type === "js")
-
-            if (htmlFile) {
-                setFiles(
-                    files.map((file) => {
-                        if (file.id === htmlFile.id) {
-                            return {
-                                ...file,
-                                content: `<div class="hero">
-   <h1>Bienvenido a mi sitio web</h1>
-   <p>Una landing page de ejemplo creada con HTML, CSS y JavaScript</p>
-   <button id="cta-button">Comenzar ahora</button>
- </div>
- <div class="features">
-   <div class="feature">
-     <h2>Característica 1</h2>
-     <p>Descripción de la primera característica importante.</p>
-   </div>
-   <div class="feature">
-     <h2>Característica 2</h2>
-     <p>Descripción de la segunda característica importante.</p>
-   </div>
-   <div class="feature">
-     <h2>Característica 3</h2>
-     <p>Descripción de la tercera característica importante.</p>
-   </div>
- </div>`,
-                            }
-                        }
-                        return file
-                    }),
-                )
-            }
-
-            if (cssFile) {
-                setFiles(
-                    files.map((file) => {
-                        if (file.id === cssFile.id) {
-                            return {
-                                ...file,
-                                content: `body {
-   font-family: system-ui, sans-serif;
-   margin: 0;
-   padding: 0;
-   color: #333;
- }
- 
- .hero {
-   background-color: #f0f4f8;
-   padding: 4rem 2rem;
-   text-align: center;
- }
- 
- .hero h1 {
-   font-size: 2.5rem;
-   margin-bottom: 1rem;
-   color: #1a365d;
- }
- 
- .hero p {
-   font-size: 1.2rem;
-   max-width: 600px;
-   margin: 0 auto 2rem;
-   color: #4a5568;
- }
- 
- button {
-   background-color: #4299e1;
-   color: white;
-   border: none;
-   padding: 0.75rem 1.5rem;
-   font-size: 1rem;
-   border-radius: 4px;
-   cursor: pointer;
-   transition: background-color 0.3s;
- }
- 
- button:hover {
-   background-color: #3182ce;
- }
- 
- .features {
-   display: flex;
-   flex-wrap: wrap;
-   justify-content: center;
-   padding: 4rem 2rem;
-   background-color: white;
- }
- 
- .feature {
-   flex: 1;
-   min-width: 250px;
-   max-width: 350px;
-   margin: 1rem;
-   padding: 1.5rem;
-   border-radius: 8px;
-   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
- }
- 
- .feature h2 {
-   color: #2b6cb0;
-   margin-top: 0;
- }`,
-                            }
-                        }
-                        return file
-                    }),
-                )
-            }
-
-            if (jsFile) {
-                setFiles(
-                    files.map((file) => {
-                        if (file.id === jsFile.id) {
-                            return {
-                                ...file,
-                                content: `document.getElementById('cta-button').addEventListener('click', function() {
-   console.log('Botón CTA clickeado');
-   alert('¡Gracias por tu interés! Esta es una demo de landing page.');
- });`,
-                            }
-                        }
-                        return file
-                    }),
-                )
-            }
-
-            // Cambiar al modo HTML/CSS/JS
-            setWebMode("html-css-js")
-            setMode("web")
-            // Seleccionar el archivo HTML
-            if (htmlFile) {
-                setCurrentFileId(htmlFile.id)
-            }
-        }
-    }
 
     // Renderizar el tipo de consola
     const renderConsoleItem = (item: { type: string; content: string }, index: number) => {
@@ -1362,25 +1109,27 @@ export const WebMode = () => {
     const getFileIcon = (fileType: string) => {
         switch (fileType) {
             case "html":
-                return <FileText className="h-4 w-4 text-orange-500" />
+                return <HTML5Icon className="h-5 w-5 text-orange-500" />
             case "css":
-                return <FileCode className="h-4 w-4 text-blue-500" />
+                return <CSSIcon className="h-5 w-5 text-blue-500" />
+            case "css":
+                return <CSSIcon className="h-5 w-5 text-blue-500" />
             case "js":
-                return <FileCode className="h-4 w-4 text-yellow-500" />
+                return <JSIcon className="h-5 w-5 text-yellow-500" />
             case "ts":
-                return <FileCode className="h-4 w-4 text-blue-600" />
-            case "react-js":
-                return <FileCode className="h-4 w-4 text-cyan-500" />
-            case "react-ts":
-                return <FileCode className="h-4 w-4 text-cyan-600" />
+                return <TSIcon className="h-5 w-5 text-blue-600" />
+            case "jsx":
+                return <ReactIcon className="h-5 w-5 text-cyan-500" />
+            case "tsx":
+                return <ReactIcon className="h-5 w-5 text-cyan-600" />
             case "python":
-                return <FileCode className="h-4 w-4 text-green-500" />
+                return <FileCode className="h-5 w-5 text-green-500" />
             case "csharp":
-                return <FileCode className="h-4 w-4 text-purple-500" />
+                return <FileCode className="h-5 w-5 text-purple-500" />
             case "java":
-                return <FileCode className="h-4 w-4 text-red-500" />
+                return <FileCode className="h-5 w-5 text-red-500" />
             default:
-                return <FileCode className="h-4 w-4" />
+                return <FileCode className="h-5 w-5" />
         }
     }
 
@@ -1400,266 +1149,95 @@ export const WebMode = () => {
                 </label>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                    {mode === "web" ? (
-                        <div className="flex items-center justify-between">
-                            <div className="tabs tabs-boxed w-full">
-                                <button className={`tab ${webMode === 'html-css-js' ? 'tab-active' : ''}`} onClick={() => setWebMode('html-css-js')}>HTML/CSS/JS</button>
-                                <button className={`tab ${webMode === 'html-css-ts' ? 'tab-active' : ''}`} onClick={() => setWebMode('html-css-ts')}>HTML/CSS/TS</button>
-                                <button className={`tab ${webMode === 'react-js' ? 'tab-active' : ''}`} onClick={() => setWebMode('react-js')}>React JS</button>
-                                <button className={`tab ${webMode === 'react-ts' ? 'tab-active' : ''}`} onClick={() => setWebMode('react-ts')}>React TS</button>
-                            </div>
-                            <div className="flex items-center ml-2">
-                                <button
-                                    onClick={() => setIsEditorMaximized(!isEditorMaximized)}
-                                    className={isEditorMaximized ? "rounded-r-none " : "rounded-r-none "}
-                                >
-                                    {isEditorMaximized ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-                                </button>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="flex items-center justify-between">
-                            <select className="select select-bordered w-[150px]" value={consoleLanguage} onChange={(e) => setConsoleLanguage(e.target.value)}>
-                                <option disabled selected>Lenguaje</option>
-                                <option value="python">Python</option>
-                                <option value="csharp">C#</option>
-                                <option value="java">Java</option>
-                            </select>
-                            <div className="flex items-center ml-2">
-                                <button
-                                    onClick={() => setIsEditorMaximized(!isEditorMaximized)}
-                                    className="h-8 w-8 btn btn-ghost"
-                                >
-                                    {isEditorMaximized ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-                                </button>
-                            </div>
-                        </div>
-                    )}
+                <div className="space-y-1">
 
-
-                    <div className="border border-border rounded-md overflow-hidden max-h-[200px] overflow-y-auto">
-                        <div className="divide-y divide-border">
-                            {/* Mostrar archivos según el modo actual */}
-                            {mode === "web"
-                                ? webMode === "html-css-js"
-                                    ? files
-                                        .filter((file) => ["html", "css", "js"].includes(file.type))
-                                        .map((file) => (
-                                            <div
-                                                key={file.id}
-                                                className={`flex items-center justify-between p-2 cursor-pointer hover:bg-secondary/50 ${currentFileId === file.id ? "bg-secondary/80" : ""
-                                                    }`}
-                                                onClick={() => setCurrentFileId(file.id)}
-                                            >
-                                                <div className="flex items-center gap-2">
-                                                    {getFileIcon(file.type)}
-                                                    <span className="text-sm">{file.name}</span>
-                                                </div>
-                                                <div className="flex items-center gap-1">
-                                                    <button
-                                                        className="h-6 w-6 btn btn-ghost"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation()
-                                                            const newName = prompt("Nuevo nombre:", file.name)
-                                                            if (newName) renameFile(file.id, newName)
-                                                        }}
-                                                    >
-                                                        <Edit2 className="h-3.5 w-3.5" />
-                                                    </button>
-                                                    <button
-                                                        className="h-6 w-6 text-red-500 btn btn-ghost"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation()
-                                                            deleteFile(file.id)
-                                                        }}
-                                                    >
-                                                        <X className="h-3.5 w-3.5" />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        ))
-                                    : webMode === "html-css-ts"
-                                        ? files
-                                            .filter((file) => ["html", "css", "ts"].includes(file.type))
-                                            .map((file) => (
-                                                <div
-                                                    key={file.id}
-                                                    className={`flex items-center justify-between p-2 cursor-pointer hover:bg-secondary/50 ${currentFileId === file.id ? "bg-secondary/80" : ""
-                                                        }`}
-                                                    onClick={() => setCurrentFileId(file.id)}
-                                                >
-                                                    <div className="flex items-center gap-2">
-                                                        {getFileIcon(file.type)}
-                                                        <span className="text-sm">{file.name}</span>
-                                                    </div>
-                                                    <div className="flex items-center gap-1">
-                                                        <button
-                                                            className="h-6 w-6 btn btn-ghost"
-                                                            onClick={(e) => {
-                                                                e.stopPropagation()
-                                                                const newName = prompt("Nuevo nombre:", file.name)
-                                                                if (newName) renameFile(file.id, newName)
-                                                            }}
-                                                        >
-                                                            <Edit2 className="h-3.5 w-3.5" />
-                                                        </button>
-                                                        <button
-                                                            className="h-6 w-6 btn btn-ghost"
-                                                            onClick={(e) => {
-                                                                e.stopPropagation()
-                                                                deleteFile(file.id)
-                                                            }}
-                                                        >
-                                                            <X className="h-3.5 w-3.5" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            ))
-                                        : webMode === "react-js"
-                                            ? files
-                                                .filter((file) => ["react-js", "css"].includes(file.type))
-                                                .map((file) => (
-                                                    <div
-                                                        key={file.id}
-                                                        className={`flex items-center justify-between p-2 cursor-pointer hover:bg-secondary/50 ${currentFileId === file.id ? "bg-secondary/80" : ""
-                                                            }`}
-                                                        onClick={() => setCurrentFileId(file.id)}
-                                                    >
-                                                        <div className="flex items-center gap-2">
-                                                            {getFileIcon(file.type)}
-                                                            <span className="text-sm">{file.name}</span>
-                                                        </div>
-                                                        <div className="flex items-center gap-1">
-                                                            <button
-                                                                className="btn btn-ghost btn-square"
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation()
-                                                                    const newName = prompt("Nuevo nombre:", file.name)
-                                                                    if (newName) renameFile(file.id, newName)
-                                                                }}
-                                                            >
-                                                                <Edit2 className="h-3.5 w-3.5" />
-                                                            </button>
-                                                            <button
-                                                                className="btn btn-ghost btn-square text-error"
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation()
-                                                                    deleteFile(file.id)
-                                                                }}
-                                                            >
-                                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                                </svg>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                ))
-                                            : files
-                                                .filter((file) => ["react-ts", "css"].includes(file.type))
-                                                .map((file) => (
-                                                    <div
-                                                        key={file.id}
-                                                        className={`flex items-center justify-between p-2 cursor-pointer hover:bg-secondary/50 ${currentFileId === file.id ? "bg-secondary/80" : ""
-                                                            }`}
-                                                        onClick={() => setCurrentFileId(file.id)}
-                                                    >
-                                                        <div className="flex items-center gap-2">
-                                                            {getFileIcon(file.type)}
-                                                            <span className="text-sm">{file.name}</span>
-                                                        </div>
-                                                        <div className="flex items-center gap-1">
-                                                            <button
-                                                                className="btn btn-ghost btn-square"
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation()
-                                                                    const newName = prompt("Nuevo nombre:", file.name)
-                                                                    if (newName) renameFile(file.id, newName)
-                                                                }}
-                                                            >
-                                                                <Edit2 className="h-3.5 w-3.5" />
-                                                            </button>
-                                                            <button
-                                                                className="btn btn-ghost btn-square text-error"
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation()
-                                                                    deleteFile(file.id)
-                                                                }}
-                                                            >
-                                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                                </svg>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                ))
-                                : files
-                                    .filter((file) => file.type === consoleLanguage)
-                                    .map((file) => (
-                                        <div
-                                            key={file.id}
-                                            className={`flex items-center justify-between p-2 cursor-pointer hover:bg-secondary/50 ${currentFileId === file.id ? "bg-secondary/80" : ""
-                                                }`}
-                                            onClick={() => setCurrentFileId(file.id)}
-                                        >
-                                            <div className="flex items-center gap-2">
-                                                {getFileIcon(file.type)}
-                                                <span className="text-sm">{file.name}</span>
-                                            </div>
-                                            <div className="flex items-center gap-1">
-                                                <button
-                                                    className="btn btn-ghost btn-square"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation()
-                                                        const newName = prompt("Nuevo nombre:", file.name)
-                                                        if (newName) renameFile(file.id, newName)
-                                                    }}
-                                                >
-                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                                    </svg>
-                                                </button>
-                                                <button
-                                                    className="btn btn-ghost btn-square text-error"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation()
-                                                        deleteFile(file.id)
-                                                    }}
-                                                >
-                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
+                    <div className="flex items-center justify-between">
+                        <div className="tabs tabs-boxed w-full">
+                            <button className={`tab ${webMode === 'html-css-js' ? 'tab-active' : ''}`} onClick={() => setWebMode('html-css-js')}>HTML/CSS/JS</button>
+                            <button className={`tab ${webMode === 'html-css-ts' ? 'tab-active' : ''}`} onClick={() => setWebMode('html-css-ts')}>HTML/CSS/TS</button>
+                            <button className={`tab ${webMode === 'react-js' ? 'tab-active' : ''}`} onClick={() => setWebMode('react-js')}>React JS</button>
+                            <button className={`tab ${webMode === 'react-ts' ? 'tab-active' : ''}`} onClick={() => setWebMode('react-ts')}>React TS</button>
+                        </div>
+                        <div className="flex items-center ml-2">
+                            <button
+                                onClick={() => setIsEditorMaximized(!isEditorMaximized)}
+                                className={`${isEditorMaximized ? "rounded-r-none" : "rounded-r-none"}`}
+                            >
+                                {isEditorMaximized ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+                            </button>
                         </div>
                     </div>
+                    <div>
 
-                    <div className={`border border-border rounded-md overflow-hidden ${isEditorMaximized ? "h-[70vh]" : ""}`}>
-                        {currentFile && (
-                            <Editor
-                                height={isEditorMaximized ? "70vh" : editorHeight}
-                                language={currentFile.language}
-                                value={currentFile.content}
-                                onChange={(value) => updateCurrentFile(value || "")}
-                                theme={'vs-dark'}
-                                options={{
-                                    minimap: { enabled: false },
-                                    fontSize: 14,
-                                    wordWrap: "on",
-                                    automaticLayout: true,
-                                    tabSize: 2,
-                                    scrollBeyondLastLine: false,
-                                    lineNumbers: "on",
-                                    glyphMargin: false,
-                                    folding: true,
-                                    lineDecorationsWidth: 10,
-                                    formatOnType: true,
-                                    formatOnPaste: true,
-                                }}
-                            />
-                        )}
+                        <div className="border-1 border-(--color-gray-700) border-b-0 rounded-t-sm  overflow-hidden max-w-max overflow-y-auto">
+                            <div className="flex flex-row divide-x divide-(--color-gray-700)">
+                                {/* Mostrar archivos según el modo actual */}
+                                {files.filter((file) => file.type === webMode).map((file) => (
+                                    <div
+                                        key={file.id}
+                                        className={`flex w-[150px] items-center justify-between p-2 cursor-pointer bg-neutral/40 hover:bg-primary/50    transition-all duration-100 hover:opacity-100 ${currentFileId === file.id ? "bg-neutral/70 opacity-100" : "opacity-50"}`}
+                                        onClick={() => setCurrentFileId(file.id)}>
+                                        <div className="flex items-center gap-2">
+                                            {getFileIcon(file.extension)}
+                                            <span className="text-sm">{file.name}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className={`border-1 border-(--color-gray-700) rounded-b-sm overflow-hidden ${isEditorMaximized ? "h-[70vh]" : ""}`}>
+                            {currentFile && (
+                                <Editor
+                                    height={isEditorMaximized ? "70vh" : editorHeight}
+                                    language={currentFile.language}
+                                    value={currentFile.content}
+                                    onChange={(value) => updateCurrentFile(value || "")}
+                                    theme={'vs-dark'}
+                                    options={{
+                                        minimap: { enabled: false },
+                                        fontSize: 14,
+                                        wordWrap: "on",
+                                        automaticLayout: true,
+                                        tabSize: 2,
+                                        scrollBeyondLastLine: false,
+                                        lineNumbers: "on",
+                                        glyphMargin: false,
+                                        folding: true,
+                                        lineDecorationsWidth: 10,
+                                        formatOnType: true,
+                                        formatOnPaste: true,
+                                    }}
+                                    onMount={async (editor, monaco) => {
+                                        monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+                                            target: monaco.languages.typescript.ScriptTarget.Latest,
+                                            allowNonTsExtensions: true,
+                                            moduleResolution:
+                                                monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+                                            module: monaco.languages.typescript.ModuleKind.CommonJS,
+                                            noEmit: true,
+                                            esModuleInterop: true,
+                                            jsx: monaco.languages.typescript.JsxEmit.React,
+                                            reactNamespace: 'React',
+                                            allowJs: true,
+                                            typeRoots: ['node_modules/@types'],
+                                        })
+
+                                        monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+                                            noSemanticValidation: true,
+                                            noSyntaxValidation: true,
+                                        })
+
+
+
+                                        monaco.editor.createModel(
+                                            currentFile.content,
+                                            'typescript',
+                                            monaco.Uri.parse('file:///App.tsx'),
+                                        )
+                                    }}
+                                />
+                            )}
+                        </div>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2">
