@@ -25,7 +25,7 @@ export default function PlaygroundPage() {
 
 
   return (
-    <div className="flex min-h-screen  bg-neutral/50">
+    <div className="flex h-[calc(100vh-4rem)] bg-neutral/50 scrollbar-thin overflow-y-auto">
       {toast.open && <div className="toast toast-top toast-end z-50 ">
         <div className={`flex flex-col gap-1 items-start alert alert-${toast.variant}`}>
           <span className="font-bold">{toast.title}</span>
