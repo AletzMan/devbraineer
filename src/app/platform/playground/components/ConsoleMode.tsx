@@ -1,5 +1,5 @@
 import { Editor } from "@monaco-editor/react"
-import { Check, Copy, Download, Edit2, EllipsisVertical, FileCode, FileText, Maximize2, Minimize2, Play, Plus, RefreshCcw, Save, Terminal, TerminalSquare, TrashIcon, X } from "lucide-react"
+import { BrushCleaning, Check, Copy, Download, Edit2, EllipsisVertical, FileCode, FileText, Maximize2, Minimize2, Play, Plus, RefreshCcw, Save, Terminal, TerminalSquare, TrashIcon, X } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 
 // Definir tipos para los archivos
@@ -170,9 +170,6 @@ export const ConsoleMode = () => {
     const [output, setOutput] = useState("")
     const [copied, setCopied] = useState(false)
     const [consoleOutput, setConsoleOutput] = useState<{ type: string; content: string }[]>([])
-    const [isConsoleMaximized, setIsConsoleMaximized] = useState(false)
-    const [isEditorMaximized, setIsEditorMaximized] = useState(false)
-    const [editorHeight, setEditorHeight] = useState("400px")
     const [toast, setToast] = useState({
         title: "",
         description: "",
@@ -547,77 +544,16 @@ export const ConsoleMode = () => {
 
 
     return (
-        <div className="flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-                <select className="select select-bordered w-[150px] select-sm" value={consoleLanguage} onChange={(e) => setConsoleLanguage(e.target.value)}>
-                    <option disabled selected>Lenguaje</option>
-                    <option value="python">Python</option>
-                    <option value="csharp">C#</option>
-                    <option value="java">Java</option>
-                </select>
-                <div className="flex items-center ml-2">
-                    <button
-                        onClick={() => setIsEditorMaximized(!isEditorMaximized)}
-                        className="h-8 w-8 btn btn-ghost" >
-                        {isEditorMaximized ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-                    </button>
-                </div>
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                    <div>
-                        <div className="border-1 border-(--color-gray-700) border-b-0 rounded-t-sm  overflow-hidden overflow-y-auto">
-                            <div className="flex flex-row divide-x divide-(--color-gray-500) max-w-max">
-                                {/* Mostrar archivos según el modo actual */}
-                                {files
-                                    .filter((file) => file.type === consoleLanguage)
-                                    .map((file) => (
-                                        <div
-                                            key={file.id}
-                                            className={`flex items-center justify-between px-2 py-1.5 cursor-pointer border-r-1 border-(--color-gray-700) rounded-t-xs ${currentFileId === file.id ? "bg-gray-600 text-gray-100 border-b-2 border-b-(--color-secondary)" : "bg-gray-800 hover:bg-gray-600 text-gray-400 hover:text-gray-100 border-b-2 border-(--color-gray-700)"}`}
-                                            onClick={() => setCurrentFileId(file.id)}
-                                        >
-                                            <div className="flex items-center gap-2">
-                                                {getFileIcon(file.type)}
-                                                <span className="text-sm">{file.name}</span>
-                                            </div>
-                                        </div>
-                                    ))}
-                            </div>
-                        </div>
-
-                        <div className={`border-1 border-(--color-gray-700) rounded-b-sm overflow-hidden ${isEditorMaximized ? "h-[70vh]" : ""}`}>
-                            {currentFile && (
-                                <Editor
-                                    height={isEditorMaximized ? "70vh" : editorHeight}
-                                    language={currentFile.language}
-                                    value={currentFile.content}
-                                    onChange={(value) => updateCurrentFile(value || "")}
-                                    theme={'vs-dark'}
-                                    options={{
-                                        minimap: { enabled: false },
-                                        fontSize: 14,
-                                        wordWrap: "on",
-                                        automaticLayout: true,
-                                        tabSize: 2,
-                                        scrollBeyondLastLine: false,
-                                        lineNumbers: "on",
-                                        glyphMargin: false,
-                                        folding: true,
-                                        lineDecorationsWidth: 10,
-                                        formatOnType: true,
-                                        formatOnPaste: true,
-                                    }}
-                                />
-                            )}
-                        </div>
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-2">
-                        <button onClick={handleRun} className="btn btn-success btn-sm">
-                            <Play className="size-4" />
-                            Ejecutar
-                        </button>
+        <div className="flex flex-col gap-2">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="flex flex-col gap-2">
+                    <div className="flex items-center justify-between">
+                        <select className="select select-bordered w-[150px] select-sm" value={consoleLanguage} onChange={(e) => setConsoleLanguage(e.target.value)}>
+                            <option disabled selected>Lenguaje</option>
+                            <option value="python">Python</option>
+                            <option value="csharp">C#</option>
+                            <option value="java">Java</option>
+                        </select>
                         <div className="dropdown dropdown-start">
                             <div tabIndex={0} role="button" className="btn btn-sm"><EllipsisVertical className="size-5" /></div>
                             <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
@@ -650,57 +586,88 @@ export const ConsoleMode = () => {
                             </ul>
                         </div>
                     </div>
-
-                    {!isEditorMaximized && (
-                        <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                    <Terminal className="h-4 w-4 text-tech-cyan" />
-                                    <h3 className="text-sm font-medium">Consola</h3>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                    <button onClick={clearConsole} className="btn btn-ghost btn-sm">
-                                        Limpiar
-                                    </button>
-                                    <button
-                                        onClick={() => setIsConsoleMaximized(!isConsoleMaximized)}
-                                        className="btn btn-ghost btn-square"
-                                    >
-                                        {isConsoleMaximized ? (
-                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                            </svg>
-                                        ) : (
-                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3c2.755 0 5.455.232 8.083.678.533.4.917 1.056.917 1.736V21l-.002-.03c-.083.396-.32 1.313-.889 2.258A48.62 48.62 0 0112 46c-2.749 0-5.454-.232-8.083-.678C3.217 44.986 2.275 44 2 44v-20c0-.68.39-1.333.917-1.736.483-.447.889-1.227.889-2.258l.002.03zM12 42c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4zm16-4c0 2.206-1.794 4-4 4s-4-1.794-4-4 1.794-4 4-4 4 1.794 4 4zM6 36c-2.206 0-4 1.794-4 4s1.794 4 4 4 4-1.794 4-4-1.794-4-4-4z" />
-                                            </svg>
-                                        )}
-                                    </button>
-                                </div>
+                    <div>
+                        <div className="border-1 border-(--color-gray-700) border-b-0 rounded-t-sm  overflow-hidden overflow-y-auto">
+                            <div className="flex flex-row divide-x divide-(--color-gray-500) max-w-max">
+                                {/* Mostrar archivos según el modo actual */}
+                                {files
+                                    .filter((file) => file.type === consoleLanguage)
+                                    .map((file) => (
+                                        <div
+                                            key={file.id}
+                                            className={`flex items-center justify-between px-2 py-1.5 cursor-pointer border-r-1 border-(--color-gray-700) rounded-t-xs ${currentFileId === file.id ? "bg-gray-600 text-gray-100 border-b-2 border-b-(--color-secondary)" : "bg-gray-800 hover:bg-gray-600 text-gray-400 hover:text-gray-100 border-b-2 border-(--color-gray-700)"}`}
+                                            onClick={() => setCurrentFileId(file.id)}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                {getFileIcon(file.type)}
+                                                <span className="text-sm">{file.name}</span>
+                                            </div>
+                                        </div>
+                                    ))}
                             </div>
-
                         </div>
-                    )}
+
+                        <div className={`border-1 border-(--color-gray-700) rounded-b-sm overflow-hidden h-[calc(100svh-220px)]`}>
+                            {currentFile && (
+                                <Editor
+                                    height={"100%"}
+                                    language={currentFile.language}
+                                    value={currentFile.content}
+                                    onChange={(value) => updateCurrentFile(value || "")}
+                                    theme={'vs-dark'}
+                                    options={{
+                                        minimap: { enabled: false },
+                                        fontSize: 14,
+                                        wordWrap: "on",
+                                        automaticLayout: true,
+                                        tabSize: 2,
+                                        scrollBeyondLastLine: false,
+                                        lineNumbers: "on",
+                                        glyphMargin: false,
+                                        folding: true,
+                                        lineDecorationsWidth: 10,
+                                        formatOnType: true,
+                                        formatOnPaste: true,
+                                    }}
+                                />
+                            )}
+                        </div>
+                    </div>
+
                 </div>
+                <div className="flex flex-col w-full gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                        <button onClick={handleRun} className="btn btn-success btn-sm">
+                            <Play className="size-4" />
+                            Ejecutar
+                        </button>
 
-                <div className="bg-white dark:bg-zinc-800 border-1 border-gray-700 rounded-sm overflow-hidden h-[calc(100svh-210px)]">
-                    <div className="px-2 py-1.5 bg-neutral/80 backdrop-blur-sm border-b border-gray-700 flex items-center">
-                        <TerminalSquare className="h-5 w-5 text-cyan-500" />
-                        <div className="mx-auto text-sm font-light text-muted-foreground">{"Consola"}</div>
                     </div>
-
-                    <div
-                        ref={consoleRef}
-                        className="w-full h-[calc(100%-32px)] overflow-auto p-4  bg-zinc-900" >
-                        {consoleOutput.length > 0 ? (
-                            consoleOutput.map((item, index) => renderConsoleItem(item, index))
-                        ) : (
-                            <div className="text-xs text-gray-400" style={{ fontFamily: "consolas" }}>
-                                La consola está vacía. Ejecuta el código para ver la salida aquí.
+                    <div className="bg-white dark:bg-zinc-800 border-1 border-gray-700 rounded-sm overflow-hidden h-[calc(100svh-185px)]">
+                        <div className="bg-base-200 flex items-center justify-between px-2 rounded-t-sm">
+                            <div className="flex items-center gap-2">
+                                <Terminal className="h-4 w-4 text-tech-cyan" />
+                                <h3 className="text-sm font-medium">Consola</h3>
                             </div>
-                        )}
-                    </div>
+                            <div className="flex items-center gap-1">
+                                <button onClick={clearConsole} className="btn btn-ghost btn-sm">
+                                    Limpiar
+                                </button>
+                            </div>
+                        </div>
 
+                        <div
+                            ref={consoleRef}
+                            className="w-full h-[calc(100%-32px)] overflow-auto p-4  bg-neutral" >
+                            {consoleOutput.length > 0 ? (
+                                consoleOutput.map((item, index) => renderConsoleItem(item, index))
+                            ) : (
+                                <div className="text-xs text-gray-400" style={{ fontFamily: "consolas" }}>
+                                    La consola está vacía. Ejecuta el código para ver la salida aquí.
+                                </div>
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div >
         </div >
