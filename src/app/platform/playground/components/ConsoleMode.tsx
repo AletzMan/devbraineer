@@ -1,5 +1,5 @@
 import { Editor } from "@monaco-editor/react"
-import { Check, Copy, Download, Edit2, FileCode, FileText, Maximize2, Minimize2, Play, Plus, RefreshCcw, Save, Terminal, TerminalSquare, TrashIcon, X } from "lucide-react"
+import { Check, Copy, Download, Edit2, EllipsisVertical, FileCode, FileText, Maximize2, Minimize2, Play, Plus, RefreshCcw, Save, Terminal, TerminalSquare, TrashIcon, X } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 
 // Definir tipos para los archivos
@@ -489,12 +489,12 @@ export const ConsoleMode = () => {
 
     // Renderizar el tipo de consola
     const renderConsoleItem = (item: { type: string; content: string }, index: number) => {
-        let className = "text-foreground"
+        let className = "text-gray-400"
         let icon = null
 
         switch (item.type) {
             case "console-log":
-                className = "text-foreground"
+                className = "text-gray-400"
                 icon = <span className="text-blue-500 mr-1">›</span>
                 break
             case "console-info":
@@ -514,7 +514,7 @@ export const ConsoleMode = () => {
         }
 
         return (
-            <div key={index} className={`${className} text-sm py-0.5`} style={{ fontFamily: "var(--font-code)" }}>
+            <div key={index} className={`${className} text-xs py-0.5`} style={{ fontFamily: "consolas" }}>
                 {icon}
                 {item.content}
             </div>
@@ -619,7 +619,7 @@ export const ConsoleMode = () => {
                             Ejecutar
                         </button>
                         <div className="dropdown dropdown-start">
-                            <div tabIndex={0} role="button" className="btn m-1">Click  ⬇️</div>
+                            <div tabIndex={0} role="button" className="btn btn-sm"><EllipsisVertical className="size-5" /></div>
                             <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
                                 <li><button className="btn btn-sm btn-ghost justify-start gap-4">
                                     {copied ? (
@@ -691,19 +691,18 @@ export const ConsoleMode = () => {
 
                     <div
                         ref={consoleRef}
-                        className="w-full h-[calc(100%-32px)] overflow-auto p-4 text-sm bg-zinc-900 text-zinc-100" style={{ fontFamily: "var(--font-code)" }}
-                    >
+                        className="w-full h-[calc(100%-32px)] overflow-auto p-4  bg-zinc-900" >
                         {consoleOutput.length > 0 ? (
                             consoleOutput.map((item, index) => renderConsoleItem(item, index))
                         ) : (
-                            <div className="text-zinc-400 text-sm italic p-2 ">
+                            <div className="text-xs text-gray-400" style={{ fontFamily: "consolas" }}>
                                 La consola está vacía. Ejecuta el código para ver la salida aquí.
                             </div>
                         )}
                     </div>
 
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }
