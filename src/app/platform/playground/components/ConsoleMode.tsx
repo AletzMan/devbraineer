@@ -547,37 +547,34 @@ export const ConsoleMode = () => {
 
 
     return (
-        <div>
+        <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+                <select className="select select-bordered w-[150px] select-sm" value={consoleLanguage} onChange={(e) => setConsoleLanguage(e.target.value)}>
+                    <option disabled selected>Lenguaje</option>
+                    <option value="python">Python</option>
+                    <option value="csharp">C#</option>
+                    <option value="java">Java</option>
+                </select>
+                <div className="flex items-center ml-2">
+                    <button
+                        onClick={() => setIsEditorMaximized(!isEditorMaximized)}
+                        className="h-8 w-8 btn btn-ghost" >
+                        {isEditorMaximized ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+                    </button>
+                </div>
+            </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                        <select className="select select-bordered w-[150px] " value={consoleLanguage} onChange={(e) => setConsoleLanguage(e.target.value)}>
-                            <option disabled selected>Lenguaje</option>
-                            <option value="python">Python</option>
-                            <option value="csharp">C#</option>
-                            <option value="java">Java</option>
-                        </select>
-                        <div className="flex items-center ml-2">
-                            <button
-                                onClick={() => setIsEditorMaximized(!isEditorMaximized)}
-                                className="h-8 w-8 btn btn-ghost"
-                            >
-                                {isEditorMaximized ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-                            </button>
-                        </div>
-                    </div>
-
                     <div>
-                        <div className="border-1 border-(--color-gray-700) border-b-0 rounded-t-sm  overflow-hidden max-w-max overflow-y-auto">
-                            <div className="flex flex-row divide-x divide-(--color-gray-500)">
+                        <div className="border-1 border-(--color-gray-700) border-b-0 rounded-t-sm  overflow-hidden overflow-y-auto">
+                            <div className="flex flex-row divide-x divide-(--color-gray-500) max-w-max">
                                 {/* Mostrar archivos según el modo actual */}
                                 {files
                                     .filter((file) => file.type === consoleLanguage)
                                     .map((file) => (
                                         <div
                                             key={file.id}
-                                            className={`flex items-center justify-between p-2 cursor-pointer  ${currentFileId === file.id ? "bg-secondary/80" : ""
-                                                }`}
+                                            className={`flex items-center justify-between px-2 py-1.5 cursor-pointer border-r-1 border-(--color-gray-700) rounded-t-xs ${currentFileId === file.id ? "bg-gray-600 text-gray-100 border-b-2 border-b-(--color-secondary)" : "bg-gray-800 hover:bg-gray-600 text-gray-400 hover:text-gray-100 border-b-2 border-(--color-gray-700)"}`}
                                             onClick={() => setCurrentFileId(file.id)}
                                         >
                                             <div className="flex items-center gap-2">
@@ -621,31 +618,39 @@ export const ConsoleMode = () => {
                             <Play className="size-4" />
                             Ejecutar
                         </button>
-                        <button onClick={handleCopy} className="btn btn-neutral btn-sm">
-                            {copied ? (
-                                <Check className="size-4" />
-                            ) : (
-                                <Copy className="size-4" />
-                            )}
-                            {copied ? "Copiado" : "Copiar HTML"}
-                        </button>
-                        <button onClick={handleDownload} className="btn btn-neutral btn-sm">
-                            <Download className="size-4" />
-                            Descargar
-                        </button>
-                        <button onClick={handleSave} className="btn btn-neutral btn-sm">
-                            <Save className="size-4" />
-                            Guardar
-                        </button>
-                        <button onClick={handleLoad} className="btn btn-neutral btn-sm">
-                            <RefreshCcw className="size-4" />
-                            Cargar
-                        </button>
-                        <button onClick={handleClear} className="btn btn-neutral btn-sm ml-auto">
-                            <TrashIcon className="size-4" />
-                            Limpiar
-                        </button>
+                        <div className="dropdown dropdown-start">
+                            <div tabIndex={0} role="button" className="btn m-1">Click  ⬇️</div>
+                            <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                                <li><button className="btn btn-sm btn-ghost justify-start gap-4">
+                                    {copied ? (
+                                        <Check className="size-4" />
+                                    ) : (
+                                        <Copy className="size-4" />
+                                    )}
+                                    {copied ? "Copiado" : "Copiar HTML"}</button>
+                                </li>
+                                <li>
+                                    <button className="btn btn-sm btn-ghost justify-start gap-4">
+                                        <Download className="size-4" />
+                                        Descargar
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="btn btn-sm btn-ghost justify-start gap-4">
+                                        <RefreshCcw className="size-4" />
+                                        Cargar
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="btn btn-sm btn-ghost justify-start gap-4">
+                                        <TrashIcon className="size-4" />
+                                        Limpiar
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+
                     {!isEditorMaximized && (
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
@@ -678,15 +683,15 @@ export const ConsoleMode = () => {
                     )}
                 </div>
 
-                <div className="bg-white dark:bg-zinc-800 border-1 border-gray-700 rounded-sm overflow-hidden h-[calc(100vh-200px)]">
-                    <div className="px-2 py-1 bg-neutral/80 backdrop-blur-sm border-b border-gray-700 flex items-center">
+                <div className="bg-white dark:bg-zinc-800 border-1 border-gray-700 rounded-sm overflow-hidden h-[calc(100svh-210px)]">
+                    <div className="px-2 py-1.5 bg-neutral/80 backdrop-blur-sm border-b border-gray-700 flex items-center">
                         <TerminalSquare className="h-5 w-5 text-cyan-500" />
-                        <div className="mx-auto text-xs text-muted-foreground">{"Consola"}</div>
+                        <div className="mx-auto text-sm font-light text-muted-foreground">{"Consola"}</div>
                     </div>
 
                     <div
                         ref={consoleRef}
-                        className="w-full h-[calc(100%-32px)] overflow-auto p-4  text-sm bg-zinc-900 text-zinc-100" style={{ fontFamily: "var(--font-code)" }}
+                        className="w-full h-[calc(100%-32px)] overflow-auto p-4 text-sm bg-zinc-900 text-zinc-100" style={{ fontFamily: "var(--font-code)" }}
                     >
                         {consoleOutput.length > 0 ? (
                             consoleOutput.map((item, index) => renderConsoleItem(item, index))
