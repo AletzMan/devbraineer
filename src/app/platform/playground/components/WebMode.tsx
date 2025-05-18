@@ -1,6 +1,6 @@
 import { CSSIcon, HTML5Icon, JSIcon, ReactIcon, TSIcon } from "@/app/components/Icons"
 import { Editor } from "@monaco-editor/react"
-import { Check, Copy, CopyCheck, Download, Edit2, EllipsisVertical, FileCode, FileText, Loader, Maximize2, Minimize2, Play, Plus, RefreshCcw, Save, Terminal, TrashIcon, X } from "lucide-react"
+import { Check, CircleChevronDown, Copy, CopyCheck, Download, Edit2, Ellipsis, EllipsisVertical, FileCode, FileText, Loader, Maximize2, Minimize2, Play, Plus, RectangleEllipsis, RefreshCcw, Save, SquareChevronDown, Terminal, TrashIcon, X } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 
 // Definir tipos para los archivos
@@ -974,12 +974,12 @@ export const WebMode = () => {
 
   // Renderizar el tipo de consola
   const renderConsoleItem = (item: { type: string; content: string }, index: number) => {
-    let className = "text-foreground"
+    let className = "text-gray-400"
     let icon = null
 
     switch (item.type) {
       case "console-log":
-        className = "text-foreground"
+        className = "text-gray-400"
         icon = <span className="text-blue-500 mr-1">›</span>
         break
       case "console-info":
@@ -999,7 +999,7 @@ export const WebMode = () => {
     }
 
     return (
-      <div key={index} className={`${className} text-sm py-0.5 font-light text-gray-300 italic`} style={{ fontFamily: "var(--font-code)" }}>
+      <div key={index} className={`${className} text-xs py-0.5 font-extralight`} style={{ fontFamily: "consolas" }}>
         {icon}
         {item.content}
       </div>
@@ -1042,38 +1042,63 @@ export const WebMode = () => {
 
 
   return (
-    <div>
-      <div className="flex items-center gap-2">
-        <label className="label">
-          {useTailwind ? "Tailwind CSS" : "CSS Normal"}
-          <input
-            type="checkbox"
-            className="toggle toggle-info"
-            checked={useTailwind}
-            onChange={() => setUseTailwind(!useTailwind)}
-          />
-        </label>
+    <div className="flex flex-col gap-2">
+
+      <div className="flex border-b-1 border-(--color-gray-700)">
+        <div className="tabs w-full tabs-border" role="tablist"  >
+          <button role="tab" className={`tab [--tab-border-color:gray] [--tab-bg:#1D232A] ${webMode === 'html-css-js' ? 'tab-active' : ''}`} onClick={() => setWebMode('html-css-js')}>HTML/CSS/JS</button>
+          <button role="tab" className={`tab [--tab-border-color:gray] [--tab-bg:#1D232A] ${webMode === 'html-css-ts' ? 'tab-active' : ''}`} onClick={() => setWebMode('html-css-ts')}>HTML/CSS/TS</button>
+          <button role="tab" className={`tab [--tab-border-color:gray] [--tab-bg:#1D232A] ${webMode === 'react-js' ? 'tab-active' : ''}`} onClick={() => setWebMode('react-js')}>React JS</button>
+          <button role="tab" className={`tab [--tab-border-color:gray] [--tab-bg:#1D232A] ${webMode === 'react-ts' ? 'tab-active' : ''}`} onClick={() => setWebMode('react-ts')}>React TS</button>
+        </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="space-y-1">
-
-          <div className="flex items-center justify-between">
-            <div className="tabs tabs-boxed w-full">
-              <button className={`tab ${webMode === 'html-css-js' ? 'tab-active' : ''}`} onClick={() => setWebMode('html-css-js')}>HTML/CSS/JS</button>
-              <button className={`tab ${webMode === 'html-css-ts' ? 'tab-active' : ''}`} onClick={() => setWebMode('html-css-ts')}>HTML/CSS/TS</button>
-              <button className={`tab ${webMode === 'react-js' ? 'tab-active' : ''}`} onClick={() => setWebMode('react-js')}>React JS</button>
-              <button className={`tab ${webMode === 'react-ts' ? 'tab-active' : ''}`} onClick={() => setWebMode('react-ts')}>React TS</button>
-            </div>
-            <div className="flex items-center ml-2">
-              <button
-                onClick={() => setIsEditorMaximized(!isEditorMaximized)}
-                className={`${isEditorMaximized ? "rounded-r-none" : "rounded-r-none"}`}
-              >
-                {isEditorMaximized ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-              </button>
-            </div>
-          </div>
+        <div className="flex flex-col gap-2">
           <div>
+            <div className="flex justify-between gap-2 mb-2">
+              <label className="label">
+                <input
+                  type="checkbox"
+                  className="toggle toggle-info"
+                  checked={useTailwind}
+                  onChange={() => setUseTailwind(!useTailwind)}
+                />
+                {useTailwind ? "Tailwind" : "CSS"}
+              </label>
+              <div className="flex gap-2">
+                <div className="dropdown dropdown-start">
+                  <div tabIndex={0} role="button" className="btn btn-sm"><EllipsisVertical className="size-5" /></div>
+                  <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                    <li><button className="btn btn-sm btn-ghost justify-start gap-4">
+                      {copied ? (
+                        <Check className="size-4" />
+                      ) : (
+                        <Copy className="size-4" />
+                      )}
+                      {copied ? "Copiado" : "Copiar HTML"}</button>
+                    </li>
+                    <li>
+                      <button className="btn btn-sm btn-ghost justify-start gap-4">
+                        <Download className="size-4" />
+                        Descargar
+                      </button>
+                    </li>
+                    <li>
+                      <button className="btn btn-sm btn-ghost justify-start gap-4">
+                        <RefreshCcw className="size-4" />
+                        Cargar
+                      </button>
+                    </li>
+                    <li>
+                      <button className="btn btn-sm btn-ghost justify-start gap-4">
+                        <TrashIcon className="size-4" />
+                        Limpiar
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
 
             <div className="border-1 border-(--color-gray-700) border-b-0 rounded-t-sm  overflow-hidden overflow-y-auto">
               <div className="flex flex-row divide-x divide-(--color-gray-500) max-w-max">
@@ -1091,6 +1116,7 @@ export const WebMode = () => {
                 ))}
               </div>
             </div>
+
             <div className={`border-1 border-(--color-gray-700) rounded-b-sm overflow-hidden ${isEditorMaximized ? "h-[70vh]" : ""}`}>
               {currentFile && (
                 <Editor
@@ -1146,43 +1172,7 @@ export const WebMode = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            <button onClick={handleRun} className="btn btn-success btn-sm">
-              <Play className="size-4" />
-              Ejecutar
-            </button>
-            <div className="dropdown dropdown-start">
-              <div tabIndex={0} role="button" className="btn m-1"><EllipsisVertical className="size-4" /></div>
-              <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-                <li><button className="btn btn-sm btn-ghost justify-start gap-4">
-                  {copied ? (
-                    <Check className="size-4" />
-                  ) : (
-                    <Copy className="size-4" />
-                  )}
-                  {copied ? "Copiado" : "Copiar HTML"}</button>
-                </li>
-                <li>
-                  <button className="btn btn-sm btn-ghost justify-start gap-4">
-                    <Download className="size-4" />
-                    Descargar
-                  </button>
-                </li>
-                <li>
-                  <button className="btn btn-sm btn-ghost justify-start gap-4">
-                    <RefreshCcw className="size-4" />
-                    Cargar
-                  </button>
-                </li>
-                <li>
-                  <button className="btn btn-sm btn-ghost justify-start gap-4">
-                    <TrashIcon className="size-4" />
-                    Limpiar
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
+
 
           {!isEditorMaximized && (
             <div className="border-1 border-(--color-gray-700) rounded-sm">
@@ -1205,7 +1195,7 @@ export const WebMode = () => {
                 {consoleOutput.length > 0 ? (
                   consoleOutput.map((item, index) => renderConsoleItem(item, index))
                 ) : (
-                  <div className="text-muted-foreground text-sm italic p-2">
+                  <div className="text-muted-foreground text-xs text-gray-400 p-2" style={{ fontFamily: "consolas" }}>
                     La consola está vacía. Usa console.log() en tu código JavaScript para ver mensajes aquí.
                   </div>
                 )}
@@ -1213,25 +1203,32 @@ export const WebMode = () => {
             </div>
           )}
         </div>
-
-        <div className="bg-white dark:bg-zinc-800 border border-(--color-gray-700) rounded-sm overflow-hidden h-[calc(100vh-200px)]">
-          <div className="px-2 py-1.5 bg-gray-800 backdrop-blur-sm border-b border-(--color-gray-700) flex items-center">
-            <div className="flex space-x-1.5">
-              <div className="w-3 h-3 rounded-full bg-red-500"></div>
-              <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-              <div className="w-3 h-3 rounded-full bg-green-500"></div>
-            </div>
-            <div className="mx-auto text-sm font-light text-muted-foreground">Vista previa</div>
+        <div className="flex flex-col gap-2 h-[calc(100vh-200px)]">
+          <div className="flex flex-wrap items-center gap-2">
+            <button onClick={handleRun} className="btn btn-success btn-sm">
+              <Play className="size-4" />
+              Ejecutar
+            </button>
           </div>
+          <div className="bg-white dark:bg-zinc-800 border border-(--color-gray-700) rounded-sm overflow-hidden h-[calc(100vh-200px)]">
+            <div className="px-2 py-1.5 bg-gray-800 backdrop-blur-sm border-b border-(--color-gray-700) flex items-center">
+              <div className="flex space-x-1.5">
+                <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <div className="w-3 h-3 rounded-full bg-green-500"></div>
+              </div>
+              <div className="mx-auto text-sm font-light text-muted-foreground">Vista previa</div>
+            </div>
 
-          <iframe
-            ref={iframeRef}
-            srcDoc={output}
-            title="preview"
-            className="w-full h-[calc(100%-32px)] border-none"
-            sandbox="allow-scripts"
-          ></iframe>
+            <iframe
+              ref={iframeRef}
+              srcDoc={output}
+              title="preview"
+              className="w-full h-[calc(100%-32px)] border-none"
+              sandbox="allow-scripts"
+            ></iframe>
 
+          </div>
         </div>
       </div>
     </div>
