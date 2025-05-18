@@ -542,7 +542,6 @@ export const WebMode = () => {
     const [currentFileId, setCurrentFileId] = useState<string>("html-1")
     const [newFileName, setNewFileName] = useState<string>("")
     const [isNewFileDialogOpen, setIsNewFileDialogOpen] = useState<boolean>(false)
-    const [newFileType, setNewFileType] = useState<string>("html")
 
     // Añadir estado para el modo actual (web o consola)
     const [mode, setMode] = useState("web")
@@ -589,103 +588,6 @@ export const WebMode = () => {
                 open: false,
             })
         }, 5000)
-    }
-
-
-    // Función para crear un nuevo archivo
-    const createNewFile = () => {
-        if (!newFileName.trim()) {
-            setToast({
-                title: "Error",
-                description: "El nombre del archivo no puede estar vacío",
-                variant: "error",
-                open: true,
-            })
-            timeOutToast()
-            return
-        }
-
-
-        // Determinar la extensión según el tipo
-        let extension = ""
-        let language = ""
-        const type = newFileType
-
-        switch (newFileType) {
-            case "html":
-                extension = ".html"
-                language = "html"
-                break
-            case "css":
-                extension = ".css"
-                language = "css"
-                break
-            case "js":
-                extension = ".js"
-                language = "javascript"
-                break
-            case "ts":
-                extension = ".ts"
-                language = "typescript"
-                break
-            case "react-js":
-                extension = ".jsx"
-                language = "javascript"
-                break
-            case "react-ts":
-                extension = ".tsx"
-                language = "typescript"
-                break
-            case "python":
-                extension = ".py"
-                language = "python"
-                break
-            case "csharp":
-                extension = ".cs"
-                language = "csharp"
-                break
-            case "java":
-                extension = ".java"
-                language = "java"
-                break
-        }
-
-        // Verificar si el nombre ya tiene la extensión
-        const fileName = newFileName.endsWith(extension) ? newFileName : newFileName + extension
-
-        // Verificar si ya existe un archivo con ese nombre
-        if (files.some((file) => file.name === fileName && file.type === type)) {
-            setToast({
-                title: "Error",
-                description: "Ya existe un archivo con ese nombre",
-                variant: "error",
-                open: true,
-            })
-            timeOutToast()
-            return
-        }
-
-        // Crear el nuevo archivo
-        const newFile: FileData = {
-            id: `${type}-${Date.now()}`,
-            name: fileName,
-            content: "",
-            language,
-            type,
-        }
-
-        setFiles([...files, newFile])
-        setCurrentFileId(newFile.id)
-        setNewFileName("")
-        setIsNewFileDialogOpen(false)
-
-        setToast({
-            title: "Archivo creado",
-            description: `Se ha creado el archivo ${fileName}`,
-            variant: "success",
-            open: true,
-        })
-        timeOutToast()
     }
 
     // Función para eliminar un archivo
@@ -1535,58 +1437,6 @@ export const WebMode = () => {
                         </div>
                     )}
 
-                    {/* Sistema de archivos */}
-                    <div className="flex items-center justify-between bg-secondary/50 p-2 rounded-md">
-                        <div className="text-sm font-medium">Archivos</div>
-                        <div className="modal modal-bottom sm:modal-middle" tabIndex={-1} aria-hidden="true" role="dialog" aria-modal="true" style={{ display: isNewFileDialogOpen ? 'block' : 'none' }}>
-                            <div className="modal-box">
-                                <h3 className="font-bold text-lg">Crear nuevo archivo</h3>
-                                <div className="grid gap-4 py-4">
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <label htmlFor="name" className="text-right">
-                                            Nombre:
-                                        </label>
-                                        <input
-                                            id="name"
-                                            type="text"
-                                            value={newFileName}
-                                            onChange={(e) => setNewFileName(e.target.value)}
-                                            className="input input-bordered col-span-3"
-                                        />
-                                    </div>
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <label htmlFor="type" className="text-right">
-                                            Tipo:
-                                        </label>
-                                        <select
-                                            value={newFileType}
-                                            onChange={(e) => setNewFileType(e.target.value)}
-                                            className="select select-bordered col-span-3"
-                                        >
-                                            <option disabled selected>Tipo de archivo</option>
-                                            <option value="html">HTML</option>
-                                            <option value="css">CSS</option>
-                                            <option value="js">JavaScript</option>
-                                            <option value="ts">TypeScript</option>
-                                            <option value="react-js">React JS</option>
-                                            <option value="react-ts">React TS</option>
-                                            <option value="python">Python</option>
-                                            <option value="csharp">C#</option>
-                                            <option value="java">Java</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="modal-action">
-                                    <button className="btn" onClick={() => setIsNewFileDialogOpen(false)}>Cancelar</button>
-                                    <button className="btn btn-primary" onClick={createNewFile}>Crear</button>
-                                </div>
-                            </div>
-                        </div>
-                        <button className="btn btn-ghost btn-sm gap-1" onClick={() => setIsNewFileDialogOpen(true)}>
-                            <Plus className="h-3.5 w-3.5" />
-                            Nuevo
-                        </button>
-                    </div>
 
                     <div className="border border-border rounded-md overflow-hidden max-h-[200px] overflow-y-auto">
                         <div className="divide-y divide-border">
