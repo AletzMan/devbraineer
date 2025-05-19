@@ -33,16 +33,13 @@ export default function PlaygroundPage() {
         </div>
       </div>}
       <div className="flex flex-col gap-2 flex-1 max-w-[1600px] mx-auto p-2 w-full">
-        {/* name of each tab group should be unique */}
         <div className="flex justify-end border-b-1 border-(--color-gray-700) pb-2">
-          <div className="tabs tabs-box w-max self-end">
+          <div className="tabs tabs-box w-max self-end tabs-sm">
             <input type="radio" name="my_tabs_1" className={`tab ${mode === "web" ? "tab-active [--tab-bg:var(--color-secondary)]" : ""}`} aria-label="Modo Web" checked={mode === "web"} onChange={() => setMode("web")} />
             <input type="radio" name="my_tabs_1" className={`tab ${mode === "console" ? "tab-active [--tab-bg:var(--color-secondary)]" : ""}`} aria-label="Modo Consola" checked={mode === "console"} onChange={() => setMode("console")} />
           </div>
         </div>
-
         {mode === "web" ? <WebMode /> : <ConsoleMode />}
-
       </div>
     </div>
   )
