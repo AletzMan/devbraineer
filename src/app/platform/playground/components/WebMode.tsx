@@ -16,21 +16,24 @@ interface FileData {
 
 export const WebMode = () => {
   const [useTailwind, setUseTailwind] = useState(false)
-  // Referencias para el iframe y la consola
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const consoleRef = useRef<HTMLDivElement>(null)
-
-  // Estado para el sistema de archivos
   const [files, setFiles] = useState<FileData[]>([
     {
       id: "html-1",
       name: "index.html",
-      content: `<div class="container">
-   <h1>Playground de Código</h1>
-   <p>Edita el HTML, CSS y JavaScript para ver los cambios en tiempo real.</p>
-   <button id="demo-button">Haz clic aquí</button>
-   <div id="output"></div>
- </div>`,
+      content: `<div class="card">
+  <h1>Contador</h1>
+  <div id="contador">0</div>
+
+  <div class="botones">
+    <button class="incrementar" onclick="incrementar()">+1</button>
+    <button class="decrementar" onclick="decrementar()">-1</button>
+    <button class="resetear" onclick="resetear()">Reset</button>
+  </div>
+</div>
+
+`,
       language: "html",
       type: "html-css-js",
       extension: "html"
@@ -39,53 +42,47 @@ export const WebMode = () => {
       id: "css-1",
       name: "styles.css",
       content: `body {
-   font-family: system-ui, sans-serif;
-   line-height: 1.5;
-   padding: 2rem;
- }
- 
- .container {
-   max-width: 800px;
-   margin: 0 auto;
-   padding: 2rem;
-   border-radius: 8px;
-   background-color: #f9fafb;
-   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
- }
- 
- h1 {
-   color: #111827;
-   margin-bottom: 1rem;
- }
- 
- p {
-   color: #4b5563;
-   margin-bottom: 1.5rem;
- }
- 
- button {
-   background-color: #3b82f6;
-   color: white;
-   border: none;
-   padding: 0.5rem 1rem;
-   border-radius: 4px;
-   cursor: pointer;
-   transition: background-color 0.2s;
-   margin-right: 0.5rem;
-   margin-bottom: 0.5rem;
- }
- 
- button:hover {
-   background-color: #2563eb;
- }
- 
- #output {
-   margin-top: 1rem;
-   padding: 1rem;
-   background-color: #f3f4f6;
-   border-radius: 4px;
-   min-height: 2rem;
- }
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f4f4f4;
+  margin: 0;
+}
+
+.card {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+#contador {
+  font-size: 60px;
+  margin: 20px 0;
+  color: #333;
+}
+
+.botones button {
+  font-size: 20px;
+  padding: 10px 20px;
+  margin: 10px 5px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.botones button:active {
+  transform: scale(0.95);
+}
+
+.incrementar { background-color: #4CAF50; color: white; }
+.decrementar { background-color: #f44336; color: white; }
+.resetear    { background-color: #555;    color: white; }
+
   `,
       language: "css",
       type: "html-css-js",
@@ -93,12 +90,17 @@ export const WebMode = () => {
     }, {
       id: "html-2",
       name: "index.html",
-      content: `<div class="container">
-   <h1>Playground de Código</h1>
-   <p>Edita el HTML, CSS y TypeScript para ver los cambios en tiempo real.</p>
-   <button id="demo-button">Haz clic aquí</button>
-   <div id="output"></div>
- </div>`,
+      content: `<div class="card">
+  <h1>Contador</h1>
+  <div id="contador">0</div>
+
+  <div class="botones">
+    <button class="incrementar">+1</button>
+    <button class="decrementar">-1</button>
+    <button class="resetear">Reset</button>
+  </div>
+</div>
+`,
       language: "html",
       type: "html-css-ts",
       extension: "html"
@@ -107,53 +109,47 @@ export const WebMode = () => {
       id: "css-2",
       name: "styles.css",
       content: `body {
-   font-family: system-ui, sans-serif;
-   line-height: 1.5;
-   padding: 2rem;
- }
- 
- .container {
-   max-width: 800px;
-   margin: 0 auto;
-   padding: 2rem;
-   border-radius: 8px;
-   background-color: #f9fafb;
-   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
- }
- 
- h1 {
-   color: #111827;
-   margin-bottom: 1rem;
- }
- 
- p {
-   color: #4b5563;
-   margin-bottom: 1.5rem;
- }
- 
- button {
-   background-color: #3b82f6;
-   color: white;
-   border: none;
-   padding: 0.5rem 1rem;
-   border-radius: 4px;
-   cursor: pointer;
-   transition: background-color 0.2s;
-   margin-right: 0.5rem;
-   margin-bottom: 0.5rem;
- }
- 
- button:hover {
-   background-color: #2563eb;
- }
- 
- #output {
-   margin-top: 1rem;
-   padding: 1rem;
-   background-color: #f3f4f6;
-   border-radius: 4px;
-   min-height: 2rem;
- }
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f4f4f4;
+  margin: 0;
+}
+
+.card {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+#contador {
+  font-size: 60px;
+  margin: 20px 0;
+  color: #333;
+}
+
+.botones button {
+  font-size: 20px;
+  padding: 10px 20px;
+  margin: 10px 5px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.botones button:active {
+  transform: scale(0.95);
+}
+
+.incrementar { background-color: #4CAF50; color: white; }
+.decrementar { background-color: #f44336; color: white; }
+.resetear    { background-color: #555;    color: white; }
+
   `,
       language: "css",
       type: "html-css-ts",
@@ -162,39 +158,27 @@ export const WebMode = () => {
     {
       id: "js-1",
       name: "script.js",
-      content: `// Ejemplo de código JavaScript
- document.getElementById('demo-button').addEventListener('click', function() {
-   // Mostrar un mensaje en el div de salida
-   const outputDiv = document.getElementById('output');
-   outputDiv.innerHTML = 'Botón clickeado a las: ' + new Date().toLocaleTimeString();
-   
-   // También podemos usar console.log para ver mensajes en la consola
-   console.log('Botón clickeado!');
-   console.info('Esto es un mensaje informativo');
-   console.warn('Esto es una advertencia');
-   console.error('Esto es un error');
-   
-   // Podemos mostrar objetos
-   const persona = { 
-     nombre: 'Juan', 
-     edad: 30,
-     profesion: 'Desarrollador'
-   };
-   console.log('Datos de la persona:', persona);
-   
-   // O arrays
-   const numeros = [1, 2, 3, 4, 5];
-   console.log('Lista de números:', numeros);
-   
-   // También podemos medir tiempo
-   console.time('Bucle');
-   let suma = 0;
-   for(let i = 0; i < 1000000; i++) {
-     suma += i;
-   }
-   console.timeEnd('Bucle');
-   console.log('La suma es:', suma);
- });`,
+      content: `let contador = 0;
+
+function actualizarVista() {
+  document.getElementById('contador').textContent = contador;
+}
+
+function incrementar() {
+  contador++;
+  actualizarVista();
+}
+
+function decrementar() {
+  contador--;
+  actualizarVista();
+}
+
+function resetear() {
+  contador = 0;
+  actualizarVista();
+}
+`,
       language: "javascript",
       type: "html-css-js",
       extension: "js"
@@ -202,38 +186,32 @@ export const WebMode = () => {
     {
       id: "ts-1",
       name: "script.ts",
-      content: `// Ejemplo de código TypeScript
- interface Persona {
-   nombre: string;
-   edad: number;
-   profesion: string;
- }
- 
- function saludar(persona: Persona): string {
-   return \`Hola, \${persona.nombre}! Tienes \${persona.edad} años y eres \${persona.profesion}.\`;
- }
- 
- // Crear un objeto que cumple con la interfaz Persona
- const usuario: Persona = {
-   nombre: "Ana",
-   edad: 28,
-   profesion: "Ingeniera"
- };
- 
- // Usar la función y mostrar el resultado
- console.log(saludar(usuario));
- 
- // Ejemplo de array tipado
- const numeros: number[] = [1, 2, 3, 4, 5];
- console.log("Suma de números:", numeros.reduce((a, b) => a + b, 0));
- 
- // Ejemplo de genéricos
- function primerElemento<T>(arr: T[]): T | undefined {
-   return arr.length > 0 ? arr[0] : undefined;
- }
- 
- console.log("Primer número:", primerElemento(numeros));
- console.log("Primer string:", primerElemento(["TypeScript", "es", "genial"]));`,
+      content: `let contador: number = 0;
+
+const contadorDiv = document.getElementById('contador') as HTMLDivElement;
+const btnIncrementar = document.querySelector('.incrementar') as HTMLButtonElement;
+const btnDecrementar = document.querySelector('.decrementar') as HTMLButtonElement;
+const btnResetear = document.querySelector('.resetear') as HTMLButtonElement;
+
+function actualizarVista(): void {
+  contadorDiv.textContent = contador.toString();
+}
+
+btnIncrementar.addEventListener('click', () => {
+  contador++;
+  actualizarVista();
+});
+
+btnDecrementar.addEventListener('click', () => {
+  contador--;
+  actualizarVista();
+});
+
+btnResetear.addEventListener('click', () => {
+  contador = 0;
+  actualizarVista();
+});
+`,
       language: "typescript",
       type: "html-css-ts",
       extension: "ts"
@@ -241,72 +219,92 @@ export const WebMode = () => {
     {
       id: "react-js-1",
       name: "App.jsx",
-      content: `// Ejemplo de componente React con JavaScript
- function App() {
-   const [count, setCount] = React.useState(0);
-   const [todos, setTodos] = React.useState([
-     { id: 1, text: "Aprender React", completed: true },
-     { id: 2, text: "Crear una aplicación", completed: false },
-     { id: 3, text: "Desplegar el proyecto", completed: false }
-   ]);
- 
-   const handleIncrement = () => {
-     setCount(prevCount => prevCount + 1);
-   };
- 
-   const toggleTodo = (id) => {
-     setTodos(prevTodos => 
-       prevTodos.map(todo => 
-         todo.id === id ? { ...todo, completed: !todo.completed } : todo
-       )
-     );
-   };
- 
-   const addTodo = () => {
-     const text = prompt("Añadir nueva tarea:");
-     if (text) {
-       setTodos(prevTodos => [
-         ...prevTodos, 
-         { id: Date.now(), text, completed: false }
-       ]);
-     }
-   };
- 
-   return (
-     <div className="container">
-       <h1>React Demo</h1>
-       
-       <div className="card">
-         <h2>Contador: {count}</h2>
-         <button onClick={handleIncrement}>Incrementar</button>
-       </div>
-       
-       <div className="card">
-         <h2>Lista de Tareas</h2>
-         <ul>
-           {todos.map(todo => (
-             <li 
-               key={todo.id} 
-               onClick={() => toggleTodo(todo.id)}
-               style={{ 
-                 textDecoration: todo.completed ? 'line-through' : 'none',
-                 cursor: 'pointer'
-               }}
-             >
-               {todo.text}
-             </li>
-           ))}
-         </ul>
-         <button onClick={addTodo}>Añadir Tarea</button>
-       </div>
-       
-       <p className="info">Haz clic en una tarea para marcarla como completada</p>
-     </div>
-   );
- }
- 
- // Renderizar el componente en el DOM
- ReactDOM.render(<App />, document.getElementById('root'));`,
+      content: `function App() {
+  const [count, setCount] = React.useState(0);
+  const [todos, setTodos] = React.useState([
+    { id: 1, text: "Aprender React", completed: true },
+    { id: 2, text: "Crear una aplicación", completed: false },
+    { id: 3, text: "Desplegar el proyecto", completed: false }
+  ]);
+  const [showDialog, setShowDialog] = React.useState(false);
+  const [newTodo, setNewTodo] = React.useState("");
+
+  const handleIncrement = () => {
+    setCount(prevCount => prevCount + 1);
+  };
+
+  const toggleTodo = (id) => {
+    setTodos(prevTodos =>
+      prevTodos.map(todo =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  };
+
+  const addTodo = () => {
+    if (newTodo.trim()) {
+      setTodos(prevTodos => [
+        ...prevTodos,
+        { id: Date.now(), text: newTodo.trim(), completed: false }
+      ]);
+    }
+    setNewTodo("");
+    setShowDialog(false);
+  };
+
+  return (
+    <div className="container">
+      <h1>React Demo</h1>
+
+      <div className="card">
+        <h2>Contador: {count}</h2>
+        <button onClick={handleIncrement}>Incrementar</button>
+      </div>
+
+      <div className="card">
+        <h2>Lista de Tareas</h2>
+        <ul>
+          {todos.map(todo => (
+            <li
+              key={todo.id}
+              onClick={() => toggleTodo(todo.id)}
+              style={{
+                textDecoration: todo.completed ? 'line-through' : 'none',
+                cursor: 'pointer'
+              }}
+            >
+              {todo.text}
+            </li>
+          ))}
+        </ul>
+        <button onClick={() => setShowDialog(true)}>Añadir Tarea</button>
+      </div>
+
+      <p className="info">Haz clic en una tarea para marcarla como completada</p>
+
+      {showDialog && (
+        <div className="dialog-overlay">
+          <div className="dialog">
+            <h3>Nueva Tarea</h3>
+            <input
+              type="text"
+              value={newTodo}
+              onChange={(e) => setNewTodo(e.target.value)}
+              placeholder="Escribe una tarea"
+            />
+            <div className="dialog-buttons">
+              <button onClick={addTodo}>Guardar</button>
+              <button className="button-secondary" onClick={() => setShowDialog(false)}>Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById("root"));
+`,
       language: "javascript",
       type: "react-js",
       extension: "jsx"
@@ -315,77 +313,101 @@ export const WebMode = () => {
       id: "react-ts-1",
       name: "App.tsx",
       content: `// Ejemplo de componente React con TypeScript
- interface Todo {
-   id: number;
-   text: string;
-   completed: boolean;
- }
- 
- function App(): JSX.Element {
-   const [count, setCount] = React.useState<number>(0);
-   const [todos, setTodos] = React.useState<Todo[]>([
-     { id: 1, text: "Aprender React con TypeScript", completed: true },
-     { id: 2, text: "Crear una aplicación tipada", completed: false },
-     { id: 3, text: "Desplegar el proyecto", completed: false }
-   ]);
- 
-   const handleIncrement = (): void => {
-     setCount(prevCount => prevCount + 1);
-   };
- 
-   const toggleTodo = (id: number): void => {
-     setTodos(prevTodos => 
-       prevTodos.map(todo => 
-         todo.id === id ? { ...todo, completed: !todo.completed } : todo
-       )
-     );
-   };
- 
-   const addTodo = (): void => {
-     const text = prompt("Añadir nueva tarea:");
-     if (text) {
-       setTodos(prevTodos => [
-         ...prevTodos, 
-         { id: Date.now(), text, completed: false }
-       ]);
-     }
-   };
- 
-   return (
-     <div className="container">
-       <h1>React con TypeScript Demo</h1>
-       
-       <div className="card">
-         <h2>Contador: {count}</h2>
-         <button onClick={handleIncrement}>Incrementar</button>
-       </div>
-       
-       <div className="card">
-         <h2>Lista de Tareas</h2>
-         <ul>
-           {todos.map(todo => (
-             <li 
-               key={todo.id} 
-               onClick={() => toggleTodo(todo.id)}
-               style={{ 
-                 textDecoration: todo.completed ? 'line-through' : 'none',
-                 cursor: 'pointer'
-               }}
-             >
-               {todo.text}
-             </li>
-           ))}
-         </ul>
-         <button onClick={addTodo}>Añadir Tarea</button>
-       </div>
-       
-       <p className="info">Haz clic en una tarea para marcarla como completada</p>
-     </div>
-   );
- }
- 
- // Renderizar el componente en el DOM
- ReactDOM.render(<App />, document.getElementById('root'));`,
+interface Todo {
+  id: number;
+  text: string;
+  completed: boolean;
+}
+
+function App(): JSX.Element {
+  const [count, setCount] = React.useState<number>(0);
+  const [todos, setTodos] = React.useState<Todo[]>([
+    { id: 1, text: "Aprender React con TypeScript", completed: true },
+    { id: 2, text: "Crear una aplicación tipada", completed: false },
+    { id: 3, text: "Desplegar el proyecto", completed: false }
+  ]);
+
+  const [showDialog, setShowDialog] = React.useState<boolean>(false);
+  const [newTodo, setNewTodo] = React.useState<string>("");
+
+  const handleIncrement = (): void => {
+    setCount(prevCount => prevCount + 1);
+  };
+
+  const toggleTodo = (id: number): void => {
+    setTodos(prevTodos =>
+      prevTodos.map(todo =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  };
+
+  const handleAddTodo = (): void => {
+    const text = newTodo.trim();
+    if (text) {
+      setTodos(prevTodos => [
+        ...prevTodos,
+        { id: Date.now(), text, completed: false }
+      ]);
+    }
+    setNewTodo("");
+    setShowDialog(false);
+  };
+
+  return (
+    <div className="container">
+      <h1>React con TypeScript Demo</h1>
+
+      <div className="card">
+        <h2>Contador: {count}</h2>
+        <button onClick={handleIncrement}>Incrementar</button>
+      </div>
+
+      <div className="card">
+        <h2>Lista de Tareas</h2>
+        <ul>
+          {todos.map(todo => (
+            <li
+              key={todo.id}
+              onClick={() => toggleTodo(todo.id)}
+              style={{
+                textDecoration: todo.completed ? 'line-through' : 'none',
+                cursor: 'pointer'
+              }}
+            >
+              {todo.text}
+            </li>
+          ))}
+        </ul>
+        <button onClick={() => setShowDialog(true)}>Añadir Tarea</button>
+      </div>
+
+      <p className="info">Haz clic en una tarea para marcarla como completada</p>
+
+      {showDialog && (
+        <div className="dialog-overlay">
+          <div className="dialog">
+            <h3>Nueva Tarea</h3>
+            <input
+              type="text"
+              value={newTodo}
+              onChange={(e) => setNewTodo(e.target.value)}
+              placeholder="Escribe una tarea"
+            />
+            <div className="dialog-buttons">
+              <button onClick={handleAddTodo}>Guardar</button>
+              <button className="button-secondary" onClick={() => setShowDialog(false)}>Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Renderizar el componente en el DOM
+ReactDOM.render(<App />, document.getElementById('root'));
+`,
       language: "typescript",
       type: "react-ts",
       extension: "tsx"
@@ -394,72 +416,84 @@ export const WebMode = () => {
       id: "css-3",
       name: "styles.css",
       content: `body {
-   font-family: system-ui, sans-serif;
-   line-height: 1.5;
-   padding: 2rem;
- }
- 
- .container {
-   max-width: 800px;
-   margin: 0 auto;
-   padding: 2rem;
-   border-radius: 8px;
-   background-color: #f9fafb;
-   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
- }
- 
- h1 {
-   color: #111827;
-   margin-bottom: 1rem;
- }
-  
- 
- button {
-   background-color: #3b82f6;
-   color: white;
-   border: none;
-   padding: 0.5rem 1rem;
-   border-radius: 4px;
-   cursor: pointer;
-   transition: background-color 0.2s;
-   margin-right: 0.5rem;
-   margin-bottom: 0.5rem;
- }
- 
- button:hover {
-   background-color: #2563eb;
- }
- 
- 
- 
- .card {
-   background-color: #ffffff;
-   border-radius: 8px;
-   padding: 1.5rem;
-   margin-bottom: 1.5rem;
-   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
- }
- 
- .card h2 {
-   margin-top: 0;
-   margin-bottom: 1rem;
-   color: #1f2937;
- }
- 
- ul {
-   padding-left: 1.5rem;
-   margin-bottom: 1.5rem;
- }
- 
- li {
-   margin-bottom: 0.5rem;
- }
- 
- .info {
-   font-size: 0.875rem;
-   color: #6b7280;
-   font-style: italic;
- }`,
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  padding: 10px 16px;
+  margin: 8px 4px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+.button-secondary{
+  background: #525153;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+li {
+  list-style: none;
+  margin-bottom: 8px;
+}
+
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialog {
+  background: white;
+  padding: 20px;
+  border-radius: 4px;
+  width: 300px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.dialog input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+`,
       language: "css",
       type: "react-ts",
       extension: "css"
@@ -468,92 +502,95 @@ export const WebMode = () => {
       id: "css-4",
       name: "styles.css",
       content: `body {
-   font-family: system-ui, sans-serif;
-   line-height: 1.5;
-   padding: 2rem;
- }
- 
- .container {
-   max-width: 800px;
-   margin: 0 auto;
-   padding: 2rem;
-   border-radius: 8px;
-   background-color: #f9fafb;
-   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
- }
- 
- h1 {
-   color: #111827;
-   margin-bottom: 1rem;
- }
-  
- 
- button {
-   background-color: #3b82f6;
-   color: white;
-   border: none;
-   padding: 0.5rem 1rem;
-   border-radius: 4px;
-   cursor: pointer;
-   transition: background-color 0.2s;
-   margin-right: 0.5rem;
-   margin-bottom: 0.5rem;
- }
- 
- button:hover {
-   background-color: #2563eb;
- }
- 
- 
- 
- .card {
-   background-color: #ffffff;
-   border-radius: 8px;
-   padding: 1.5rem;
-   margin-bottom: 1.5rem;
-   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
- }
- 
- .card h2 {
-   margin-top: 0;
-   margin-bottom: 1rem;
-   color: #1f2937;
- }
- 
- ul {
-   padding-left: 1.5rem;
-   margin-bottom: 1.5rem;
- }
- 
- li {
-   margin-bottom: 0.5rem;
- }
- 
- .info {
-   font-size: 0.875rem;
-   color: #6b7280;
-   font-style: italic;
- }`,
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  padding: 10px 16px;
+  margin: 8px 4px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+.button-secondary{
+  background: #525153;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+li {
+  list-style: none;
+  margin-bottom: 8px;
+}
+
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialog {
+  background: white;
+  padding: 20px;
+  border-radius: 4px;
+  width: 300px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.dialog input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+`,
       language: "css",
       type: "react-js",
       extension: "css"
     },
 
   ])
-
-  // Estado para el archivo actualmente seleccionado
   const [currentFileId, setCurrentFileId] = useState<string>("html-1")
-
-
-  // Añadir estado para el modo web actual
   const [webMode, setWebMode] = useState("html-css-js")
-
   const [output, setOutput] = useState("")
   const [copied, setCopied] = useState(false)
   const [consoleOutput, setConsoleOutput] = useState<{ type: string; content: string }[]>([])
-  const [isConsoleMaximized, setIsConsoleMaximized] = useState(false)
-  const [isEditorMaximized, setIsEditorMaximized] = useState(false)
-  const [editorHeight, setEditorHeight] = useState("400px")
   const [toast, setToast] = useState({
     title: "",
     description: "",
@@ -562,13 +599,8 @@ export const WebMode = () => {
 
   })
 
-
-  // Obtener el archivo actual
   const currentFile = files.find((file) => file.id === currentFileId) || files[0]
 
-  console.log(currentFile)
-
-  // Función para actualizar el contenido del archivo actual
   const updateCurrentFile = (content: string) => {
     setFiles(
       files.map((file) => {
@@ -592,9 +624,7 @@ export const WebMode = () => {
   }
 
 
-  // Modificar la función updateOutput para incluir React y múltiples archivos
   const updateOutput = () => {
-    // Inyectamos un script para capturar los console.log
     const consoleCapture = `
  <script>
    // Guardamos las funciones originales
@@ -686,15 +716,11 @@ export const WebMode = () => {
    </script>
    `
 
-    // Si estamos en modo web, generamos el HTML combinado
-
     if (webMode === "html-css-js" || webMode === "html-css-ts") {
-      // Obtener el contenido de los archivos HTML, CSS y JS/TS
       const htmlFiles = files.filter((file) => file.extension === "html" && file.type === webMode)
       const cssFiles = files.filter((file) => file.extension === "css" && file.type === webMode)
       const scriptFiles = files.filter((file) => file.extension === (webMode === "html-css-js" ? "js" : "ts"))
 
-      // Usar el primer archivo de cada tipo si no hay ninguno seleccionado
       const htmlContent = htmlFiles.length > 0 ? htmlFiles[0].content : ""
       const cssContent = cssFiles.length > 0 ? cssFiles.map((file) => file.content).join("\n") : ""
       const scriptContent = scriptFiles.length > 0 ? scriptFiles[0].content : ""
@@ -739,19 +765,12 @@ export const WebMode = () => {
      `
       setOutput(combinedOutput)
     } else if (webMode === "react-js" || webMode === "react-ts") {
-      // Para React, necesitamos incluir las bibliotecas React y ReactDOM
       const reactFiles = files.filter((file) => file.type === webMode)
       const cssFiles = files.filter((file) => file.extension === "css" && file.type === webMode)
 
-      // Encontrar el archivo principal (App.jsx o App.tsx)
       const mainFile = reactFiles.find((file) => file.name.toLowerCase().includes("app")) || reactFiles[0]
-
-      // Combinar CSS
       const cssContent = cssFiles.length > 0 ? cssFiles.map((file) => file.content).join("\n") : ""
-
       const isTypeScript = webMode === "react-ts"
-
-      // Procesar los archivos para manejar importaciones
 
       const combinedOutput = `
          <!DOCTYPE html>
@@ -808,13 +827,9 @@ export const WebMode = () => {
   }
 
 
-  // Modificar el handleRun para manejar ambos modos
   const handleRun = () => {
-    // Limpiar la consola
     setConsoleOutput([])
 
-
-    // Actualizar el iframe para modo web
     if (iframeRef.current) {
       iframeRef.current.srcdoc = output
     }
@@ -849,12 +864,10 @@ export const WebMode = () => {
     return () => window.removeEventListener("message", handleMessage)
   }, [])
 
-  // Actualizar el output cuando cambie el código
   useEffect(() => {
     updateOutput()
   }, [files, webMode, currentFileId, useTailwind])
 
-  // Actualizar el modo web según el tipo de archivo seleccionado
   useEffect(() => {
     const file = files.find((f) => f.id === currentFileId)
     if (file) {
@@ -870,7 +883,6 @@ export const WebMode = () => {
     }
   }, [currentFileId])
 
-  // Copiar el código completo
   const handleCopy = () => {
     navigator.clipboard.writeText(output)
     setCopied(true)
@@ -885,7 +897,6 @@ export const WebMode = () => {
     timeOutToast()
   }
 
-  // Descargar el código como archivo HTML
   const handleDownload = () => {
     const blob = new Blob([output], { type: "text/html" })
     const url = URL.createObjectURL(blob)
@@ -906,10 +917,8 @@ export const WebMode = () => {
     timeOutToast()
   }
 
-  // Limpiar todo el código
   const handleClear = () => {
     if (confirm("¿Estás seguro de que quieres borrar todo el código?")) {
-      // Limpiar el contenido del archivo actual
       setFiles(
         files.map((file) => {
           if (file.id === currentFileId) {
@@ -922,7 +931,11 @@ export const WebMode = () => {
     }
   }
 
-  // Guardar en localStorage
+  const handleSelectMode = (mode: string) => {
+    setWebMode(mode)
+    setCurrentFileId(files.find((file) => file.type === mode)?.id || files[0].id)
+  }
+
   const handleSave = () => {
     try {
       localStorage.setItem("playground-files", JSON.stringify(files))
@@ -944,7 +957,6 @@ export const WebMode = () => {
     }
   }
 
-  // Cargar desde localStorage
   const handleLoad = () => {
     try {
       const savedFiles = localStorage.getItem("playground-files")
@@ -972,7 +984,6 @@ export const WebMode = () => {
   }
 
 
-  // Renderizar el tipo de consola
   const renderConsoleItem = (item: { type: string; content: string }, index: number) => {
     let className = "text-gray-400"
     let icon = null
@@ -1006,12 +1017,9 @@ export const WebMode = () => {
     )
   }
 
-  // Limpiar la consola
   const clearConsole = () => {
     setConsoleOutput([])
   }
-
-  // Obtener el icono para el tipo de archivo
   const getFileIcon = (fileType: string) => {
     switch (fileType) {
       case "html":
@@ -1028,12 +1036,6 @@ export const WebMode = () => {
         return <ReactIcon className="h-5 w-5 text-cyan-500" />
       case "tsx":
         return <ReactIcon className="h-5 w-5 text-cyan-600" />
-      case "python":
-        return <FileCode className="h-5 w-5 text-green-500" />
-      case "csharp":
-        return <FileCode className="h-5 w-5 text-purple-500" />
-      case "java":
-        return <FileCode className="h-5 w-5 text-red-500" />
       default:
         return <FileCode className="h-5 w-5" />
     }
@@ -1046,10 +1048,10 @@ export const WebMode = () => {
 
       <div className="flex border-b-1 border-(--color-gray-700)">
         <div className="tabs w-full tabs-border" role="tablist"  >
-          <button role="tab" className={`tab [--tab-border-color:gray] [--tab-bg:#1D232A] ${webMode === 'html-css-js' ? 'tab-active' : ''}`} onClick={() => setWebMode('html-css-js')}>HTML/CSS/JS</button>
-          <button role="tab" className={`tab [--tab-border-color:gray] [--tab-bg:#1D232A] ${webMode === 'html-css-ts' ? 'tab-active' : ''}`} onClick={() => setWebMode('html-css-ts')}>HTML/CSS/TS</button>
-          <button role="tab" className={`tab [--tab-border-color:gray] [--tab-bg:#1D232A] ${webMode === 'react-js' ? 'tab-active' : ''}`} onClick={() => setWebMode('react-js')}>React JS</button>
-          <button role="tab" className={`tab [--tab-border-color:gray] [--tab-bg:#1D232A] ${webMode === 'react-ts' ? 'tab-active' : ''}`} onClick={() => setWebMode('react-ts')}>React TS</button>
+          <button role="tab" className={`tab [--tab-border-color:gray] [--tab-bg:#1D232A] ${webMode === 'html-css-js' ? 'tab-active' : ''}`} onClick={() => handleSelectMode('html-css-js')}>HTML/CSS/JS</button>
+          <button role="tab" className={`tab [--tab-border-color:gray] [--tab-bg:#1D232A] ${webMode === 'html-css-ts' ? 'tab-active' : ''}`} onClick={() => handleSelectMode('html-css-ts')}>HTML/CSS/TS</button>
+          <button role="tab" className={`tab [--tab-border-color:gray] [--tab-bg:#1D232A] ${webMode === 'react-js' ? 'tab-active' : ''}`} onClick={() => handleSelectMode('react-js')}>React JS</button>
+          <button role="tab" className={`tab [--tab-border-color:gray] [--tab-bg:#1D232A] ${webMode === 'react-ts' ? 'tab-active' : ''}`} onClick={() => handleSelectMode('react-ts')}>React TS</button>
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
@@ -1069,7 +1071,7 @@ export const WebMode = () => {
                 <div className="dropdown dropdown-start">
                   <div tabIndex={0} role="button" className="btn btn-sm"><EllipsisVertical className="size-5" /></div>
                   <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-                    <li><button className="btn btn-sm btn-ghost justify-start gap-4">
+                    <li><button className="btn btn-sm btn-ghost justify-start gap-4" onClick={handleCopy}>
                       {copied ? (
                         <Check className="size-4" />
                       ) : (
@@ -1078,19 +1080,19 @@ export const WebMode = () => {
                       {copied ? "Copiado" : "Copiar HTML"}</button>
                     </li>
                     <li>
-                      <button className="btn btn-sm btn-ghost justify-start gap-4">
+                      <button className="btn btn-sm btn-ghost justify-start gap-4" onClick={handleDownload}>
                         <Download className="size-4" />
                         Descargar
                       </button>
                     </li>
                     <li>
-                      <button className="btn btn-sm btn-ghost justify-start gap-4">
+                      <button className="btn btn-sm btn-ghost justify-start gap-4" onClick={handleLoad}>
                         <RefreshCcw className="size-4" />
                         Cargar
                       </button>
                     </li>
                     <li>
-                      <button className="btn btn-sm btn-ghost justify-start gap-4">
+                      <button className="btn btn-sm btn-ghost justify-start gap-4" onClick={handleClear}>
                         <TrashIcon className="size-4" />
                         Limpiar
                       </button>
