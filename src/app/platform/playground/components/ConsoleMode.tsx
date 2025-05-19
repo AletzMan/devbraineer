@@ -6,9 +6,6 @@ import { useEffect, useRef, useState } from "react"
 import { FileData, FILES_DEFAULT } from "../../constants"
 import { CIcon, CSharpIcon, DartIcon, GoIcon, JavaIcon, JSIcon, KotlinIcon, LuaIcon, PHPIcon, PythonIcon, RubyIcon, RustIcon, ScalaIcon, SwiftIcon, TSIcon } from "@/app/components/Icons"
 
-// Definir tipos para los archivos
-
-
 export const ConsoleMode = () => {
     const consoleRef = useRef<HTMLDivElement>(null)
     const [files, setFiles] = useState<FileData[]>(FILES_DEFAULT)
@@ -25,13 +22,8 @@ export const ConsoleMode = () => {
 
     })
 
-
-    // Obtener el archivo actual
     const currentFile = files.find((file) => file.id === currentFileId) || files[0]
 
-
-
-    // Función para actualizar el contenido del archivo actual
     const updateCurrentFile = (content: string) => {
         setFiles(
             files.map((file) => {
@@ -54,9 +46,7 @@ export const ConsoleMode = () => {
         }, 5000)
     }
 
-    // Función para eliminar un archivo
     const deleteFile = (id: string) => {
-        // Verificar que no sea el único archivo de su tipo
         const fileToDelete = files.find((file) => file.id === id)
         if (!fileToDelete) return
 
@@ -299,7 +289,7 @@ export const ConsoleMode = () => {
                                     ) : (
                                         <Copy className="size-4" />
                                     )}
-                                    {copied ? "Copiado" : "Copiar HTML"}</button>
+                                    {copied ? "Copiado" : "Copiar Codigo"}</button>
                                 </li>
                                 <li>
                                     <button className="btn btn-sm btn-ghost justify-start gap-4" onClick={handleDownload}>
