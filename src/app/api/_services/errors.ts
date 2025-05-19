@@ -34,11 +34,11 @@ export const NotFoundError = () => {
 	);
 };
 
-export const BadRequestError = () => {
+export const BadRequestError = (message: string) => {
 	return NextResponse.json(
 		{
 			code: 400,
-			message: "Bad request",
+			message: message,
 			description:
 				"The server cannot or will not process the request due to an apparent client error.",
 		},
