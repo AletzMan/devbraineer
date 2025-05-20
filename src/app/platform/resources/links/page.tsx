@@ -23,6 +23,7 @@ import {
 } from '@/services/link.service';
 import { toast, Toaster } from 'react-hot-toast';
 import LinkCard from './components/LinkCard'; // Asegúrate de que LinkCard también tenga estilos consistentes
+import HeaderSection from '../../componentes/HeaderSection';
 
 export default function LinksPage() {
     const [links, setLinks] = useState<Link[]>([]);
@@ -267,25 +268,19 @@ export default function LinksPage() {
     };
 
     return (
-        <div className="flex flex-col min-h-[calc(100svh-4rem)] bg-neutral/30">
+        <div className="flex flex-col  min-h-[calc(100svh-4rem)] bg-neutral/30">
             <Toaster position="top-right" />
-            <div className="flex-1 max-w-(--max-width) mx-auto w-full">
-                <header className="flex flex-col sm:flex-row items-center justify-between mb-6 bg-white/3 border-b border-gray-700 px-4 py-2">
-                    <div>
-                        <h1 className="text-2xl font-bold text-secondary">
-                            Enlaces Guardados
-                        </h1>
-                        <p className="text-zinc-500 dark:text-zinc-400">
-                            Colecciona y organiza tus recursos web favoritos
-                        </p>
-                    </div>
+            <div className="flex flex-col flex-1 max-w-(--max-width) mx-auto w-full gap-4">
+                <HeaderSection
+                    title="Enlaces de Interés"
+                    description="Colecciona y organiza tus recursos web favoritos">
                     <button
                         className="btn btn-success gap-1 mt-4 sm:mt-0"
                         onClick={handleOpenCreateModal}>
                         <Plus className="w-4 h-4" />
                         Nuevo Enlace
                     </button>
-                </header>
+                </HeaderSection>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 overflow-y-auto h-[calc(100svh-10.5rem)] pb-4 px-4 ">
                     <div className="md:col-span-1 bg-neutral/40 p-4 rounded-md">
                         <div className="sticky top-4 space-y-4">
