@@ -1,10 +1,15 @@
 import prisma from '@/lib/db';
 import { RegexPattern } from '@prisma/client';
-import { NotFoundError, ServerError } from '../../_services/errors';
+import {
+    NotAuthorizedError,
+    NotFoundError,
+    ServerError,
+} from '../../_services/errors';
 import {
     SuccessDelete,
     SuccessResponse,
 } from '../../_services/successfulResponses';
+import { auth } from '@clerk/nextjs/server';
 
 // GET /api/regex-patterns/[patternId]
 // Obtiene los detalles de un patrón de regex específico por su ID. (Público en el MVP)
@@ -13,13 +18,19 @@ export async function GET(
     { params }: { params: Promise<{ patternId: string }> }
 ) {
     try {
+        const { userId } = await auth(); // Obtiene el ID del usuario autenticado de Clerk
+
+        // Si no hay userId, el usuario no está autenticado, retorna un 401.
+        if (!userId) {
+            return NotAuthorizedError();
+        }
         // La ID del patrón que queremos obtener se obtiene de los parámetros de la URL.
         const targetPatternId = (await params).patternId;
 
         // Busca el patrón en la base de datos por su ID.
         const pattern: RegexPattern | null =
             await prisma.regexPattern.findUnique({
-                where: { id: targetPatternId },
+                where: { id: targetPatternId, AND: { user: { id: userId } } },
                 // Opcional: Incluir el usuario si quieres mostrar quién lo guardó
                 // include: { user: { select: { username: true } } }
             });

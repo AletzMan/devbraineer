@@ -16,8 +16,17 @@ import { ZodError } from 'zod';
 // GET /api/links
 export async function GET(req: Request) {
     try {
+        const { userId } = await auth(); // Obtiene el ID del usuario autenticado de Clerk
+
+        // Si no hay userId, el usuario no está autenticado, retorna un 401.
+        if (!userId) {
+            return NotAuthorizedError();
+        }
         // Obtiene todos los links de la base de datos.
         const links: Link[] = await prisma.link.findMany({
+            where: {
+                sharerId: userId,
+            },
             orderBy: {
                 created_at: 'desc', // Opcional: Ordenar por fecha de creación
             },

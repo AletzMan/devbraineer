@@ -1,10 +1,15 @@
 import prisma from '@/lib/db';
 import { Snippet } from '@prisma/client';
-import { NotFoundError, ServerError } from '../../_services/errors';
+import {
+    NotAuthorizedError,
+    NotFoundError,
+    ServerError,
+} from '../../_services/errors';
 import {
     SuccessDelete,
     SuccessResponse,
 } from '../../_services/successfulResponses';
+import { auth } from '@clerk/nextjs/server';
 
 // GET /api/snippets/[snippetId]
 export async function GET(
@@ -13,10 +18,16 @@ export async function GET(
 ) {
     try {
         const targetSnippetId = (await params).snippetId;
+        const { userId } = await auth();
+
+        // Si no hay userId, el usuario no está autenticado, retorna un 401.
+        if (!userId) {
+            return NotAuthorizedError();
+        }
 
         // Busca el snippet en la base de datos por su ID.
         const snippet: Snippet | null = await prisma.snippet.findUnique({
-            where: { id: targetSnippetId },
+            where: { id: targetSnippetId, AND: { authorId: userId } },
             // Opcional: Incluir el autor si quieres mostrar quién lo publicó
             // include: { author: { select: { username: true } } }
         });
