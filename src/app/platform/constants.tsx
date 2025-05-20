@@ -78,78 +78,78 @@ export const menuData: IMenuItem[] = [
     {
         label: 'Gestión de Recursos',
         icon: BoxIcon,
-        color: 'text-fuchsia-600', // Color para el icono del resumen
+        color: 'text-secondary', // Color para el icono del resumen
         href: '#',
         children: [
             {
-                label: 'Snippets',
+                label: 'Snippets de Código',
                 href: '/platform/resources/snippets',
                 icon: FileCode,
-                color: 'text-fuchsia-300', // Color para los iconos hijos
+                color: 'text-secondary/65', // Color para los iconos hijos
             },
             {
-                label: 'Enlaces',
+                label: 'Enlaces de Interés',
                 href: '/platform/resources/links',
                 icon: LinkIcon,
-                color: 'text-fuchsia-300', // Color para los iconos hijos
+                color: 'text-secondary/65', // Color para los iconos hijos
             },
         ],
     },
     {
         label: 'Herramientas de Desarrollo',
         icon: SquareTerminalIcon,
-        color: 'text-blue-600', // Color para el icono del resumen
+        color: 'text-accent', // Color para el icono del resumen
         href: '#',
         children: [
             {
                 label: 'Convertidor de Datos',
                 href: '/platform/tools-dev/converter',
                 icon: FileJsonIcon,
-                color: 'text-blue-300', // Color para los iconos hijos
+                color: 'text-accent/65', // Color para los iconos hijos
             },
             {
-                label: 'Generador RegEx',
+                label: 'Generador de RegEx',
                 href: '/platform/tools-dev/regex',
                 icon: RegexIcon,
-                color: 'text-blue-300', // Color para los iconos hijos
+                color: 'text-accent/65', // Color para los iconos hijos
             },
         ],
     },
     {
         label: 'Herramientas Técnicas',
         icon: MonitorCogIcon,
-        color: 'text-lime-600', // Color para el icono del resumen
+        color: 'text-info', // Color para el icono del resumen
         href: '#',
         children: [
             {
-                label: 'Calculadora Circuitos',
+                label: 'Calculadora de Circuitos',
                 href: '/platform/tools-tech/circuit-calculator',
                 icon: Zap,
-                color: 'text-lime-300', // Color para los iconos hijos
+                color: 'text-info/65', // Color para los iconos hijos
             },
             {
-                label: 'Convertidor Unidades',
+                label: 'Convertidor de Unidades',
                 href: '/platform/tools-tech/unit-converter',
                 icon: Sliders,
-                color: 'text-lime-300', // Color para los iconos hijos
+                color: 'text-info/65', // Color para los iconos hijos
             },
             {
-                label: 'Generador Diagramas',
+                label: 'Generador de Diagramas',
                 href: '/platform/tools-tech/diagram-maker',
                 icon: Compass,
-                color: 'text-lime-300', // Color para los iconos hijos
+                color: 'text-info/65', // Color para los iconos hijos
             },
             {
-                label: 'Simulador Lógico',
+                label: 'Simulador de Lógico',
                 href: '/platform/tools-tech/logic-simulator',
                 icon: HardDrive,
-                color: 'text-lime-300', // Color para los iconos hijos
+                color: 'text-info/65', // Color para los iconos hijos
             },
             {
-                label: 'Calculadora Resistencias',
+                label: 'Calculadora de Resistencias',
                 href: '/platform/tools-tech/resistor-calculator',
                 icon: OmegaIcon,
-                color: 'text-lime-300', // Color para los iconos hijos
+                color: 'text-info/65', // Color para los iconos hijos
             },
         ],
     },
