@@ -1,6 +1,8 @@
-import { CopyIcon, PlayIcon } from 'lucide-react';
+import { Calendar, CopyIcon, PlayIcon, TrashIcon } from 'lucide-react';
 import { RegexPattern } from '@prisma/client';
 import { FormattedDate } from '@/lib/helpers';
+import { useState } from 'react';
+import { deleteRegexPatternById } from '@/services/pattern.service';
 
 export default function PatternRegex({
     item,
@@ -8,23 +10,38 @@ export default function PatternRegex({
     setPattern,
     setActiveTab,
     visibleDate,
+    onDelete,
 }: {
     item: RegexPattern;
     index: number;
     setPattern: (pattern: string) => void;
     setActiveTab: (tab: string) => void;
     visibleDate?: boolean;
+    onDelete?: () => void;
 }) {
     return (
         <div
-            className="flex flex-col gap-2  border-1 border-gray-700  bg-neutral/85 rounded-sm shadow-sm shadow-gray-800"
+            className="flex flex-col gap-2  border-1 border-gray-700  bg-neutral/85 rounded-sm shadow-sm shadow-gray-800 hover:border-primary transition-all"
             key={index}>
-            <header className="flex items-center justify-between p-2">
-                <label className="label text-md text-accent">{item.name}</label>
-                <span className="text-xs text-gray-400">
-                    {visibleDate &&
-                        FormattedDate(item.updated_at.toLocaleString())}
-                </span>
+            <header className="flex items-center justify-between p-2 border-b border-gray-700">
+                <div className="flex flex-col  gap-1">
+                    <h2 className="text-md text-accent font-semibold">
+                        {item.name}
+                    </h2>
+                    {visibleDate && (
+                        <span className="flex items-center gap-1 text-xs text-gray-400">
+                            <Calendar className="size-4" />
+                            {FormattedDate(item.updated_at.toLocaleString())}
+                        </span>
+                    )}
+                </div>
+                {onDelete && (
+                    <button
+                        className="btn btn-soft btn-xs btn-error rounded-sm font-light self-start"
+                        onClick={onDelete}>
+                        <TrashIcon className="size-3" />
+                    </button>
+                )}
             </header>
             <section className="flex flex-col justify-between gap-2 px-3 h-full">
                 <p className="text-sm text-gray-300">{item.description}</p>
