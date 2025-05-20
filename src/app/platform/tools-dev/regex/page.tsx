@@ -11,13 +11,20 @@ import {
     PlayIcon,
 } from 'lucide-react';
 import { simbolos, tips } from '../../constants';
+import MyPatternsRegex from './componets/MyPatternsRegex';
+import PatternRegex from './componets/PatternRegex';
+import { RegexPattern } from '@prisma/client';
 
-export const commonPatterns = [
+export const commonPatterns: RegexPattern[] = [
     {
         name: 'Email',
         pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}',
         description:
             'Valida correos electrónicos con estructura estándar (usuario@dominio.com).',
+        id: 'email',
+        userId: null,
+        created_at: new Date(),
+        updated_at: new Date(),
     },
     {
         name: 'URL',
@@ -25,12 +32,20 @@ export const commonPatterns = [
             'https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)',
         description:
             'Detecta URLs que empiezan con http o https, incluyendo subdominios y rutas.',
+        id: 'url',
+        userId: null,
+        created_at: new Date(),
+        updated_at: new Date(),
     },
     {
         name: 'Teléfono',
         pattern: '(\\+?\\d{1,3}[- ]?)?\\d{9,10}',
         description:
             'Valida números telefónicos con o sin código de país (formato internacional o nacional).',
+        id: 'telefono',
+        userId: null,
+        created_at: new Date(),
+        updated_at: new Date(),
     },
     {
         name: 'Fecha (DD/MM/YYYY)',
@@ -38,70 +53,118 @@ export const commonPatterns = [
             '(0[1-9]|[12][0-9]|3[01])[\\/\\-](0[1-9]|1[012])[\\/\\-]\\d{4}',
         description:
             'Detecta fechas en formato día/mes/año, con separadores / o -.',
+        id: 'fecha',
+        userId: null,
+        created_at: new Date(),
+        updated_at: new Date(),
     },
     {
         name: 'Código postal',
         pattern: '\\d{5}(-\\d{4})?',
         description:
             'Valida códigos postales de 5 dígitos o ZIP+4 en EE.UU. (12345 o 12345-6789).',
+        id: 'codigoPostal',
+        userId: null,
+        created_at: new Date(),
+        updated_at: new Date(),
     },
     {
         name: 'Número entero',
         pattern: '^-?\\d+$',
         description: 'Detecta números enteros positivos o negativos.',
+        id: 'numeroEntero',
+        userId: null,
+        created_at: new Date(),
+        updated_at: new Date(),
     },
     {
         name: 'Número decimal',
         pattern: '^-?\\d*\\.\\d+$',
         description:
             'Valida números decimales con punto como separador (e.g. 3.14, -0.5).',
+        id: 'numeroDecimal',
+        userId: null,
+        created_at: new Date(),
+        updated_at: new Date(),
     },
     {
         name: 'Usuario (letras, números, guiones bajos)',
         pattern: '^[a-zA-Z0-9_]{3,16}$',
         description:
             'Valida nombres de usuario entre 3 y 16 caracteres, con letras, números y _.',
+        id: 'usuario',
+        userId: null,
+        created_at: new Date(),
+        updated_at: new Date(),
     },
     {
         name: 'Contraseña segura',
         pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\s]).{8,}$',
         description:
             'Requiere al menos 8 caracteres con minúscula, mayúscula, número y símbolo.',
+        id: 'contraseña',
+        userId: null,
+        created_at: new Date(),
+        updated_at: new Date(),
     },
     {
         name: 'Hexadecimal color',
         pattern: '^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$',
         description: 'Valida colores en formato hexadecimal (con o sin #).',
+        id: 'hexadecimalColor',
+        userId: null,
+        created_at: new Date(),
+        updated_at: new Date(),
     },
     {
         name: 'Palabra (solo letras)',
         pattern: '^[A-Za-zÀ-ÿ]+$',
         description:
             'Detecta palabras que solo contienen letras, incluyendo acentuadas.',
+        id: 'palabra',
+        userId: null,
+        created_at: new Date(),
+        updated_at: new Date(),
     },
     {
         name: 'IPv4',
         pattern:
             '^((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$',
         description: 'Valida direcciones IPv4 (ej. 192.168.0.1).',
+        id: 'ipv4',
+        userId: null,
+        created_at: new Date(),
+        updated_at: new Date(),
     },
     {
         name: 'DNI (España)',
         pattern: '\\d{8}[A-HJ-NP-TV-Z]',
         description:
-            'Valida documentos de identidad españoles (8 dígitos seguidos de una letra).',
+            'Valid  a documentos de identidad españoles (8 dígitos seguidos de una letra).',
+        id: 'dni',
+        userId: null,
+        created_at: new Date(),
+        updated_at: new Date(),
     },
     {
         name: 'CURP (México)',
         pattern: '[A-Z]{4}\\d{6}[HM][A-Z]{5}[A-Z0-9]\\d',
         description:
             'Valida la Clave Única de Registro de Población de México.',
+        id: 'curp',
+        userId: null,
+        created_at: new Date(),
+        updated_at: new Date(),
     },
     {
         name: 'RFC (México)',
         pattern: '[A-ZÑ&]{3,4}\\d{6}[A-Z0-9]{3}',
         description:
             'Valida el Registro Federal de Contribuyentes mexicano (con o sin homoclave).',
+        id: 'rfc',
+        userId: null,
+        created_at: new Date(),
+        updated_at: new Date(),
     },
 ];
 
@@ -173,7 +236,7 @@ export default function RegexPage() {
                 <div className="tabs tabs-lift p-2 h-[calc(100svh-11.5em)]">
                     <input
                         type="radio"
-                        name="my_tabs_3"
+                        name="regexTabs"
                         className="tab  [--tab-border-color:#454545] "
                         aria-label="Probar RegEx"
                         checked={activeTab === 'tester'}
@@ -391,18 +454,35 @@ export default function RegexPage() {
                                     </div>
 
                                     <ul className="space-y-3 pl-2 list-disc">
-                                        {tips.map((tip, i) => (
-                                            <li
-                                                key={i}
-                                                className="text-sm text-zinc-300 leading-relaxed"
-                                                dangerouslySetInnerHTML={{
-                                                    __html: tip.replace(
-                                                        /`([^`]+)`/g,
-                                                        '<code class="badge badge-soft badge-accent font-mono badge-sm rounded-sm">$1</code>'
-                                                    ),
-                                                }}
-                                            />
-                                        ))}
+                                        {tips.map((tip, i) => {
+                                            const parts =
+                                                tip.split(/(`[^`]+`)/g);
+
+                                            return (
+                                                <li
+                                                    key={i}
+                                                    className="text-sm text-zinc-300 leading-relaxed">
+                                                    {parts.map((part, j) =>
+                                                        /^`[^`]+`$/.test(
+                                                            part
+                                                        ) ? (
+                                                            <code
+                                                                key={j}
+                                                                className="badge badge-soft badge-accent font-mono badge-sm rounded-sm">
+                                                                {part.slice(
+                                                                    1,
+                                                                    -1
+                                                                )}
+                                                            </code>
+                                                        ) : (
+                                                            <span key={j}>
+                                                                {part}
+                                                            </span>
+                                                        )
+                                                    )}
+                                                </li>
+                                            );
+                                        })}
                                     </ul>
 
                                     <div className="flex items-center gap-2 text-xs text-zinc-400 pt-4 border-t border-zinc-700">
@@ -417,7 +497,7 @@ export default function RegexPage() {
 
                     <input
                         type="radio"
-                        name="my_tabs_3"
+                        name="regexTabs"
                         className="tab   [--tab-border-color:#454545] "
                         aria-label="Patrones comunes"
                         checked={activeTab === 'patterns'}
@@ -426,46 +506,30 @@ export default function RegexPage() {
                     <div className="tab-content border-1 border-gray-700 bg-base-100 p-4 h-full scrollbar-thin overflow-y-auto">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-2 rounded-sm">
                             {commonPatterns.map((item, index) => (
-                                <div
-                                    className="flex flex-col gap-2  border-1 border-gray-700  bg-neutral/85 rounded-sm shadow-sm shadow-gray-800"
-                                    key={index}>
-                                    <header className="flex items-center justify-between p-2">
-                                        <label className="label text-md text-accent">
-                                            {item.name}
-                                        </label>
-                                    </header>
-                                    <section className="flex flex-col justify-between gap-2 px-3 h-full">
-                                        <p className="text-sm text-gray-400">
-                                            {item.description}
-                                        </p>
-                                        <div className="bg-base-300 border border-gray-800 p-3 rounded-sm font-mono text-xs overflow-x-auto text-gray-300 ">
-                                            {item.pattern}
-                                        </div>
-                                    </section>
-                                    <footer className="grid grid-cols-2 w-full">
-                                        <button
-                                            className="btn btn-soft btn-md rounded-none font-light"
-                                            onClick={() => {
-                                                setPattern(item.pattern);
-                                                setActiveTab('tester');
-                                            }}>
-                                            <PlayIcon className="size-4" />
-                                            Usar este patrón
-                                        </button>
-                                        <button
-                                            className="btn btn-soft btn-md rounded-none font-light"
-                                            onClick={() => {
-                                                navigator.clipboard.writeText(
-                                                    item.pattern
-                                                );
-                                            }}>
-                                            <CopyIcon className="size-4" />
-                                            Copiar
-                                        </button>
-                                    </footer>
-                                </div>
+                                <PatternRegex
+                                    key={index}
+                                    item={item}
+                                    index={index}
+                                    setPattern={setPattern}
+                                    setActiveTab={setActiveTab}
+                                />
                             ))}
                         </div>
+                    </div>
+
+                    <input
+                        type="radio"
+                        name="regexTabs"
+                        className="tab   [--tab-border-color:#454545] "
+                        aria-label="Mis patrones"
+                        checked={activeTab === 'myPatterns'}
+                        onChange={() => setActiveTab('myPatterns')}
+                    />
+                    <div className="tab-content border-1 border-gray-700 bg-base-100 p-4 h-full scrollbar-thin overflow-y-auto">
+                        <MyPatternsRegex
+                            setPattern={setPattern}
+                            setActiveTab={setActiveTab}
+                        />
                     </div>
                 </div>
             </div>
