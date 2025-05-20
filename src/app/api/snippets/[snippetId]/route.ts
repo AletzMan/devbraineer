@@ -1,7 +1,10 @@
 import prisma from '@/lib/db';
 import { Snippet } from '@prisma/client';
 import { NotFoundError, ServerError } from '../../_services/errors';
-import { SuccessResponse } from '../../_services/successfulResponses';
+import {
+    SuccessDelete,
+    SuccessResponse,
+} from '../../_services/successfulResponses';
 
 // GET /api/snippets/[snippetId]
 export async function GET(
@@ -27,6 +30,23 @@ export async function GET(
         return SuccessResponse(snippet);
     } catch (error) {
         console.error('Error fetching snippet details:', error);
+        return ServerError();
+    }
+}
+
+// DELETE /api/snippets/[snippetId]
+export async function DELETE(
+    req: Request,
+    { params }: { params: { snippetId: string } }
+) {
+    try {
+        const targetSnippetId = params.snippetId;
+        const deletedSnippet = await prisma.snippet.delete({
+            where: { id: targetSnippetId },
+        });
+        return SuccessDelete(deletedSnippet);
+    } catch (error) {
+        console.error('Error deleting snippet:', error);
         return ServerError();
     }
 }
