@@ -16,6 +16,7 @@ import { Editor } from '@monaco-editor/react';
 import { CodeBlock } from 'react-code-block';
 import { themes } from 'prism-react-renderer';
 import { JSIcon, TSIcon } from '@/app/components/Icons';
+import HeaderSection from '../../componentes/HeaderSection';
 
 export default function ConverterPage() {
     const [input, setInput] = useState('');
@@ -130,16 +131,9 @@ export default function ConverterPage() {
     return (
         <div className="flex min-h-screen bg-neutral/40 text-gray-200 scrollbar-thin overflow-y-auto">
             <div className="flex flex-col flex-1 gap-4 max-w-[1650px] mx-auto w-full">
-                <header className="flex flex-col md:flex-row items-center justify-between border-b px-4 py-2 border-gray-700 gap-4 bg-white/3">
-                    <div className="flex flex-col text-center md:text-left">
-                        <h1 className="text-2xl font-bold text-secondary">
-                            Convertidor de Datos
-                        </h1>
-                        <p className="text-gray-400">
-                            Convierte entre diferentes formatos de datos como
-                            JSON, JavaScript, TypeScript y XML.
-                        </p>
-                    </div>
+                <HeaderSection
+                    title="Convertidor de Datos"
+                    description="Convierte entre diferentes formatos de datos como JSON, JavaScript, TypeScript y XML.">
                     <select
                         className="select select-primary"
                         value={activeTab}
@@ -150,7 +144,7 @@ export default function ConverterPage() {
                         <option value="json-to-xml">JSON a XML</option>
                         <option value="xml-to-json">XML a JSON</option>
                     </select>
-                </header>
+                </HeaderSection>
 
                 <div className="flex justify-center items-center gap-4">
                     <button
