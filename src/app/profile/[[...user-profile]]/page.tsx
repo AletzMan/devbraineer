@@ -6,6 +6,8 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { dark } from '@clerk/themes';
+import Header from '@/app/platform/componentes/Header';
+import { Sidebar } from '@/app/platform/componentes/Sidebar';
 
 export default function DashboardPage() {
     const { isSignedIn, user, isLoaded } = useUser();
@@ -79,8 +81,12 @@ export default function DashboardPage() {
     }
 
     return (
-        <section className="bg-red-500 h-svh">
-            <UserProfile appearance={{ baseTheme: dark }} />
+        <section className="relative grid grid-cols-[16.75em_1fr] max-2xl:grid-cols-[3.75em_1fr] max-lg:grid-cols-1 min-h-svh bg-(--color-base-300) text-white overflow-hidden w-full  transition-all duration-100">
+            <Sidebar />
+            <main className="relative w-full bg-(--color-base-300)">
+                <Header />
+                <UserProfile appearance={{ baseTheme: dark }} />
+            </main>
         </section>
     );
 }

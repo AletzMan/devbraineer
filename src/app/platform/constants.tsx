@@ -39,7 +39,7 @@ export const menuData: IMenuItem[] = [
         icon: LayoutDashboard,
         color: 'text-gray-400',
     },
-    {
+    /*  {
         label: 'Retos',
         href: '/platform/challenges',
         icon: Code2,
@@ -68,7 +68,7 @@ export const menuData: IMenuItem[] = [
         href: '/platform/questions',
         icon: MessageSquare,
         color: 'text-gray-400',
-    },
+    },*/
     {
         label: 'Playground',
         href: '/platform/playground',
@@ -85,13 +85,13 @@ export const menuData: IMenuItem[] = [
                 label: 'Snippets de Código',
                 href: '/platform/resources/snippets',
                 icon: FileCode,
-                color: 'text-secondary/65', // Color para los iconos hijos
+                color: 'text-secondary/65',
             },
             {
                 label: 'Enlaces de Interés',
                 href: '/platform/resources/links',
                 icon: LinkIcon,
-                color: 'text-secondary/65', // Color para los iconos hijos
+                color: 'text-secondary/65',
             },
         ],
     },
@@ -105,13 +105,13 @@ export const menuData: IMenuItem[] = [
                 label: 'Convertidor de Datos',
                 href: '/platform/tools-dev/converter',
                 icon: FileJsonIcon,
-                color: 'text-accent/65', // Color para los iconos hijos
+                color: 'text-accent/65',
             },
             {
                 label: 'Generador de RegEx',
                 href: '/platform/tools-dev/regex',
                 icon: RegexIcon,
-                color: 'text-accent/65', // Color para los iconos hijos
+                color: 'text-accent/65',
             },
         ],
     },
@@ -125,31 +125,31 @@ export const menuData: IMenuItem[] = [
                 label: 'Calculadora de Circuitos',
                 href: '/platform/tools-tech/circuit-calculator',
                 icon: Zap,
-                color: 'text-info/65', // Color para los iconos hijos
+                color: 'text-info/65',
             },
             {
                 label: 'Convertidor de Unidades',
                 href: '/platform/tools-tech/unit-converter',
                 icon: Sliders,
-                color: 'text-info/65', // Color para los iconos hijos
+                color: 'text-info/65',
             },
-            {
+            /* {
                 label: 'Generador de Diagramas',
                 href: '/platform/tools-tech/diagram-maker',
                 icon: Compass,
-                color: 'text-info/65', // Color para los iconos hijos
+                color: 'text-info/65',
             },
             {
-                label: 'Simulador de Lógico',
+                label: 'Simulador de Lógica',
                 href: '/platform/tools-tech/logic-simulator',
                 icon: HardDrive,
-                color: 'text-info/65', // Color para los iconos hijos
-            },
+                color: 'text-info/65',
+            },*/
             {
                 label: 'Calculadora de Resistencias',
                 href: '/platform/tools-tech/resistor-calculator',
                 icon: OmegaIcon,
-                color: 'text-info/65', // Color para los iconos hijos
+                color: 'text-info/65',
             },
         ],
     },
@@ -161,21 +161,21 @@ export const menuData: IMenuItem[] = [
         children: [
             {
                 label: 'Guardados',
-                href: '#', // Placeholder href
+                href: '/platform/account/saved', // Placeholder href
                 icon: Bookmark,
-                color: 'text-yellow-300', // Color para los iconos hijos
+                color: 'text-yellow-300',
             },
-            {
+            /*{
                 label: 'Configuración',
-                href: '#', // Placeholder href
+                href: '/platform/account/settings', // Placeholder href
                 icon: Settings,
-                color: 'text-yellow-300', // Color para los iconos hijos
-            },
+                color: 'text-yellow-300',
+            },*/
             {
                 label: 'Perfil',
-                href: '#', // Placeholder href
+                href: '/profile', // Placeholder href
                 icon: User, // User icon again
-                color: 'text-yellow-300', // Color para los iconos hijos
+                color: 'text-yellow-300',
             },
         ],
     },

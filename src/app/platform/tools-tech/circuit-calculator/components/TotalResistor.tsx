@@ -1,3 +1,5 @@
+'use client';
+
 import {
     Calculator,
     Minus,
@@ -8,94 +10,156 @@ import {
     Omega, // Importar el icono Omega
 } from 'lucide-react';
 import { useState } from 'react';
-import { BlockMath } from 'react-katex';
+import { BlockMath } from 'react-katex'; // Importar BlockMath
 import SectionCalculator from './SectionCalculator';
 
 export default function TotalResistor() {
     const [resistors, setResistors] = useState(['', '']);
     const [circuitType, setCircuitType] = useState('series');
-    const [totalResistance, setTotalResistance] = useState<string | null>(null);
+    const [totalResistanceResult, setTotalResistanceResult] = useState<
+        string | null
+    >(null);
+    const [calculationDetails, setCalculationDetails] = useState<string[]>([]);
 
-    // Función para calcular resistencia total en serie/paralelo
     const calculateTotalResistance = () => {
+        setTotalResistanceResult(null);
+        setCalculationDetails([]);
+
         try {
             const resistanceValues = resistors
                 .filter((r) => r !== '')
                 .map((r) => Number.parseFloat(r));
 
-            if (resistanceValues.length === 0) {
-                setTotalResistance('¡Ups! Ingresa al menos una resistencia.');
+            if (resistanceValues.length < 2) {
+                setTotalResistanceResult(
+                    '¡Ups! Ingresa al menos dos resistencias para calcular.'
+                );
                 return;
             }
-            // Validar que todas las resistencias sean números válidos y positivos
+
             if (
                 resistanceValues.some(isNaN) ||
                 resistanceValues.some((val) => val < 0)
             ) {
-                setTotalResistance(
+                setTotalResistanceResult(
                     '¡Error! Ingresa solo números positivos válidos para las resistencias.'
                 );
                 return;
             }
 
             let total = 0;
+            const steps: string[] = [];
+            let finalResultDisplay = ''; // Para el KaTeX del resultado final
+            let alertMessage = ''; // Para el texto del alert
 
             if (circuitType === 'series') {
+                const resistanceTerms = resistanceValues
+                    .map((r, i) => `R_{${i + 1}}`)
+                    .join(' + ');
+                // Sustitución con unidades
+                const numericalTermsWithUnits = resistanceValues
+                    .map((r) => `${r.toFixed(2)} \\ \\Omega`)
+                    .join(' + ');
+
+                // ELIMINADO $$ EXTRA AQUÍ
+                steps.push(`R_{\\text{total}} = ${resistanceTerms}`); // Fórmula general
+                steps.push(`R_{\\text{total}} = ${numericalTermsWithUnits}`); // Sustitución con unidades
+
                 total = resistanceValues.reduce((sum, r) => sum + r, 0);
-                setTotalResistance(`Resistencia total: ${total.toFixed(2)} Ω`);
+
+                finalResultDisplay = `R_{\\text{total}} = ${total.toFixed(2)} \\ \\Omega`;
+                alertMessage = `Resistencia Total (R) = ${total.toFixed(2)} Ω`;
             } else {
+                // Paralelo
                 if (resistanceValues.includes(0)) {
-                    setTotalResistance(
-                        '¡Atención! La resistencia en paralelo con un valor de 0 Ω resulta en 0 Ω total.'
+                    setTotalResistanceResult(
+                        '¡Atención! La resistencia total en paralelo es 0 Ω si una de las resistencias es 0 Ω.'
                     );
+                    setCalculationDetails([]);
                     return;
                 }
+
+                const reciprocalTerms = resistanceValues
+                    .map((r, i) => `\\frac{1}{R_{${i + 1}}}`)
+                    .join(' + ');
+                // Sustitución con unidades
+                const reciprocalNumericalTermsWithUnits = resistanceValues
+                    .map((r) => `\\frac{1}{${r.toFixed(2)} \\ \\Omega}`)
+                    .join(' + ');
+
+                // ELIMINADO $$ EXTRA AQUÍ
+                steps.push(`\\frac{1}{R_{\\text{total}}} = ${reciprocalTerms}`); // Fórmula general
+                steps.push(
+                    `\\frac{1}{R_{\\text{total}}} = ${reciprocalNumericalTermsWithUnits}`
+                ); // Sustitución con unidades
+
                 const reciprocalSum = resistanceValues.reduce(
                     (sum, r) => sum + 1 / r,
                     0
                 );
+                // ELIMINADO $$ EXTRA AQUÍ
+                steps.push(
+                    `\\frac{1}{R_{\\text{total}}} = ${reciprocalSum.toFixed(4)} \\ \\Omega^{-1}`
+                );
+
                 total = 1 / reciprocalSum;
-                setTotalResistance(`Resistencia total: ${total.toFixed(2)} Ω`);
+                // ELIMINADO $$ EXTRA AQUÍ
+                steps.push(
+                    `R_{\\text{total}} = \\frac{1}{${reciprocalSum.toFixed(4)} \\ \\Omega^{-1}}`
+                );
+
+                finalResultDisplay = `R_{\\text{total}} = ${total.toFixed(2)} \\ \\Omega`;
+                alertMessage = `Resistencia Total (R) = ${total.toFixed(2)} Ω`;
             }
+
+            // ELIMINADO $$ EXTRA AQUÍ
+            steps.push(`${finalResultDisplay}`); // El resultado final también sin $$
+            setCalculationDetails(steps);
+            setTotalResistanceResult(alertMessage);
         } catch (error) {
-            setTotalResistance(
+            setTotalResistanceResult(
                 '¡Vaya! Hubo un error en el cálculo. Asegúrate de que los valores sean válidos.'
             );
+            setCalculationDetails([]);
         }
     };
 
-    // --- Funciones de Utilidad (Añadir/Remover, Resetear) ---
-
-    // Función para añadir un campo de resistencia
-    const addResistor = () => {
-        setResistors([...resistors, '']);
+    const handleInputChange = () => {
+        setTotalResistanceResult(null);
+        setCalculationDetails([]);
     };
 
-    // Función para actualizar el valor de una resistencia
+    const addResistor = () => {
+        setResistors([...resistors, '']);
+        handleInputChange();
+    };
+
     const updateResistor = (index: number, value: string) => {
         const newResistors = [...resistors];
         newResistors[index] = value;
         setResistors(newResistors);
+        handleInputChange();
     };
 
-    // Función para eliminar un campo de resistencia
     const removeResistor = (index: number) => {
         if (resistors.length > 2) {
             const newResistors = [...resistors];
             newResistors.splice(index, 1);
             setResistors(newResistors);
+            handleInputChange();
         } else {
-            setTotalResistance(
+            setTotalResistanceResult(
                 'Debes tener al menos dos resistencias para calcular en serie/paralelo.'
             );
+            setCalculationDetails([]);
         }
     };
 
-    // Función para resetear calculadora de Serie/Paralelo
     const resetSeriesParallel = () => {
         setResistors(['', '']);
         setCircuitType('series');
-        setTotalResistance(null);
+        setTotalResistanceResult(null);
+        setCalculationDetails([]);
     };
 
     return (
@@ -121,9 +185,10 @@ export default function TotalResistor() {
                             <select
                                 className="select select-bordered select-sm w-full shadow-md bg-base-100 hover:bg-base-50 focus:outline-none focus:ring-3 focus:ring-primary focus:border-primary transition-all duration-300 ease-in-out"
                                 value={circuitType}
-                                onChange={(e) =>
-                                    setCircuitType(e.target.value)
-                                }>
+                                onChange={(e) => {
+                                    setCircuitType(e.target.value);
+                                    handleInputChange();
+                                }}>
                                 <option value="series">Serie</option>
                                 <option value="parallel">Paralelo</option>
                             </select>
@@ -131,8 +196,6 @@ export default function TotalResistor() {
 
                         {/* Campos de Resistencia */}
                         <div className="form-control space-y-4">
-                            {' '}
-                            {/* Aumentado el space-y para más separación */}
                             <div className="flex items-center justify-between">
                                 <label className="label">
                                     <span className="label-text text-base-content text-base font-semibold flex items-center gap-2">
@@ -149,7 +212,6 @@ export default function TotalResistor() {
                             </div>
                             <div className="space-y-3 max-h-60 overflow-y-auto custom-scrollbar p-1 pr-2 rounded-sm">
                                 {' '}
-                                {/* Contenedor con scroll para resistencias */}
                                 {resistors.map((resistor, index) => (
                                     <div
                                         key={index}
@@ -171,7 +233,7 @@ export default function TotalResistor() {
                                                 <Omega className="size-4" />
                                             </div>
                                         </label>
-                                        {resistors.length > 2 && ( // Permitir eliminar solo si hay más de 2 resistencias
+                                        {resistors.length > 2 && (
                                             <button
                                                 className="btn btn-error btn-square btn-sm shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 rounded-sm"
                                                 onClick={() =>
@@ -188,13 +250,13 @@ export default function TotalResistor() {
                         {/* Botones de acción */}
                         <div className="flex flex-col sm:flex-row gap-4 mt-6">
                             <button
-                                className="btn btn-primary btn-md flex-1 text-lg font-bold shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 rounded-lg"
+                                className="btn btn-primary btn-sm flex-1 text-lg font-bold shadow-md hover:shadow-lg rounded-sm"
                                 onClick={calculateTotalResistance}>
                                 <Calculator className="h-6 w-6" />
                                 Calcular
                             </button>
                             <button
-                                className="btn btn-outline btn-secondary btn-md flex-1 text-lg font-bold shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 rounded-lg"
+                                className="btn btn-outline btn-secondary btn-sm flex-1 text-lg font-bold shadow-md hover:shadow-lg rounded-sm"
                                 onClick={resetSeriesParallel}>
                                 <RotateCcw className="h-6 w-6" />
                                 Resetear
@@ -218,32 +280,48 @@ export default function TotalResistor() {
                             </div>
                         </div>
 
-                        {/* Sección de Resultado */}
+                        {/* Sección de Cálculo Detallado */}
                         <div className="mt-auto pt-5 border-t border-base-content/20 z-10 flex-grow flex flex-col justify-end">
                             <h3 className="text-xl font-extrabold text-accent text-center mb-3">
-                                Resultado
+                                Cálculo Detallado
                             </h3>
-                            {totalResistance ? (
+                            {calculationDetails.length > 0 ? (
+                                <div className="p-3 space-y-2 bg-base-200 rounded-lg shadow-inner border border-base-content/15 overflow-y-auto custom-scrollbar flex-grow">
+                                    {/* Aquí, el 'calc' ya no necesita $$ */}
+                                    {calculationDetails.map((calc, index) => (
+                                        <BlockMath key={index} math={calc} />
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="flex-grow flex items-center justify-center">
+                                    <p className="text-center text-base-content/70 italic text-sm">
+                                        Aquí aparecerán los pasos del cálculo.
+                                    </p>
+                                </div>
+                            )}
+
+                            {/* El alert solo se muestra si hay un mensaje de resultado o de error */}
+                            {totalResistanceResult && (
                                 <div
                                     role="alert"
-                                    className={`alert ${totalResistance.includes('¡Error!') || totalResistance.includes('¡Ups!') || totalResistance.includes('¡Atención!') ? 'alert-error' : 'alert-success'} shadow-xl mt-4 p-4 rounded-sm border-2 ${totalResistance.includes('¡Error!') || totalResistance.includes('¡Ups!') || totalResistance.includes('¡Atención!') ? 'border-error/50' : 'border-success/50'}`}>
-                                    {totalResistance.includes('¡Error!') ||
-                                    totalResistance.includes('¡Ups!') ||
-                                    totalResistance.includes('¡Atención!') ? (
+                                    className={`alert ${totalResistanceResult.includes('¡Error!') || totalResistanceResult.includes('¡Ups!') || totalResistanceResult.includes('¡Atención!') || totalResistanceResult.includes('Debes tener') ? 'alert-error' : 'alert-success'} shadow-xl mt-4 p-4 rounded-sm border-2 ${totalResistanceResult.includes('¡Error!') || totalResistanceResult.includes('¡Ups!') || totalResistanceResult.includes('¡Atención!') || totalResistanceResult.includes('Debes tener') ? 'border-error/50' : 'border-success/50'}`}>
+                                    {totalResistanceResult.includes(
+                                        '¡Error!'
+                                    ) ||
+                                    totalResistanceResult.includes('¡Ups!') ||
+                                    totalResistanceResult.includes(
+                                        '¡Atención!'
+                                    ) ||
+                                    totalResistanceResult.includes(
+                                        'Debes tener'
+                                    ) ? (
                                         <CircleX className="h-6 w-6" />
                                     ) : (
                                         <CircleCheck className="h-6 w-6" />
                                     )}
                                     <span className="font-bold text-lg">
-                                        {totalResistance}
+                                        {totalResistanceResult}
                                     </span>
-                                </div>
-                            ) : (
-                                <div className="flex-grow flex items-center justify-center">
-                                    <p className="text-center text-base-content/70 italic text-sm">
-                                        El resultado de la resistencia total
-                                        aparecerá aquí.
-                                    </p>
                                 </div>
                             )}
                         </div>
