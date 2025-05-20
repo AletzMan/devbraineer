@@ -1,7 +1,7 @@
-import { BadRequestError, ServerError } from "../_services/errors"
-import { SuccessResponse } from "../_services/successfulResponses"
+import { BadRequestError, ServerError } from '../_services/errors';
+import { SuccessResponse } from '../_services/successfulResponses';
 
-const URL_API_PISTON = "https://emkc.org/api/v2/piston/execute"
+const URL_API_PISTON = 'https://emkc.org/api/v2/piston/execute';
 
 export async function POST(req: Request) {
     try {
@@ -11,9 +11,9 @@ export async function POST(req: Request) {
         console.log(language, sourceCode, version, stdin);
 
         const response = await fetch(`${URL_API_PISTON}`, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 language,

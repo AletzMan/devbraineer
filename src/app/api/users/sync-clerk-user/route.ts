@@ -1,7 +1,7 @@
-import { auth } from "@clerk/nextjs/server";
-import prisma from "@/lib/db";
-import { NotAuthorizedError, ServerError } from "@api/_services/errors";
-import { SuccessCreate, SuccessUpdate } from "@api/_services/successfulResponses";
+import { auth } from '@clerk/nextjs/server';
+import prisma from '@/lib/db';
+import { NotAuthorizedError, ServerError } from '@api/_services/errors';
+import { SuccessUpdate } from '@api/_services/successfulResponses';
 
 export async function POST(req: Request) {
     const { userId } = await auth();
@@ -26,11 +26,9 @@ export async function POST(req: Request) {
             },
         });
 
-
         return SuccessUpdate(user);
-
     } catch (error) {
-        console.error("Error syncing Clerk user to Prisma DB:", error);
+        console.error('Error syncing Clerk user to Prisma DB:', error);
         return ServerError();
     }
 }
