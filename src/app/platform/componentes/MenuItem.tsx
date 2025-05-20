@@ -12,6 +12,9 @@ export function MenuItem({ item, currentPath }: MenuItemProps) {
         (child) => currentPath === child.href
     );
 
+    const isSubSectionActive =
+        currentPath.split('/')[currentPath.split('/').length - 1];
+    console.log(isSubSectionActive);
     const [isOpen, setIsOpen] = useState(isSectionActive || false);
 
     const IconComponent = item.icon;
@@ -26,9 +29,9 @@ export function MenuItem({ item, currentPath }: MenuItemProps) {
                         open={isOpen}
                         onToggle={(e) => setIsOpen(e.currentTarget.open)}
                         name="sidebar-section"
-                        className="max-2xl:hidden group-hover:max-2xl:block">
+                        className={`max-2xl:hidden group-hover:max-2xl:block ${isOpen ? 'bg-white/5' : ''}`}>
                         <summary
-                            className={` cursor-pointer ${isSectionActive ? 'font-semibold text-white' : 'text-gray-300'} `}>
+                            className={` cursor-pointer ${isSectionActive ? 'font-semibold text-white ' : 'text-gray-300'} `}>
                             {IconComponent && (
                                 <IconComponent
                                     className={`w-5 h-5 ${iconColorClass}`}
@@ -41,7 +44,16 @@ export function MenuItem({ item, currentPath }: MenuItemProps) {
                         <ul className="ml-4">
                             {item.children.map((Child) => (
                                 <li key={Child.label}>
-                                    <Link href={Child.href}>
+                                    <Link
+                                        href={Child.href}
+                                        className={
+                                            isSubSectionActive ===
+                                            Child.href.split('/')[
+                                                Child.href.split('/').length - 1
+                                            ]
+                                                ? 'menu-active '
+                                                : ''
+                                        }>
                                         {Child.icon && (
                                             <Child.icon
                                                 className={`w-5 h-5 ${Child.color}`}
@@ -55,7 +67,7 @@ export function MenuItem({ item, currentPath }: MenuItemProps) {
                     </details>
                     <Link
                         href={item.href || '#'}
-                        className={`max-2xl:block hidden group-hover:max-2xl:hidden ${isSectionActive ? 'menu-active' : ''}`}>
+                        className={`max-2xl:block hidden group-hover:max-2xl:hidden ${isSectionActive ? 'menu-active ' : ''}`}>
                         {IconComponent && (
                             <IconComponent
                                 className={`w-5 h-5 ${iconColorClass}`}
