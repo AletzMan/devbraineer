@@ -19,10 +19,13 @@ export async function GET(
         const targetUserId = (await params).userId;
 
         // Busca el perfil en la base de datos usando el userId
-        const profile = await prisma.profile.findUnique({
-            where: { userId: targetUserId },
-            // Puedes incluir el usuario relacionado si necesitas algunos datos del User model
-            // include: { user: { select: { username: true, email: true } } },
+        const profile = await prisma.user.findUnique({
+            where: { id: targetUserId },
+            include: {
+                regexPatterns: true,
+                snippets: true,
+                links: true,
+            },
         });
 
         if (!profile) {

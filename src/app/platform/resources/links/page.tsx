@@ -302,12 +302,12 @@ export default function LinksPage() {
                                 />
                             </div>
                             <div className="bg-neutral/40 rounded-md border border-gray-700 p-4">
-                                <h3 className="font-medium mb-3 text-warning">
+                                <h3 className="font-medium mb-3 ">
                                     Categorías
                                 </h3>
                                 <div className="space-y-2">
                                     <button
-                                        className={`btn w-full justify-start gap-2 font-normal ${selectedCategory === null ? 'btn-active bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'btn-ghost'}`}
+                                        className={`btn w-full justify-start gap-2 font-normal ${selectedCategory === null ? 'btn-active btn-soft' : 'btn-ghost'}`}
                                         onClick={() =>
                                             setSelectedCategory(null)
                                         }>
@@ -320,7 +320,7 @@ export default function LinksPage() {
                                     {uniqueCategories.map((category) => (
                                         <button
                                             key={category}
-                                            className={`btn w-full justify-start gap-2 font-normal ${selectedCategory === category ? 'btn-active bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'btn-ghost'}`}
+                                            className={`btn w-full justify-start gap-2 font-normal ${selectedCategory === category ? 'btn-active btn-soft' : 'btn-ghost'}`}
                                             onClick={() =>
                                                 setSelectedCategory(category)
                                             }>
@@ -340,12 +340,10 @@ export default function LinksPage() {
                                 </div>
                             </div>
                             <div className="bg-neutral/40 rounded-md border border-gray-700 p-4">
-                                <h3 className="font-medium mb-3 text-info">
-                                    Etiquetas
-                                </h3>
+                                <h3 className="font-medium mb-3 ">Etiquetas</h3>
                                 <div className="flex flex-wrap gap-2">
                                     <button
-                                        className={`btn btn-sm gap-1 h-7 ${selectedTag === null ? 'btn-active bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'btn-ghost'}`}
+                                        className={`btn btn-sm btn-soft btn-info gap-1 h-7 ${selectedTag === null ? 'btn-active' : 'btn-ghost'}`}
                                         onClick={() => setSelectedTag(null)}>
                                         <Tag className="h-3 w-3" />
                                         Todas
@@ -353,7 +351,7 @@ export default function LinksPage() {
                                     {uniqueTags.map((tag) => (
                                         <button
                                             key={tag}
-                                            className={`btn btn-sm gap-1 h-7 ${selectedTag === tag ? 'btn-active bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'btn-ghost'}`}
+                                            className={`btn btn-sm btn-soft btn-info gap-1 h-7 ${selectedTag === tag ? 'btn-active' : 'btn-ghost'}`}
                                             onClick={() => setSelectedTag(tag)}>
                                             <Tag className="h-3 w-3" />
                                             {tag}

@@ -271,7 +271,7 @@ export default function SnippetsPage() {
                 </header>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 overflow-y-auto h-[calc(100svh-10.5rem)] pb-4 px-4">
                     <div className="md:col-span-1  bg-neutral/40 rounded-sm  p-4">
-                        <div className="sticky top-4 space-y-6">
+                        <div className="sticky top-4 space-y-4">
                             <label className="input w-full">
                                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-zinc-500 dark:text-zinc-400" />
                                 <input
@@ -285,12 +285,12 @@ export default function SnippetsPage() {
                                 />
                             </label>
                             <div className=" bg-neutral/50 rounded-md border border-gray-700 p-4">
-                                <h3 className="font-medium text-warning mb-3">
+                                <h3 className="font-medium mb-3 ">
                                     Categorías
                                 </h3>
                                 <div className="space-y-2">
                                     <button
-                                        className={`btn w-full justify-start gap-2 font-normal ${selectedCategory === null ? 'btn-active bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'btn-ghost'}`}
+                                        className={`btn w-full justify-start gap-2 font-normal ${selectedCategory === null ? 'btn-active btn-soft' : 'btn-ghost'}`}
                                         onClick={() =>
                                             setSelectedCategory(null)
                                         }>
@@ -323,9 +323,7 @@ export default function SnippetsPage() {
                                 </div>
                             </div>
                             <div className=" bg-neutral/50 rounded-md border border-gray-700 p-4">
-                                <h3 className="font-medium mb-3 text-info">
-                                    Etiquetas
-                                </h3>
+                                <h3 className="font-medium mb-3 ">Etiquetas</h3>
                                 <div className="flex flex-wrap gap-2">
                                     <button
                                         className={`btn btn-sm btn-soft btn-info gap-1 h-7 ${selectedTag === null ? 'btn-active' : 'btn-ghost'}`}
