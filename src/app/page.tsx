@@ -15,6 +15,7 @@ import {
     Twitter,
     Linkedin,
 } from 'lucide-react';
+import { Logo } from './components/Logo';
 
 export default function Home() {
     return (
@@ -25,7 +26,7 @@ export default function Home() {
                 {/* Fondo con gradiente radial sutil */}
                 <div className="absolute inset-0 z-0 pointer-events-none">
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-transparent opacity-60"></div>
-                    <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>{' '}
+                    <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
                     {/* Patrón de cuadrícula sutil (requiere CSS) */}
                 </div>
 
@@ -33,22 +34,24 @@ export default function Home() {
                     <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
                         {/* Logo y Nombre de la App */}
                         <div className="flex items-center gap-4 mb-8">
-                            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center shadow-lg animate-pulse-subtle">
-                                {' '}
-                                {/* Animación sutil */}
-                                <Code2 className="w-8 h-8 text-white" />
+                            <div className="flex items-center justify-center gap-2 px-3 py-2 ">
+                                <Logo className="size-30 text-(--color-primary)" />
+                                <h1
+                                    className="items-center justify-center h-full pt-1.5 text-7xl font-bold text-(--color-warning) max-2xl:hidden group-hover:max-2xl:flex"
+                                    style={{
+                                        fontFamily: 'var(--font-josefin-sans)',
+                                    }}>
+                                    DevBraineer
+                                </h1>
                             </div>
-                            <h1 className="text-4xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400 drop-shadow-lg">
-                                DevBraineer
-                            </h1>
                         </div>
 
                         {/* Título Principal */}
                         <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight">
-                            Herramientas esenciales para{' '}
+                            Herramientas esenciales para
                             <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-teal-400">
-                                desarrolladores
-                            </span>{' '}
+                                {' desarrolladores '}
+                            </span>
                             e ingenieros
                         </h2>
 
@@ -71,7 +74,7 @@ export default function Home() {
                                 <ArrowRight className="w-5 h-5 ml-2" />
                             </Link>
                             <a
-                                href="https://github.com/tu-usuario/tu-repo" // Reemplaza con la URL de tu repo en GitHub
+                                href="https://github.com/AletzMan/devbraineer" // Reemplaza con la URL de tu repo en GitHub
                                 target="_blank" // Abre en una nueva pestaña
                                 rel="noopener noreferrer" // Seguridad
                                 className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-gray-300 bg-gray-800 border border-gray-700 rounded-full shadow-lg hover:bg-gray-700 hover:border-gray-600 transition-all duration-300 ease-in-out transform hover:scale-105">
@@ -84,7 +87,6 @@ export default function Home() {
 
             {/* Features Section */}
             <section className="py-20 md:py-32 bg-gray-900">
-                {' '}
                 {/* Fondo ligeramente diferente */}
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16 max-w-3xl mx-auto">
@@ -108,7 +110,6 @@ export default function Home() {
                                 Desarrollo Web
                             </h3>
                             <p className="text-gray-400 mb-6 flex-grow">
-                                {' '}
                                 {/* flex-grow para que ocupen el mismo espacio */}
                                 Herramientas para formatear, validar y optimizar
                                 tu código HTML, CSS y JavaScript.
@@ -127,9 +128,8 @@ export default function Home() {
                                     <span>Formateador de Código</span>
                                 </li>
                             </ul>
-                            <Link href="/tools/playground" passHref>
+                            <Link href="/platform/playground" passHref>
                                 <button className="inline-flex items-center justify-center px-6 py-3 text-md font-semibold text-blue-400 border border-blue-400 rounded-full hover:bg-blue-400 hover:text-white transition-all duration-300 ease-in-out self-start">
-                                    {' '}
                                     {/* self-start para alinear */}
                                     Ver herramientas
                                     <ArrowRight className="w-4 h-4 ml-2" />
@@ -163,7 +163,7 @@ export default function Home() {
                                     <span>Convertidor de Unidades</span>
                                 </li>
                             </ul>
-                            <Link href="/tools/json-converter" passHref>
+                            <Link href="/platform/tools-dev/converter" passHref>
                                 <button className="inline-flex items-center justify-center px-6 py-3 text-md font-semibold text-purple-400 border border-purple-400 rounded-full hover:bg-purple-400 hover:text-white transition-all duration-300 ease-in-out self-start">
                                     Ver herramientas
                                     <ArrowRight className="w-4 h-4 ml-2" />
@@ -197,7 +197,9 @@ export default function Home() {
                                     <span>Simulador Lógico Digital</span>
                                 </li>
                             </ul>
-                            <Link href="/tools/circuit-calculator" passHref>
+                            <Link
+                                href="/platform/tools-tech/circuit-calculator"
+                                passHref>
                                 <button className="inline-flex items-center justify-center px-6 py-3 text-md font-semibold text-teal-400 border border-teal-400 rounded-full hover:bg-teal-400 hover:text-white transition-all duration-300 ease-in-out self-start">
                                     Ver herramientas
                                     <ArrowRight className="w-4 h-4 ml-2" />
@@ -210,7 +212,6 @@ export default function Home() {
 
             {/* Popular Tools Section */}
             <section className="py-20 md:py-32 bg-gray-950">
-                {' '}
                 {/* Fondo oscuro principal */}
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16 max-w-3xl mx-auto">
@@ -226,7 +227,7 @@ export default function Home() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {/* Popular Tool Card - Playground */}
                         <Link
-                            href="/tools/playground"
+                            href="/platform/playground"
                             passHref
                             className="group">
                             <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-700 rounded-xl p-6 h-full flex flex-col hover:shadow-xl transition-all duration-300 ease-in-out group-hover:border-blue-600">
@@ -248,7 +249,7 @@ export default function Home() {
 
                         {/* Popular Tool Card - Circuit Calculator */}
                         <Link
-                            href="/tools/circuit-calculator"
+                            href="/platform/tools-tech/circuit-calculator"
                             passHref
                             className="group">
                             <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-700 rounded-xl p-6 h-full flex flex-col hover:shadow-xl transition-all duration-300 ease-in-out group-hover:border-teal-600">
@@ -270,7 +271,7 @@ export default function Home() {
 
                         {/* Popular Tool Card - JSON Converter */}
                         <Link
-                            href="/tools/json-converter"
+                            href="/platform/tools-dev/converter"
                             passHref
                             className="group">
                             <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-700 rounded-xl p-6 h-full flex flex-col hover:shadow-xl transition-all duration-300 ease-in-out group-hover:border-purple-600">
@@ -291,7 +292,10 @@ export default function Home() {
                         </Link>
 
                         {/* Popular Tool Card - Regex Generator */}
-                        <Link href="/tools/regex" passHref className="group">
+                        <Link
+                            href="/platform/tools-dev/regex"
+                            passHref
+                            className="group">
                             <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-700 rounded-xl p-6 h-full flex flex-col hover:shadow-xl transition-all duration-300 ease-in-out group-hover:border-blue-600">
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center shadow-md">
@@ -311,8 +315,7 @@ export default function Home() {
                     </div>
 
                     <div className="text-center mt-16">
-                        <Link href="/tools" passHref>
-                            {' '}
+                        <Link href="/platform/tools-dev/converter" passHref>
                             {/* Asumiendo que '/tools' lista todas las herramientas */}
                             <button className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-blue-400 border border-blue-400 rounded-full hover:bg-blue-400 hover:text-white transition-all duration-300 ease-in-out transform hover:scale-105">
                                 Ver todas las herramientas
@@ -325,7 +328,6 @@ export default function Home() {
 
             {/* CTA Section */}
             <section className="py-20 md:py-32 bg-gray-900">
-                {' '}
                 {/* Fondo ligeramente diferente */}
                 <div className="container mx-auto px-4">
                     <div className="max-w-3xl mx-auto text-center">
@@ -340,13 +342,13 @@ export default function Home() {
                         <div className="flex flex-col sm:flex-row gap-6 justify-center">
                             {/* Botón Sugerir */}
                             <a
-                                href="mailto:your-email@example.com" // Reemplaza con tu email o un enlace a un formulario
+                                href="mailto:alejandro.ga.dev@gmail.com" // Reemplaza con tu email o un enlace a un formulario
                                 className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-purple-400 border border-purple-400 rounded-full hover:bg-purple-400 hover:text-white transition-all duration-300 ease-in-out transform hover:scale-105">
                                 Sugerir una herramienta
                             </a>
                             {/* Botón Contribuir */}
                             <a
-                                href="https://github.com/tu-usuario/tu-repo" // Reemplaza con la URL de tu repo en GitHub
+                                href="https://github.com/AletzMan/devbraineer" // Reemplaza con la URL de tu repo en GitHub
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-gray-300 bg-gray-800 border border-gray-700 rounded-full shadow-lg hover:bg-gray-700 hover:border-gray-600 transition-all duration-300 ease-in-out transform hover:scale-105">
@@ -361,24 +363,28 @@ export default function Home() {
             <footer className="py-12 bg-gray-950 border-t border-gray-800">
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-                        {' '}
                         {/* Ajustado gap */}
                         {/* Logo en Footer */}
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center shadow-md">
-                                <Code2 className="w-5 h-5 text-white" />
+                            <div className="flex items-center gap-4 mb-8">
+                                <div className="flex items-center justify-center gap-2 px-3 py-2 ">
+                                    <Logo className="size-12 text-(--color-primary)" />
+                                    <h1
+                                        className="items-center justify-center h-full pt-1.5 text-3xl font-bold text-(--color-warning) max-2xl:hidden group-hover:max-2xl:flex"
+                                        style={{
+                                            fontFamily:
+                                                'var(--font-josefin-sans)',
+                                        }}>
+                                        DevBraineer
+                                    </h1>
+                                </div>
                             </div>
-                            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400">
-                                DevBraineer
-                            </span>
                         </div>
                         {/* Enlaces del Footer */}
                         <div className="flex flex-wrap justify-center gap-x-8 gap-y-4">
-                            {' '}
                             {/* Ajustado gap */}
                             {/* Columna de Herramientas */}
                             <div className="text-center md:text-left">
-                                {' '}
                                 {/* Alineación responsiva */}
                                 <h4 className="font-semibold text-white mb-3">
                                     Herramientas
@@ -386,28 +392,28 @@ export default function Home() {
                                 <ul className="space-y-2 text-gray-400">
                                     <li>
                                         <Link
-                                            href="/tools/playground"
+                                            href="/platform/playground"
                                             className="hover:text-white transition-colors duration-200">
                                             Playground de Código
                                         </Link>
                                     </li>
                                     <li>
                                         <Link
-                                            href="/tools/circuit-calculator"
+                                            href="/platform/tools-tech/circuit-calculator"
                                             className="hover:text-white transition-colors duration-200">
                                             Calculadora de Circuitos
                                         </Link>
                                     </li>
                                     <li>
                                         <Link
-                                            href="/tools/json-converter"
+                                            href="/platform/tools-dev/converter"
                                             className="hover:text-white transition-colors duration-200">
                                             Convertidor JSON
                                         </Link>
                                     </li>
                                     <li>
                                         <Link
-                                            href="/tools/regex"
+                                            href="/platform/tools-dev/regex"
                                             className="hover:text-white transition-colors duration-200">
                                             Generador RegEx
                                         </Link>
@@ -417,7 +423,6 @@ export default function Home() {
                             </div>
                             {/* Columna de Enlaces */}
                             <div className="text-center md:text-left">
-                                {' '}
                                 {/* Alineación responsiva */}
                                 <h4 className="font-semibold text-white mb-3">
                                     Enlaces
@@ -456,10 +461,9 @@ export default function Home() {
                         </div>
                         {/* Iconos Sociales */}
                         <div className="flex gap-4 mt-6 md:mt-0">
-                            {' '}
                             {/* Ajustado margen */}
                             <a
-                                href="https://github.com/tu-usuario/tu-repo"
+                                href="https://github.com/AletzMan/devbraineer"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-gray-400 hover:text-white transition-colors duration-200"
@@ -467,15 +471,7 @@ export default function Home() {
                                 <Github className="w-6 h-6" />
                             </a>
                             <a
-                                href="https://twitter.com/tu-usuario"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-gray-400 hover:text-white transition-colors duration-200"
-                                title="Twitter">
-                                <Twitter className="w-6 h-6" />
-                            </a>
-                            <a
-                                href="https://linkedin.com/in/tu-perfil"
+                                href="https://www.linkedin.com/in/alejandro-garcia-dev/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-gray-400 hover:text-white transition-colors duration-200"
@@ -487,7 +483,6 @@ export default function Home() {
 
                     {/* Copyright */}
                     <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-600 text-sm">
-                        {' '}
                         {/* Ajustado estilos */}
                         <p>
                             &copy; {new Date().getFullYear()} DevBraineer. Todos
