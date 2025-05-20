@@ -132,7 +132,7 @@ export default function ConverterPage() {
             <div className="flex flex-col flex-1 gap-4 max-w-[1650px] mx-auto w-full">
                 <header className="flex flex-col md:flex-row items-center justify-between border-b px-4 py-2 border-gray-700 gap-4 bg-white/3">
                     <div className="flex flex-col text-center md:text-left">
-                        <h1 className="text-3xl font-bold text-secondary">
+                        <h1 className="text-2xl font-bold text-secondary">
                             Convertidor de Datos
                         </h1>
                         <p className="text-gray-400">
@@ -156,10 +156,12 @@ export default function ConverterPage() {
                     <button
                         className="btn btn-primary btn-sm font-light"
                         onClick={handleConvert}
-                        disabled={input.trim() === ''}>  
-                        Convertir 
+                        disabled={input.trim() === ''}>
+                        Convertir
                     </button>
-                    <button className="btn btn-secondary btn-sm font-light" onClick={handleClear}>
+                    <button
+                        className="btn btn-secondary btn-sm font-light"
+                        onClick={handleClear}>
                         <BrushCleaning className="size-4" />
                         Limpiar
                     </button>
