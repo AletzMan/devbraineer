@@ -1,15 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import {
-    Copy,
-    Check,
-    Search,
-    Lightbulb,
-    InfoIcon,
-    CopyIcon,
-    PlayIcon,
-} from 'lucide-react';
+import { Copy, Check, Search, Lightbulb, InfoIcon } from 'lucide-react';
 import { simbolos, tips } from '../../constants';
 import MyPatternsRegex from './componets/MyPatternsRegex';
 import PatternRegex from './componets/PatternRegex';
