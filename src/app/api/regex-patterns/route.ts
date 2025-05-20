@@ -72,6 +72,7 @@ export async function POST(req: Request) {
         });
 
         // Retorna el patrón recién creado con un estado 201 (Created).
+        console.log('Patrón creado:', newPattern);
         return SuccessCreate(newPattern);
     } catch (error) {
         if (error instanceof ZodError) {
