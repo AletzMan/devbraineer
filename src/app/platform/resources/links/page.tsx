@@ -270,7 +270,7 @@ export default function LinksPage() {
         <div className="flex flex-col min-h-[calc(100svh-4rem)] bg-neutral/30">
             <Toaster position="top-right" />
             <div className="flex-1 max-w-(--max-width) mx-auto w-full">
-                <header className="flex flex-col sm:flex-row items-center justify-between mb-6 bg-white/5 border-b border-gray-700 px-4 py-2">
+                <header className="flex flex-col sm:flex-row items-center justify-between mb-6 bg-white/3 border-b border-gray-700 px-4 py-2">
                     <div>
                         <h1 className="text-2xl font-bold text-secondary">
                             Enlaces Guardados
