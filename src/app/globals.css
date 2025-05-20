@@ -1,49 +1,68 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @plugin "daisyui" {
-  themes: light --default, dark, dark;
+    themes:
+        light --default,
+        dark,
+        dark;
 }
 
+:root{
+    --max-width: 1650px
+}
 
 body {
-  color: var(--foreground);
-  height: 100vh;
-  font-family: var(--font-jost);
+    color: var(--foreground);
+    height: 100vh;
+    font-family: var(--font-jost);
 }
 
-
 .cl-rootBox:not(.cl-signIn-root):not(.cl-signUp-root):not(.cl-userButton-root) {
-  background-color: var(--color-base-300);
-  height: 100svh;
-  font-family: var(--font-jost);
-
-  &>div {
+    background-color: var(--color-base-300);
     height: 100svh;
-  }
+    font-family: var(--font-jost);
+
+    & > div {
+        height: 100svh;
+    }
 }
 
 .cl-card.cl-signIn-start {
-  background: linear-gradient(135deg, var(--color-base-300), var(--color-base-100)) !important;
+    background: linear-gradient(
+        135deg,
+        var(--color-base-300),
+        var(--color-base-100)
+    ) !important;
 }
 
 .main {
-  background: var(--color-base-300);
-  --gap: 5em;
-  --line: 1px;
-  --color: rgba(116, 116, 116, 0.2);
+    background: var(--color-base-300);
+    --gap: 5em;
+    --line: 1px;
+    --color: rgba(116, 116, 116, 0.2);
 
-  background-image: linear-gradient(-90deg,
-      transparent calc(var(--gap) - var(--line)),
-      var(--color) calc(var(--gap) - var(--line) + 1px),
-      var(--color) var(--gap)),
-    linear-gradient(0deg,
-      transparent calc(var(--gap) - var(--line)),
-      var(--color) calc(var(--gap) - var(--line) + 1px),
-      var(--color) var(--gap));
-  background-size: var(--gap) var(--gap);
+    background-image:
+        linear-gradient(
+            -90deg,
+            transparent calc(var(--gap) - var(--line)),
+            var(--color) calc(var(--gap) - var(--line) + 1px),
+            var(--color) var(--gap)
+        ),
+        linear-gradient(
+            0deg,
+            transparent calc(var(--gap) - var(--line)),
+            var(--color) calc(var(--gap) - var(--line) + 1px),
+            var(--color) var(--gap)
+        );
+    background-size: var(--gap) var(--gap);
 }
 
 .scrollbar-thin {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-primary) var(--color-base-100);
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) var(--color-base-100);
+}
+
+.monaco-editor .margin,
+.monaco-editor-background {
+    background-color: var(--color-neutral-900) !important;
 }
