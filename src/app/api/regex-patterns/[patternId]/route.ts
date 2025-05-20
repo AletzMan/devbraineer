@@ -10,11 +10,11 @@ import {
 // Obtiene los detalles de un patrón de regex específico por su ID. (Público en el MVP)
 export async function GET(
     req: Request,
-    { params }: { params: { patternId: string } }
+    { params }: { params: Promise<{ patternId: string }> }
 ) {
     try {
         // La ID del patrón que queremos obtener se obtiene de los parámetros de la URL.
-        const targetPatternId = params.patternId;
+        const targetPatternId = (await params).patternId;
 
         // Busca el patrón en la base de datos por su ID.
         const pattern: RegexPattern | null =
@@ -39,10 +39,10 @@ export async function GET(
 
 export async function DELETE(
     req: Request,
-    { params }: { params: { patternId: string } }
+    { params }: { params: Promise<{ patternId: string }> }
 ) {
     try {
-        const targetPatternId = params.patternId;
+        const targetPatternId = (await params).patternId;
         const deletedPattern = await prisma.regexPattern.delete({
             where: { id: targetPatternId },
         });

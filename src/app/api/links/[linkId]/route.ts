@@ -12,10 +12,10 @@ import { ZodError } from 'zod';
 // GET /api/links/[linkId]
 export async function GET(
     req: Request,
-    { params }: { params: { linkId: string } }
+    { params }: { params: Promise<{ linkId: string }> }
 ) {
     try {
-        const targetLinkId = params.linkId;
+        const targetLinkId = (await params).linkId;
 
         const link: Link | null = await prisma.link.findUnique({
             where: { id: targetLinkId },
@@ -34,10 +34,10 @@ export async function GET(
 // DELETE /api/links/[linkId]
 export async function DELETE(
     req: Request,
-    { params }: { params: { linkId: string } }
+    { params }: { params: Promise<{ linkId: string }> }
 ) {
     try {
-        const targetLinkId = params.linkId;
+        const targetLinkId = (await params).linkId;
 
         const link: Link | null = await prisma.link.findUnique({
             where: { id: targetLinkId },
@@ -60,10 +60,10 @@ export async function DELETE(
 // PUT /api/links/[linkId]
 export async function PUT(
     req: Request,
-    { params }: { params: { linkId: string } }
+    { params }: { params: Promise<{ linkId: string }> }
 ) {
     try {
-        const targetLinkId = params.linkId;
+        const targetLinkId = (await params).linkId;
         const { url, title, description, category, thumbnailUrl, tags } =
             await req.json();
 

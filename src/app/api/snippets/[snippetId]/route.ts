@@ -9,10 +9,10 @@ import {
 // GET /api/snippets/[snippetId]
 export async function GET(
     req: Request,
-    { params }: { params: { snippetId: string } }
+    { params }: { params: Promise<{ snippetId: string }> }
 ) {
     try {
-        const targetSnippetId = params.snippetId;
+        const targetSnippetId = (await params).snippetId;
 
         // Busca el snippet en la base de datos por su ID.
         const snippet: Snippet | null = await prisma.snippet.findUnique({
@@ -37,10 +37,10 @@ export async function GET(
 // DELETE /api/snippets/[snippetId]
 export async function DELETE(
     req: Request,
-    { params }: { params: { snippetId: string } }
+    { params }: { params: Promise<{ snippetId: string }> }
 ) {
     try {
-        const targetSnippetId = params.snippetId;
+        const targetSnippetId = (await params).snippetId;
         const deletedSnippet = await prisma.snippet.delete({
             where: { id: targetSnippetId },
         });

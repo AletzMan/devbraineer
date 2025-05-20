@@ -113,12 +113,6 @@ export const menuData: IMenuItem[] = [
                 icon: RegexIcon,
                 color: 'text-blue-300', // Color para los iconos hijos
             },
-            {
-                label: 'Formateador',
-                href: '/platform/tools-dev/formatter',
-                icon: PenTool,
-                color: 'text-blue-300', // Color para los iconos hijos
-            },
         ],
     },
     {
