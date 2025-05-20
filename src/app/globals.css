@@ -18,12 +18,20 @@ body {
 }
 
 .cl-rootBox:not(.cl-signIn-root):not(.cl-signUp-root):not(.cl-userButton-root) {
-    background-color: var(--color-base-300);
-    height: 100svh;
     font-family: var(--font-jost);
+    background-color: var(--color-base-300) !important;
 
     & > div {
-        height: 100svh;
+        height: calc(100vh - 4rem);
+        border-radius: 0;
+    }
+    & .cl-scrollBox {
+        background-color: var(--color-base-300) !important;
+        border-radius: 0;
+    }
+
+    & .cl-navbar {
+        background-color: var(--color-base-300) !important;
     }
 }
 
