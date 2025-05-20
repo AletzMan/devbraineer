@@ -21,7 +21,7 @@ import PatternRegex from './PatternRegex';
 
 interface MyPatternsPageProps {
     setPattern: (pattern: string) => void;
-    setActiveTab: (tab: string) => void;
+    setActiveTab: (tab: 'tester' | 'patterns' | 'myPatterns') => void;
 }
 
 export default function MyPatternsPage({

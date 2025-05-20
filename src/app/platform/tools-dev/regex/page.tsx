@@ -166,7 +166,9 @@ export default function RegexPage() {
     const [testString, setTestString] = useState('');
     const [matches, setMatches] = useState<string[]>([]);
     const [copied, setCopied] = useState(false);
-    const [activeTab, setActiveTab] = useState('patterns');
+    const [activeTab, setActiveTab] = useState<
+        'tester' | 'patterns' | 'myPatterns'
+    >('tester');
 
     // Flags
     const [globalFlag, setGlobalFlag] = useState(true);

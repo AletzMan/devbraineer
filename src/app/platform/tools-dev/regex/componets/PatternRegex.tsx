@@ -15,7 +15,7 @@ export default function PatternRegex({
     item: RegexPattern;
     index: number;
     setPattern: (pattern: string) => void;
-    setActiveTab: (tab: string) => void;
+    setActiveTab: (tab: 'tester' | 'patterns' | 'myPatterns') => void;
     visibleDate?: boolean;
     onDelete?: () => void;
 }) {
@@ -37,9 +37,10 @@ export default function PatternRegex({
                 </div>
                 {onDelete && (
                     <button
-                        className="btn btn-soft btn-xs btn-error rounded-sm font-light self-start"
+                        className="btn btn-ghost btn-circle btn-sm tooltip tooltip-left self-start"
+                        data-tip="Eliminar"
                         onClick={onDelete}>
-                        <TrashIcon className="size-3" />
+                        <TrashIcon className="h-4 w-4 text-zinc-500 hover:text-red-500" />
                     </button>
                 )}
             </header>

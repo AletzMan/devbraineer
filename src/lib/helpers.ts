@@ -29,3 +29,30 @@ export const FormattedDate = (date: string) => {
     );
     return `${formatted} `;
 };
+
+export const getFavicon = (url: string): string => {
+    try {
+        const domain = new URL(url).hostname;
+        return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+    } catch (e) {
+        return '';
+    }
+};
+
+export const generateThumbnailUrl = (url: string): string => {
+    try {
+        const websiteUrl = new URL(url);
+        return `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&embed=screenshot.url`;
+    } catch (e) {
+        return 'https://images.pexels.com/photos/4974915/pexels-photo-4974915.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'; // Fallback
+    }
+};
+
+export const getBaseDomain = (url: string): string => {
+    try {
+        const parsedUrl = new URL(url);
+        return parsedUrl.hostname;
+    } catch (e) {
+        return url;
+    }
+};
