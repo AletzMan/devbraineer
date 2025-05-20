@@ -124,6 +124,7 @@ model Link {
   url           String                        // La URL del recurso.
   title         String                        // Título del recurso (puede obtenerse del scraping o manual).
   description   String?   @db.Text            // Descripción opcional del recurso.
+  category      String?                       // Categoría opcional (ej. "Frontend", "Backend", "Utilidad").
   thumbnailUrl  String?                       // URL de una miniatura (opcional).
   tags          String[]                      // Array de Strings para etiquetas.
 

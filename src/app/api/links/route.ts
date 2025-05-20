@@ -1,6 +1,5 @@
 import { auth } from '@clerk/nextjs/server';
 import prisma from '@/lib/db';
-import { NextResponse } from 'next/server';
 import { Link } from '@prisma/client';
 import {
     SuccessCreate,
@@ -46,13 +45,14 @@ export async function POST(req: Request) {
 
     try {
         // Obtiene los datos del link del cuerpo de la solicitud.
-        const { url, title, description, thumbnailUrl, tags } =
+        const { url, title, description, category, thumbnailUrl, tags } =
             await req.json();
 
         const validatedData = createLinkSchema.parse({
             url,
             title,
             description,
+            category,
             thumbnailUrl,
             tags,
         });
@@ -60,6 +60,7 @@ export async function POST(req: Request) {
             url: validatedUrl,
             title: validatedTitle,
             description: validatedDescription,
+            category: validatedCategory,
             thumbnailUrl: validatedThumbnailUrl,
             tags: validatedTags,
         } = validatedData;
@@ -70,6 +71,7 @@ export async function POST(req: Request) {
                 url: validatedUrl,
                 title: validatedTitle,
                 description: validatedDescription || '',
+                category: validatedCategory || '',
                 thumbnailUrl: validatedThumbnailUrl || null,
                 tags: validatedTags || [],
                 sharerId: userId,
