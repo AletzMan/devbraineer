@@ -6,6 +6,7 @@ import { simbolos, tips } from '../../constants';
 import MyPatternsRegex from './componets/MyPatternsRegex';
 import PatternRegex from './componets/PatternRegex';
 import { RegexPattern } from '@prisma/client';
+import HeaderSection from '../../componentes/HeaderSection';
 
 const commonPatterns: RegexPattern[] = [
     {
@@ -217,14 +218,10 @@ export default function RegexPage() {
     return (
         <div className="flex min-h-screen w-[--max-width] bg-neutral/50">
             <div className="flex flex-col gap-2 flex-1 ">
-                <header className="bg-white/3 px-4 py-2 border-b-1 border-gray-700">
-                    <h1 className="text-2xl font-bold text-secondary">
-                        Generador de Expresiones Regulares
-                    </h1>
-                    <p className="text-zinc-500 dark:text-zinc-400">
-                        Crea, prueba y valida expresiones regulares fácilmente
-                    </p>
-                </header>
+                <HeaderSection
+                    title="Generador de RegEx"
+                    description="Crea, prueba y valida expresiones regulares fácilmente"
+                />
 
                 {/* name of each tab group should be unique */}
                 <div className="tabs tabs-lift p-2 h-[calc(100svh-11.5em)]">
