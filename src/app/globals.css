@@ -82,3 +82,10 @@ body {
 .monaco-editor-background {
     background-color: var(--color-neutral-900) !important;
 }
+
+.katex-display {
+    text-align: center;
+    margin: 0.25em 0 !important;
+    font-size: 0.85em !important;
+    display: block;
+}
