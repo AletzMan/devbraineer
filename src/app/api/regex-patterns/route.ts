@@ -22,7 +22,7 @@ export async function GET(req: Request) {
             return NotAuthorizedError();
         }
         const patterns: RegexPattern[] = await prisma.regexPattern.findMany({
-            where: { authorId: userId },
+            where: { user: { id: userId } },
             orderBy: {
                 created_at: 'asc', // Opcional: Ordenar por nombre o fecha
             },
