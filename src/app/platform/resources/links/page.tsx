@@ -22,7 +22,7 @@ import {
     CreateUpdateLinkPayload,
 } from '@/services/link.service';
 import { toast, Toaster } from 'react-hot-toast';
-import LinkCard from './components/LinkCard';
+import LinkCard from './components/LinkCard'; // Asegúrate de que LinkCard también tenga estilos consistentes
 
 export default function LinksPage() {
     const [links, setLinks] = useState<Link[]>([]);
@@ -45,7 +45,7 @@ export default function LinksPage() {
         url: '',
         description: '',
         category: '',
-        sharerId: '',
+        sharerId: '', // Este campo probablemente necesita un valor por defecto o ser opcional
         thumbnailUrl: '',
         created_at: new Date(),
         updated_at: new Date(),
@@ -141,7 +141,7 @@ export default function LinksPage() {
             url: '',
             description: '',
             category: '',
-            sharerId: '',
+            sharerId: '', // Asegúrate de manejar este campo si es obligatorio
             thumbnailUrl: '',
             created_at: new Date(),
             updated_at: new Date(),
@@ -267,15 +267,15 @@ export default function LinksPage() {
     };
 
     return (
-        <div className="flex h-[calc(100svh-4rem)] bg-neutral/50">
+        <div className="flex flex-col min-h-[calc(100svh-4rem)] bg-neutral/30">
             <Toaster position="top-right" />
-            <div className="flex-1 max-w-[1600px] mx-auto ">
-                <header className="flex flex-col sm:flex-row items-center justify-between mb-6 px-3 py-2 bg-white/10 ">
+            <div className="flex-1 max-w-(--max-width) mx-auto w-full">
+                <header className="flex flex-col sm:flex-row items-center justify-between mb-6 bg-white/5 border-b border-gray-700 px-4 py-2">
                     <div>
                         <h1 className="text-2xl font-bold text-secondary">
                             Enlaces Guardados
                         </h1>
-                        <p className="text-sm text-gray-400">
+                        <p className="text-zinc-500 dark:text-zinc-400">
                             Colecciona y organiza tus recursos web favoritos
                         </p>
                     </div>
@@ -286,27 +286,23 @@ export default function LinksPage() {
                         Nuevo Enlace
                     </button>
                 </header>
-
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 overflow-y-auto h-[calc(100svh-10.5rem)] pb-4">
-                    {/* Panel lateral de búsqueda y filtros */}
-                    <div className="md:col-span-1">
-                        <div className="sticky top-4 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 overflow-y-auto h-[calc(100svh-10.5rem)] pb-4 px-4 ">
+                    <div className="md:col-span-1 bg-neutral/40 p-4 rounded-md">
+                        <div className="sticky top-4 space-y-4">
                             <div className="relative">
                                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-zinc-500 dark:text-zinc-400" />
                                 <input
                                     type="search"
                                     placeholder="Buscar enlaces..."
-                                    className="input input-bordered w-full pl-9 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-50 border-zinc-300 dark:border-zinc-700"
+                                    className="input input-bordered w-full pl-9"
                                     value={searchTerm}
                                     onChange={(e) =>
                                         setSearchTerm(e.target.value)
                                     }
                                 />
                             </div>
-
-                            {/* Filtro por Categorías */}
-                            <div className="bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700 p-4">
-                                <h3 className="font-medium mb-3 text-zinc-900 dark:text-zinc-50">
+                            <div className="bg-neutral/40 rounded-md border border-gray-700 p-4">
+                                <h3 className="font-medium mb-3 text-warning">
                                     Categorías
                                 </h3>
                                 <div className="space-y-2">
@@ -343,10 +339,8 @@ export default function LinksPage() {
                                     ))}
                                 </div>
                             </div>
-
-                            {/* Filtro por Etiquetas */}
-                            <div className="bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700 p-4">
-                                <h3 className="font-medium mb-3 text-zinc-900 dark:text-zinc-50">
+                            <div className="bg-neutral/40 rounded-md border border-gray-700 p-4">
+                                <h3 className="font-medium mb-3 text-info">
                                     Etiquetas
                                 </h3>
                                 <div className="flex flex-wrap gap-2">
@@ -369,9 +363,7 @@ export default function LinksPage() {
                             </div>
                         </div>
                     </div>
-
-                    {/* Contenido principal: Lista de Enlaces */}
-                    <div className="md:col-span-3 space-y-4">
+                    <div className="md:col-span-3 space-y-4 bg-neutral/40 p-4 rounded-md">
                         {loading && (
                             <div className="text-center text-zinc-400 mt-8">
                                 Cargando enlaces...
@@ -384,7 +376,7 @@ export default function LinksPage() {
                             </div>
                         )}
                         {!loading && !error && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {filteredLinks.length === 0 ? (
                                     <p className="col-span-full text-center text-zinc-500 text-lg mt-8">
                                         {searchTerm ||
@@ -409,12 +401,11 @@ export default function LinksPage() {
                 </div>
             </div>
 
-            {/* --- Modal para Crear/Editar Enlace --- */}
             <dialog
                 ref={formModalRef}
                 className={`modal ${isFormModalOpen ? 'modal-open' : ''}`}>
-                <div className="modal-box bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 p-6 rounded-lg shadow-xl max-w-2xl w-full">
-                    <h3 className="font-bold text-xl text-zinc-900 dark:text-zinc-50 mb-4 flex items-center gap-2">
+                <div className="modal-box shadow-xl max-w-2xl w-full bg-base-300">
+                    <h3 className="font-bold text-xl text-zinc-50 mb-4 flex items-center gap-2">
                         {currentLink ? (
                             <>
                                 <Edit className="size-6 text-blue-500" /> Editar
@@ -437,8 +428,8 @@ export default function LinksPage() {
                     <div className="flex flex-col gap-4">
                         <div>
                             <label className="label items-start text-sm">
-                                <span className="label-text text-zinc-700 dark:text-zinc-300">
-                                    Título{' '}
+                                <span className="label-text text-zinc-300">
+                                    Título
                                     <span className="text-red-500">*</span>
                                 </span>
                             </label>
@@ -446,7 +437,7 @@ export default function LinksPage() {
                                 type="text"
                                 name="title"
                                 placeholder="Ej: Documentación de React Hooks"
-                                className="input input-bordered w-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-50 border-zinc-300 dark:border-zinc-700"
+                                className="input input-bordered w-full"
                                 value={formData.title}
                                 onChange={handleFormInputChange}
                                 disabled={isSaving}
@@ -454,7 +445,7 @@ export default function LinksPage() {
                         </div>
                         <div>
                             <label className="label items-start text-sm">
-                                <span className="label-text text-zinc-700 dark:text-zinc-300">
+                                <span className="label-text text-zinc-300">
                                     URL <span className="text-red-500">*</span>
                                 </span>
                             </label>
@@ -462,7 +453,7 @@ export default function LinksPage() {
                                 type="url"
                                 name="url"
                                 placeholder="https://example.com/mi-recurso"
-                                className="input input-bordered w-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-50 border-zinc-300 dark:border-zinc-700"
+                                className="input input-bordered w-full"
                                 value={formData.url}
                                 onChange={handleFormInputChange}
                                 disabled={isSaving}
@@ -470,7 +461,7 @@ export default function LinksPage() {
                         </div>
                         <div>
                             <label className="label items-start text-sm">
-                                <span className="label-text text-zinc-700 dark:text-zinc-300">
+                                <span className="label-text text-zinc-300">
                                     Thumbnail URL (opcional)
                                 </span>
                             </label>
@@ -478,7 +469,7 @@ export default function LinksPage() {
                                 type="url"
                                 name="thumbnailUrl"
                                 placeholder="https://example.com/mi-recurso"
-                                className="input input-bordered w-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-50 border-zinc-300 dark:border-zinc-700"
+                                className="input input-bordered w-full"
                                 value={formData.thumbnailUrl || ''}
                                 onChange={handleFormInputChange}
                                 disabled={isSaving}
@@ -486,14 +477,15 @@ export default function LinksPage() {
                         </div>
                         <div>
                             <label className="label items-start text-sm">
-                                <span className="label-text text-zinc-700 dark:text-zinc-300">
+                                <span className="label-text text-zinc-300">
+                                    {/* Ajustado color de texto */}
                                     Descripción (opcional)
                                 </span>
                             </label>
                             <textarea
                                 name="description"
                                 placeholder="Una breve descripción del contenido del enlace."
-                                className="textarea textarea-bordered w-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-50 border-zinc-300 dark:border-zinc-700 resize-y"
+                                className="textarea textarea-bordered w-full resize-y"
                                 value={formData.description || ''}
                                 onChange={handleFormInputChange}
                                 rows={2}
@@ -501,7 +493,8 @@ export default function LinksPage() {
                         </div>
                         <div>
                             <label className="label items-start text-sm">
-                                <span className="label-text text-zinc-700 dark:text-zinc-300">
+                                <span className="label-text text-zinc-300">
+                                    {/* Ajustado color de texto */}
                                     Categoría (opcional)
                                 </span>
                             </label>
@@ -509,7 +502,7 @@ export default function LinksPage() {
                                 type="text"
                                 name="category"
                                 placeholder="Ej: Tutoriales, Herramientas, Docs"
-                                className="input input-bordered w-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-50 border-zinc-300 dark:border-zinc-700"
+                                className="input input-bordered w-full"
                                 value={formData.category || ''}
                                 onChange={handleFormInputChange}
                                 disabled={isSaving}
@@ -517,7 +510,7 @@ export default function LinksPage() {
                         </div>
                         <div>
                             <label className="label items-start text-sm">
-                                <span className="label-text text-zinc-700 dark:text-zinc-300">
+                                <span className="label-text text-zinc-300">
                                     Etiquetas (separadas por comas, opcional)
                                 </span>
                             </label>
@@ -525,7 +518,7 @@ export default function LinksPage() {
                                 type="text"
                                 name="tags"
                                 placeholder="Ej: css, tailwind, animaciones"
-                                className="input input-bordered w-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-50 border-zinc-300 dark:border-zinc-700"
+                                className="input input-bordered w-full"
                                 value={formData.tags.join(', ')}
                                 onChange={handleTagsChange}
                                 disabled={isSaving}
@@ -543,7 +536,7 @@ export default function LinksPage() {
                             <button
                                 type="button"
                                 onClick={handleSaveLink}
-                                className={`btn btn-success bg-blue-600 hover:bg-blue-700 text-white font-bold transition duration-300 ease-in-out ${isSaving ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                className={`btn btn-success  ${isSaving ? 'opacity-50 cursor-not-allowed' : ''}`}
                                 disabled={
                                     isSaving ||
                                     !formData.title.trim() ||
@@ -553,7 +546,7 @@ export default function LinksPage() {
                                     'Guardando...'
                                 ) : (
                                     <>
-                                        <Save className="size-5 mr-2" />{' '}
+                                        <Save className="size-5 mr-2" />
                                         {currentLink
                                             ? 'Actualizar Enlace'
                                             : 'Guardar Enlace'}
@@ -565,13 +558,12 @@ export default function LinksPage() {
                 </div>
             </dialog>
 
-            {/* --- Modal de Confirmación de Eliminación --- */}
             <dialog
                 ref={deleteConfirmModalRef}
                 className={`modal ${isDeleteConfirmOpen ? 'modal-open' : ''}`}>
-                <div className="modal-box bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 p-6 rounded-lg shadow-xl">
-                    <h3 className="font-bold text-xl text-zinc-900 dark:text-zinc-50 mb-4 flex items-center gap-2">
-                        <Trash2 className="size-6 text-red-500" /> Confirmar
+                <div className="modal-box  shadow-xl">
+                    <h3 className="font-bold text-xl text-zinc-50 mb-4 flex items-center gap-2">
+                        <Trash2 className="size-6 text-error" /> Confirmar
                         Eliminación
                     </h3>
                     <form method="dialog">
@@ -582,7 +574,7 @@ export default function LinksPage() {
                         </button>
                     </form>
                     {linkToDelete && (
-                        <p className="mb-4 text-zinc-600 dark:text-zinc-400">
+                        <p className="mb-4 text-zinc-400">
                             ¿Estás seguro de que quieres eliminar el enlace "
                             <strong className="text-red-400">
                                 {linkToDelete.title}
@@ -590,25 +582,23 @@ export default function LinksPage() {
                             "? Esta acción no se puede deshacer.
                         </p>
                     )}
-
                     {deleteError && (
                         <div className="alert alert-error bg-red-800 text-red-200 border-red-700 p-3 rounded-md text-sm flex items-center gap-2 mb-4">
                             <AlertCircle className="size-4 text-red-400" />
                             <p>{deleteError}</p>
                         </div>
                     )}
-
                     <div className="modal-action justify-end mt-4">
                         <button
                             type="button"
                             onClick={handleCloseDeleteConfirm}
-                            className="btn btn-ghost text-zinc-700 dark:text-zinc-300">
+                            className="btn btn-soft ">
                             Cancelar
                         </button>
                         <button
                             type="button"
                             onClick={handleDeleteConfirmed}
-                            className={`btn btn-error bg-red-600 hover:bg-red-700 text-white font-bold transition duration-300 ease-in-out ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            className={`btn btn-error  ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''}`}
                             disabled={isDeleting}>
                             {isDeleting ? (
                                 'Eliminando...'
