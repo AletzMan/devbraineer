@@ -365,3 +365,24 @@ export const simbolos = [
     { simbolo: '\\W', descripcion: 'No es un carácter de palabra' },
     { simbolo: '\\S', descripcion: 'No es un espacio en blanco' },
 ];
+
+export const languages = [
+    'javascript',
+    'typescript',
+    'python',
+    'java',
+    'c#',
+    'c++',
+    'c',
+    'go',
+    'php',
+    'ruby',
+    'html',
+    'css',
+    'bash',
+    'sql',
+    'json',
+    'yaml',
+    'markdown',
+    'other',
+];
