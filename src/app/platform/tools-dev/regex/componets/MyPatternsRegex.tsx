@@ -5,8 +5,17 @@ import { RegexPattern } from '@prisma/client';
 import {
     getRegexPatterns,
     createRegexPattern,
+    deleteRegexPatternById,
 } from '@/services/pattern.service';
-import { PlusCircle, Search, Save, AlertCircle, Check } from 'lucide-react';
+import {
+    PlusCircle,
+    Search,
+    Save,
+    AlertCircle,
+    Check,
+    Trash2,
+    X,
+} from 'lucide-react';
 import axios from 'axios';
 import PatternRegex from './PatternRegex';
 
@@ -39,6 +48,15 @@ export default function MyPatternsPage({
     const [searchTerm, setSearchTerm] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const modalRef = useRef<HTMLDialogElement>(null);
+
+    // --- ESTADOS PARA ELIMINAR ---
+    const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+    const [patternToDelete, setPatternToDelete] = useState<RegexPattern | null>(
+        null
+    );
+    const deleteConfirmModalRef = useRef<HTMLDialogElement>(null);
+    const [deleteError, setDeleteError] = useState<string | null>(null);
+    const [deleteSuccess, setDeleteSuccess] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchPatterns = async () => {
@@ -227,8 +245,58 @@ export default function MyPatternsPage({
         }
     };
 
+    // --- FUNCIONES PARA ELIMINAR ---
+
+    const handleOpenDeleteConfirm = (pattern: RegexPattern) => {
+        setPatternToDelete(pattern);
+        setIsDeleteConfirmOpen(true);
+        deleteConfirmModalRef.current?.showModal();
+        setDeleteError(null);
+        setDeleteSuccess(null);
+    };
+
+    const handleCloseDeleteConfirm = () => {
+        setIsDeleteConfirmOpen(false);
+        setPatternToDelete(null);
+        deleteConfirmModalRef.current?.close();
+    };
+
+    const handleDeleteConfirmed = async () => {
+        if (!patternToDelete || !patternToDelete.id) {
+            setDeleteError('No hay patrón seleccionado para eliminar.');
+            return;
+        }
+
+        setDeleteError(null);
+        setDeleteSuccess(null);
+
+        try {
+            await deleteRegexPatternById(patternToDelete.id);
+
+            // Filtra el array de patrones para remover el eliminado
+            setPatterns((prevPatterns) =>
+                prevPatterns.filter((p) => p.id !== patternToDelete.id)
+            );
+
+            setDeleteSuccess('Patrón eliminado exitosamente.');
+            setTimeout(() => {
+                handleCloseDeleteConfirm();
+                setDeleteSuccess(null);
+            }, 1000);
+        } catch (err: any) {
+            console.error('Error al eliminar patrón:', err);
+            // Captura el mensaje de error específico si viene del servicio
+            setDeleteError(
+                err.message || 'Error al eliminar patrón. Intenta de nuevo.'
+            );
+            setTimeout(() => {
+                setDeleteError(null);
+            }, 5000);
+        }
+    };
+
     return (
-        <div className="flex bg-neutral/50 text-gray-200 overflow-y-auto rounded-sm border-1 border-gray-700 h-[calc(100svh-14rem)]">
+        <div className="flex bg-neutral/50 text-gray-200 overflow-y-auto rounded-sm border-1 border-gray-700 h-[calc(100svh-14.75rem)]">
             <div className="flex flex-col flex-1 gap-2 mx-auto w-full">
                 <header className="flex flex-col md:flex-row justify-between items-center gap-4 p-4 bg-neutral/65 border-b-1 border-gray-700">
                     <label className="input flex items-center gap-2 w-full md:w-auto min-w-[20rem]">
@@ -280,6 +348,9 @@ export default function MyPatternsPage({
                                             setPattern={setPattern}
                                             setActiveTab={setActiveTab}
                                             visibleDate={true}
+                                            onDelete={() => {
+                                                handleOpenDeleteConfirm(item);
+                                            }}
                                         />
                                     )
                                 )}
@@ -380,6 +451,61 @@ export default function MyPatternsPage({
                                 )}
                             </button>
                         </div>
+                    </div>
+                </div>
+            </dialog>
+            {/* --- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN (SIN CAMBIOS) --- */}
+            <dialog
+                ref={deleteConfirmModalRef}
+                className={`modal ${isDeleteConfirmOpen ? 'modal-open' : ''}`}>
+                <div className="modal-box bg-base-100 text-gray-200 p-6 rounded-lg shadow-xl">
+                    <h3 className="font-bold text-xl text-white mb-4 flex items-center gap-2">
+                        <Trash2 className="size-6 text-error" /> Confirmar
+                        Eliminación
+                    </h3>
+                    <form method="dialog">
+                        <button
+                            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                            onClick={handleCloseDeleteConfirm}>
+                            ✕
+                        </button>
+                    </form>
+                    {patternToDelete && (
+                        <p className="mb-4">
+                            ¿Estás seguro de que quieres eliminar el patrón "
+                            <strong className="text-error">
+                                {patternToDelete.name}
+                            </strong>
+                            "? Esta acción no se puede deshacer.
+                        </p>
+                    )}
+
+                    {deleteError && (
+                        <div className="alert alert-error bg-red-800 text-red-200 border-red-700 p-3 rounded-md text-sm flex items-center gap-2 mb-4">
+                            <AlertCircle className="size-4 text-red-400" />
+                            <p>{deleteError}</p>
+                        </div>
+                    )}
+                    {deleteSuccess && (
+                        <div className="alert alert-success bg-green-800 text-green-200 border-green-700 p-3 rounded-md text-sm flex items-center gap-2 mb-4">
+                            <Check className="size-4 text-green-400" />
+                            <p>{deleteSuccess}</p>
+                        </div>
+                    )}
+
+                    <div className="modal-action justify-end mt-4">
+                        <button
+                            type="button"
+                            onClick={handleCloseDeleteConfirm}
+                            className="btn btn-soft">
+                            <X className="size-5 mr-2" /> Cancelar
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleDeleteConfirmed}
+                            className="btn btn-error font-bold transition duration-300 ease-in-out">
+                            <Trash2 className="size-5 mr-2" /> Eliminar
+                        </button>
                     </div>
                 </div>
             </dialog>
