@@ -7,7 +7,7 @@ import MyPatternsRegex from './componets/MyPatternsRegex';
 import PatternRegex from './componets/PatternRegex';
 import { RegexPattern } from '@prisma/client';
 
-export const commonPatterns: RegexPattern[] = [
+const commonPatterns: RegexPattern[] = [
     {
         name: 'Email',
         pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}',

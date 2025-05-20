@@ -267,25 +267,25 @@ export default function LinksPage() {
     };
 
     return (
-        <div className="flex h-[calc(100svh-4rem)] p-2 bg-neutral dark:bg-neutral-900 text-zinc-900 dark:text-zinc-50">
+        <div className="flex h-[calc(100svh-4rem)] bg-neutral/50">
             <Toaster position="top-right" />
             <div className="flex-1 max-w-[1600px] mx-auto ">
-                <div className="flex flex-col sm:flex-row items-center justify-between mb-6">
+                <header className="flex flex-col sm:flex-row items-center justify-between mb-6 px-3 py-2 bg-white/10 ">
                     <div>
-                        <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+                        <h1 className="text-2xl font-bold text-secondary">
                             Enlaces Guardados
                         </h1>
-                        <p className="text-zinc-500 dark:text-zinc-400">
+                        <p className="text-sm text-gray-400">
                             Colecciona y organiza tus recursos web favoritos
                         </p>
                     </div>
                     <button
-                        className="btn btn-primary gap-1 mt-4 sm:mt-0"
+                        className="btn btn-success gap-1 mt-4 sm:mt-0"
                         onClick={handleOpenCreateModal}>
                         <Plus className="w-4 h-4" />
                         Nuevo Enlace
                     </button>
-                </div>
+                </header>
 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6 overflow-y-auto h-[calc(100svh-10.5rem)] pb-4">
                     {/* Panel lateral de búsqueda y filtros */}
