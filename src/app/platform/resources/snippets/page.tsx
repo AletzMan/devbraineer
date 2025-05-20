@@ -25,6 +25,7 @@ import axios from 'axios';
 import { toast, Toaster } from 'react-hot-toast'; // Para notificaciones
 import SnippetCard from './components/SnippetCard';
 import { languages } from '../../constants';
+import HeaderSection from '../../componentes/HeaderSection';
 
 export default function SnippetsPage() {
     const [snippets, setSnippets] = useState<Snippet[]>([]);
@@ -251,24 +252,17 @@ export default function SnippetsPage() {
     return (
         <div className="flex h-[calc(100svh-4rem)]bg-neutral/50 text-zinc-900 dark:text-zinc-50">
             <Toaster position="top-right" />
-            <div className="flex-1 max-w-(--max-width) mx-auto ">
-                <header className="flex flex-col sm:flex-row items-center justify-between mb-6 border-b border-gray-700 px-4 py-2">
-                    <div>
-                        <h1 className="text-2xl font-bold text-secondary">
-                            Snippets de Código
-                        </h1>
-                        <p className="text-zinc-500 dark:text-zinc-400">
-                            Guarda y organiza fragmentos de código para
-                            reutilizarlos fácilmente
-                        </p>
-                    </div>
+            <div className="flex flex-col gap-4 flex-1 max-w-(--max-width) mx-auto ">
+                <HeaderSection
+                    title="Snippets de Código"
+                    description="Guarda y organiza fragmentos de código para reutilizarlos fácilmente">
                     <button
                         className="btn btn-success gap-1 mt-4 sm:mt-0"
                         onClick={handleOpenCreateModal}>
                         <Plus className="w-4 h-4" />
                         Nuevo Snippet
                     </button>
-                </header>
+                </HeaderSection>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 overflow-y-auto h-[calc(100svh-10.5rem)] pb-4 px-4">
                     <div className="md:col-span-1  bg-neutral/40 rounded-sm  p-4">
                         <div className="sticky top-4 space-y-4">
