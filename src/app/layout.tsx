@@ -28,12 +28,14 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    return ( 
-            <html lang="en" data-theme="dark">
+    return (
+        <html lang="en" data-theme="dark">
+            <ClerkProvider>
                 <body
                     className={`${jost.variable} ${josefinSans.variable} ${code.variable} antialiased`}>
                     {children}
                 </body>
-            </html> 
+            </ClerkProvider>
+        </html>
     );
 }
