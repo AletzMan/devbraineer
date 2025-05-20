@@ -1,7 +1,11 @@
+// prisma/schema.prisma
+
+// Define el generador del cliente de Prisma.
 generator client {
   provider = "prisma-client-js"
 }
 
+// Define tu fuente de datos (base de datos).
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -9,63 +13,126 @@ datasource db {
 
 // Define los posibles tipos de publicaciones (Tus tipos preferidos)
 enum PostType {
-  Challenge // Reto técnico
-  Question // Pregunta
-  Resource // Recurso útil
-  EventMeetup // Evento o meetup
-  Poll // Encuesta
+  Challenge       // Reto técnico
+  Question        // Pregunta
+  Resource        // Recurso útil
+  EventMeetup     // Evento o meetup
+  Poll            // Encuesta
 }
 
 // Modelo de Usuario (User)
 model User {
-  id       String  @id @unique // ID de usuario de Clerk.
-  email    String  @unique // Correo del usuario.
-  username String? @unique // Nombre de usuario (Clerk permite username o email para login).
+  id            String    @id @unique // ID de usuario de Clerk.
+  email         String    @unique               // Correo del usuario.
+  username      String?   @unique               // Nombre de usuario (Clerk permite username o email para login).
 
-  profile Profile?
-  posts   Post[] // <-- Relación a 'posts'
+  profile       Profile?
+  posts         Post[] // <-- Relación a 'posts'
+  regexPatterns RegexPattern[] // <-- Relación a RegexPattern
+  snippets      Snippet[] // <-- ¡Nueva relación a Snippet!
+  links         Link[] // <-- ¡Nueva relación a Link!
 
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
 
   @@map("users") // Mapea este modelo a una tabla llamada "users" en la base de datos.
 }
 
 // Modelo de Perfil (Profile)
 model Profile {
-  id     String @id @default(uuid()) // ID único para el perfil.
-  userId String @unique // Clave foránea para el usuario (ID de Clerk).
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade) // Define la relación con el modelo User.
+  id            String    @id @default(uuid()) // ID único para el perfil.
+  userId        String    @unique               // Clave foránea para el usuario (ID de Clerk).
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade) // Define la relación con el modelo User.
 
-  avatar_url   String? // URL a la imagen del avatar (opcional).
-  city         String? // Ciudad del usuario (opcional).
-  country      String? // País del usuario (opcional).
-  description  String?  @db.Text // Descripción/biografía del usuario (permite texto largo).
-  technologies String[] // Array de Strings para tecnologías.
+  name          String?                       // <-- Nuevo campo: Nombre visible!
+  avatar_url    String?                       // URL a la imagen del avatar (opcional).
+  city          String?                       // Ciudad del usuario (opcional).
+  country       String?                       // País del usuario (opcional).
+  description   String?   @db.Text          // Descripción/biografía del usuario (permite texto largo).
+  technologies  String[]                      // Array de Strings para tecnologías.
 
-  created_at DateTime @default(now()) // Fecha y hora de creación del perfil.
-  updated_at DateTime @updatedAt // Fecha y hora de la última actualización.
+  created_at    DateTime  @default(now())     // Fecha y hora de creación del perfil.
+  updated_at    DateTime  @updatedAt          // Fecha y hora de la última actualización.
 
   @@map("profiles") // Mapea este modelo a una tabla llamada "profiles" en la base de datos.
 }
 
 // Modelo de Publicación (Ahora llamado Post)
-model Post {
-  id          String @id @default(uuid()) // ID único para la publicación.
-  publisherId String // Clave foránea para el usuario que publicó.
-  publisher   User   @relation(fields: [publisherId], references: [id], onDelete: Cascade) // Define la relación con el modelo User.
+model Post { // <-- Nombre del modelo Post
+  id            String    @id @default(uuid()) // ID único para la publicación.
+  publisherId   String                      // Clave foránea para el usuario que publicó.
+  publisher     User      @relation(fields: [publisherId], references: [id], onDelete: Cascade) // Define la relación con el modelo User.
 
-  type         PostType // Tipo de publicación (Reto, Pregunta, etc.)
-  title        String // Título de la publicación.
-  description  String   @db.Text // Descripción/contenido de la publicación.
-  language     String? // Lenguaje de programación (opcional, para retos).
-  code_snippet String?  @db.Text // Fragmento de código (opcional, para retos).
-  url          String? // URL (opcional, para recursos/eventos).
+  type          PostType                    // Tipo de publicación (Reto, Pregunta, etc.)
+  title         String                        // Título de la publicación.
+  description   String    @db.Text          // Descripción/contenido de la publicación.
+  language      String?                       // Lenguaje de programación (opcional, para retos).
+  code_snippet  String?   @db.Text          // Fragmento de código (opcional, para retos).
+  url           String?                       // URL (opcional, para recursos/eventos).
 
-  pollOptions String[] // Opciones de la encuesta (vacío si no es encuesta).
+  pollOptions   String[]                      // Opciones de la encuesta (vacío si no es encuesta).
 
-  created_at DateTime @default(now()) // <-- ¡Aquí están! Con @default(now())
-  updated_at DateTime @updatedAt // <-- ¡Y aquí! Con @updatedAt
+  created_at    DateTime  @default(now())     // Fecha y hora de publicación.
+  updated_at    DateTime  @updatedAt          // Fecha y hora de la última actualización.
 
   @@map("posts") // <-- Mapeo explícito a la tabla 'posts'
 }
+
+// Modelo para Patrones de Regex
+model RegexPattern {
+  id            String    @id @default(uuid()) // ID única para el patrón.
+  name          String                        // Nombre del patrón (ej. "Email").
+  pattern       String    @db.Text            // La expresión regular en sí.
+  description   String    @db.Text            // Descripción de lo que coincide el patrón.
+
+  // Relación opcional con el usuario que guardó el patrón.
+  userId        String?
+  user          User?     @relation(fields: [userId], references: [id], onDelete: SetNull) // Si el usuario se elimina, el patrón no se elimina.
+
+  created_at    DateTime  @default(now())     // Fecha de creación.
+  updated_at    DateTime  @updatedAt          // Fecha de última actualización.
+
+  @@map("regex_patterns") // Mapea este modelo a una tabla llamada "regex_patterns".
+}
+
+// ¡Nuevo Modelo para Snippets de Código!
+model Snippet {
+  id            String    @id @default(uuid()) // ID única para el snippet.
+  authorId      String                      // Clave foránea para el usuario que publicó el snippet.
+  author        User      @relation(fields: [authorId], references: [id], onDelete: Cascade) // Si el autor se elimina, el snippet también.
+
+  title         String                        // Título del snippet.
+  description   String?   @db.Text            // Descripción opcional del snippet.
+  code          String    @db.Text            // El código del snippet.
+  language      String                        // Lenguaje de programación del snippet (ej. "JavaScript", "Python").
+  category      String?                       // Categoría opcional (ej. "Frontend", "Backend", "Utilidad").
+  tags          String[]                      // Array de Strings para etiquetas.
+
+  created_at    DateTime  @default(now())     // Fecha de creación.
+  updated_at    DateTime  @updatedAt          // Fecha de última actualización.
+
+  @@map("snippets") // Mapea este modelo a una tabla llamada "snippets".
+}
+
+// ¡Nuevo Modelo para Recursos/Links!
+model Link {
+  id            String    @id @default(uuid()) // ID única para el link.
+  sharerId      String                      // Clave foránea para el usuario que compartió el link.
+  sharer        User      @relation(fields: [sharerId], references: [id], onDelete: Cascade) // Si el sharer se elimina, el link también.
+
+  url           String                        // La URL del recurso.
+  title         String                        // Título del recurso (puede obtenerse del scraping o manual).
+  description   String?   @db.Text            // Descripción opcional del recurso.
+  thumbnailUrl  String?                       // URL de una miniatura (opcional).
+  tags          String[]                      // Array de Strings para etiquetas.
+
+  created_at    DateTime  @default(now())     // Fecha de creación.
+  updated_at    DateTime  @updatedAt          // Fecha de última actualización.
+
+  @@map("links") // Mapea este modelo a una tabla llamada "links".
+}
+
+
+// --- Modelos requeridos por Clerk (si aplica) ---
+// ...
