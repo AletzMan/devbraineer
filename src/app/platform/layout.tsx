@@ -1,5 +1,5 @@
-import { Sidebar } from "./componentes/Sidebar";
-import Header from "./componentes/Header";
+import { Sidebar } from './componentes/Sidebar';
+import Header from './componentes/Header';
 
 export default function PlatformLayout({
     children,

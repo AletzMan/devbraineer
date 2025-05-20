@@ -1,19 +1,24 @@
-import { IResponseOutputRunCode } from "@/interfaces/playground"
+import { IResponseOutputRunCode } from '@/interfaces/playground';
 
-const URL_API = process.env.NEXT_PUBLIC_URL_API
-export const RunCode = async (language: string, sourceCode: string, version: string, stdin: string): Promise<IResponseOutputRunCode> => {
+const URL_API = process.env.NEXT_PUBLIC_URL_API;
+export const RunCode = async (
+    language: string,
+    sourceCode: string,
+    version: string,
+    stdin: string
+): Promise<IResponseOutputRunCode> => {
     try {
         const response = await fetch(`${URL_API}/api/runcode`, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 language,
                 sourceCode,
                 version,
-                stdin
-            })
+                stdin,
+            }),
         });
 
         const data = await response.json();
@@ -26,25 +31,24 @@ export const RunCode = async (language: string, sourceCode: string, version: str
             return {
                 error: true,
                 response: {
-                    language: "",
-                    version: "",
+                    language: '',
+                    version: '',
                     run: {
                         stdout: data.message,
-                        stderr: "",
+                        stderr: '',
                         code: 0,
                         signal: null,
-                        output: data.message
-                    }
-                }
+                        output: data.message,
+                    },
+                },
             };
         }
 
         return data;
-
     } catch (error) {
         return {
             error: true,
-            response: null
+            response: null,
         };
     }
 };

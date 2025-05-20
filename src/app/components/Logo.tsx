@@ -1,9 +1,6 @@
 export function Logo(props: React.SVGProps<SVGSVGElement>) {
     return (
-        <svg
-            viewBox="0 0 83.6 77.58"
-            {...props}
-        >
+        <svg viewBox="0 0 83.6 77.58" {...props}>
             <path
                 d="M71.65 21.89a11.94 11.94 0 0 0-18.13-10.21 11.94 11.94 0 0 0-23.45 0"
                 stroke="currentColor"
@@ -42,5 +39,5 @@ export function Logo(props: React.SVGProps<SVGSVGElement>) {
                 fill="currentColor"
             />
         </svg>
-    )
+    );
 }

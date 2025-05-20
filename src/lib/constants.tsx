@@ -1,4 +1,10 @@
-import { CalendarIcon, ChartBarIcon, CircleHelp, CodeIcon, LightbulbIcon } from "lucide-react";
+import {
+    CalendarIcon,
+    ChartBarIcon,
+    CircleHelp,
+    CodeIcon,
+    LightbulbIcon,
+} from 'lucide-react';
 
 export const supportedLanguages = [
     'bash',
@@ -38,26 +44,25 @@ export const supportedLanguages = [
     'typescript',
 ];
 
-
 export const TypePost = {
     Challenge: {
         icon: <CodeIcon />,
-        title: "Crear un reto"
+        title: 'Crear un reto',
     },
     Resource: {
         icon: <LightbulbIcon />,
-        title: "Compartir un recurso"
+        title: 'Compartir un recurso',
     },
     Question: {
         icon: <CircleHelp />,
-        title: "Hacer una pregunta"
+        title: 'Hacer una pregunta',
     },
     EventMeetup: {
         icon: <CalendarIcon />,
-        title: "Publicar un evento"
+        title: 'Publicar un evento',
     },
     Poll: {
         icon: <ChartBarIcon />,
-        title: "Crear una encuesta"
+        title: 'Crear una encuesta',
     },
 };
