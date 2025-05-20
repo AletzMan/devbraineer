@@ -8,6 +8,11 @@ type RegexPatternsListResponse = {
     response: RegexPattern[];
     // Añade otros campos si tu respuesta los tiene (ej. paginación)
 };
+type RegexPatternResponse = {
+    error: boolean;
+    message: string;
+    data: RegexPattern;
+};
 
 /**
  * Obtiene la lista completa de patrones de expresiones regulares disponibles.
@@ -16,19 +21,16 @@ type RegexPatternsListResponse = {
  */
 export const getRegexPatterns = async (): Promise<RegexPattern[]> => {
     try {
-        // Realiza la petición GET a /api/regex-patterns usando la instancia de Axios configurada
         const response = await axios.get<
             RegexPatternsListResponse | RegexPattern[]
         >('/api/regex-patterns');
-
-        // Adapta esto a la estructura real de tu respuesta
         if (
             response.data &&
             (response.data as RegexPatternsListResponse).error === false
         ) {
-            return (response.data as RegexPatternsListResponse).response; // Si tu capa la envuelve
+            return (response.data as RegexPatternsListResponse).response;
         } else if (Array.isArray(response.data)) {
-            return response.data; // Si tu API devuelve directamente el array
+            return response.data;
         } else {
             console.error(
                 'Unexpected response format from /api/regex-patterns:',
@@ -38,7 +40,7 @@ export const getRegexPatterns = async (): Promise<RegexPattern[]> => {
         }
     } catch (error) {
         console.error('Error fetching regex patterns:', error);
-        throw error; // Re-lanza el error para que el componente que llama lo maneje
+        throw error;
     }
 };
 
@@ -93,14 +95,13 @@ export const createRegexPattern = async (patternData: {
     description?: string;
 }): Promise<RegexPattern> => {
     try {
-        const response = await axios.post<RegexPattern>(
+        const response = await axios.post<RegexPatternResponse>(
             '/api/regex-patterns',
             patternData
         );
-        if (response.data && (response.data as any).error === false) {
-            return (response.data as any).response;
-        } else if (response.status === 201) {
-            return response.data;
+        console.log('Patrón creado:', response.data);
+        if (response.status === 201) {
+            return response.data.data;
         } else {
             console.error(
                 'Unexpected response format from POST /api/regex-patterns:',
@@ -113,3 +114,26 @@ export const createRegexPattern = async (patternData: {
         throw error;
     }
 };
+
+export async function deleteRegexPatternById(
+    id: string
+): Promise<RegexPattern> {
+    try {
+        const deletedPattern = await axios.delete<RegexPatternResponse>(
+            `/api/regex-patterns/${id}`
+        );
+        console.log('Patrón eliminado:', deletedPattern.data);
+        if (deletedPattern.status === 200) {
+            return deletedPattern.data.data;
+        } else {
+            console.error(
+                'Unexpected response format from DELETE /api/regex-patterns/:',
+                deletedPattern.data
+            );
+            throw new Error('Failed to parse deleted regex pattern response.');
+        }
+    } catch (error) {
+        console.error('Error deleting regex pattern:', error);
+        throw error;
+    }
+}
