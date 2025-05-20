@@ -27,7 +27,7 @@ export async function GET(
 
         // Busca el snippet en la base de datos por su ID.
         const snippet: Snippet | null = await prisma.snippet.findUnique({
-            where: { id: targetSnippetId, AND: { authorId: userId } },
+            where: { id: targetSnippetId },
             // Opcional: Incluir el autor si quieres mostrar quién lo publicó
             // include: { author: { select: { username: true } } }
         });

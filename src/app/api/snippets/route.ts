@@ -16,8 +16,14 @@ import { ZodError } from 'zod';
 // GET /api/snippets
 export async function GET(req: Request) {
     try {
+        const { userId } = await auth();
+
+        if (!userId) {
+            return NotAuthorizedError();
+        }
         // Obtiene todos los snippets de la base de datos.
         const snippets: Snippet[] = await prisma.snippet.findMany({
+            where: { authorId: userId },
             orderBy: {
                 created_at: 'desc', // Opcional: Ordenar por fecha de creación
             },

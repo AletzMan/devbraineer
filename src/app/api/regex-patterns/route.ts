@@ -16,10 +16,13 @@ import { ZodError } from 'zod';
 
 export async function GET(req: Request) {
     try {
-        // Obtiene todos los patrones de la base de datos.
-        // Si quieres filtrar solo patrones "globales" (sin userId), puedes añadir:
-        // where: { userId: null }
+        const { userId } = await auth();
+
+        if (!userId) {
+            return NotAuthorizedError();
+        }
         const patterns: RegexPattern[] = await prisma.regexPattern.findMany({
+            where: { authorId: userId },
             orderBy: {
                 created_at: 'asc', // Opcional: Ordenar por nombre o fecha
             },
