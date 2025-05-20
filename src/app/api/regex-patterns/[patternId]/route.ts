@@ -1,7 +1,10 @@
 import prisma from '@/lib/db';
 import { RegexPattern } from '@prisma/client';
 import { NotFoundError, ServerError } from '../../_services/errors';
-import { SuccessResponse } from '../../_services/successfulResponses';
+import {
+    SuccessDelete,
+    SuccessResponse,
+} from '../../_services/successfulResponses';
 
 // GET /api/regex-patterns/[patternId]
 // Obtiene los detalles de un patrón de regex específico por su ID. (Público en el MVP)
@@ -30,6 +33,22 @@ export async function GET(
         return SuccessResponse(pattern);
     } catch (error) {
         console.error('Error fetching regex pattern details:', error);
+        return ServerError();
+    }
+}
+
+export async function DELETE(
+    req: Request,
+    { params }: { params: { patternId: string } }
+) {
+    try {
+        const targetPatternId = params.patternId;
+        const deletedPattern = await prisma.regexPattern.delete({
+            where: { id: targetPatternId },
+        });
+        return SuccessDelete(deletedPattern);
+    } catch (error) {
+        console.error('Error deleting regex pattern:', error);
         return ServerError();
     }
 }
