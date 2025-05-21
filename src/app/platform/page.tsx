@@ -37,6 +37,12 @@ const menuData = [
                 icon: SquareTerminalIconChild,
                 color: 'text-orange-600',
             },
+            {
+                label: 'HTTP Client',
+                href: '/platform/playground/http-client',
+                icon: SquareTerminalIconChild,
+                color: 'text-orange-600',
+            },
         ],
     },
     {
