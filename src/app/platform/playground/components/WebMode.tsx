@@ -1,3 +1,4 @@
+'use client';
 import {
     CSSIcon,
     HTML5Icon,
@@ -1096,7 +1097,7 @@ li {
     };
 
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 p-2">
             <div className="flex border-b-1 border-(--color-gray-700)">
                 <div className="tabs w-full tabs-border" role="tablist">
                     <button
@@ -1218,7 +1219,7 @@ li {
                         </div>
 
                         <div
-                            className={`border-1 border-(--color-gray-700) rounded-b-sm overflow-hidden h-[calc(100vh-510px)]`}>
+                            className={`border-1 border-(--color-gray-700) rounded-b-sm overflow-hidden h-[calc(100vh-450px)]`}>
                             {currentFile && (
                                 <Editor
                                     height={'100%'}
@@ -1318,7 +1319,7 @@ li {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col gap-2 h-[calc(100vh-194px)]">
+                <div className="flex flex-col gap-2 h-[calc(100vh-135px)]">
                     <div className="flex flex-wrap items-center gap-2">
                         <button
                             onClick={handleRun}
@@ -1327,7 +1328,7 @@ li {
                             Ejecutar
                         </button>
                     </div>
-                    <div className="bg-white dark:bg-zinc-800 border border-(--color-gray-700) rounded-sm overflow-hidden h-[calc(100vh-200px)]">
+                    <div className="bg-white dark:bg-zinc-800 border border-(--color-gray-700) rounded-sm overflow-hidden h-full">
                         <div className="px-2 py-1.5 bg-gray-800 backdrop-blur-sm border-b border-(--color-gray-700) flex items-center">
                             <div className="flex space-x-1.5">
                                 <div className="w-3 h-3 rounded-full bg-red-500"></div>
