@@ -74,19 +74,25 @@ export const menuData: IMenuItem[] = [
         label: 'Playground',
         href: '/platform/playground',
         icon: Layers,
-        color: 'text-orange-400',
+        color: 'text-orange-600',
         children: [
             {
                 label: 'Editor Web',
                 href: '/platform/playground/editor-web',
                 icon: Globe,
-                color: 'text-orange-600',
+                color: 'text-orange-400',
             },
             {
                 label: 'Ejecutor de Código',
                 href: '/platform/playground/editor-console',
                 icon: SquareTerminalIcon,
-                color: 'text-orange-600',
+                color: 'text-orange-400',
+            },
+            {
+                label: 'HTTP Client',
+                href: '/platform/playground/http-client',
+                icon: SquareTerminalIcon,
+                color: 'text-orange-400',
             },
         ],
     },
