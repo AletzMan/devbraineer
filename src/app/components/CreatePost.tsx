@@ -64,13 +64,8 @@ export default function CreatePost({ type, onClose }: CreatePostProps) {
 
             // Asumiendo que tu capa de manejo de respuestas devuelve { error: boolean, response: any }
             if (response.data && response.data.error === false) {
-                console.log(
-                    'Publicación creada exitosamente:',
-                    response.data.response
-                );
                 router.push('/');
             } else if (response.status === 201) {
-                console.log('Publicación creada exitosamente:', response.data);
                 router.push('/');
             } else {
                 console.error('Unexpected API response format:', response.data);

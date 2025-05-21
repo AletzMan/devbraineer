@@ -2,7 +2,7 @@
 import { usePathname } from 'next/navigation';
 import { MenuItem } from './MenuItem';
 import { menuData } from '../constants';
-import { Logo } from '@/app/components/Logo';
+import { Logo, NameLogo } from '@/app/components/Logo';
 import Link from 'next/link';
 
 export function Sidebar() {
@@ -15,11 +15,7 @@ export function Sidebar() {
                 title="DevBraineer"
                 className="grid grid-cols-[2.5em_1fr] items-center gap-2 px-3 py-2 h-16 border-b-1 border-(--color-gray-700)">
                 <Logo className="w-9 h-9 text-(--color-primary)" />
-                <h1
-                    className="items-center text-xl font-bold text-(--color-warning) max-2xl:hidden group-hover:max-2xl:flex"
-                    style={{ fontFamily: 'var(--font-josefin-sans)' }}>
-                    DevBraineer
-                </h1>
+                <NameLogo className="md:w-35  text-warning stroke-2 group-hover:${styles.spinSlow}" />
             </Link>
             {
                 <nav className="sticky top-4">

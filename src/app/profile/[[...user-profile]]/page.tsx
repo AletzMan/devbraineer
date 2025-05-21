@@ -15,13 +15,11 @@ export default function DashboardPage() {
 
     useEffect(() => {
         if (isLoaded && isSignedIn && user) {
-            console.log(user);
             const syncUserWithDB = async () => {
                 try {
                     const email = user.emailAddresses[0]?.emailAddress;
                     const username = user.username;
 
-                    // --- CAMBIO AQUÍ: Usando Axios ---
                     const response = await axios.post(
                         '/api/users/sync-clerk-user',
                         {
@@ -31,22 +29,14 @@ export default function DashboardPage() {
                     );
 
                     if (response.status !== 200) {
-                        // Axios usa 'status' para el código de estado
                         console.error(
                             'Error al sincronizar usuario con Prisma DB:',
                             response.statusText
-                        ); // Axios no tiene response.statusText en todas las respuestas de error de red
-                        // Para errores, Axios lanza una excepción si la respuesta no es 2xx
-                        // Por lo que este 'if' se puede simplificar a un bloque try/catch
-                    } else {
-                        const syncedUser = response.data; // Axios devuelve los datos directamente en .data
-                        console.log(
-                            'Usuario sincronizado exitosamente con Prisma DB:',
-                            syncedUser
                         );
+                    } else {
+                        const syncedUser = response.data;
                     }
                 } catch (error) {
-                    // Usamos 'any' para un manejo simple de errores en un hackathon
                     console.error(
                         'Error al llamar a la API de sincronización:',
                         error

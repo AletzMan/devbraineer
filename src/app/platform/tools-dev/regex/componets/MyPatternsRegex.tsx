@@ -182,7 +182,6 @@ export default function MyPatternsPage({
             const savedPattern = await createRegexPattern(patternToSave);
 
             // *** CAMBIO CLAVE: Depurar y validar el patrón guardado ***
-            console.log('Patrón guardado recibido del servicio:', savedPattern);
 
             // Asegurarse de que el patrón guardado es válido y tiene un ID antes de añadirlo
             const isSavedPatternValid =

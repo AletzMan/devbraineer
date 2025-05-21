@@ -755,7 +755,6 @@ li {
                 scriptFiles.length > 0 ? scriptFiles[0].content : '';
             const scriptType =
                 webMode === 'html-css-js' ? 'javascript' : 'text/typescript';
-            console.log(scriptContent);
             const combinedOutput = `
        <!DOCTYPE html>
        <html>
