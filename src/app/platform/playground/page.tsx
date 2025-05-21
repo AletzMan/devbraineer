@@ -22,6 +22,14 @@ const playgroundChildren = [
         description:
             'Ejecuta código de consola en varios lenguajes y visualiza resultados instantáneamente.',
     },
+    {
+        label: 'HTTP Client',
+        href: '/platform/playground/http-client',
+        icon: SquareTerminalIconChild,
+        color: 'text-orange-600',
+        description:
+            'Realiza peticiones HTTP y visualiza resultados instantáneamente.',
+    },
 ];
 
 export default function PlaygroundSection() {
