@@ -16,6 +16,7 @@
         "@uiw/react-json-view": "^2.0.0-alpha.32",
         "axios": "^1.9.0",
         "daisyui": "^5.0.35",
+        "framer-motion": "^12.12.1",
         "json-schema-generator": "^2.0.6",
         "json-to-ts": "^2.1.0",
         "katex": "^0.16.22",
