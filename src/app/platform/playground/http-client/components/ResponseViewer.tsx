@@ -1,4 +1,5 @@
-import ReactJson from 'react-json-view';
+import JsonView from '@uiw/react-json-view';
+import { monokaiTheme } from '@uiw/react-json-view/monokai';
 
 interface ResponseViewerProps {
     response: {
@@ -60,14 +61,7 @@ export function ResponseViewer({ response }: ResponseViewerProps) {
             <div>
                 <h3 className="font-semibold mb-1">Headers</h3>
                 <div className="bg-base-200 p-3 rounded">
-                    <ReactJson
-                        src={safeHeaders}
-                        name={false}
-                        collapsed={true}
-                        enableClipboard={false}
-                        displayDataTypes={false}
-                        theme="codeschool"
-                    />
+                    <JsonView value={safeHeaders} style={monokaiTheme} />
                 </div>
             </div>
 
@@ -75,14 +69,7 @@ export function ResponseViewer({ response }: ResponseViewerProps) {
                 <h3 className="font-semibold mb-1">Body</h3>
                 <div className="bg-base-200 p-3 rounded">
                     {isObject(body) && !looksLikeHTML(body) ? (
-                        <ReactJson
-                            src={body}
-                            name={false}
-                            collapsed={false}
-                            enableClipboard={true}
-                            displayDataTypes={false}
-                            theme="codeschool"
-                        />
+                        <JsonView value={body} style={monokaiTheme} />
                     ) : (
                         <pre className="whitespace-pre-wrap">
                             {String(body)}
