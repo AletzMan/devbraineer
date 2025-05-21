@@ -197,9 +197,7 @@ export default function Home() {
                                     <span>Simulador Lógico Digital</span>
                                 </li>
                             </ul>
-                            <Link
-                                href="/platform/tools-tech/circuit-calculator"
-                                passHref>
+                            <Link href="/platform/tools-tech" passHref>
                                 <button className="inline-flex items-center justify-center px-6 py-3 text-md font-semibold text-teal-400 border border-teal-400 rounded-full hover:bg-teal-400 hover:text-white transition-all duration-300 ease-in-out self-start">
                                     Ver herramientas
                                     <ArrowRight className="w-4 h-4 ml-2" />
@@ -315,7 +313,7 @@ export default function Home() {
                     </div>
 
                     <div className="text-center mt-16">
-                        <Link href="/platform/tools-dev/converter" passHref>
+                        <Link href="/platform" passHref>
                             {/* Asumiendo que '/tools' lista todas las herramientas */}
                             <button className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-blue-400 border border-blue-400 rounded-full hover:bg-blue-400 hover:text-white transition-all duration-300 ease-in-out transform hover:scale-105">
                                 Ver todas las herramientas
