@@ -29,8 +29,6 @@ export default function HttpClientPage() {
         body: string;
     } | null>(null);
 
-    console.log(history);
-
     useEffect(() => {
         const savedHistory = getHistoryFromLocalStorage();
         setHistory(savedHistory);
@@ -43,53 +41,33 @@ export default function HttpClientPage() {
                 if (h.key && h.value) formattedHeaders[h.key] = h.value;
             });
 
-            const res = await axios({
+            const res = await axios.post('/api/proxy', {
                 method,
                 url,
                 headers: formattedHeaders,
-                data: body ? JSON.parse(body) : undefined,
-                validateStatus: () => true, // para mostrar también errores
-                transformResponse: [
-                    (data, headers) => {
-                        const contentType = headers['content-type'] || '';
-                        if (contentType.includes('application/json')) {
-                            try {
-                                return JSON.parse(data);
-                            } catch {
-                                return data;
-                            }
-                        }
-                        return data;
-                    },
-                ],
+                body: body ? JSON.parse(body) : undefined,
             });
 
-            /*if (res.status >= 200 && res.status < 300) {
-                await saveRequestToHistory({
-                    method,
-                    url,
-                    headers,
-                    body,
-                    response: JSON.stringify(res.data),
-                    statusCode: res.status,
-                });
-            }*/
+            const responseData = res.data;
+
             setResponse({
                 status: res.status,
                 statusText: res.statusText,
                 headers: res.headers,
-                body: res.data,
+                body: responseData,
             });
+
             saveHistoryToLocalStorage({
                 method,
                 url,
                 headers,
                 body,
-                response: JSON.stringify(res.data),
+                response: JSON.stringify(responseData),
                 created_at: new Date(),
                 id: '',
                 userId: '',
             });
+
             setHistory((prev) => [
                 ...prev,
                 {
@@ -97,7 +75,7 @@ export default function HttpClientPage() {
                     url,
                     headers,
                     body,
-                    response: JSON.stringify(res.data),
+                    response: JSON.stringify(responseData),
                     created_at: new Date(),
                     id: '',
                     userId: '',
