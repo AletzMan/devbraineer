@@ -19,8 +19,9 @@ import { themes } from 'prism-react-renderer';
 import { JSIcon, TSIcon } from '@/app/components/Icons';
 import HeaderSection from '../../componentes/HeaderSection';
 import Ajv from 'ajv';
-import ReactJson from 'react-json-view';
 import generateSchema from 'json-schema-generator';
+import JsonView from '@uiw/react-json-view';
+import { monokaiTheme } from '@uiw/react-json-view/monokai';
 
 export default function ConverterPage() {
     const [input, setInput] = useState('');
@@ -335,14 +336,9 @@ export default function ConverterPage() {
                                     <h3 className="text-gray-300 mb-1">
                                         Vista JSON Schema:
                                     </h3>
-                                    <ReactJson
-                                        src={JSON.parse(schemaInput)}
-                                        name={null}
-                                        collapsed={2}
-                                        enableClipboard={false}
-                                        displayDataTypes={false}
-                                        displayObjectSize={false}
-                                        theme="monokai"
+                                    <JsonView
+                                        value={JSON.parse(schemaInput)}
+                                        style={monokaiTheme}
                                     />
                                 </div>
                             )}
