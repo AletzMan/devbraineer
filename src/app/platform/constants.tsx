@@ -201,7 +201,142 @@ export const menuData: IMenuItem[] = [
         ],
     },
 ];
+export interface ILinkItem {
+    label: string;
+    href: string;
+    icon: React.ComponentType<{ className?: string }>;
+    color: string;
+}
 
+export const LinkData: ILinkItem[] = [
+    {
+        label: 'Platform',
+        href: '/platform',
+        icon: LayoutDashboard,
+        color: 'text-gray-400',
+    },
+
+    // SECCIÓN: Playground
+    // El href debe coincidir con el segmento de la URL para el breadcrumb
+    {
+        label: 'Playground',
+        href: '/platform/playground',
+        icon: Layers,
+        color: 'text-warning',
+    },
+    {
+        label: 'Editor Web',
+        href: '/platform/playground/editor-web',
+        icon: Globe,
+        color: 'text-warning',
+    },
+    {
+        label: 'Ejecutor de Código',
+        href: '/platform/playground/editor-console',
+        icon: SquareTerminalIcon,
+        color: 'text-warning',
+    },
+    {
+        label: 'HTTP Client',
+        href: '/platform/playground/http-client',
+        icon: SquareTerminalIcon,
+        color: 'text-warning',
+    },
+
+    // SECCIÓN: Gestión de Recursos
+    // 'resources' es el segmento URL, el href debe coincidir
+    {
+        label: 'Recursos',
+        href: '/platform/resources',
+        icon: BoxIcon,
+        color: 'text-secondary',
+    }, // AGREGADO o MODIFICADO
+    {
+        label: 'Snippets de Código',
+        href: '/platform/resources/snippets',
+        icon: FileCode,
+        color: 'text-secondary',
+    },
+    {
+        label: 'Enlaces de Interés',
+        href: '/platform/resources/links',
+        icon: LinkIcon,
+        color: 'text-secondary',
+    },
+
+    // SECCIÓN: Herramientas de Desarrollo
+    // 'tools-dev' es el segmento URL, el href debe coincidir
+    {
+        label: 'Herramientas de Desarrollo',
+        href: '/platform/tools-dev',
+        icon: SquareTerminalIcon,
+        color: 'text-accent',
+    }, // AGREGADO o MODIFICADO
+    {
+        label: 'Convertidor de Datos',
+        href: '/platform/tools-dev/converter',
+        icon: FileJsonIcon,
+        color: 'text-accent',
+    },
+    {
+        label: 'Generador de RegEx',
+        href: '/platform/tools-dev/regex',
+        icon: RegexIcon,
+        color: 'text-accent',
+    },
+
+    // SECCIÓN: Herramientas Técnicas
+    // 'tools-tech' es el segmento URL, el href debe coincidir
+    {
+        label: 'Herramientas Técnicas',
+        href: '/platform/tools-tech',
+        icon: MonitorCogIcon,
+        color: 'text-info',
+    }, // AGREGADO o MODIFICADO
+    {
+        label: 'Calculadora de Circuitos',
+        href: '/platform/tools-tech/circuit-calculator',
+        icon: Zap,
+        color: 'text-info',
+    },
+    {
+        label: 'Convertidor de Unidades',
+        href: '/platform/tools-tech/unit-converter',
+        icon: Sliders,
+        color: 'text-info',
+    },
+    {
+        label: 'Calculadora de Resistencias',
+        href: '/platform/tools-tech/resistor-calculator',
+        icon: OmegaIcon,
+        color: 'text-info',
+    },
+
+    // SECCIÓN: Mi Cuenta
+    // 'account' es el segmento URL, el href debe coincidir si lo usas en la URL
+    // Si '/profile' es la URL raíz de mi cuenta y '/platform/account/saved' es la subsección:
+    {
+        label: 'Mi Cuenta',
+        href: '/profile',
+        icon: User,
+        color: 'text-yellow-600',
+    }, // MODIFICADO si estaba en '#'
+    {
+        label: 'Guardados',
+        href: '/platform/account/saved',
+        icon: Bookmark,
+        color: 'text-yellow-600',
+    },
+    { label: 'Perfil', href: '/profile', icon: User, color: 'text-yellow-300' }, // Si ya existe para /profile, esta puede ser redundante o para un caso específico.
+
+    // Si tu URL es /platform/account/saved, necesitarías una entrada para /platform/account
+    {
+        label: 'Cuenta',
+        href: '/platform/account',
+        icon: User,
+        color: 'text-yellow-600',
+    }, // Posiblemente NECESARIA si hay /platform/account/ lo que sea
+];
 export interface FileData {
     id: string;
     name: string;
