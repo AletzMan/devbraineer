@@ -1,3 +1,4 @@
+'use client';
 import Link from 'next/link';
 import {
     Code2,
@@ -6,489 +7,503 @@ import {
     Wifi,
     HardDrive,
     Terminal,
-    GitBranch,
     Database,
     Layers,
     PenTool,
     ArrowRight,
     Github,
-    Twitter,
     Linkedin,
+    LogIn,
+    LayoutDashboard,
+    Regex,
+    RegexIcon,
 } from 'lucide-react';
-import { Logo } from './components/Logo';
+import { Logo, NameLogo } from './components/Logo';
+import styles from './home.module.css';
+import { useEffect, useState, useRef } from 'react';
+import { useAuth } from '@clerk/nextjs';
+import { CardTool } from './components/CardTool';
 
 export default function Home() {
+    const [showHeader, setShowHeader] = useState(false);
+    const heroSectionRef = useRef<HTMLDivElement>(null);
+    const { userId } = useAuth();
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (heroSectionRef.current) {
+                const heroBottom =
+                    heroSectionRef.current.getBoundingClientRect().bottom;
+                setShowHeader(window.scrollY > heroBottom);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     return (
-        // Contenedor principal con fondo oscuro y scroll suave
-        <div className="min-h-screen bg-gray-950 text-gray-100 overflow-x-hidden antialiased">
-            {/* Hero Section */}
-            <header className="relative overflow-hidden py-20 md:py-32 lg:py-40">
-                {/* Fondo con gradiente radial sutil */}
-                <div className="absolute inset-0 z-0 pointer-events-none">
-                    <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-transparent opacity-60"></div>
-                    <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-                    {/* Patrón de cuadrícula sutil (requiere CSS) */}
-                </div>
-
-                <div className="container mx-auto px-4 relative z-10">
-                    <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-                        {/* Logo y Nombre de la App */}
-                        <div className="flex items-center gap-4 mb-8">
-                            <div className="flex items-center justify-center gap-2 px-3 py-2 ">
-                                <Logo className="size-30 text-(--color-primary)" />
-                                <h1
-                                    className="items-center justify-center h-full pt-1.5 text-7xl font-bold text-(--color-warning) max-2xl:hidden group-hover:max-2xl:flex"
-                                    style={{
-                                        fontFamily: 'var(--font-josefin-sans)',
-                                    }}>
-                                    DevBraineer
-                                </h1>
-                            </div>
-                        </div>
-
-                        {/* Título Principal */}
-                        <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight">
-                            Herramientas esenciales para
-                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-teal-400">
-                                {' desarrolladores '}
-                            </span>
-                            e ingenieros
-                        </h2>
-
-                        {/* Subtítulo/Descripción */}
-                        <p className="text-xl md:text-2xl text-gray-400 mb-10 max-w-3xl">
-                            Una colección de herramientas gratuitas y de código
-                            abierto diseñadas para hacer tu flujo de trabajo de
-                            desarrollo más eficiente y productivo.
-                        </p>
-
-                        {/* Botones CTA */}
-                        <div className="flex flex-col sm:flex-row gap-6">
+        <div className="min-h-screen bg-gradient-to-br from-slate-950 via-[#0d1220] to-zinc-950 text-neutral-content antialiased">
+            <header
+                className={`flex items-center justify-center navbar fixed top-0 left-0 right-0 z-50 bg-neutral-950/60 backdrop-blur-lg shadow-xl border-b border-neutral-800/50 transition-transform duration-500 ease-in-out ${showHeader ? 'translate-y-0' : '-translate-y-full'}`}>
+                <div className="flex items-center justify-center container mx-auto px-4">
+                    <div className="navbar-start">
+                        <Link
+                            href="/"
+                            className="flex items-center gap-2.5 group">
+                            <Logo
+                                className={`size-9 md:size-10 text-primary group-hover:${styles.spinSlow}`}
+                            />
+                            <NameLogo className="w-25  md:w-30   text-warning stroke-2 group-hover:${styles.spinSlow}" />
+                        </Link>
+                    </div>
+                    <div className="navbar-end">
+                        {userId ? (
                             <Link
-                                href="/platform" // Asumiendo que '/platform' es la ruta a la app
-                                passHref // Pasa href al componente subyacente si es necesario
-                                className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-full shadow-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 ease-in-out transform hover:scale-105"
-                                role="button" // Semántica para accesibilidad
-                            >
-                                Comienza ahora
-                                <ArrowRight className="w-5 h-5 ml-2" />
+                                href="/platform"
+                                className="btn btn-outline btn-primary btn-sm md:btn-md group">
+                                <LayoutDashboard className="w-5 h-5 mr-0 md:mr-2 transition-transform duration-300 group-hover:translate-x-0.5" />
+                                <span className="hidden md:inline">Panel</span>
                             </Link>
-                            <a
-                                href="https://github.com/AletzMan/devbraineer" // Reemplaza con la URL de tu repo en GitHub
-                                target="_blank" // Abre en una nueva pestaña
-                                rel="noopener noreferrer" // Seguridad
-                                className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-gray-300 bg-gray-800 border border-gray-700 rounded-full shadow-lg hover:bg-gray-700 hover:border-gray-600 transition-all duration-300 ease-in-out transform hover:scale-105">
-                                Ver en GitHub
-                            </a>
-                        </div>
+                        ) : (
+                            <Link
+                                href="/sign-in"
+                                className="btn btn-outline btn-primary btn-sm md:btn-md group">
+                                <LogIn className="w-5 h-5 mr-0 md:mr-2 transition-transform duration-300 group-hover:translate-x-0.5" />
+                                <span className="hidden md:inline">
+                                    Iniciar Sesión
+                                </span>
+                            </Link>
+                        )}
                     </div>
                 </div>
             </header>
 
-            {/* Features Section */}
-            <section className="py-20 md:py-32 bg-gray-900">
-                {/* Fondo ligeramente diferente */}
-                <div className="container mx-auto px-4">
-                    <div className="text-center mb-16 max-w-3xl mx-auto">
-                        <h2 className="text-4xl font-bold text-white mb-4">
-                            Herramientas para cada necesidad
-                        </h2>
-                        <p className="text-xl text-gray-400">
-                            Desde desarrollo web hasta ingeniería electrónica,
-                            tenemos herramientas para todos los aspectos del
-                            desarrollo.
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {/* Web Development Tools Card */}
-                        <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-700 rounded-xl p-8 flex flex-col hover:shadow-xl transition-all duration-300 ease-in-out hover:border-blue-600 transform hover:translate-y-[-5px]">
-                            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center mb-6 shadow-md">
-                                <Code2 className="w-7 h-7 text-white" />
+            <main className="">
+                <div ref={heroSectionRef} className="hero min-h-svh relative">
+                    <div className="hero-overlay bg-gradient-radial from-neutral-950/50 via-[#1a2035]/60 to-transparent opacity-90"></div>
+                    <div className="hero-overlay bg-black/40"></div>
+                    <div className="hero-content text-center pb-10 pt-5 md:py-20 lg:py-32 relative z-10">
+                        <div className="flex flex-col items-center justify-center max-w-4xl mx-auto">
+                            <div className="flex flex-col items-center justify-center  mb-25">
+                                <Logo className="size-24 md:size-30 text-primary group-hover:${styles.spinSlow}" />
+                                <NameLogo className="w-70  md:w-130   text-warning stroke-2 group-hover:${styles.spinSlow}" />
                             </div>
-                            <h3 className="text-2xl font-semibold text-white mb-3">
-                                Desarrollo Web
-                            </h3>
-                            <p className="text-gray-400 mb-6 flex-grow">
-                                {/* flex-grow para que ocupen el mismo espacio */}
-                                Herramientas para formatear, validar y optimizar
-                                tu código HTML, CSS y JavaScript.
-                            </p>
-                            <ul className="space-y-3 mb-8 text-gray-300">
-                                <li className="flex items-center gap-3">
-                                    <Terminal className="w-5 h-5 text-cyan-400" />
-                                    <span>Playground de Código</span>
-                                </li>
-                                <li className="flex items-center gap-3">
-                                    <GitBranch className="w-5 h-5 text-cyan-400" />
-                                    <span>Generador RegEx</span>
-                                </li>
-                                <li className="flex items-center gap-3">
-                                    <PenTool className="w-5 h-5 text-cyan-400" />
-                                    <span>Formateador de Código</span>
-                                </li>
-                            </ul>
-                            <Link href="/platform/playground" passHref>
-                                <button className="inline-flex items-center justify-center px-6 py-3 text-md font-semibold text-blue-400 border border-blue-400 rounded-full hover:bg-blue-400 hover:text-white transition-all duration-300 ease-in-out self-start">
-                                    {/* self-start para alinear */}
-                                    Ver herramientas
-                                    <ArrowRight className="w-4 h-4 ml-2" />
-                                </button>
-                            </Link>
-                        </div>
 
-                        {/* Data Tools Card */}
-                        <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-700 rounded-xl p-8 flex flex-col hover:shadow-xl transition-all duration-300 ease-in-out hover:border-purple-600 transform hover:translate-y-[-5px]">
-                            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center mb-6 shadow-md">
-                                <Database className="w-7 h-7 text-white" />
-                            </div>
-                            <h3 className="text-2xl font-semibold text-white mb-3">
-                                Herramientas de Datos
-                            </h3>
-                            <p className="text-gray-400 mb-6 flex-grow">
-                                Convierte, formatea y manipula datos en
-                                diferentes formatos para tus aplicaciones.
-                            </p>
-                            <ul className="space-y-3 mb-8 text-gray-300">
-                                <li className="flex items-center gap-3">
-                                    <Database className="w-5 h-5 text-pink-400" />
-                                    <span>Convertidor JSON</span>
-                                </li>
-                                <li className="flex items-center gap-3">
-                                    <Layers className="w-5 h-5 text-pink-400" />
-                                    <span>Snippets de Código</span>
-                                </li>
-                                <li className="flex items-center gap-3">
-                                    <Sliders className="w-5 h-5 text-pink-400" />
-                                    <span>Convertidor de Unidades</span>
-                                </li>
-                            </ul>
-                            <Link href="/platform/tools-dev/converter" passHref>
-                                <button className="inline-flex items-center justify-center px-6 py-3 text-md font-semibold text-purple-400 border border-purple-400 rounded-full hover:bg-purple-400 hover:text-white transition-all duration-300 ease-in-out self-start">
-                                    Ver herramientas
-                                    <ArrowRight className="w-4 h-4 ml-2" />
-                                </button>
-                            </Link>
-                        </div>
+                            <h2 className="mb-8 text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight drop-shadow-xl">
+                                Herramientas esenciales para
+                                <span
+                                    className={`text-transparent bg-clip-text bg-gradient-to-r from-accent via-primary to-secondary ${styles.animatedTextGradient}`}>
+                                    {' desarrolladores '}
+                                </span>
+                                e ingenieros
+                            </h2>
 
-                        {/* Electronics Tools Card */}
-                        <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-700 rounded-xl p-8 flex flex-col hover:shadow-xl transition-all duration-300 ease-in-out hover:border-teal-600 transform hover:translate-y-[-5px]">
-                            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-teal-600 to-cyan-600 flex items-center justify-center mb-6 shadow-md">
-                                <Zap className="w-7 h-7 text-white" />
-                            </div>
-                            <h3 className="text-2xl font-semibold text-white mb-3">
-                                Ingeniería Electrónica
-                            </h3>
-                            <p className="text-gray-400 mb-6 flex-grow">
-                                Calcula y simula circuitos electrónicos con
-                                nuestras herramientas especializadas.
+                            <p className="mb-10 text-md md:text-xl lg:text-2xl text-neutral-200 max-w-3xl mx-auto drop-shadow-md">
+                                Una colección de herramientas gratuitas y de
+                                código abierto diseñadas para hacer tu flujo de
+                                trabajo de desarrollo más eficiente y
+                                productivo.
                             </p>
-                            <ul className="space-y-3 mb-8 text-gray-300">
-                                <li className="flex items-center gap-3">
-                                    <Zap className="w-5 h-5 text-teal-400" />
-                                    <span>Calculadora de Circuitos</span>
-                                </li>
-                                <li className="flex items-center gap-3">
-                                    <Wifi className="w-5 h-5 text-teal-400" />
-                                    <span>Calculadora de Resistencias</span>
-                                </li>
-                                <li className="flex items-center gap-3">
-                                    <HardDrive className="w-5 h-5 text-teal-400" />
-                                    <span>Simulador Lógico Digital</span>
-                                </li>
-                            </ul>
-                            <Link href="/platform/tools-tech" passHref>
-                                <button className="inline-flex items-center justify-center px-6 py-3 text-md font-semibold text-teal-400 border border-teal-400 rounded-full hover:bg-teal-400 hover:text-white transition-all duration-300 ease-in-out self-start">
-                                    Ver herramientas
-                                    <ArrowRight className="w-4 h-4 ml-2" />
-                                </button>
-                            </Link>
+
+                            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                                <Link
+                                    href="/platform"
+                                    passHref
+                                    className="btn btn-primary btn-lg rounded-full shadow-lg hover:shadow-primary/40 hover:scale-105 transform-gpu transition-all duration-300 ease-in-out group"
+                                    role="button">
+                                    <ArrowRight className="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                                    Comienza ahora
+                                </Link>
+                                <a
+                                    href="https://github.com/AletzMan/devbraineer"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="btn btn-outline btn-neutral text-neutral-300 hover:text-white btn-lg rounded-full shadow-lg hover:bg-neutral-800/70 hover:border-neutral-600 hover:scale-105 transform-gpu transition-all duration-300 ease-in-out group">
+                                    Ver en GitHub
+                                    <Github className="w-5 h-5 ml-2 text-neutral-400 transition-colors duration-300 group-hover:text-white" />
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </section>
-
-            {/* Popular Tools Section */}
-            <section className="py-20 md:py-32 bg-gray-950">
-                {/* Fondo oscuro principal */}
-                <div className="container mx-auto px-4">
-                    <div className="text-center mb-16 max-w-3xl mx-auto">
-                        <h2 className="text-4xl font-bold text-white mb-4">
-                            Herramientas populares
-                        </h2>
-                        <p className="text-xl text-gray-400">
-                            Descubre las herramientas más utilizadas por nuestra
-                            comunidad de desarrolladores.
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {/* Popular Tool Card - Playground */}
-                        <Link
-                            href="/platform/playground"
-                            passHref
-                            className="group">
-                            <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-700 rounded-xl p-6 h-full flex flex-col hover:shadow-xl transition-all duration-300 ease-in-out group-hover:border-blue-600">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center shadow-md">
-                                        <Layers className="w-6 h-6 text-white" />
-                                    </div>
-                                    <h3 className="text-xl font-semibold text-white">
-                                        Playground de Código
-                                    </h3>
-                                </div>
-                                <p className="text-gray-400 flex-grow">
-                                    Experimenta con HTML, CSS y JavaScript en
-                                    tiempo real con resaltado de sintaxis y
-                                    consola integrada.
-                                </p>
-                            </div>
-                        </Link>
-
-                        {/* Popular Tool Card - Circuit Calculator */}
-                        <Link
-                            href="/platform/tools-tech/circuit-calculator"
-                            passHref
-                            className="group">
-                            <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-700 rounded-xl p-6 h-full flex flex-col hover:shadow-xl transition-all duration-300 ease-in-out group-hover:border-teal-600">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-600 to-cyan-600 flex items-center justify-center shadow-md">
-                                        <Zap className="w-6 h-6 text-white" />
-                                    </div>
-                                    <h3 className="text-xl font-semibold text-white">
-                                        Calculadora de Circuitos
-                                    </h3>
-                                </div>
-                                <p className="text-gray-400 flex-grow">
-                                    Calcula valores de resistencia, voltaje y
-                                    corriente utilizando la ley de Ohm y otras
-                                    fórmulas.
-                                </p>
-                            </div>
-                        </Link>
-
-                        {/* Popular Tool Card - JSON Converter */}
-                        <Link
-                            href="/platform/tools-dev/converter"
-                            passHref
-                            className="group">
-                            <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-700 rounded-xl p-6 h-full flex flex-col hover:shadow-xl transition-all duration-300 ease-in-out group-hover:border-purple-600">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-md">
-                                        <Database className="w-6 h-6 text-white" />
-                                    </div>
-                                    <h3 className="text-xl font-semibold text-white">
-                                        Convertidor JSON
-                                    </h3>
-                                </div>
-                                <p className="text-gray-400 flex-grow">
-                                    Convierte entre JSON y objetos JavaScript
-                                    con facilidad, con formato automático y
-                                    validación.
-                                </p>
-                            </div>
-                        </Link>
-
-                        {/* Popular Tool Card - Regex Generator */}
-                        <Link
-                            href="/platform/tools-dev/regex"
-                            passHref
-                            className="group">
-                            <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-700 rounded-xl p-6 h-full flex flex-col hover:shadow-xl transition-all duration-300 ease-in-out group-hover:border-blue-600">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center shadow-md">
-                                        <GitBranch className="w-6 h-6 text-white" />
-                                    </div>
-                                    <h3 className="text-xl font-semibold text-white">
-                                        Generador RegEx
-                                    </h3>
-                                </div>
-                                <p className="text-gray-400 flex-grow">
-                                    Crea, prueba y valida expresiones regulares
-                                    con una interfaz intuitiva y ejemplos
-                                    prácticos.
-                                </p>
-                            </div>
-                        </Link>
-                    </div>
-
-                    <div className="text-center mt-16">
-                        <Link href="/platform" passHref>
-                            {/* Asumiendo que '/tools' lista todas las herramientas */}
-                            <button className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-blue-400 border border-blue-400 rounded-full hover:bg-blue-400 hover:text-white transition-all duration-300 ease-in-out transform hover:scale-105">
-                                Ver todas las herramientas
-                                <ArrowRight className="w-5 h-5 ml-2" />
-                            </button>
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* CTA Section */}
-            <section className="py-20 md:py-32 bg-gray-900">
-                {/* Fondo ligeramente diferente */}
-                <div className="container mx-auto px-4">
-                    <div className="max-w-3xl mx-auto text-center">
-                        <h2 className="text-4xl font-bold text-white mb-6">
-                            ¿Tienes alguna sugerencia?
-                        </h2>
-                        <p className="text-xl text-gray-400 mb-10">
-                            Estamos constantemente añadiendo nuevas
-                            herramientas. Si tienes alguna idea o sugerencia,
-                            nos encantaría escucharla.
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                            {/* Botón Sugerir */}
-                            <a
-                                href="mailto:alejandro.ga.dev@gmail.com" // Reemplaza con tu email o un enlace a un formulario
-                                className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-purple-400 border border-purple-400 rounded-full hover:bg-purple-400 hover:text-white transition-all duration-300 ease-in-out transform hover:scale-105">
-                                Sugerir una herramienta
-                            </a>
-                            {/* Botón Contribuir */}
-                            <a
-                                href="https://github.com/AletzMan/devbraineer" // Reemplaza con la URL de tu repo en GitHub
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-gray-300 bg-gray-800 border border-gray-700 rounded-full shadow-lg hover:bg-gray-700 hover:border-gray-600 transition-all duration-300 ease-in-out transform hover:scale-105">
-                                Contribuir en GitHub
-                            </a>
+                <section className="py-20 md:py-32 bg-gradient-to-b from-slate-950 via-[#111827] to-[#0c1322]">
+                    <div className="container mx-auto px-4">
+                        <div className="text-center mb-16 max-w-3xl mx-auto">
+                            <h2 className="text-4xl font-bold text-white mb-4">
+                                Herramientas para cada necesidad
+                            </h2>
+                            <p className="text-xl text-neutral-300">
+                                Desde desarrollo web hasta ingeniería
+                                electrónica, tenemos herramientas para todos los
+                                aspectos del desarrollo.
+                            </p>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {DataCards.map((card) => (
+                                <CardTool key={card.title} card={card} />
+                            ))}
                         </div>
                     </div>
-                </div>
-            </section>
-
-            {/* Footer */}
-            <footer className="py-12 bg-gray-950 border-t border-gray-800">
-                <div className="container mx-auto px-4">
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-                        {/* Ajustado gap */}
-                        {/* Logo en Footer */}
-                        <div className="flex items-center gap-3">
-                            <div className="flex items-center gap-4 mb-8">
-                                <div className="flex items-center justify-center gap-2 px-3 py-2 ">
-                                    <Logo className="size-12 text-(--color-primary)" />
-                                    <h1
-                                        className="items-center justify-center h-full pt-1.5 text-3xl font-bold text-(--color-warning) max-2xl:hidden group-hover:max-2xl:flex"
+                </section>
+                <section className="py-20 md:py-32 bg-gradient-to-b from-[#0c1322] via-[#0A0F1A] to-black">
+                    <div className="container mx-auto px-4">
+                        <div className="text-center mb-16 max-w-3xl mx-auto">
+                            <h2 className="text-4xl font-bold text-white mb-4">
+                                Herramientas populares
+                            </h2>
+                            <p className="text-xl text-neutral-300">
+                                Descubre las herramientas más utilizadas por
+                                nuestra comunidad.
+                            </p>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <Link
+                                href="/platform/playground"
+                                passHref
+                                className="group">
+                                <div className="card bg-neutral-900/50 backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out h-full border border-neutral-700/60 group-hover:border-blue-600/70 transform hover:scale-105">
+                                    <div className="card-body">
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <div className="p-3 bg-gradient-to-br from-blue-700 to-cyan-600 rounded-full shadow-md">
+                                                <Layers className="w-6 h-6 text-white" />
+                                            </div>
+                                            <h3 className="card-title text-xl font-semibold text-white">
+                                                Playground de Código
+                                            </h3>
+                                        </div>
+                                        <p className="text-neutral-400 flex-grow text-sm">
+                                            Experimenta con HTML, CSS y
+                                            JavaScript en tiempo real.
+                                        </p>
+                                    </div>
+                                </div>
+                            </Link>
+                            <Link
+                                href="/platform/tools-tech/circuit-calculator"
+                                passHref
+                                className="group">
+                                <div className="card bg-neutral-900/50 backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out h-full border border-neutral-700/60 group-hover:border-teal-600/70 transform hover:scale-105">
+                                    <div className="card-body">
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <div className="p-3 bg-gradient-to-br from-teal-700 to-cyan-600 rounded-full shadow-md">
+                                                <Zap className="w-6 h-6 text-white" />
+                                            </div>
+                                            <h3 className="card-title text-xl font-semibold text-white">
+                                                Calculadora de Circuitos
+                                            </h3>
+                                        </div>
+                                        <p className="text-neutral-400 flex-grow text-sm">
+                                            Calcula valores de resistencia,
+                                            voltaje y corriente.
+                                        </p>
+                                    </div>
+                                </div>
+                            </Link>
+                            <Link
+                                href="/platform/tools-dev/converter"
+                                passHref
+                                className="group">
+                                <div className="card bg-neutral-900/50 backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out h-full border border-neutral-700/60 group-hover:border-purple-600/70 transform hover:scale-105">
+                                    <div className="card-body">
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <div className="p-3 bg-gradient-to-br from-purple-700 to-pink-600 rounded-full shadow-md">
+                                                <Database className="w-6 h-6 text-white" />
+                                            </div>
+                                            <h3 className="card-title text-xl font-semibold text-white">
+                                                Convertidor JSON
+                                            </h3>
+                                        </div>
+                                        <p className="text-neutral-400 flex-grow text-sm">
+                                            Convierte JSON a objetos JS y
+                                            viceversa con facilidad.
+                                        </p>
+                                    </div>
+                                </div>
+                            </Link>
+                            <Link
+                                href="/platform/tools-dev/regex"
+                                passHref
+                                className="group">
+                                <div className="card bg-neutral-900/50 backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out h-full border border-neutral-700/60 group-hover:border-blue-600/70 transform hover:scale-105">
+                                    <div className="card-body">
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <div className="p-3 bg-gradient-to-br from-blue-700 to-cyan-600 rounded-full shadow-md">
+                                                <RegexIcon className="w-6 h-6 text-white" />
+                                            </div>
+                                            <h3 className="card-title text-xl font-semibold text-white">
+                                                Generador RegEx
+                                            </h3>
+                                        </div>
+                                        <p className="text-neutral-400 flex-grow text-sm">
+                                            Crea, prueba y valida expresiones
+                                            regulares visualmente.
+                                        </p>
+                                    </div>
+                                </div>
+                            </Link>
+                        </div>
+                        <div className="text-center mt-16">
+                            <Link href="/platform" passHref>
+                                <button className="btn btn-outline btn-primary btn-lg rounded-full hover:scale-105 transform-gpu transition-transform duration-300 ease-in-out group">
+                                    Ver todas las herramientas
+                                    <ArrowRight className="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                                </button>
+                            </Link>
+                        </div>
+                    </div>
+                </section>
+                <section className="py-20 md:py-32 bg-gradient-to-b from-black via-[#0A0F1A] to-slate-950">
+                    {/* Transition back */}
+                    <div className="container mx-auto px-4">
+                        <div className="max-w-3xl mx-auto text-center">
+                            <h2 className="text-4xl font-bold text-white mb-6">
+                                ¿Tienes alguna sugerencia?
+                            </h2>
+                            <p className="text-xl text-neutral-300 mb-10">
+                                Estamos constantemente añadiendo nuevas
+                                herramientas. ¡Nos encantaría escuchar tus
+                                ideas!
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                                <a
+                                    href="mailto:alejandro.ga.dev@gmail.com"
+                                    className="btn btn-outline btn-secondary btn-lg rounded-full hover:scale-105 transform-gpu transition-transform duration-300 ease-in-out">
+                                    Sugerir una herramienta
+                                </a>
+                                <a
+                                    href="https://github.com/AletzMan/devbraineer"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="btn btn-outline btn-neutral text-neutral-300 hover:text-white btn-lg rounded-full shadow-lg hover:bg-neutral-800/70 hover:border-neutral-600 hover:scale-105 transform-gpu transition-all duration-300 ease-in-out">
+                                    Contribuir en GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <footer className="bg-gradient-to-b from-slate-950 to-black text-neutral-content pt-16 pb-8 border-t-2 border-neutral-800/70 shadow-inner">
+                    <div className="container mx-auto px-4">
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-12 items-start">
+                            <div className="md:col-span-12 lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left">
+                                <Link
+                                    href="/"
+                                    className="flex items-center gap-3 mb-4 group">
+                                    <Logo className="size-12 text-primary transition-transform duration-300 group-hover:scale-110" />
+                                    <span
+                                        className="text-3xl font-bold text-warning transition-colors duration-300 group-hover:text-primary"
                                         style={{
                                             fontFamily:
                                                 'var(--font-josefin-sans)',
                                         }}>
                                         DevBraineer
-                                    </h1>
-                                </div>
+                                    </span>
+                                </Link>
+                                <p className="text-neutral-400 text-sm max-w-xs">
+                                    Potenciando a desarrolladores e ingenieros
+                                    con herramientas innovadoras y de código
+                                    abierto.
+                                </p>
                             </div>
-                        </div>
-                        {/* Enlaces del Footer */}
-                        <div className="flex flex-wrap justify-center gap-x-8 gap-y-4">
-                            {/* Ajustado gap */}
-                            {/* Columna de Herramientas */}
-                            <div className="text-center md:text-left">
-                                {/* Alineación responsiva */}
-                                <h4 className="font-semibold text-white mb-3">
+                            <div className="md:col-span-6 lg:col-span-4">
+                                <h6 className="font-bold text-lg text-white mb-4 relative inline-block">
                                     Herramientas
-                                </h4>
-                                <ul className="space-y-2 text-gray-400">
+                                    <span className="absolute bottom-[-4px] left-0 w-1/2 h-0.5 bg-gradient-to-r from-primary to-secondary"></span>
+                                </h6>
+                                <ul className="space-y-2">
                                     <li>
                                         <Link
                                             href="/platform/playground"
-                                            className="hover:text-white transition-colors duration-200">
+                                            className={`text-neutral-400 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-primary hover:to-accent hover:brightness-125 ${styles.footerLink}`}>
                                             Playground de Código
                                         </Link>
                                     </li>
                                     <li>
                                         <Link
                                             href="/platform/tools-tech/circuit-calculator"
-                                            className="hover:text-white transition-colors duration-200">
+                                            className={`text-neutral-400 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-primary hover:to-accent hover:brightness-125 ${styles.footerLink}`}>
                                             Calculadora de Circuitos
                                         </Link>
                                     </li>
                                     <li>
                                         <Link
                                             href="/platform/tools-dev/converter"
-                                            className="hover:text-white transition-colors duration-200">
+                                            className={`text-neutral-400 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-primary hover:to-accent hover:brightness-125 ${styles.footerLink}`}>
                                             Convertidor JSON
                                         </Link>
                                     </li>
                                     <li>
                                         <Link
                                             href="/platform/tools-dev/regex"
-                                            className="hover:text-white transition-colors duration-200">
+                                            className={`text-neutral-400 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-primary hover:to-accent hover:brightness-125 ${styles.footerLink}`}>
                                             Generador RegEx
                                         </Link>
                                     </li>
-                                    {/* Añadir más enlaces de herramientas según sea necesario */}
+                                    <li>
+                                        <Link
+                                            href="/platform"
+                                            className={`font-semibold text-neutral-300 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-primary hover:to-accent hover:brightness-125 ${styles.footerLink}`}>
+                                            Ver todas...
+                                        </Link>
+                                    </li>
                                 </ul>
                             </div>
-                            {/* Columna de Enlaces */}
-                            <div className="text-center md:text-left">
-                                {/* Alineación responsiva */}
-                                <h4 className="font-semibold text-white mb-3">
-                                    Enlaces
-                                </h4>
-                                <ul className="space-y-2 text-gray-400">
+                            <div className="md:col-span-6 lg:col-span-4">
+                                <h6 className="font-bold text-lg text-white mb-4 relative inline-block">
+                                    Enlaces Útiles
+                                    <span className="absolute bottom-[-4px] left-0 w-1/2 h-0.5 bg-gradient-to-r from-accent to-warning"></span>
+                                </h6>
+                                <ul className="space-y-2">
                                     <li>
                                         <Link
                                             href="/about"
-                                            className="hover:text-white transition-colors duration-200">
-                                            Acerca de
+                                            className={`text-neutral-400 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-accent hover:to-warning hover:brightness-125 ${styles.footerLink}`}>
+                                            Sobre nosotros
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link
-                                            href="/blog"
-                                            className="hover:text-white transition-colors duration-200">
-                                            Blog
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link
+                                        <a
                                             href="/contact"
-                                            className="hover:text-white transition-colors duration-200">
+                                            className={`text-neutral-400 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-accent hover:to-warning hover:brightness-125 ${styles.footerLink}`}>
                                             Contacto
-                                        </Link>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a
+                                            href="https://github.com/AletzMan/devbraineer"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={`text-neutral-400 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-accent hover:to-warning hover:brightness-125 ${styles.footerLink}`}>
+                                            Contribuir
+                                        </a>
                                     </li>
                                     <li>
                                         <Link
                                             href="/privacy"
-                                            className="hover:text-white transition-colors duration-200">
-                                            Privacidad
+                                            className={`text-neutral-400 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-accent hover:to-warning hover:brightness-125 ${styles.footerLink}`}>
+                                            Política de Privacidad
                                         </Link>
                                     </li>
                                 </ul>
                             </div>
                         </div>
-                        {/* Iconos Sociales */}
-                        <div className="flex gap-4 mt-6 md:mt-0">
-                            {/* Ajustado margen */}
+
+                        <div className="flex justify-center lg:justify-start items-center gap-6 mt-16 border-t border-neutral-800/70 pt-8">
                             <a
-                                href="https://github.com/AletzMan/devbraineer"
+                                href="https://github.com/AletzMan"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-gray-400 hover:text-white transition-colors duration-200"
-                                title="GitHub">
-                                <Github className="w-6 h-6" />
+                                className="text-neutral-400 hover:text-white transition-colors duration-300">
+                                <Github className="w-7 h-7" />
                             </a>
                             <a
-                                href="https://www.linkedin.com/in/alejandro-garcia-dev/"
+                                href="https://linkedin.com/in/yourprofile"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-gray-400 hover:text-white transition-colors duration-200"
-                                title="LinkedIn">
-                                <Linkedin className="w-6 h-6" />
+                                className="text-neutral-400 hover:text-white transition-colors duration-300">
+                                <Linkedin className="w-7 h-7" />
                             </a>
                         </div>
-                    </div>
 
-                    {/* Copyright */}
-                    <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-600 text-sm">
-                        {/* Ajustado estilos */}
-                        <p>
-                            &copy; {new Date().getFullYear()} DevBraineer. Todos
-                            los derechos reservados.
-                        </p>
+                        <div className="text-center text-sm text-neutral-500 mt-8">
+                            © {new Date().getFullYear()} DevBraineer. Todos los
+                            derechos reservados.
+                        </div>
                     </div>
-                </div>
-            </footer>
+                </footer>
+            </main>
         </div>
     );
 }
+
+const DataCards = [
+    {
+        id: 'web-development',
+        title: 'Desarrollo Web',
+        description:
+            'Herramientas para formatear, validar y optimizar y probar tu código web.',
+        icon: Code2,
+        color: 'info',
+        hoverColor: 'hover:border-info',
+        gradient: 'from-info to-info/40',
+        buttonColor: 'btn-info',
+        href: '/platform/playground',
+        children: [
+            {
+                title: 'Playground de Código',
+                icon: Terminal,
+                color: 'info',
+            },
+            {
+                title: 'Generador RegEx',
+                icon: Regex,
+                color: 'info',
+            },
+            {
+                title: 'Formateador de Código',
+                icon: PenTool,
+                color: 'info',
+            },
+        ],
+    },
+    {
+        id: 'data-tools',
+        title: 'Herramientas de Datos',
+        description:
+            'Convierte, formatea y manipula datos en diferentes formatos.',
+        icon: Database,
+        color: 'secondary',
+        hoverColor: 'hover:border-secondary',
+        gradient: 'from-secondary to-secondary/40',
+        buttonColor: 'btn-secondary',
+        href: '/platform/tools-dev/converter',
+        children: [
+            {
+                title: 'Convertidor JSON',
+                icon: Database,
+                color: 'secondary',
+            },
+            {
+                title: 'Snippets de Código',
+                icon: Layers,
+                color: 'secondary',
+            },
+            {
+                title: 'Convertidor de Unidades',
+                icon: Sliders,
+                color: 'secondary',
+            },
+        ],
+    },
+    {
+        id: 'electronic-engineering',
+        title: 'Ingeniería Electrónica',
+        description:
+            'Calcula y simula circuitos electrónicos con herramientas especializadas.',
+        icon: Zap,
+        color: 'success',
+        hoverColor: 'hover:border-success',
+        gradient: 'from-success to-success/40',
+        buttonColor: 'btn-success',
+        href: '/platform/tools-tech',
+        children: [
+            {
+                title: 'Calculadora de Circuitos',
+                icon: Zap,
+                color: 'success',
+            },
+            {
+                title: 'Calculadora de Resistencias',
+                icon: Wifi,
+                color: 'success',
+            },
+            {
+                title: 'Simulador Lógico Digital',
+                icon: HardDrive,
+                color: 'success',
+            },
+        ],
+    },
+];
