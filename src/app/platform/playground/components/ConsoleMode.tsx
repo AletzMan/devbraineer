@@ -1,3 +1,4 @@
+'use client';
 import { IOutputRun } from '@/interfaces/playground';
 import { RunCode } from '@/services/runcode.service';
 import { Editor } from '@monaco-editor/react';
@@ -320,7 +321,7 @@ export const ConsoleMode = () => {
     };
 
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 h-[calc(100vh-4rem)] w-full bg-neutral/50 scrollbar-thin overflow-y-auto p-2">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
                     <div className="flex items-center justify-between">
