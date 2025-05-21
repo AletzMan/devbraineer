@@ -22,6 +22,7 @@ import {
     RegexIcon,
     LayoutDashboard,
     HardDrive,
+    Globe,
 } from 'lucide-react';
 
 export interface IMenuItem {
@@ -73,7 +74,21 @@ export const menuData: IMenuItem[] = [
         label: 'Playground',
         href: '/platform/playground',
         icon: Layers,
-        color: 'text-orange-400', // Color específico para Playground
+        color: 'text-orange-400',
+        children: [
+            {
+                label: 'Editor Web',
+                href: '/platform/playground/editor-web',
+                icon: Globe,
+                color: 'text-orange-600',
+            },
+            {
+                label: 'Ejecutor de Código',
+                href: '/platform/playground/editor-console',
+                icon: SquareTerminalIcon,
+                color: 'text-orange-600',
+            },
+        ],
     },
     {
         label: 'Gestión de Recursos',
