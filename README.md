@@ -146,7 +146,7 @@ Para poner **DevBrainner** en marcha en tu máquina local, sigue estos pasos:
 
 ## 📜 Licencia
 
-Este proyecto está bajo la licencia [Tu Licencia Aquí, por ejemplo, MIT License](LICENSE).
+Este proyecto está bajo la licencia [MIT License](LICENSE).
 
 ---
 
