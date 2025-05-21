@@ -21,6 +21,9 @@ const code = Inconsolata({
 export const metadata: Metadata = {
     title: 'DevBraineer',
     description: 'Plataforma de desarrollo, recursos y aprendizaje',
+    icons: {
+        icon: '/LogoDevBraineer.svg',
+    },
 };
 
 export default function RootLayout({
