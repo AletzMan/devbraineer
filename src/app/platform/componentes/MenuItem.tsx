@@ -14,7 +14,6 @@ export function MenuItem({ item, currentPath }: MenuItemProps) {
 
     const isSubSectionActive =
         currentPath.split('/')[currentPath.split('/').length - 1];
-    console.log(isSubSectionActive);
     const [isOpen, setIsOpen] = useState(isSectionActive || false);
 
     const IconComponent = item.icon;
