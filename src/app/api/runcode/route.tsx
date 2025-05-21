@@ -8,8 +8,6 @@ export async function POST(req: Request) {
         const body = await req.json();
         const { language, sourceCode, version, stdin } = body;
 
-        console.log(language, sourceCode, version, stdin);
-
         const response = await fetch(`${URL_API_PISTON}`, {
             method: 'POST',
             headers: {
@@ -30,7 +28,6 @@ export async function POST(req: Request) {
         });
 
         const data = await response.json();
-        console.log(data);
 
         if (response.status === 400) {
             return BadRequestError(data.message);
@@ -38,7 +35,6 @@ export async function POST(req: Request) {
 
         return SuccessResponse(data);
     } catch (error) {
-        console.log(error);
         return ServerError();
     }
 }
