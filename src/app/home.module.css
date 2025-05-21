@@ -1,0 +1,109 @@
+/* Home.module.css */
+
+/* Animación para el texto con gradiente en el Hero */
+.animatedTextGradient {
+    background-size: 200% auto;
+    animation: textGradientAnim 3s linear infinite;
+}
+
+@keyframes textGradientAnim {
+    to {
+        background-position: 200% center;
+    }
+}
+
+/* Estilo base para los enlaces del footer con subrayado animado */
+.footerLink {
+    position: relative;
+    text-decoration: none;
+}
+
+.footerLink::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1.5px;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-image: linear-gradient(
+        to right,
+        oklch(var(--p)),
+        oklch(var(--a))
+    );
+    transition: width 0.35s ease-in-out;
+}
+
+.footerLink:hover::after {
+    width: 100%;
+}
+
+/* Animación para el logo del header */
+.spinSlow {
+    animation: spinSlowAnimation 5s linear infinite;
+}
+
+@keyframes spinSlowAnimation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* styles/home.module.css */
+
+.spinSlow {
+    animation: spin 6s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animatedTextGradient {
+    /* You can add specific animation here if needed, or rely on Tailwind's bg-clip-text */
+    /* For instance, if you want a subtle animation of the gradient */
+    background-size: 200% auto;
+    animation: textGradientShift 4s linear infinite alternate;
+}
+
+@keyframes textGradientShift {
+    0% {
+        background-position: left center;
+    }
+    100% {
+        background-position: right center;
+    }
+}
+
+/* Footer Link Gradient Hover */
+.footerLink {
+    position: relative;
+    display: inline-block; /* Essential for text gradient */
+    transition: all 0.3s ease-in-out;
+}
+
+.footerLink:hover {
+    color: transparent; /* Makes the text transparent to reveal background */
+    background-clip: text;
+    -webkit-background-clip: text; /* For Safari compatibility */
+    background-image: linear-gradient(
+        to right,
+        var(--tw-gradient-from),
+        var(--tw-gradient-to)
+    );
+}
+
+/* Ensure Tailwind CSS variables are defined in your tailwind.config.js if you want to use --tw-gradient-from directly */
+/* For DaisyUI/Tailwind, typically 'from-primary' etc. resolve these */
+/* If not, you might need to manually set the gradient colors here, e.g.: */
+/* .footerLink:hover {
+    background-image: linear-gradient(to right, theme('colors.primary'), theme('colors.accent'));
+} */
