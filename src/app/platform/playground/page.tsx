@@ -28,7 +28,7 @@ const playgroundChildren = [
         icon: SquareTerminalIconChild,
         color: 'text-orange-600',
         description:
-            'Realiza peticiones HTTP y visualiza resultados instantáneamente.',
+            'Envía y gestiona tus peticiones HTTP con facilidad. Una herramienta esencial para probar y depurar APIs, permitiéndote interactuar con servicios web de manera ágil y eficiente.',
     },
 ];
 
