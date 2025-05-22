@@ -1,9 +1,5 @@
 import { auth } from '@clerk/nextjs/server';
-import {
-    BadRequestError,
-    NotAuthorizedError,
-    ServerError,
-} from '../_services/errors';
+import { BadRequestError, NotAuthorizedError, ServerError } from '../_services/errors';
 import axios from 'axios';
 import { SuccessCreate } from '../_services/successfulResponses';
 
@@ -43,8 +39,14 @@ export async function POST(request: Request) {
                 },
             ],
         });
-
-        return SuccessCreate(axiosResponse);
+        console.log(axiosResponse);
+        const cleanResponse = {
+            status: axiosResponse.status,
+            statusText: axiosResponse.statusText,
+            headers: axiosResponse.headers,
+            data: axiosResponse.data,
+        };
+        return SuccessCreate(cleanResponse);
     } catch (error) {
         console.error('Error al hacer la solicitud:', error);
         return ServerError();
