@@ -11,33 +11,21 @@ interface ResponseViewerProps {
 }
 
 export function ResponseViewer({ response }: ResponseViewerProps) {
-    if (!response)
-        return (
-            <p className="text-gray-400 italic">
-                Aún no se ha enviado ninguna solicitud.
-            </p>
-        );
+    if (!response) return <p className="text-gray-400 italic">Aún no se ha enviado ninguna solicitud.</p>;
 
     const { status, statusText, headers, body } = response;
 
     const statusColor =
-        status >= 200 && status < 300
-            ? 'text-green-600'
-            : status >= 400
-              ? 'text-red-600'
-              : 'text-yellow-600';
+        status >= 200 && status < 300 ? 'text-green-600' : status >= 400 ? 'text-red-600' : 'text-yellow-600';
 
-    const isObject = (val: any) =>
-        val !== null && typeof val === 'object' && !Array.isArray(val);
+    const isObject = (val: any) => val !== null && typeof val === 'object' && !Array.isArray(val);
 
     const safeHeaders = (() => {
         if (typeof headers === 'object' && headers !== null) {
             try {
                 // Algunos headers pueden tener valores que no son string,
                 // mejor forzar todo a string para evitar problemas
-                return Object.fromEntries(
-                    Object.entries(headers).map(([k, v]) => [k, String(v)])
-                );
+                return Object.fromEntries(Object.entries(headers).map(([k, v]) => [k, String(v)]));
             } catch {
                 return {};
             }
@@ -71,9 +59,7 @@ export function ResponseViewer({ response }: ResponseViewerProps) {
                     {isObject(body) && !looksLikeHTML(body) ? (
                         <JsonView value={body} style={monokaiTheme} />
                     ) : (
-                        <pre className="whitespace-pre-wrap">
-                            {String(body)}
-                        </pre>
+                        <pre className="whitespace-pre-wrap">{String(body)}</pre>
                     )}
                 </div>
             </div>
