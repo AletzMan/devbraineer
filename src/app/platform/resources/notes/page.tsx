@@ -14,8 +14,9 @@ import {
 } from '@/services/notes.service';
 import { Note } from '@prisma/client';
 import { toast } from 'react-hot-toast';
+import { NoteDialog } from './components/NoteDialog';
 
-const noteColors = ['primary', 'success', 'error', 'warning', 'accent', 'info', 'neutral'];
+export const noteColors = ['primary', 'success', 'error', 'warning', 'accent', 'info', 'neutral'];
 
 export default function NotesPage() {
     const { userId } = useAuth();
@@ -31,9 +32,8 @@ export default function NotesPage() {
     const filteredNotes = useMemo(() => {
         if (!searchQuery) return notes;
         const query = searchQuery.toLowerCase();
-        return notes.filter(note => 
-            note.title.toLowerCase().includes(query) || 
-            note.content.toLowerCase().includes(query)
+        return notes.filter(
+            (note) => note.title.toLowerCase().includes(query) || note.content.toLowerCase().includes(query)
         );
     }, [notes, searchQuery]);
 
@@ -56,33 +56,29 @@ export default function NotesPage() {
         }
     };
 
-    const handleAddNote = async () => {
-        if (!newNote.title.trim() || !newNote.content.trim()) return;
+    const handleAddNote = async (data: { title: string; content: string; color: string }): Promise<void> => {
+        if (!data.title.trim() || !data.content.trim()) return;
         try {
             if (!userId) return;
             const noteData: CreateNotePayload = {
-                title: newNote.title,
-                content: newNote.content,
-                color: newNote.color,
+                title: data.title,
+                content: data.content,
+                color: data.color,
                 userId: userId,
             };
 
             const newNoteObj = await createNote(noteData);
             setNotes([...notes, newNoteObj]);
-            setNewNote({ title: '', content: '', color: '' });
-            setIsModalOpen(false);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Error creating note');
         }
     };
 
-    const handleUpdateNote = async (updatedNote: Note) => {
+    const handleUpdateNote = async (note: Note): Promise<void> => {
         try {
-            const updatedNoteObj = await updateNote(updatedNote.id, updatedNote);
+            const updatedNoteObj = await updateNote(note.id, note);
             if (updatedNoteObj) {
-                setNotes(notes.map((note) => (note.id === updatedNote.id ? { ...note, ...updatedNote } : note)));
-                setEditingNote(null);
-                setIsModalOpen(false);
+                setNotes(notes.map((n) => (n.id === note.id ? { ...n, ...note } : n)));
             }
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Error updating note');
@@ -98,88 +94,20 @@ export default function NotesPage() {
         }
     };
 
+    const handleSelectEditOrAddNote = (note: Note | null) => {
+        console.log(note);
+        if (note) {
+            setEditingNote(note);
+            setIsModalOpen(true);
+        } else {
+            setIsModalOpen(true);
+        }
+    };
+
     return (
-        <div className="flex flex-col h-full">
+        <section className="flex flex-col h-[calc(100svh-4rem)] scrollbar-thin overflow-y-auto bg-neutral/5">
             <HeaderSection title="Notas" description="Gestiona tus notas y recordatorios aquí" />
             <div className="flex-grow p-4 space-y-6">
-                <div className="flex justify-between items-center">
-                    <button onClick={() => setIsModalOpen(true)} className="btn btn-primary btn-sm">
-                        <PlusIcon className="w-4 h-4 mr-2" />
-                        Nueva nota
-                    </button>
-                </div>
-
-                {isModalOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        className="bg-base-100 p-4 rounded-lg shadow max-w-xl">
-                        <div className="space-y-4 bg-primary p-2 rounded-lg">
-                            <div className="flex items-center gap-2 bg-base-200 p-2 rounded-lg">
-                                {noteColors.map((color, index) => (
-                                    <button
-                                        key={index}
-                                        className={`size-6 rounded-full bg-${color} shadow-sm hover:scale-110 transition-all cursor-pointer`}
-                                        onClick={() => {
-                                            if (editingNote) {
-                                                setEditingNote({ ...editingNote, color });
-                                            } else {
-                                                setNewNote({ ...newNote, color });
-                                            }
-                                        }}
-                                    />
-                                ))}
-                            </div>
-                            <input
-                                type="text"
-                                placeholder="Título de la nota"
-                                value={editingNote ? editingNote.title : newNote.title}
-                                onChange={(e) =>
-                                    editingNote
-                                        ? setEditingNote({ ...editingNote, title: e.target.value })
-                                        : setNewNote({ ...newNote, title: e.target.value, color: newNote.color })
-                                }
-                                className="input input-bordered w-full"
-                            />
-                            <textarea
-                                placeholder="Contenido de la nota..."
-                                value={editingNote ? editingNote.content : newNote.content}
-                                onChange={(e) =>
-                                    editingNote
-                                        ? setEditingNote({ ...editingNote, content: e.target.value })
-                                        : setNewNote({ ...newNote, content: e.target.value, color: newNote.color })
-                                }
-                                className="textarea textarea-bordered w-full h-32"
-                            />
-                            <div className="space-y-2">
-                                <label className="label">
-                                    <span className="label-text">Color de la nota</span>
-                                </label>
-                            </div>
-                            <div className="flex justify-end space-x-2">
-                                <button
-                                    onClick={() => {
-                                        if (editingNote) {
-                                            setEditingNote(null);
-                                        } else {
-                                            setNewNote({ title: '', content: '', color: '' });
-                                        }
-                                        setIsModalOpen(false);
-                                    }}
-                                    className="btn btn-ghost">
-                                    Cancelar
-                                </button>
-                                <button
-                                    onClick={editingNote ? () => handleUpdateNote(editingNote) : handleAddNote}
-                                    className="btn btn-primary">
-                                    {editingNote ? 'Actualizar' : 'Guardar'}
-                                </button>
-                            </div>
-                        </div>
-                    </motion.div>
-                )}
-
                 <div className="space-y-4">
                     <div className="flex justify-between items-center">
                         <div className="flex-1">
@@ -191,15 +119,13 @@ export default function NotesPage() {
                                 className="input input-bordered w-full max-w-md"
                             />
                         </div>
-                        <button
-                            onClick={() => setIsModalOpen(true)}
-                            className="btn btn-primary btn-sm">
+                        <button onClick={() => setIsModalOpen(true)} className="btn btn-primary btn-sm">
                             <PlusIcon className="w-4 h-4 mr-2" />
                             Nueva nota
                         </button>
                     </div>
 
-                    <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
+                    <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
                         {filteredNotes.length === 0 ? (
                             <p className="text-gray-400 text-center py-4">No hay notas que coincidan con la búsqueda</p>
                         ) : (
@@ -210,7 +136,7 @@ export default function NotesPage() {
                                     initial={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -20 }}
                                     className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow duration-300">
-                                    <div className={`p-4 rounded-lg bg-${note.color} text-white`}>
+                                    <div className={`p-4 rounded-sm bg-${note.color} text-white`}>
                                         <h3 className="font-semibold mb-2">{note.title}</h3>
                                         <p className="text-sm mb-2">
                                             {note.content.substring(0, 100)}
@@ -223,19 +149,20 @@ export default function NotesPage() {
                                                 {new Date(note.updatedAt).toLocaleString()}
                                             </p>
                                             <div className="flex space-x-2">
-                                                <button
-                                                    onClick={() => {
-                                                        setEditingNote(note);
-                                                        setIsModalOpen(true);
-                                                    }}
-                                                    className="btn btn-ghost btn-sm hover:scale-105 transition-transform">
-                                                    <PencilIcon className="w-4 h-4" />
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDeleteNote(note.id.toString())}
-                                                    className="btn btn-error btn-sm hover:scale-105 transition-transform">
-                                                    <TrashIcon className="w-4 h-4" />
-                                                </button>
+                                                <div className="tooltip" data-tip="Editar nota">
+                                                    <button
+                                                        onClick={() => handleSelectEditOrAddNote(note)}
+                                                        className="btn btn-info btn-soft btn-xs hover:scale-105 transition-transform">
+                                                        <PencilIcon className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+                                                <div className="tooltip" data-tip="Eliminar nota">
+                                                    <button
+                                                        onClick={() => handleDeleteNote(note.id.toString())}
+                                                        className="btn btn-error btn-soft btn-xs hover:scale-105 transition-transform">
+                                                        <TrashIcon className="w-4 h-4" />
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -245,6 +172,19 @@ export default function NotesPage() {
                     </div>
                 </div>
             </div>
-        </div>
+            <NoteDialog
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSubmit={async (data) => {
+                    if (editingNote) {
+                        await handleUpdateNote({ ...editingNote, ...data });
+                        setEditingNote(null);
+                    } else {
+                        await handleAddNote(data);
+                    }
+                }}
+                note={editingNote}
+            />
+        </section>
     );
 }
