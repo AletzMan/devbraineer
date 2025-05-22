@@ -46,8 +46,6 @@ export function NoteDialog({ isOpen, onClose, onSubmit, note }: NoteDialogProps)
         onClose();
     };
 
-    console.log(formData.color);
-
     return (
         <>
             <input
