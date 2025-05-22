@@ -1,5 +1,7 @@
+'use client';
 import { menuData } from '../constants';
 import { Folder } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 interface HeaderSectionProps {
     title: string;
@@ -9,7 +11,7 @@ interface HeaderSectionProps {
 
 export default function HeaderSection({ title, description, children }: HeaderSectionProps) {
     const currentSection = menuData.find((item) =>
-        item.children?.some((child) => window.location.pathname.startsWith(child.href))
+        item.children?.some((child) => usePathname().startsWith(child.href))
     );
 
     const colorTitle = currentSection?.children?.[0]?.color || 'text-gray-500';
