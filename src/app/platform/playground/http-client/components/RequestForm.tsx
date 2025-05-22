@@ -1,4 +1,6 @@
 'use client';
+import { useClerk } from '@clerk/nextjs';
+import { Editor } from '@monaco-editor/react';
 import { useEffect, useState } from 'react';
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
@@ -22,13 +24,13 @@ export function RequestForm({ onSend, initialValues }: RequestFormProps) {
     const [url, setUrl] = useState('');
     const [headers, setHeaders] = useState<{ key: string; value: string }[]>([{ key: '', value: '' }]);
     const [queryParams, setQueryParams] = useState<{ key: string; value: string }[]>([{ key: '', value: '' }]);
-
     const [body, setBody] = useState('');
     const [authType, setAuthType] = useState('');
     const [authToken, setAuthToken] = useState('');
     const [basicUser, setBasicUser] = useState('');
     const [basicPass, setBasicPass] = useState('');
-    const [activeTab, setActiveTab] = useState('headers');
+    const [activeTab, setActiveTab] = useState('query-params');
+    const clerk = useClerk();
 
     useEffect(() => {
         if (initialValues) {
@@ -112,18 +114,18 @@ export function RequestForm({ onSend, initialValues }: RequestFormProps) {
                         type="radio"
                         name="request-tabs"
                         className="tab"
-                        aria-label="Headers"
-                        checked={activeTab === 'headers'}
-                        onChange={() => setActiveTab('headers')}
+                        aria-label="Body"
+                        checked={activeTab === 'body'}
+                        onChange={() => setActiveTab('body')}
                     />
 
                     <input
                         type="radio"
                         name="request-tabs"
                         className="tab"
-                        aria-label="Body"
-                        checked={activeTab === 'body'}
-                        onChange={() => setActiveTab('body')}
+                        aria-label="Headers"
+                        checked={activeTab === 'headers'}
+                        onChange={() => setActiveTab('headers')}
                     />
                     <input
                         type="radio"
@@ -135,6 +137,64 @@ export function RequestForm({ onSend, initialValues }: RequestFormProps) {
                     />
                 </div>
                 <div className="flex flex-col gap-2 px-2 py-2 bg-base-200 rounded-sm  h-[225px] overflow-y-auto">
+                    {/* Query Params */}
+                    <div className={activeTab === 'query-params' ? '' : 'hidden'}>
+                        <label className="font-semibold">Query Params</label>
+                        {queryParams.map((p, i) => (
+                            <div className="flex gap-2 my-1" key={i}>
+                                <input
+                                    type="text"
+                                    className="input input-bordered w-1/2"
+                                    placeholder="Clave"
+                                    value={p.key}
+                                    onChange={(e) => {
+                                        const newParams = [...queryParams];
+                                        newParams[i].key = e.target.value;
+                                        setQueryParams(newParams);
+                                    }}
+                                />
+                                <input
+                                    type="text"
+                                    className="input input-bordered w-1/2"
+                                    placeholder="Valor"
+                                    value={p.value}
+                                    onChange={(e) => {
+                                        const newParams = [...queryParams];
+                                        newParams[i].value = e.target.value;
+                                        setQueryParams(newParams);
+                                    }}
+                                />
+                            </div>
+                        ))}
+                        <button
+                            className="btn btn-sm mt-2"
+                            onClick={() => setQueryParams([...queryParams, { key: '', value: '' }])}>
+                            + Param
+                        </button>
+                    </div>
+                    {/* Body para POST/PUT */}
+                    <div
+                        className={`${activeTab === 'body' ? '' : 'hidden'} overflow-y-auto overflow-x-hidden`}
+                        aria-disabled={activeTab !== 'body'}>
+                        <label className="font-semibold">Body (JSON)</label>
+                        {clerk.loaded && (
+                            <div className="h-[180px] max-w-250 w-full">
+                                <Editor
+                                    value={body}
+                                    onChange={(value) => setBody(value || '')}
+                                    language="json"
+                                    theme="vs-dark"
+                                    options={{
+                                        readOnly: method !== 'POST' && method !== 'PUT' && method !== 'PATCH',
+                                        minimap: {
+                                            enabled: false,
+                                        },
+                                        automaticLayout: true,
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </div>
                     {/* Headers dinámicos */}
                     <div className={activeTab === 'headers' ? '' : 'hidden'}>
                         <label className="font-semibold pl-1">Headers</label>
@@ -170,22 +230,7 @@ export function RequestForm({ onSend, initialValues }: RequestFormProps) {
                             + Header
                         </button>
                     </div>
-                    {/* Body para POST/PUT */}
-                    <div className={`${activeTab === 'body' ? '' : 'hidden'} `} aria-disabled={activeTab !== 'body'}>
-                        <label className="font-semibold">Body (JSON)</label>
-                        <textarea
-                            className={`textarea textarea-bordered w-full h-40 ${method !== 'POST' && method !== 'PUT' && method !== 'PATCH' ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
-                            placeholder='{"key":"value"}'
-                            value={body}
-                            title={
-                                method !== 'POST' && method !== 'PUT' && method !== 'PATCH'
-                                    ? 'Sólo se puede enviar en POST, PUT y PATCH'
-                                    : ''
-                            }
-                            onChange={(e) => setBody(e.target.value)}
-                            disabled={method !== 'POST' && method !== 'PUT' && method !== 'PATCH'}
-                        />
-                    </div>
+
                     {/* Autenticación */}
                     <div className={activeTab === 'auth' ? '' : 'hidden'}>
                         <label className="font-semibold">Autenticación</label>
@@ -224,41 +269,6 @@ export function RequestForm({ onSend, initialValues }: RequestFormProps) {
                                 </div>
                             )}
                         </div>
-                    </div>
-                    {/* Query Params */}
-                    <div className={activeTab === 'query-params' ? '' : 'hidden'}>
-                        <label className="font-semibold">Query Params</label>
-                        {queryParams.map((p, i) => (
-                            <div className="flex gap-2 my-1" key={i}>
-                                <input
-                                    type="text"
-                                    className="input input-bordered w-1/2"
-                                    placeholder="Clave"
-                                    value={p.key}
-                                    onChange={(e) => {
-                                        const newParams = [...queryParams];
-                                        newParams[i].key = e.target.value;
-                                        setQueryParams(newParams);
-                                    }}
-                                />
-                                <input
-                                    type="text"
-                                    className="input input-bordered w-1/2"
-                                    placeholder="Valor"
-                                    value={p.value}
-                                    onChange={(e) => {
-                                        const newParams = [...queryParams];
-                                        newParams[i].value = e.target.value;
-                                        setQueryParams(newParams);
-                                    }}
-                                />
-                            </div>
-                        ))}
-                        <button
-                            className="btn btn-sm mt-2"
-                            onClick={() => setQueryParams([...queryParams, { key: '', value: '' }])}>
-                            + Param
-                        </button>
                     </div>
                 </div>
             </div>
