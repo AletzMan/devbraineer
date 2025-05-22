@@ -1,7 +1,7 @@
 import { BoxIcon, FileCode, Link as LinkIcon, AlertCircle, FileText } from 'lucide-react';
 import { SiteFooter } from '../componentes/SiteFooter';
 
-export const menuData = [
+const menuData = [
     {
         label: 'Snippets de Código',
         description: 'Fragmentos reutilizables para acelerar tu desarrollo.',
