@@ -10,6 +10,9 @@ import { toast, Toaster } from 'react-hot-toast'; // Para notificaciones
 import SnippetCard from './components/SnippetCard';
 import { languages } from '../../constants';
 import HeaderSection from '../../componentes/HeaderSection';
+import { CodeBlock } from 'react-code-block';
+import { themes } from 'prism-react-renderer';
+import { r } from 'node_modules/framer-motion/dist/types.d-CtuPurYT';
 
 export default function SnippetsPage() {
     const [snippets, setSnippets] = useState<Snippet[]>([]);
@@ -44,6 +47,9 @@ export default function SnippetsPage() {
     const [snippetToDelete, setSnippetToDelete] = useState<Snippet | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
     const [deleteError, setDeleteError] = useState<string | null>(null);
+    const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
+    const codeModalRef = useRef<HTMLDialogElement>(null);
+    const [snippetToView, setSnippetToView] = useState<Snippet | null>(null);
 
     // --- Cargar Snippets al inicio ---
     useEffect(() => {
@@ -209,6 +215,21 @@ export default function SnippetsPage() {
         }
     };
 
+    const handleOpenEditModal = (snippet: Snippet) => {
+        //setEditingSnippet(snippet);
+        //editModalRef.current?.showModal();
+    };
+
+    const handleOpenCodeModal = (snippet: Snippet) => {
+        setSnippetToView(snippet);
+        codeModalRef.current?.showModal();
+    };
+
+    const handleCloseCodeModal = () => {
+        setSnippetToView(null);
+        codeModalRef.current?.close();
+    };
+
     return (
         <div className="flex h-[calc(100svh-4rem)]bg-neutral/50 text-zinc-900 dark:text-zinc-50">
             <Toaster position="top-right" />
@@ -224,17 +245,17 @@ export default function SnippetsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 overflow-y-auto h-[calc(100svh-10.5rem)] pb-4 px-4">
                     <div className="md:col-span-1  bg-neutral/40 rounded-sm  p-4">
                         <div className="sticky top-4 space-y-4">
-                            <label className="input w-full">
+                            <label className="input w-full border-0">
                                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-zinc-500 dark:text-zinc-400" />
                                 <input
                                     type="search"
                                     placeholder="Buscar snippets..."
-                                    className="w-full pl-9"
+                                    className="w-full pl-9 border-0"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </label>
-                            <div className=" bg-neutral/50 rounded-md border border-gray-700 p-4">
+                            <div className=" bg-base-100 rounded-md  p-4">
                                 <h3 className="font-medium mb-3 ">Categorías</h3>
                                 <div className="space-y-2">
                                     <button
@@ -260,7 +281,7 @@ export default function SnippetsPage() {
                                     ))}
                                 </div>
                             </div>
-                            <div className=" bg-neutral/50 rounded-md border border-gray-700 p-4">
+                            <div className=" bg-base-100 rounded-md p-4">
                                 <h3 className="font-medium mb-3 ">Etiquetas</h3>
                                 <div className="flex flex-wrap gap-2">
                                     <button
@@ -305,7 +326,8 @@ export default function SnippetsPage() {
                                             key={snippet.id}
                                             snippet={snippet}
                                             onDelete={handleOpenDeleteConfirm}
-                                            // onEdit={handleOpenEditModal} // Si implementas la edición
+                                            onEdit={handleOpenEditModal}
+                                            onOpenCodeModal={handleOpenCodeModal}
                                         />
                                     ))
                                 )}
@@ -489,6 +511,25 @@ export default function SnippetsPage() {
                             )}
                         </button>
                     </div>
+                </div>
+            </dialog>
+            <dialog className="modal" ref={codeModalRef}>
+                <div className="modal-box max-w-full h-[calc(100svh-4rem)]">
+                    <button
+                        className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 mb-2"
+                        onClick={handleCloseCodeModal}>
+                        ✕
+                    </button>
+                    <CodeBlock code={snippetToView?.code || ''} language={'typescript'} theme={themes.oneDark}>
+                        <CodeBlock.Code className="bg-neutral-900 !p-6 mt-6 rounded-b-sm shadow-lg border-1 w-full h-[calc(100svh-9rem)] border-gray-800 overflow-y-auto scrollbar-thin">
+                            <div className="table-row">
+                                <CodeBlock.LineNumber className="table-cell pr-4 text-sm text-gray-500 text-right select-none" />
+                                <CodeBlock.LineContent className="table-cell">
+                                    <CodeBlock.Token />
+                                </CodeBlock.LineContent>
+                            </div>
+                        </CodeBlock.Code>
+                    </CodeBlock>
                 </div>
             </dialog>
         </div>
