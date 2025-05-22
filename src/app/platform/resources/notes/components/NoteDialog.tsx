@@ -1,9 +1,7 @@
 'use client';
 
+import { noteColors } from '@/app/platform/constants';
 import { useEffect, useState } from 'react';
-import { PlusIcon, PencilIcon } from 'lucide-react';
-import { noteColors } from '../page';
-
 interface NoteDialogProps {
     isOpen: boolean;
     onClose: () => void;

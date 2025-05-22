@@ -7,16 +7,18 @@ interface ResponseViewerProps {
         statusText: string;
         headers: { [key: string]: string };
         body: any;
+        time: number;
+        size: number;
     };
 }
 
 export function ResponseViewer({ response }: ResponseViewerProps) {
     if (!response) return <p className="text-gray-400 italic">Aún no se ha enviado ninguna solicitud.</p>;
 
-    const { status, statusText, headers, body } = response;
+    const { status, statusText, headers, body, time, size } = response;
 
     const statusColor =
-        status >= 200 && status < 300 ? 'text-green-600' : status >= 400 ? 'text-red-600' : 'text-yellow-600';
+        status >= 200 && status < 300 ? 'badge-success' : status >= 400 ? 'badge-error' : 'badge-warning';
 
     const isObject = (val: any) => val !== null && typeof val === 'object' && !Array.isArray(val);
 
@@ -39,11 +41,26 @@ export function ResponseViewer({ response }: ResponseViewerProps) {
 
     return (
         <div className="space-y-4">
-            <div className="text-sm">
-                <span className="font-semibold">Status: </span>
-                <span className={`font-bold ${statusColor}`}>
-                    {status} {statusText}
-                </span>
+            <div className="flex flex-wrap items-center gap-3 text-sm mt-2">
+                {/* STATUS */}
+                <div className="flex items-center gap-1">
+                    <span className="font-semibold text-base-content">Status:</span>{' '}
+                    <span className={`badge badge-soft  font-bold ${statusColor}`}>
+                        {status} {statusText}
+                    </span>
+                </div>
+
+                {/* TIEMPO */}
+                <div className="flex items-center gap-1">
+                    <span className="font-semibold text-base-content">Duración:</span>
+                    <span className="badge badge-outline text-info">{time.toFixed(2)} ms</span>
+                </div>
+
+                {/* TAMAÑO */}
+                <div className="flex items-center gap-1">
+                    <span className="font-semibold text-base-content">Tamaño:</span>
+                    <span className="badge badge-outline text-accent">{size} KB</span>
+                </div>
             </div>
 
             <div>

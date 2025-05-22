@@ -1,3 +1,4 @@
+'use client';
 import { Sidebar } from './componentes/Sidebar';
 import Header from './componentes/Header';
 

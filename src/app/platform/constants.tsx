@@ -548,3 +548,5 @@ export const languages = [
     'markdown',
     'other',
 ];
+
+export const noteColors = ['primary', 'success', 'error', 'warning', 'accent', 'info', 'neutral'];

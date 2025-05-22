@@ -16,8 +16,6 @@ import { Note } from '@prisma/client';
 import { toast } from 'react-hot-toast';
 import { NoteDialog } from './components/NoteDialog';
 
-export const noteColors = ['primary', 'success', 'error', 'warning', 'accent', 'info', 'neutral'];
-
 export default function NotesPage() {
     const { userId } = useAuth();
     const [notes, setNotes] = useState<Note[]>([]);
