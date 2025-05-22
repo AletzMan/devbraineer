@@ -236,7 +236,7 @@ export default function LinksPage() {
     };
 
     return (
-        <div className="flex flex-col  min-h-[calc(100svh-4rem)] bg-neutral/30">
+        <div className="flex flex-col  min-h-[calc(100svh-4rem)]">
             <Toaster position="top-right" />
             <div className="flex flex-col flex-1 max-w-(--max-width) mx-auto w-full gap-4">
                 <HeaderSection
@@ -248,19 +248,19 @@ export default function LinksPage() {
                     </button>
                 </HeaderSection>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 overflow-y-auto h-[calc(100svh-10.5rem)] pb-4 px-4 ">
-                    <div className="md:col-span-1 bg-neutral/40 p-4 rounded-md">
+                    <div className="md:col-span-1 bg-neutral/30 p-4 rounded-md">
                         <div className="sticky top-4 space-y-4">
-                            <div className="relative">
-                                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+                            <label className="input border-0 w-full">
+                                <Search className="size-4" />
                                 <input
                                     type="search"
                                     placeholder="Buscar enlaces..."
-                                    className="input input-bordered w-full pl-9"
+                                    className="w-full"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
-                            </div>
-                            <div className="bg-neutral/40 rounded-md border border-gray-700 p-4">
+                            </label>
+                            <div className="bg-base-200 rounded-md p-4">
                                 <h3 className="font-medium mb-3 ">Categorías</h3>
                                 <div className="space-y-2">
                                     <button
@@ -286,7 +286,7 @@ export default function LinksPage() {
                                     ))}
                                 </div>
                             </div>
-                            <div className="bg-neutral/40 rounded-md border border-gray-700 p-4">
+                            <div className="bg-base-200 rounded-md p-4">
                                 <h3 className="font-medium mb-3 ">Etiquetas</h3>
                                 <div className="flex flex-wrap gap-2">
                                     <button
@@ -308,7 +308,7 @@ export default function LinksPage() {
                             </div>
                         </div>
                     </div>
-                    <div className="md:col-span-3 space-y-4 bg-neutral/40 p-4 rounded-md">
+                    <div className="md:col-span-3 space-y-4 bg-neutral/30 p-4 rounded-md">
                         {loading && <div className="text-center text-zinc-400 mt-8">Cargando enlaces...</div>}
                         {error && (
                             <div className="alert alert-error bg-red-800 text-red-200 border-red-700 p-3 rounded-md text-sm flex items-center gap-2 mt-8">
