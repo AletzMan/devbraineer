@@ -359,6 +359,16 @@ export interface FileData {
     version: string;
 }
 
+// Definir tipos para los archivos
+export interface FileDataWeb {
+    id: string;
+    name: string;
+    content: string;
+    language: string;
+    type: string;
+    extension: string;
+}
+
 export const FILES_DEFAULT: FileData[] = [
     {
         id: 'javascript-1',
@@ -550,3 +560,572 @@ export const languages = [
 ];
 
 export const noteColors = ['primary', 'success', 'error', 'warning', 'accent', 'info', 'neutral'];
+
+export const FilesWeb: FileDataWeb[] = [
+    {
+        id: 'html-1',
+        name: 'index.html',
+        content: `<div class="card">
+<h1>Contador</h1>
+<div id="contador">0</div>
+
+<div class="botones">
+<button class="incrementar" onclick="incrementar()">+1</button>
+<button class="decrementar" onclick="decrementar()">-1</button>
+<button class="resetear" onclick="resetear()">Reset</button>
+</div>
+</div>
+
+`,
+        language: 'html',
+        type: 'html-css-js',
+        extension: 'html',
+    },
+    {
+        id: 'css-1',
+        name: 'styles.css',
+        content: `body {
+font-family: 'Segoe UI', sans-serif;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+background: #f4f4f4;
+margin: 0;
+}
+
+.card {
+background: white;
+padding: 30px 40px;
+border-radius: 16px;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+text-align: center;
+}
+
+#contador {
+font-size: 60px;
+margin: 20px 0;
+color: #333;
+}
+
+.botones button {
+font-size: 20px;
+padding: 10px 20px;
+margin: 10px 5px;
+border-radius: 8px;
+border: none;
+cursor: pointer;
+transition: transform 0.1s ease;
+}
+
+.botones button:active {
+transform: scale(0.95);
+}
+
+.incrementar { background-color: #4CAF50; color: white; }
+.decrementar { background-color: #f44336; color: white; }
+.resetear    { background-color: #555;    color: white; }
+
+`,
+        language: 'css',
+        type: 'html-css-js',
+        extension: 'css',
+    },
+    {
+        id: 'html-2',
+        name: 'index.html',
+        content: `<div class="card">
+<h1>Contador</h1>
+<div id="contador">0</div>
+
+<div class="botones">
+<button class="incrementar">+1</button>
+<button class="decrementar">-1</button>
+<button class="resetear">Reset</button>
+</div>
+</div>
+`,
+        language: 'html',
+        type: 'html-css-ts',
+        extension: 'html',
+    },
+    {
+        id: 'css-2',
+        name: 'styles.css',
+        content: `body {
+font-family: 'Segoe UI', sans-serif;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+background: #f4f4f4;
+margin: 0;
+}
+
+.card {
+background: white;
+padding: 30px 40px;
+border-radius: 16px;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+text-align: center;
+}
+
+#contador {
+font-size: 60px;
+margin: 20px 0;
+color: #333;
+}
+
+.botones button {
+font-size: 20px;
+padding: 10px 20px;
+margin: 10px 5px;
+border-radius: 8px;
+border: none;
+cursor: pointer;
+transition: transform 0.1s ease;
+}
+
+.botones button:active {
+transform: scale(0.95);
+}
+
+.incrementar { background-color: #4CAF50; color: white; }
+.decrementar { background-color: #f44336; color: white; }
+.resetear    { background-color: #555;    color: white; }
+
+`,
+        language: 'css',
+        type: 'html-css-ts',
+        extension: 'css',
+    },
+    {
+        id: 'js-1',
+        name: 'script.js',
+        content: `let contador = 0;
+
+function actualizarVista() {
+document.getElementById('contador').textContent = contador;
+}
+
+function incrementar() {
+contador++;
+actualizarVista();
+}
+
+function decrementar() {
+contador--;
+actualizarVista();
+}
+
+function resetear() {
+contador = 0;
+actualizarVista();
+}
+`,
+        language: 'javascript',
+        type: 'html-css-js',
+        extension: 'js',
+    },
+    {
+        id: 'ts-1',
+        name: 'script.ts',
+        content: `let contador: number = 0;
+
+const contadorDiv = document.getElementById('contador') as HTMLDivElement;
+const btnIncrementar = document.querySelector('.incrementar') as HTMLButtonElement;
+const btnDecrementar = document.querySelector('.decrementar') as HTMLButtonElement;
+const btnResetear = document.querySelector('.resetear') as HTMLButtonElement;
+
+function actualizarVista(): void {
+contadorDiv.textContent = contador.toString();
+}
+
+btnIncrementar.addEventListener('click', () => {
+contador++;
+actualizarVista();
+});
+
+btnDecrementar.addEventListener('click', () => {
+contador--;
+actualizarVista();
+});
+
+btnResetear.addEventListener('click', () => {
+contador = 0;
+actualizarVista();
+});
+`,
+        language: 'typescript',
+        type: 'html-css-ts',
+        extension: 'ts',
+    },
+    {
+        id: 'react-js-1',
+        name: 'App.jsx',
+        content: `function App() {
+const [count, setCount] = React.useState(0);
+const [todos, setTodos] = React.useState([
+{ id: 1, text: "Aprender React", completed: true },
+{ id: 2, text: "Crear una aplicación", completed: false },
+{ id: 3, text: "Desplegar el proyecto", completed: false }
+]);
+const [showDialog, setShowDialog] = React.useState(false);
+const [newTodo, setNewTodo] = React.useState("");
+
+const handleIncrement = () => {
+setCount(prevCount => prevCount + 1);
+};
+
+const toggleTodo = (id) => {
+setTodos(prevTodos =>
+prevTodos.map(todo =>
+todo.id === id ? { ...todo, completed: !todo.completed } : todo
+)
+);
+};
+
+const addTodo = () => {
+if (newTodo.trim()) {
+setTodos(prevTodos => [
+...prevTodos,
+{ id: Date.now(), text: newTodo.trim(), completed: false }
+]);
+}
+setNewTodo("");
+setShowDialog(false);
+};
+
+return (
+<div className="container">
+<h1>React Demo</h1>
+
+<div className="card">
+<h2>Contador: {count}</h2>
+<button onClick={handleIncrement}>Incrementar</button>
+</div>
+
+<div className="card">
+<h2>Lista de Tareas</h2>
+<ul>
+  {todos.map(todo => (
+    <li
+      key={todo.id}
+      onClick={() => toggleTodo(todo.id)}
+      style={{
+        textDecoration: todo.completed ? 'line-through' : 'none',
+        cursor: 'pointer'
+      }}
+    >
+      {todo.text}
+    </li>
+  ))}
+</ul>
+<button onClick={() => setShowDialog(true)}>Añadir Tarea</button>
+</div>
+
+<p className="info">Haz clic en una tarea para marcarla como completada</p>
+
+{showDialog && (
+<div className="dialog-overlay">
+  <div className="dialog">
+    <h3>Nueva Tarea</h3>
+    <input
+      type="text"
+      value={newTodo}
+      onChange={(e) => setNewTodo(e.target.value)}
+      placeholder="Escribe una tarea"
+    />
+    <div className="dialog-buttons">
+      <button onClick={addTodo}>Guardar</button>
+      <button className="button-secondary" onClick={() => setShowDialog(false)}>Cancelar</button>
+    </div>
+  </div>
+</div>
+)}
+</div>
+);
+}
+
+ReactDOM.render(<App />, document.getElementById("root"));
+`,
+        language: 'javascript',
+        type: 'react-js',
+        extension: 'jsx',
+    },
+    {
+        id: 'react-ts-1',
+        name: 'App.tsx',
+        content: `// Ejemplo de componente React con TypeScript
+interface Todo {
+id: number;
+text: string;
+completed: boolean;
+}
+
+function App(): JSX.Element {
+const [count, setCount] = React.useState<number>(0);
+const [todos, setTodos] = React.useState<Todo[]>([
+{ id: 1, text: "Aprender React con TypeScript", completed: true },
+{ id: 2, text: "Crear una aplicación tipada", completed: false },
+{ id: 3, text: "Desplegar el proyecto", completed: false }
+]);
+
+const [showDialog, setShowDialog] = React.useState<boolean>(false);
+const [newTodo, setNewTodo] = React.useState<string>("");
+
+const handleIncrement = (): void => {
+setCount(prevCount => prevCount + 1);
+};
+
+const toggleTodo = (id: number): void => {
+setTodos(prevTodos =>
+prevTodos.map(todo =>
+todo.id === id ? { ...todo, completed: !todo.completed } : todo
+)
+);
+};
+
+const handleAddTodo = (): void => {
+const text = newTodo.trim();
+if (text) {
+setTodos(prevTodos => [
+...prevTodos,
+{ id: Date.now(), text, completed: false }
+]);
+}
+setNewTodo("");
+setShowDialog(false);
+};
+
+return (
+<div className="container">
+<h1>React con TypeScript Demo</h1>
+
+<div className="card">
+<h2>Contador: {count}</h2>
+<button onClick={handleIncrement}>Incrementar</button>
+</div>
+
+<div className="card">
+<h2>Lista de Tareas</h2>
+<ul>
+  {todos.map(todo => (
+    <li
+      key={todo.id}
+      onClick={() => toggleTodo(todo.id)}
+      style={{
+        textDecoration: todo.completed ? 'line-through' : 'none',
+        cursor: 'pointer'
+      }}
+    >
+      {todo.text}
+    </li>
+  ))}
+</ul>
+<button onClick={() => setShowDialog(true)}>Añadir Tarea</button>
+</div>
+
+<p className="info">Haz clic en una tarea para marcarla como completada</p>
+
+{showDialog && (
+<div className="dialog-overlay">
+  <div className="dialog">
+    <h3>Nueva Tarea</h3>
+    <input
+      type="text"
+      value={newTodo}
+      onChange={(e) => setNewTodo(e.target.value)}
+      placeholder="Escribe una tarea"
+    />
+    <div className="dialog-buttons">
+      <button onClick={handleAddTodo}>Guardar</button>
+      <button className="button-secondary" onClick={() => setShowDialog(false)}>Cancelar</button>
+    </div>
+  </div>
+</div>
+)}
+</div>
+);
+}
+
+// Renderizar el componente en el DOM
+ReactDOM.render(<App />, document.getElementById('root'));
+`,
+        language: 'typescript',
+        type: 'react-ts',
+        extension: 'tsx',
+    },
+    {
+        id: 'css-3',
+        name: 'styles.css',
+        content: `body {
+font-family: Arial, sans-serif;
+background: #f9f9f9;
+margin: 0;
+padding: 20px;
+}
+
+.container {
+max-width: 600px;
+margin: auto;
+}
+
+.card {
+background: white;
+padding: 20px;
+margin-bottom: 20px;
+border-radius: 6px;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+button {
+padding: 10px 16px;
+margin: 8px 4px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+background-color: #007bff;
+color: white;
+font-weight: bold;
+}
+
+.button-secondary{
+background: #525153;
+}
+
+button:hover {
+background-color: #0056b3;
+}
+
+li {
+list-style: none;
+margin-bottom: 8px;
+}
+
+.dialog-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.4);
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.dialog {
+background: white;
+padding: 20px;
+border-radius: 4px;
+width: 300px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.dialog input {
+width: calc(100% - 20px);
+padding: 10px;
+margin-top: 8px;
+margin-bottom: 16px;
+border-radius: 4px;
+border: 1px solid #ccc;
+}
+
+.dialog-buttons {
+display: flex;
+justify-content: space-between;
+}
+
+`,
+        language: 'css',
+        type: 'react-ts',
+        extension: 'css',
+    },
+    {
+        id: 'css-4',
+        name: 'styles.css',
+        content: `body {
+font-family: Arial, sans-serif;
+background: #f9f9f9;
+margin: 0;
+padding: 20px;
+}
+
+.container {
+max-width: 600px;
+margin: auto;
+}
+
+.card {
+background: white;
+padding: 20px;
+margin-bottom: 20px;
+border-radius: 6px;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+button {
+padding: 10px 16px;
+margin: 8px 4px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+background-color: #007bff;
+color: white;
+font-weight: bold;
+}
+
+.button-secondary{
+background: #525153;
+}
+
+button:hover {
+background-color: #0056b3;
+}
+
+li {
+list-style: none;
+margin-bottom: 8px;
+}
+
+.dialog-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.4);
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.dialog {
+background: white;
+padding: 20px;
+border-radius: 4px;
+width: 300px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.dialog input {
+width: calc(100% - 20px);
+padding: 10px;
+margin-top: 8px;
+margin-bottom: 16px;
+border-radius: 4px;
+border: 1px solid #ccc;
+}
+
+.dialog-buttons {
+display: flex;
+justify-content: space-between;
+}
+
+`,
+        language: 'css',
+        type: 'react-js',
+        extension: 'css',
+    },
+];
