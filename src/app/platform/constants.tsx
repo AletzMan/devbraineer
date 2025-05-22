@@ -222,25 +222,25 @@ export const LinkData: ILinkItem[] = [
         label: 'Playground',
         href: '/platform/playground',
         icon: Layers,
-        color: 'text-warning',
+        color: 'text-orange-500',
     },
     {
         label: 'Editor Web',
         href: '/platform/playground/editor-web',
         icon: Globe,
-        color: 'text-warning',
+        color: 'text-orange-500',
     },
     {
         label: 'Ejecutor de Código',
         href: '/platform/playground/editor-console',
         icon: SquareTerminalIcon,
-        color: 'text-warning',
+        color: 'text-orange-500',
     },
     {
         label: 'HTTP Client',
         href: '/platform/playground/http-client',
         icon: SquareTerminalIcon,
-        color: 'text-warning',
+        color: 'text-orange-500',
     },
 
     // SECCIÓN: Gestión de Recursos
