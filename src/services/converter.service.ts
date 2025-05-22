@@ -11,14 +11,9 @@ interface Schemas {
     zodSchema: string;
 }
 
-export async function generateSchemas(
-    jsonData: any
-): Promise<Schemas | undefined> {
+export async function generateSchemas(jsonData: any): Promise<Schemas | undefined> {
     try {
-        const res = await axios.post<SchemaResponse>(
-            '/api/converter/generate-schema',
-            jsonData
-        );
+        const res = await axios.post<SchemaResponse>('/api/converter/generate-schema', jsonData);
         const response: Schemas = res.data.data;
         if (res.status === 201) {
             return response;
