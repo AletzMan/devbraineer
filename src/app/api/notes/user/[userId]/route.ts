@@ -11,14 +11,11 @@ export async function GET(req: Request, { params }: { params: Promise<{ userId: 
         if (!userId) {
             return NotAuthorizedError();
         }
-        console.log(idUser);
-        console.log(userId);
         const notes = await prisma.note.findMany({
             where: {
                 userId: idUser,
             },
         });
-        console.log(notes);
         if (notes) {
             return SuccessResponse(notes);
         }

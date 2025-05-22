@@ -39,7 +39,6 @@ export async function POST(request: Request) {
                 },
             ],
         });
-        console.log(axiosResponse);
         const cleanResponse = {
             status: axiosResponse.status,
             statusText: axiosResponse.statusText,
