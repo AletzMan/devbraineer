@@ -297,8 +297,8 @@ export const ConsoleMode = () => {
     };
 
     return (
-        <div className="flex flex-col gap-2 h-[calc(100vh-4rem)] w-full bg-neutral/50 scrollbar-thin overflow-y-auto p-2">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="flex flex-col gap-2 h-[calc(100vh-4rem)] w-full bg-neutral/25 scrollbar-thin overflow-y-auto p-2">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 bg-base-200 p-2 rounded-sm">
                 <div className="flex flex-col gap-2">
                     <div className="flex items-center justify-between">
                         <select
@@ -351,8 +351,8 @@ export const ConsoleMode = () => {
                         </div>
                     </div>
                     <div>
-                        <div className="border-1 border-(--color-gray-700) border-b-0 rounded-t-sm  overflow-hidden overflow-y-auto">
-                            <div className="flex flex-row divide-x divide-(--color-gray-500) max-w-max">
+                        <div className="border-1 bg-slate-900/40 border-gray-700 border-b-0 rounded-t-sm  overflow-hidden overflow-y-auto">
+                            <div className="flex flex-row divide-x divide-gray-500 max-w-max">
                                 {/* Mostrar archivos según el modo actual */}
                                 {files
                                     .filter((file) => file.language === consoleLanguage)
@@ -371,7 +371,7 @@ export const ConsoleMode = () => {
                         </div>
 
                         <div
-                            className={`border-1 border-(--color-gray-700) rounded-b-sm overflow-hidden h-[calc(100svh-220px)]`}>
+                            className={`border-1 border-(--color-gray-700) rounded-b-sm overflow-hidden h-[calc(100svh-166px)]`}>
                             {currentFile && (
                                 <Editor
                                     height={'100%'}
@@ -405,8 +405,8 @@ export const ConsoleMode = () => {
                             Ejecutar
                         </button>
                     </div>
-                    <div className="bg-neutral/40 border-1 border-gray-700 rounded-sm overflow-hidden h-[calc(100svh-185px)]">
-                        <div className="bg-base-200 flex items-center justify-between px-2 rounded-t-sm">
+                    <div className="bg-neutral/50 border-1 border-gray-700 rounded-sm overflow-hidden h-[calc(100svh-130px)]">
+                        <div className="bg-stone-900/50 flex items-center justify-between px-2 rounded-t-sm">
                             <div className="flex items-center gap-2">
                                 <span
                                     className={`w-2.5 h-2.5 rounded-full
