@@ -32,6 +32,7 @@ model User {
   snippets       Snippet[] // <-- ¡Nueva relación a Snippet!
   links          Link[] // <-- ¡Nueva relación a Link!
   requestHistory RequestHistory[] // <-- ¡Nueva relación a RequestHistory!
+  notes        Note[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -94,6 +95,19 @@ model RegexPattern {
   updated_at DateTime @updatedAt // Fecha de última actualización.
 
   @@map("regex_patterns") // Mapea este modelo a una tabla llamada "regex_patterns".
+}
+
+// Modelo de Nota
+model Note {
+  id        String   @id @default(uuid())
+  title     String
+  content   String   @db.Text
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("notes")
 }
 
 // ¡Nuevo Modelo para Snippets de Código!
