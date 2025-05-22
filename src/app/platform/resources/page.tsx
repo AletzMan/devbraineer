@@ -1,7 +1,7 @@
-import { BoxIcon, FileCode, Link as LinkIcon, AlertCircle } from 'lucide-react';
+import { BoxIcon, FileCode, Link as LinkIcon, AlertCircle, FileText } from 'lucide-react';
 import { SiteFooter } from '../componentes/SiteFooter';
 
-const menuData = [
+export const menuData = [
     {
         label: 'Snippets de Código',
         description: 'Fragmentos reutilizables para acelerar tu desarrollo.',
@@ -14,6 +14,13 @@ const menuData = [
         description: 'Recopilación de recursos web útiles y actualizados.',
         href: '/platform/resources/links',
         icon: LinkIcon,
+        color: 'text-secondary/65',
+    },
+    {
+        label: 'Notas',
+        description: 'Gestiona tus notas y recordatorios de manera eficiente.',
+        href: '/platform/resources/notes',
+        icon: FileText,
         color: 'text-secondary/65',
     },
 ];
