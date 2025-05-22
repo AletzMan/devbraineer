@@ -95,7 +95,6 @@ export default function NotesPage() {
     };
 
     const handleSelectEditOrAddNote = (note: Note | null) => {
-        console.log(note);
         if (note) {
             setEditingNote(note);
             setIsModalOpen(true);
