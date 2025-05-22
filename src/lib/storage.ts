@@ -18,11 +18,29 @@ export const deleteHistoryFromLocalStorage = () => {
 };
 
 export const deleteHistoryItemFromLocalStorage = (id: string) => {
-    console.log(id);
     const existingHistory: RequestHistory[] = getHistoryFromLocalStorage();
-    console.log(existingHistory);
     const updatedHistory = existingHistory.filter((h: RequestHistory) => h.id !== id);
-    console.log(updatedHistory);
     localStorage.setItem('http-history', JSON.stringify(updatedHistory));
-    console.log(localStorage.getItem('http-history'));
+};
+
+export const deleteHistoryItemFromLocalStorageByDate = (dateStr: string): RequestHistory[] => {
+    const existingHistory: RequestHistory[] = getHistoryFromLocalStorage();
+
+    const targetDate = new Date(dateStr);
+    targetDate.setHours(0, 0, 0, 0);
+
+    const updatedHistory = existingHistory.filter((h) => {
+        const entryDate = new Date(h.created_at);
+        entryDate.setHours(0, 0, 0, 0);
+
+        return !(
+            entryDate.getFullYear() === targetDate.getFullYear() &&
+            entryDate.getMonth() === targetDate.getMonth() &&
+            entryDate.getDate() === targetDate.getDate()
+        );
+    });
+
+    localStorage.setItem('http-history', JSON.stringify(updatedHistory));
+
+    return updatedHistory;
 };
