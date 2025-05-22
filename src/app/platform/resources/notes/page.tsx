@@ -4,14 +4,7 @@ import { motion } from 'framer-motion';
 import { PlusIcon, TrashIcon, PencilIcon } from 'lucide-react';
 import { useAuth } from '@clerk/nextjs';
 import HeaderSection from '../../componentes/HeaderSection';
-import {
-    createNote,
-    CreateNotePayload,
-    deleteNote,
-    getNoteByUser,
-    getNotes,
-    updateNote,
-} from '@/services/notes.service';
+import { createNote, CreateNotePayload, deleteNote, getNoteByUser, updateNote } from '@/services/notes.service';
 import { Note } from '@prisma/client';
 import { toast } from 'react-hot-toast';
 import { NoteDialog } from './components/NoteDialog';
