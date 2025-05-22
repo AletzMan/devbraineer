@@ -16,6 +16,7 @@ import {
 import { RequestHistory } from '@prisma/client';
 import { EllipsisIcon, SaveIcon, TrashIcon } from 'lucide-react';
 import { useAuth } from '@clerk/nextjs';
+import { getTime24hFromDate } from '@/lib/helpers';
 
 export default function HttpClientPage() {
     const { userId } = useAuth();
@@ -173,7 +174,7 @@ export default function HttpClientPage() {
         <div className="max-w-(--max-width) mx-auto flex flex-col h-[calc(100svh-3.8rem)] flex-grow overflow-y-auto scrollbar-thin">
             <HeaderSection title="HTTP Client" description="Envía y gestiona tus peticiones HTTP con facilidad." />
             <div className="grid grid-cols-[300px_1fr] gap-2 p-2 max-md:flex max-md:flex-col">
-                <aside className="bg-base-100 shadow-md rounded-sm p-4 h-[calc(100svh-9.5rem)] ">
+                <aside className="bg-base-100 shadow-md rounded-sm p-2 h-[calc(100svh-9.5rem)] ">
                     <header className="flex justify-between items-center mb-2 border-b border-gray-700 pb-2">
                         <h3 className="font-semibold">Historial de Peticiones</h3>
                         <div className="tooltip" data-tip="Eliminar todo el historial">
@@ -229,7 +230,7 @@ export default function HttpClientPage() {
                                                             }}
                                                             transition={{ duration: 0.3 }}
                                                             title={entry.url}
-                                                            className="relative py-2 cursor-pointer bg-base-300 hover:bg-base-content/20 px-2 rounded transition-colors duration-200"
+                                                            className="relative py-2 cursor-pointer bg-base-300 hover:bg-gray-700/20 px-2 rounded transition-colors duration-200"
                                                             onClick={() =>
                                                                 setFormState({
                                                                     method: entry.method,
@@ -288,12 +289,12 @@ export default function HttpClientPage() {
                                                                     }`}>
                                                                     {entry.method}
                                                                 </span>
-                                                                <span className="text-blue-500 text-xs text-ellipsis overflow-hidden whitespace-nowrap w-[210px]">
+                                                                <span className="text-gray-300 text-xs text-ellipsis overflow-hidden whitespace-nowrap w-[210px]">
                                                                     {entry.url}
                                                                 </span>
                                                             </div>
-                                                            <div className="text-xs text-gray-500 mt-1.5">
-                                                                {new Date(entry.created_at).toLocaleString()}
+                                                            <div className="flex justify-end text-xs text-gray-500 w-full ">
+                                                                {getTime24hFromDate(entry.created_at)}
                                                             </div>
                                                         </motion.li>
                                                     ))}
