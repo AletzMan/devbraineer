@@ -4,21 +4,11 @@ import { useEffect, useState } from 'react';
 const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
 
 interface RequestFormProps {
-    onSend: (request: {
-        method: string;
-        url: string;
-        headers: { [key: string]: string }[];
-        body: string;
-    }) => void;
+    onSend: (request: { method: string; url: string; headers: { [key: string]: string }[]; body: string }) => void;
 }
 
 interface RequestFormProps {
-    onSend: (request: {
-        method: string;
-        url: string;
-        headers: { [key: string]: string }[];
-        body: string;
-    }) => void;
+    onSend: (request: { method: string; url: string; headers: { [key: string]: string }[]; body: string }) => void;
     initialValues?: {
         method: string;
         url: string;
@@ -30,12 +20,8 @@ interface RequestFormProps {
 export function RequestForm({ onSend, initialValues }: RequestFormProps) {
     const [method, setMethod] = useState('GET');
     const [url, setUrl] = useState('');
-    const [headers, setHeaders] = useState<{ key: string; value: string }[]>([
-        { key: '', value: '' },
-    ]);
-    const [queryParams, setQueryParams] = useState<
-        { key: string; value: string }[]
-    >([{ key: '', value: '' }]);
+    const [headers, setHeaders] = useState<{ key: string; value: string }[]>([{ key: '', value: '' }]);
+    const [queryParams, setQueryParams] = useState<{ key: string; value: string }[]>([{ key: '', value: '' }]);
 
     const [body, setBody] = useState('');
     const [authType, setAuthType] = useState('');
@@ -89,9 +75,7 @@ export function RequestForm({ onSend, initialValues }: RequestFormProps) {
                         }
 
                         if (authType === 'basic' && basicUser && basicPass) {
-                            const credentials = btoa(
-                                `${basicUser}:${basicPass}`
-                            );
+                            const credentials = btoa(`${basicUser}:${basicPass}`);
                             updatedHeaders.push({
                                 key: 'Authorization',
                                 value: `Basic ${credentials}`,
@@ -182,34 +166,24 @@ export function RequestForm({ onSend, initialValues }: RequestFormProps) {
                         ))}
                         <button
                             className="btn btn-sm mt-2"
-                            onClick={() =>
-                                setHeaders([...headers, { key: '', value: '' }])
-                            }>
+                            onClick={() => setHeaders([...headers, { key: '', value: '' }])}>
                             + Header
                         </button>
                     </div>
                     {/* Body para POST/PUT */}
-                    <div
-                        className={`${activeTab === 'body' ? '' : 'hidden'} `}
-                        aria-disabled={activeTab !== 'body'}>
+                    <div className={`${activeTab === 'body' ? '' : 'hidden'} `} aria-disabled={activeTab !== 'body'}>
                         <label className="font-semibold">Body (JSON)</label>
                         <textarea
                             className={`textarea textarea-bordered w-full h-40 ${method !== 'POST' && method !== 'PUT' && method !== 'PATCH' ? 'disabled:opacity-50 disabled:cursor-not-allowed' : ''}`}
                             placeholder='{"key":"value"}'
                             value={body}
                             title={
-                                method !== 'POST' &&
-                                method !== 'PUT' &&
-                                method !== 'PATCH'
+                                method !== 'POST' && method !== 'PUT' && method !== 'PATCH'
                                     ? 'Sólo se puede enviar en POST, PUT y PATCH'
                                     : ''
                             }
                             onChange={(e) => setBody(e.target.value)}
-                            disabled={
-                                method !== 'POST' &&
-                                method !== 'PUT' &&
-                                method !== 'PATCH'
-                            }
+                            disabled={method !== 'POST' && method !== 'PUT' && method !== 'PATCH'}
                         />
                     </div>
                     {/* Autenticación */}
@@ -229,9 +203,7 @@ export function RequestForm({ onSend, initialValues }: RequestFormProps) {
                                     className="input input-bordered flex-1"
                                     placeholder="Token"
                                     value={authToken}
-                                    onChange={(e) =>
-                                        setAuthToken(e.target.value)
-                                    }
+                                    onChange={(e) => setAuthToken(e.target.value)}
                                 />
                             )}
                             {authType === 'basic' && (
@@ -240,28 +212,21 @@ export function RequestForm({ onSend, initialValues }: RequestFormProps) {
                                         className="input input-bordered w-1/2"
                                         placeholder="Usuario"
                                         value={basicUser}
-                                        onChange={(e) =>
-                                            setBasicUser(e.target.value)
-                                        }
+                                        onChange={(e) => setBasicUser(e.target.value)}
                                     />
                                     <input
                                         className="input input-bordered w-1/2"
                                         placeholder="Contraseña"
                                         type="password"
                                         value={basicPass}
-                                        onChange={(e) =>
-                                            setBasicPass(e.target.value)
-                                        }
+                                        onChange={(e) => setBasicPass(e.target.value)}
                                     />
                                 </div>
                             )}
                         </div>
                     </div>
                     {/* Query Params */}
-                    <div
-                        className={
-                            activeTab === 'query-params' ? '' : 'hidden'
-                        }>
+                    <div className={activeTab === 'query-params' ? '' : 'hidden'}>
                         <label className="font-semibold">Query Params</label>
                         {queryParams.map((p, i) => (
                             <div className="flex gap-2 my-1" key={i}>
@@ -291,12 +256,7 @@ export function RequestForm({ onSend, initialValues }: RequestFormProps) {
                         ))}
                         <button
                             className="btn btn-sm mt-2"
-                            onClick={() =>
-                                setQueryParams([
-                                    ...queryParams,
-                                    { key: '', value: '' },
-                                ])
-                            }>
+                            onClick={() => setQueryParams([...queryParams, { key: '', value: '' }])}>
                             + Param
                         </button>
                     </div>
