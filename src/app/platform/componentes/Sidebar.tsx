@@ -17,13 +17,11 @@ export function Sidebar() {
                 <Logo className="w-9 h-9 text-(--color-primary)" />
                 <NameLogo className="md:w-35  text-warning stroke-2 group-hover:${styles.spinSlow}" />
             </Link>
-            {
-                <nav className="sticky top-4">
-                    {menuData.map((item) => (
-                        <MenuItem key={item.label} item={item} currentPath={path} />
-                    ))}
-                </nav>
-            }
+            <nav className="sticky top-4">
+                {menuData.map((item) => (
+                    <MenuItem key={item.label} item={item} currentPath={path} />
+                ))}
+            </nav>
         </aside>
     );
 }
