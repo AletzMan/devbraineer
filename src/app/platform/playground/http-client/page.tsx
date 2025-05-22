@@ -9,13 +9,12 @@ import { saveRequestToHistory } from '@/services/httpRequest.service';
 import {
     deleteHistoryFromLocalStorage,
     deleteHistoryItemFromLocalStorage,
+    deleteHistoryItemFromLocalStorageByDate,
     getHistoryFromLocalStorage,
     saveHistoryToLocalStorage,
 } from '@/lib/storage';
 import { RequestHistory } from '@prisma/client';
-import head from 'next/head';
 import { EllipsisIcon, SaveIcon, TrashIcon } from 'lucide-react';
-import { randomUUID } from 'node:crypto';
 import { useAuth } from '@clerk/nextjs';
 
 export default function HttpClientPage() {
@@ -56,7 +55,6 @@ export default function HttpClientPage() {
             });
 
             const responseData = res.data.data;
-            console.log(responseData);
             setResponse({
                 status: responseData.status,
                 statusText: responseData.statusText,
@@ -70,7 +68,7 @@ export default function HttpClientPage() {
                 headers,
                 body,
                 response: JSON.stringify(responseData),
-                created_at: new Date(new Date().getTime() - 48 * 60 * 60 * 1000),
+                created_at: new Date(),
                 id: crypto.randomUUID(),
                 userId: userId || '',
             });
@@ -83,7 +81,7 @@ export default function HttpClientPage() {
                     headers,
                     body,
                     response: JSON.stringify(responseData),
-                    created_at: new Date(new Date().getTime() - 48 * 60 * 60 * 1000),
+                    created_at: new Date(),
                     id: crypto.randomUUID(),
                     userId: userId || '',
                 },
@@ -108,36 +106,46 @@ export default function HttpClientPage() {
         setHistory([]);
     };
 
-    const formatDisplayDate = (dateString: string): string => {
+    const formatDisplayDate = (dateString: string) => {
         const today = new Date();
         const entryDate = new Date(dateString);
 
-        // Resetear horas para comparación de días
+        // Resetear horas para comparaci
         today.setHours(0, 0, 0, 0);
         entryDate.setHours(0, 0, 0, 0);
 
         const diffTime = today.getTime() - entryDate.getTime();
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+        const dayOfWeekFormatter = new Intl.DateTimeFormat('es-ES', { weekday: 'long' });
+        const dayAndMonthFormatter = new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'long' });
+        const fullDateFormatter = new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
 
         if (diffDays === 0) {
             return 'Hoy';
         } else if (diffDays === 1) {
             return 'Ayer';
-        } else {
-            const options: Intl.DateTimeFormatOptions = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-            };
-            return entryDate.toLocaleDateString('es-ES', options);
+        } else if (diffDays > 1 && diffDays <= 6) {
+            const todayDay = today.getDay();
+            const entryDay = entryDate.getDay();
+            const dayDifferenceInWeek = todayDay - entryDay;
+
+            if (dayDifferenceInWeek > 0 && dayDifferenceInWeek < 7) {
+                return dayOfWeekFormatter.format(entryDate);
+            } else if (dayDifferenceInWeek < 0) {
+            }
         }
+
+        if (entryDate.getFullYear() === new Date().getFullYear()) {
+            return dayAndMonthFormatter.format(entryDate);
+        }
+
+        return fullDateFormatter.format(entryDate);
     };
     const formatDateToYYYYMMDD = (dateString: string): string => {
         const date = new Date(dateString);
-        return date.toISOString().split('T')[0]; // Ejemplo: "2024-05-21"
+        return date.toISOString().split('T')[0];
     };
-    // Agrupar el historial por día usando useMemo para optimizar
     const groupedHistory = useMemo(() => {
         const groups: { [key: string]: RequestHistory[] } = {};
         history.forEach((entry) => {
@@ -147,9 +155,7 @@ export default function HttpClientPage() {
             }
             groups[dateKey].push(entry);
         });
-        // Ordenar los grupos por fecha (más reciente primero)
         const sortedGroupKeys = Object.keys(groups).sort((a, b) => b.localeCompare(a));
-        // Mapear a un array de objetos para una fácil iteración en JSX
         return sortedGroupKeys.map((date) => ({
             date: date,
             displayDate: formatDisplayDate(date),
@@ -157,53 +163,73 @@ export default function HttpClientPage() {
         }));
     }, [history]);
 
-    /*
-    <motion.div layout className="space-y-4">
-                                {history.map((item) => (
-                                    <motion.div
-                                        key={item.id}
-                                        initial={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -20 }}
-                                        transition={{ duration: 0.2 }}
-                                        className="p-4 bg-white rounded-lg shadow">
-                                        <div className="flex justify-between items-center mb-2">
-     */
+    const handleDeleteHistoryByDate = (e: React.MouseEvent, date: string) => {
+        e.stopPropagation();
+        const updatedHistory = deleteHistoryItemFromLocalStorageByDate(date);
+        setHistory(updatedHistory);
+    };
 
     return (
         <div className="max-w-(--max-width) mx-auto flex flex-col h-[calc(100svh-3.8rem)] flex-grow overflow-y-auto scrollbar-thin">
             <HeaderSection title="HTTP Client" description="Envía y gestiona tus peticiones HTTP con facilidad." />
             <div className="grid grid-cols-[300px_1fr] gap-2 p-2 max-md:flex max-md:flex-col">
-                <aside className="bg-base-100 shadow-md rounded-sm p-4 h-[calc(100svh-9.5rem)]">
-                    <h3 className="font-semibold mb-2">Historial de Peticiones</h3>
-                    <div className="overflow-y-auto scrollbar-thin h-[calc(100svh-13rem)] overflow-x-hidden">
+                <aside className="bg-base-100 shadow-md rounded-sm p-4 h-[calc(100svh-9.5rem)] ">
+                    <header className="flex justify-between items-center mb-2 border-b border-gray-700 pb-2">
+                        <h3 className="font-semibold">Historial de Peticiones</h3>
+                        <div className="tooltip" data-tip="Eliminar todo el historial">
+                            <button
+                                className="btn btn-xs btn-ghost btn-circle btn-error"
+                                onClick={() => deleteHistory()}>
+                                <TrashIcon className="w-4 h-4" />
+                            </button>
+                        </div>
+                    </header>
+                    <div className="overflow-y-auto scrollbar-thin h-[calc(100svh-13rem)] ">
                         {history.length === 0 ? (
                             <p className="text-sm text-gray-400">Aún no hay historial.</p>
                         ) : (
-                            <motion.div layout className="space-y-2">
-                                {' '}
-                                {/* Usar space-y para la separación entre collapses */}
-                                {groupedHistory.map((dayGroup) => (
-                                    // Cada grupo de día ahora es un componente DaisyUI collapse
-                                    <div key={dayGroup.date} className="collapse collapse-plus bg-base-200">
-                                        <input type="checkbox" />
-                                        <div className="collapse-title text-md font-medium">
-                                            {dayGroup.displayDate} ({dayGroup.entries.length})
+                            <motion.div layoutRoot layout className="space-y-2 w-full">
+                                {groupedHistory.map((dayGroup, index) => (
+                                    <div
+                                        key={dayGroup.date}
+                                        className="collapse collapse-arrow bg-base-200 rounded-sm w-full">
+                                        <input
+                                            type="checkbox"
+                                            name={`tabHistory-${dayGroup.date}`}
+                                            defaultChecked={index === 0}
+                                        />
+                                        <div className="collapse-title flex gap-2 items-center justify-between text-sm">
+                                            <span className="w-full text-gray-300">{dayGroup.displayDate}</span>
+                                            <span className="badge badge-accent badge-soft badge-sm text-xs">
+                                                {dayGroup.entries.length}
+                                            </span>
                                         </div>
-                                        <div className="collapse-content">
-                                            {/* Aquí AnimatePresence sigue siendo clave para los items dentro del collapse */}
+
+                                        <motion.div layout className="collapse-content overflow-hidden">
+                                            <div className="tooltip" data-tip="Eliminar peticiones">
+                                                <motion.button
+                                                    layout={false}
+                                                    className="btn btn-xs btn-ghost btn-error btn-circle"
+                                                    onClick={(e) => handleDeleteHistoryByDate(e, dayGroup.date)}>
+                                                    <TrashIcon className="w-4 h-4" />
+                                                </motion.button>
+                                            </div>
                                             <AnimatePresence>
-                                                <ul className="flex flex-col gap-1 pt-2">
-                                                    {' '}
-                                                    {/* Añadido pt-2 para un poco de espacio */}
+                                                <motion.ul layout className="flex flex-col gap-1 pt-2">
                                                     {dayGroup.entries.map((entry) => (
                                                         <motion.li
                                                             key={entry.id}
                                                             layout
-                                                            initial={{ opacity: 1, y: 0 }}
-                                                            exit={{ opacity: 0, y: -50 }}
+                                                            initial={{ opacity: 1, y: 0, height: 'auto' }}
+                                                            exit={{
+                                                                opacity: 0,
+                                                                y: -50,
+                                                                height: 0,
+                                                                transition: { duration: 0.3 },
+                                                            }}
                                                             transition={{ duration: 0.3 }}
                                                             title={entry.url}
-                                                            className="relative py-2 cursor-pointer bg-base-300 hover:bg-base-content/20 px-2 rounded border border-gray-800"
+                                                            className="relative py-2 cursor-pointer bg-base-300 hover:bg-base-content/20 px-2 rounded transition-colors duration-200"
                                                             onClick={() =>
                                                                 setFormState({
                                                                     method: entry.method,
@@ -216,8 +242,7 @@ export default function HttpClientPage() {
                                                                     body: entry.body || '',
                                                                 })
                                                             }>
-                                                            {/* Menú de opciones (dropdown) */}
-                                                            <div className="absolute top-0 right-0 dropdown dropdown-end">
+                                                            <div className="absolute top-0 right-0 dropdown dropdown-start dropdown-left">
                                                                 <div
                                                                     tabIndex={0}
                                                                     role="button"
@@ -229,7 +254,7 @@ export default function HttpClientPage() {
                                                                 </div>
                                                                 <ul
                                                                     tabIndex={0}
-                                                                    className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow-sm">
+                                                                    className="dropdown-content text-xs menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow-sm">
                                                                     <li>
                                                                         <button>
                                                                             <SaveIcon className="size-5 text-gray-400" />{' '}
@@ -248,9 +273,7 @@ export default function HttpClientPage() {
                                                                     </li>
                                                                 </ul>
                                                             </div>
-
-                                                            {/* Contenido del elemento de la lista */}
-                                                            <div className="flex flex-col gap-2 text-sm">
+                                                            <div className="flex flex-col gap-2 text-xs">
                                                                 <span
                                                                     className={`font-semibold ${
                                                                         entry.method === 'GET'
@@ -265,7 +288,7 @@ export default function HttpClientPage() {
                                                                     }`}>
                                                                     {entry.method}
                                                                 </span>
-                                                                <span className="text-blue-500 text-xs text-ellipsis overflow-hidden whitespace-nowrap w-[235px]">
+                                                                <span className="text-blue-500 text-xs text-ellipsis overflow-hidden whitespace-nowrap w-[210px]">
                                                                     {entry.url}
                                                                 </span>
                                                             </div>
@@ -274,9 +297,9 @@ export default function HttpClientPage() {
                                                             </div>
                                                         </motion.li>
                                                     ))}
-                                                </ul>
+                                                </motion.ul>
                                             </AnimatePresence>
-                                        </div>
+                                        </motion.div>
                                     </div>
                                 ))}
                             </motion.div>
