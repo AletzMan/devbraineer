@@ -6,6 +6,7 @@ import { Link } from '@prisma/client';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { generateThumbnailUrl, getBaseDomain, getFavicon } from '@/lib/helpers';
+import { motion } from 'framer-motion';
 
 interface LinkCardProps {
     link: Link;
@@ -36,7 +37,12 @@ export default function LinkCard({ link, onDelete, onEdit }: LinkCardProps) {
     const baseDomain = getBaseDomain(link.url);
 
     return (
-        <div
+        <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             className="
                 bg-white dark:bg-zinc-900 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-800 p-4
                 flex flex-col justify-between
@@ -127,6 +133,6 @@ export default function LinkCard({ link, onDelete, onEdit }: LinkCardProps) {
                     </>
                 )}
             </div>
-        </div>
+        </motion.div>
     );
 }
