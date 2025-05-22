@@ -3,6 +3,7 @@ import { UserButton } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
 import { usePathname } from 'next/navigation';
 import { LinkData } from '../constants';
+import Link from 'next/link';
 
 export default function Header() {
     const path = usePathname();
@@ -20,7 +21,7 @@ export default function Header() {
                         const isFirstSegment = index === 0;
                         const isLastSegment = index === pathSegments.length - 1;
 
-                        const shouldShowIcon = !isFirstSegment && currentLinkItem?.icon;
+                        const shouldShowIcon = currentLinkItem?.icon;
 
                         const textColorClass = isLastSegment ? `${currentLinkItem?.color}` : 'text-gray-400';
 
@@ -36,10 +37,12 @@ export default function Header() {
                                         <span className={textColorClass}>{item}</span>
                                     </div>
                                 ) : (
-                                    <span className={`flex items-center ${textColorClass} `}>
+                                    <Link
+                                        href={currentHref}
+                                        className={`flex items-center ${textColorClass} hover:text-gray-600 transition-colors`}>
                                         {shouldShowIcon && <currentLinkItem.icon className={`size-4.5  `} />}
                                         {item}
-                                    </span>
+                                    </Link>
                                 )}
                             </li>
                         );
