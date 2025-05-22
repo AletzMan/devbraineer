@@ -23,6 +23,7 @@ import {
     LayoutDashboard,
     HardDrive,
     Globe,
+    FileText,
 } from 'lucide-react';
 
 export interface IMenuItem {
@@ -112,6 +113,12 @@ export const menuData: IMenuItem[] = [
                 label: 'Enlaces de Interés',
                 href: '/platform/resources/links',
                 icon: LinkIcon,
+                color: 'text-secondary/65',
+            },
+            {
+                label: 'Notas',
+                href: '/platform/resources/notes',
+                icon: FileText,
                 color: 'text-secondary/65',
             },
         ],
@@ -261,6 +268,12 @@ export const LinkData: ILinkItem[] = [
         label: 'Enlaces de Interés',
         href: '/platform/resources/links',
         icon: LinkIcon,
+        color: 'text-secondary',
+    },
+    {
+        label: 'Notas',
+        href: '/platform/resources/notes',
+        icon: FileText,
         color: 'text-secondary',
     },
 
