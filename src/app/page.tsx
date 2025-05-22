@@ -32,8 +32,7 @@ export default function Home() {
     useEffect(() => {
         const handleScroll = () => {
             if (heroSectionRef.current) {
-                const heroBottom =
-                    heroSectionRef.current.getBoundingClientRect().bottom;
+                const heroBottom = heroSectionRef.current.getBoundingClientRect().bottom;
                 setShowHeader(window.scrollY > heroBottom);
             }
         };
@@ -50,31 +49,21 @@ export default function Home() {
                 className={`flex items-center justify-center navbar fixed top-0 left-0 right-0 z-50 bg-neutral-950/60 backdrop-blur-lg shadow-xl border-b border-neutral-800/50 transition-transform duration-500 ease-in-out ${showHeader ? 'translate-y-0' : '-translate-y-full'}`}>
                 <div className="flex items-center justify-center container mx-auto px-4">
                     <div className="navbar-start">
-                        <Link
-                            href="/"
-                            className="flex items-center gap-2.5 group">
-                            <Logo
-                                className={`size-9 md:size-10 text-primary group-hover:${styles.spinSlow}`}
-                            />
+                        <Link href="/" className="flex items-center gap-2.5 group">
+                            <Logo className={`size-9 md:size-10 text-primary group-hover:${styles.spinSlow}`} />
                             <NameLogo className="w-25  md:w-30   text-warning stroke-2 group-hover:${styles.spinSlow}" />
                         </Link>
                     </div>
                     <div className="navbar-end">
                         {userId ? (
-                            <Link
-                                href="/platform"
-                                className="btn btn-outline btn-primary btn-sm md:btn-md group">
+                            <Link href="/platform" className="btn btn-outline btn-primary btn-sm md:btn-md group">
                                 <LayoutDashboard className="w-5 h-5 mr-0 md:mr-2 transition-transform duration-300 group-hover:translate-x-0.5" />
                                 <span className="hidden md:inline">Panel</span>
                             </Link>
                         ) : (
-                            <Link
-                                href="/sign-in"
-                                className="btn btn-outline btn-primary btn-sm md:btn-md group">
+                            <Link href="/sign-in" className="btn btn-outline btn-primary btn-sm md:btn-md group">
                                 <LogIn className="w-5 h-5 mr-0 md:mr-2 transition-transform duration-300 group-hover:translate-x-0.5" />
-                                <span className="hidden md:inline">
-                                    Iniciar Sesión
-                                </span>
+                                <span className="hidden md:inline">Iniciar Sesión</span>
                             </Link>
                         )}
                     </div>
@@ -102,10 +91,8 @@ export default function Home() {
                             </h2>
 
                             <p className="mb-10 text-md md:text-xl lg:text-2xl text-neutral-200 max-w-3xl mx-auto drop-shadow-md">
-                                Una colección de herramientas gratuitas y de
-                                código abierto diseñadas para hacer tu flujo de
-                                trabajo de desarrollo más eficiente y
-                                productivo.
+                                Una colección de herramientas gratuitas y de código abierto diseñadas para hacer tu
+                                flujo de trabajo de desarrollo más eficiente y productivo.
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-6 justify-center">
@@ -132,12 +119,9 @@ export default function Home() {
                 <section className="py-20 md:py-32 bg-gradient-to-b from-slate-950 via-[#111827] to-[#0c1322]">
                     <div className="container mx-auto px-4">
                         <div className="text-center mb-16 max-w-3xl mx-auto">
-                            <h2 className="text-4xl font-bold text-white mb-4">
-                                Herramientas para cada necesidad
-                            </h2>
+                            <h2 className="text-4xl font-bold text-white mb-4">Herramientas para cada necesidad</h2>
                             <p className="text-xl text-neutral-300">
-                                Desde desarrollo web hasta ingeniería
-                                electrónica, tenemos herramientas para todos los
+                                Desde desarrollo web hasta ingeniería electrónica, tenemos herramientas para todos los
                                 aspectos del desarrollo.
                             </p>
                         </div>
@@ -151,19 +135,13 @@ export default function Home() {
                 <section className="py-20 md:py-32 bg-gradient-to-b from-[#0c1322] via-[#0A0F1A] to-black">
                     <div className="container mx-auto px-4">
                         <div className="text-center mb-16 max-w-3xl mx-auto">
-                            <h2 className="text-4xl font-bold text-white mb-4">
-                                Herramientas populares
-                            </h2>
+                            <h2 className="text-4xl font-bold text-white mb-4">Herramientas populares</h2>
                             <p className="text-xl text-neutral-300">
-                                Descubre las herramientas más utilizadas por
-                                nuestra comunidad.
+                                Descubre las herramientas más utilizadas por nuestra comunidad.
                             </p>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <Link
-                                href="/platform/playground"
-                                passHref
-                                className="group">
+                            <Link href="/platform/playground" passHref className="group">
                                 <div className="card bg-neutral-900/50 backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out h-full border border-neutral-700/60 group-hover:border-blue-600/70 transform hover:scale-105">
                                     <div className="card-body">
                                         <div className="flex items-center gap-4 mb-4">
@@ -175,16 +153,12 @@ export default function Home() {
                                             </h3>
                                         </div>
                                         <p className="text-neutral-400 flex-grow text-sm">
-                                            Experimenta con HTML, CSS y
-                                            JavaScript en tiempo real.
+                                            Experimenta con HTML, CSS y JavaScript en tiempo real.
                                         </p>
                                     </div>
                                 </div>
                             </Link>
-                            <Link
-                                href="/platform/tools-tech/circuit-calculator"
-                                passHref
-                                className="group">
+                            <Link href="/platform/tools-tech/circuit-calculator" passHref className="group">
                                 <div className="card bg-neutral-900/50 backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out h-full border border-neutral-700/60 group-hover:border-teal-600/70 transform hover:scale-105">
                                     <div className="card-body">
                                         <div className="flex items-center gap-4 mb-4">
@@ -196,16 +170,12 @@ export default function Home() {
                                             </h3>
                                         </div>
                                         <p className="text-neutral-400 flex-grow text-sm">
-                                            Calcula valores de resistencia,
-                                            voltaje y corriente.
+                                            Calcula valores de resistencia, voltaje y corriente.
                                         </p>
                                     </div>
                                 </div>
                             </Link>
-                            <Link
-                                href="/platform/tools-dev/converter"
-                                passHref
-                                className="group">
+                            <Link href="/platform/tools-dev/converter" passHref className="group">
                                 <div className="card bg-neutral-900/50 backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out h-full border border-neutral-700/60 group-hover:border-purple-600/70 transform hover:scale-105">
                                     <div className="card-body">
                                         <div className="flex items-center gap-4 mb-4">
@@ -217,16 +187,12 @@ export default function Home() {
                                             </h3>
                                         </div>
                                         <p className="text-neutral-400 flex-grow text-sm">
-                                            Convierte JSON a objetos JS y
-                                            viceversa con facilidad.
+                                            Convierte JSON a objetos JS y viceversa con facilidad.
                                         </p>
                                     </div>
                                 </div>
                             </Link>
-                            <Link
-                                href="/platform/tools-dev/regex"
-                                passHref
-                                className="group">
+                            <Link href="/platform/tools-dev/regex" passHref className="group">
                                 <div className="card bg-neutral-900/50 backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out h-full border border-neutral-700/60 group-hover:border-blue-600/70 transform hover:scale-105">
                                     <div className="card-body">
                                         <div className="flex items-center gap-4 mb-4">
@@ -238,8 +204,7 @@ export default function Home() {
                                             </h3>
                                         </div>
                                         <p className="text-neutral-400 flex-grow text-sm">
-                                            Crea, prueba y valida expresiones
-                                            regulares visualmente.
+                                            Crea, prueba y valida expresiones regulares visualmente.
                                         </p>
                                     </div>
                                 </div>
@@ -259,12 +224,9 @@ export default function Home() {
                     {/* Transition back */}
                     <div className="container mx-auto px-4">
                         <div className="max-w-3xl mx-auto text-center">
-                            <h2 className="text-4xl font-bold text-white mb-6">
-                                ¿Tienes alguna sugerencia?
-                            </h2>
+                            <h2 className="text-4xl font-bold text-white mb-6">¿Tienes alguna sugerencia?</h2>
                             <p className="text-xl text-neutral-300 mb-10">
-                                Estamos constantemente añadiendo nuevas
-                                herramientas. ¡Nos encantaría escuchar tus
+                                Estamos constantemente añadiendo nuevas herramientas. ¡Nos encantaría escuchar tus
                                 ideas!
                             </p>
                             <div className="flex flex-col sm:flex-row gap-6 justify-center">
@@ -288,22 +250,18 @@ export default function Home() {
                     <div className="container mx-auto px-4">
                         <div className="grid grid-cols-1 md:grid-cols-12 gap-x-8 gap-y-12 items-start">
                             <div className="md:col-span-12 lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left">
-                                <Link
-                                    href="/"
-                                    className="flex items-center gap-3 mb-4 group">
+                                <Link href="/" className="flex items-center gap-3 mb-4 group">
                                     <Logo className="size-12 text-primary transition-transform duration-300 group-hover:scale-110" />
                                     <span
                                         className="text-3xl font-bold text-warning transition-colors duration-300 group-hover:text-primary"
                                         style={{
-                                            fontFamily:
-                                                'var(--font-josefin-sans)',
+                                            fontFamily: 'var(--font-josefin-sans)',
                                         }}>
                                         DevBraineer
                                     </span>
                                 </Link>
                                 <p className="text-neutral-400 text-sm max-w-xs">
-                                    Potenciando a desarrolladores e ingenieros
-                                    con herramientas innovadoras y de código
+                                    Potenciando a desarrolladores e ingenieros con herramientas innovadoras y de código
                                     abierto.
                                 </p>
                             </div>
@@ -408,8 +366,7 @@ export default function Home() {
                         </div>
 
                         <div className="text-center text-sm text-neutral-500 mt-8">
-                            © {new Date().getFullYear()} DevBraineer. Todos los
-                            derechos reservados.
+                            © {new Date().getFullYear()} DevBraineer. Todos los derechos reservados.
                         </div>
                     </div>
                 </footer>
@@ -422,8 +379,7 @@ const DataCards = [
     {
         id: 'web-development',
         title: 'Desarrollo Web',
-        description:
-            'Herramientas para formatear, validar y optimizar y probar tu código web.',
+        description: 'Herramientas para formatear, validar y optimizar y probar tu código web.',
         icon: Code2,
         color: 'info',
         hoverColor: 'hover:border-info',
@@ -451,8 +407,7 @@ const DataCards = [
     {
         id: 'data-tools',
         title: 'Herramientas de Datos',
-        description:
-            'Convierte, formatea y manipula datos en diferentes formatos.',
+        description: 'Convierte, formatea y manipula datos en diferentes formatos.',
         icon: Database,
         color: 'secondary',
         hoverColor: 'hover:border-secondary',
@@ -480,8 +435,7 @@ const DataCards = [
     {
         id: 'electronic-engineering',
         title: 'Ingeniería Electrónica',
-        description:
-            'Calcula y simula circuitos electrónicos con herramientas especializadas.',
+        description: 'Calcula y simula circuitos electrónicos con herramientas especializadas.',
         icon: Zap,
         color: 'success',
         hoverColor: 'hover:border-success',

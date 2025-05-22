@@ -2,20 +2,8 @@
 
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { RegexPattern } from '@prisma/client';
-import {
-    getRegexPatterns,
-    createRegexPattern,
-    deleteRegexPatternById,
-} from '@/services/pattern.service';
-import {
-    PlusCircle,
-    Search,
-    Save,
-    AlertCircle,
-    Check,
-    Trash2,
-    X,
-} from 'lucide-react';
+import { getRegexPatterns, createRegexPattern, deleteRegexPatternById } from '@/services/pattern.service';
+import { PlusCircle, Search, Save, AlertCircle, Check, Trash2, X } from 'lucide-react';
 import axios from 'axios';
 import PatternRegex from './PatternRegex';
 
@@ -24,10 +12,7 @@ interface MyPatternsPageProps {
     setActiveTab: (tab: 'tester' | 'patterns' | 'myPatterns') => void;
 }
 
-export default function MyPatternsPage({
-    setPattern,
-    setActiveTab,
-}: MyPatternsPageProps) {
+export default function MyPatternsPage({ setPattern, setActiveTab }: MyPatternsPageProps) {
     const [patterns, setPatterns] = useState<RegexPattern[]>([]);
     const [loadingPatterns, setLoadingPatterns] = useState(true);
     const [patternsError, setPatternsError] = useState<string | null>(null);
@@ -51,9 +36,7 @@ export default function MyPatternsPage({
 
     // --- ESTADOS PARA ELIMINAR ---
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-    const [patternToDelete, setPatternToDelete] = useState<RegexPattern | null>(
-        null
-    );
+    const [patternToDelete, setPatternToDelete] = useState<RegexPattern | null>(null);
     const deleteConfirmModalRef = useRef<HTMLDialogElement>(null);
     const [deleteError, setDeleteError] = useState<string | null>(null);
     const [deleteSuccess, setDeleteSuccess] = useState<string | null>(null);
@@ -66,30 +49,23 @@ export default function MyPatternsPage({
 
                 const loadedPatterns = await getRegexPatterns();
 
-                const validatedPatterns: RegexPattern[] = loadedPatterns.filter(
-                    (p): p is RegexPattern => {
-                        const isValid =
-                            p !== null &&
-                            p !== undefined &&
-                            typeof p === 'object' &&
-                            'id' in p &&
-                            p.id !== null &&
-                            p.id !== undefined;
-                        if (!isValid) {
-                            console.warn(
-                                'Patrón inválido descartado al cargar (falta ID o es null/undefined):',
-                                p
-                            );
-                        }
-                        return isValid;
+                const validatedPatterns: RegexPattern[] = loadedPatterns.filter((p): p is RegexPattern => {
+                    const isValid =
+                        p !== null &&
+                        p !== undefined &&
+                        typeof p === 'object' &&
+                        'id' in p &&
+                        p.id !== null &&
+                        p.id !== undefined;
+                    if (!isValid) {
+                        console.warn('Patrón inválido descartado al cargar (falta ID o es null/undefined):', p);
                     }
-                );
+                    return isValid;
+                });
                 setPatterns(validatedPatterns);
             } catch (err) {
                 console.error('Error al cargar patrones:', err);
-                setPatternsError(
-                    'No se pudieron cargar los patrones. Intenta de nuevo.'
-                );
+                setPatternsError('No se pudieron cargar los patrones. Intenta de nuevo.');
                 setPatterns([]);
             } finally {
                 setLoadingPatterns(false);
@@ -108,12 +84,8 @@ export default function MyPatternsPage({
         const searchFiltered = searchTerm
             ? patterns.filter(
                   (pattern) =>
-                      pattern.name
-                          .toLowerCase()
-                          .includes(searchTerm.toLowerCase()) ||
-                      (pattern.description?.toLowerCase() || '').includes(
-                          searchTerm.toLowerCase()
-                      )
+                      pattern.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      (pattern.description?.toLowerCase() || '').includes(searchTerm.toLowerCase())
               )
             : patterns;
 
@@ -126,18 +98,13 @@ export default function MyPatternsPage({
                 item.id !== null &&
                 item.id !== undefined;
             if (!isValid) {
-                console.warn(
-                    'Elemento inválido detectado en filteredPatterns (sin ID o null/undefined):',
-                    item
-                );
+                console.warn('Elemento inválido detectado en filteredPatterns (sin ID o null/undefined):', item);
             }
             return isValid;
         });
     }, [patterns, searchTerm]);
 
-    const handleInputChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setNewPattern((prev) => ({ ...prev, [name]: value }));
     };
@@ -193,10 +160,7 @@ export default function MyPatternsPage({
                 savedPattern.id !== undefined;
 
             if (!isSavedPatternValid) {
-                console.error(
-                    "El patrón guardado no tiene una 'id' válida o no es un objeto válido:",
-                    savedPattern
-                );
+                console.error("El patrón guardado no tiene una 'id' válida o no es un objeto válido:", savedPattern);
                 setSaveError(
                     'El patrón se guardó, pero no se pudo mostrar automáticamente. Intenta recargar la página.'
                 );
@@ -204,10 +168,7 @@ export default function MyPatternsPage({
                 return; // Salir si el patrón no es válido
             }
 
-            setPatterns((prevPatterns) => [
-                ...prevPatterns,
-                savedPattern as RegexPattern,
-            ]); // Asegura el tipo
+            setPatterns((prevPatterns) => [...prevPatterns, savedPattern as RegexPattern]); // Asegura el tipo
 
             setNewPattern({
                 id: '',
@@ -228,11 +189,7 @@ export default function MyPatternsPage({
         } catch (err: any) {
             console.error('Error saving pattern:', err);
             if (axios.isAxiosError(err) && err.response && err.response.data) {
-                setSaveError(
-                    err.response.data.message ||
-                        err.response.data ||
-                        'Error saving pattern.'
-                );
+                setSaveError(err.response.data.message || err.response.data || 'Error saving pattern.');
             } else {
                 setSaveError('Error saving pattern. Please try again.');
             }
@@ -273,9 +230,7 @@ export default function MyPatternsPage({
             await deleteRegexPatternById(patternToDelete.id);
 
             // Filtra el array de patrones para remover el eliminado
-            setPatterns((prevPatterns) =>
-                prevPatterns.filter((p) => p.id !== patternToDelete.id)
-            );
+            setPatterns((prevPatterns) => prevPatterns.filter((p) => p.id !== patternToDelete.id));
 
             setDeleteSuccess('Patrón eliminado exitosamente.');
             setTimeout(() => {
@@ -285,9 +240,7 @@ export default function MyPatternsPage({
         } catch (err: any) {
             console.error('Error al eliminar patrón:', err);
             // Captura el mensaje de error específico si viene del servicio
-            setDeleteError(
-                err.message || 'Error al eliminar patrón. Intenta de nuevo.'
-            );
+            setDeleteError(err.message || 'Error al eliminar patrón. Intenta de nuevo.');
             setTimeout(() => {
                 setDeleteError(null);
             }, 5000);
@@ -307,18 +260,11 @@ export default function MyPatternsPage({
                             placeholder="Buscar por nombre o descripción..."
                         />
                     </label>
-                    <button
-                        className="btn btn-success w-full md:w-auto"
-                        onClick={handleOpenModal}>
-                        <PlusCircle className="size-5 mr-2" /> Agregar Nuevo
-                        Patrón
+                    <button className="btn btn-success w-full md:w-auto" onClick={handleOpenModal}>
+                        <PlusCircle className="size-5 mr-2" /> Agregar Nuevo Patrón
                     </button>
                 </header>
-                {loadingPatterns && (
-                    <div className="text-center text-gray-400 mt-8">
-                        Cargando patrones...
-                    </div>
-                )}
+                {loadingPatterns && <div className="text-center text-gray-400 mt-8">Cargando patrones...</div>}
                 {patternsError && (
                     <div className="alert alert-error bg-red-800 text-red-200 border-red-700 p-3 rounded-md text-sm flex items-center gap-2 mt-8">
                         <AlertCircle className="size-4 text-red-400" />
@@ -358,13 +304,10 @@ export default function MyPatternsPage({
                     </div>
                 )}
             </div>
-            <dialog
-                ref={modalRef}
-                className={`modal ${isModalOpen ? 'modal-open' : ''}`}>
+            <dialog ref={modalRef} className={`modal ${isModalOpen ? 'modal-open' : ''}`}>
                 <div className="modal-box bg-base-300 text-gray-200 p-6 rounded-lg shadow-xl">
                     <h3 className="font-bold text-xl text-white mb-4 flex items-center gap-2">
-                        <PlusCircle className="size-6 text-green-400" /> Agregar
-                        Nuevo Patrón
+                        <PlusCircle className="size-6 text-green-400" /> Agregar Nuevo Patrón
                     </h3>
                     <form method="dialog">
                         <button
@@ -435,17 +378,12 @@ export default function MyPatternsPage({
                                 type="button"
                                 onClick={handleSavePattern}
                                 className={`btn btn-success bg-green-600 hover:bg-green-700 text-white font-bold transition duration-300 ease-in-out ${isSaving ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                disabled={
-                                    isSaving ||
-                                    !newPattern.name.trim() ||
-                                    !newPattern.pattern.trim()
-                                }>
+                                disabled={isSaving || !newPattern.name.trim() || !newPattern.pattern.trim()}>
                                 {isSaving ? (
                                     'Guardando...'
                                 ) : (
                                     <>
-                                        <Save className="size-5 mr-2" /> Guardar
-                                        Patrón
+                                        <Save className="size-5 mr-2" /> Guardar Patrón
                                     </>
                                 )}
                             </button>
@@ -454,13 +392,10 @@ export default function MyPatternsPage({
                 </div>
             </dialog>
             {/* --- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN (SIN CAMBIOS) --- */}
-            <dialog
-                ref={deleteConfirmModalRef}
-                className={`modal ${isDeleteConfirmOpen ? 'modal-open' : ''}`}>
+            <dialog ref={deleteConfirmModalRef} className={`modal ${isDeleteConfirmOpen ? 'modal-open' : ''}`}>
                 <div className="modal-box bg-base-100 text-gray-200 p-6 rounded-lg shadow-xl">
                     <h3 className="font-bold text-xl text-white mb-4 flex items-center gap-2">
-                        <Trash2 className="size-6 text-error" /> Confirmar
-                        Eliminación
+                        <Trash2 className="size-6 text-error" /> Confirmar Eliminación
                     </h3>
                     <form method="dialog">
                         <button
@@ -472,9 +407,7 @@ export default function MyPatternsPage({
                     {patternToDelete && (
                         <p className="mb-4">
                             ¿Estás seguro de que quieres eliminar el patrón "
-                            <strong className="text-error">
-                                {patternToDelete.name}
-                            </strong>
+                            <strong className="text-error">{patternToDelete.name}</strong>
                             "? Esta acción no se puede deshacer.
                         </p>
                     )}
@@ -493,10 +426,7 @@ export default function MyPatternsPage({
                     )}
 
                     <div className="modal-action justify-end mt-4">
-                        <button
-                            type="button"
-                            onClick={handleCloseDeleteConfirm}
-                            className="btn btn-soft">
+                        <button type="button" onClick={handleCloseDeleteConfirm} className="btn btn-soft">
                             <X className="size-5 mr-2" /> Cancelar
                         </button>
                         <button

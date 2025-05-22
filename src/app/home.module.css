@@ -26,11 +26,7 @@
     bottom: -4px;
     left: 50%;
     transform: translateX(-50%);
-    background-image: linear-gradient(
-        to right,
-        oklch(var(--p)),
-        oklch(var(--a))
-    );
+    background-image: linear-gradient(to right, oklch(var(--p)), oklch(var(--a)));
     transition: width 0.35s ease-in-out;
 }
 
@@ -94,11 +90,7 @@
     color: transparent; /* Makes the text transparent to reveal background */
     background-clip: text;
     -webkit-background-clip: text; /* For Safari compatibility */
-    background-image: linear-gradient(
-        to right,
-        var(--tw-gradient-from),
-        var(--tw-gradient-to)
-    );
+    background-image: linear-gradient(to right, var(--tw-gradient-from), var(--tw-gradient-to));
 }
 
 /* Ensure Tailwind CSS variables are defined in your tailwind.config.js if you want to use --tw-gradient-from directly */

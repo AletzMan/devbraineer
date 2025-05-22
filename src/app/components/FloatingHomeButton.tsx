@@ -12,8 +12,7 @@ export function FloatingHomeButton() {
                 animate={{ opacity: 1, scale: 1 }}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="btn btn-circle btn-primary hover:bg-accent hover:border-accent transition-all duration-300"
-            >
+                className="btn btn-circle btn-primary hover:bg-accent hover:border-accent transition-all duration-300">
                 <Home className="w-5 h-5" />
             </motion.div>
         </Link>

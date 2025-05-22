@@ -3,10 +3,7 @@ import axios from 'axios';
 import { Link } from '@prisma/client'; // Importa el tipo Link de Prisma
 
 // Define un tipo para el payload de creación/actualización, excluyendo ID y fechas
-export type CreateUpdateLinkPayload = Omit<
-    Link,
-    'id' | 'createdAt' | 'updatedAt'
->;
+export type CreateUpdateLinkPayload = Omit<Link, 'id' | 'createdAt' | 'updatedAt'>;
 
 export type LinkResponse = {
     message: string;
@@ -42,21 +39,14 @@ export const getLinks = async (): Promise<Link[] | undefined> => {
         return undefined;
     } catch (error: any) {
         console.error('Failed to fetch links:', error);
-        throw new Error(
-            error.response?.data?.message || 'Error fetching links'
-        );
+        throw new Error(error.response?.data?.message || 'Error fetching links');
     }
 };
 
 // Función para crear un nuevo enlace
-export const createLink = async (
-    linkData: CreateUpdateLinkPayload
-): Promise<Link | undefined> => {
+export const createLink = async (linkData: CreateUpdateLinkPayload): Promise<Link | undefined> => {
     try {
-        const response = await axios.post<LinkResponseCreate>(
-            '/api/links',
-            linkData
-        );
+        const response = await axios.post<LinkResponseCreate>('/api/links', linkData);
         if (response.status === 201) {
             return response.data.data;
         }
@@ -73,10 +63,7 @@ export const updateLink = async (
     updateData: Partial<CreateUpdateLinkPayload>
 ): Promise<Link | undefined> => {
     try {
-        const response = await axios.put<LinkResponseUpdate>(
-            `/api/links/${id}`,
-            updateData
-        );
+        const response = await axios.put<LinkResponseUpdate>(`/api/links/${id}`, updateData);
         if (response.status === 200) {
             return response.data.response;
         }
@@ -88,13 +75,9 @@ export const updateLink = async (
 };
 
 // Función para eliminar un enlace por ID
-export const deleteLink = async (
-    id: string
-): Promise<LinkResponseDelete | undefined> => {
+export const deleteLink = async (id: string): Promise<LinkResponseDelete | undefined> => {
     try {
-        const response = await axios.delete<LinkResponseDelete>(
-            `/api/links/${id}`
-        );
+        const response = await axios.delete<LinkResponseDelete>(`/api/links/${id}`);
         if (response.status === 200) {
             return response.data;
         }

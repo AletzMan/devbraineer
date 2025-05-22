@@ -6,9 +6,7 @@ interface CardToolProps {
     card: {
         title: string;
         description: string;
-        icon: ForwardRefExoticComponent<
-            Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
-        >;
+        icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
         hoverColor: string;
         color: string;
         gradient: string;
@@ -16,9 +14,7 @@ interface CardToolProps {
         href: string;
         children: {
             title: string;
-            icon: ForwardRefExoticComponent<
-                Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
-            >;
+            icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
             color: string;
         }[];
     };
@@ -33,20 +29,12 @@ export function CardTool({ card }: CardToolProps) {
                     className={`p-4 bg-gradient-to-br rounded-full mb-6 shadow-lg ${card.gradient} group-hover:scale-110 transition-transform duration-300`}>
                     <card.icon className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="card-title text-2xl font-semibold text-white mb-3">
-                    {card.title}
-                </h3>
-                <p className="text-neutral-400 mb-6 flex-grow">
-                    {card.description}
-                </p>
+                <h3 className="card-title text-2xl font-semibold text-white mb-3">{card.title}</h3>
+                <p className="text-neutral-400 mb-6 flex-grow">{card.description}</p>
                 <ul className="space-y-3 mb-8 text-neutral-300 text-left w-full">
                     {card.children.map((feature) => (
-                        <li
-                            className="flex items-center gap-3"
-                            key={feature.title}>
-                            <feature.icon
-                                className={`w-5 h-5 text-${feature.color} flex-shrink-0`}
-                            />
+                        <li className="flex items-center gap-3" key={feature.title}>
+                            <feature.icon className={`w-5 h-5 text-${feature.color} flex-shrink-0`} />
                             <span>{feature.title}</span>
                         </li>
                     ))}

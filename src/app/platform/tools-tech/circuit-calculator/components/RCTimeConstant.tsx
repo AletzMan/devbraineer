@@ -1,12 +1,4 @@
-import {
-    Calculator,
-    RotateCcw,
-    Omega,
-    Zap,
-    Timer,
-    CircleX,
-    CircleCheck,
-} from 'lucide-react';
+import { Calculator, RotateCcw, Omega, Zap, Timer, CircleX, CircleCheck } from 'lucide-react';
 import { useState } from 'react';
 import { BlockMath } from 'react-katex';
 import SectionCalculator from './SectionCalculator';
@@ -16,8 +8,7 @@ export default function RCTimeConstant() {
     const [rcResistance, setRcResistance] = useState('');
     const [rcCapacitance, setRcCapacitance] = useState('');
     const [rcTimeConstant, setRcTimeConstant] = useState<string | null>(null);
-    const [rcTimeConstantCalculations, setRcTimeConstantCalculations] =
-        useState<string[]>([]); // Nuevo estado para los cálculos detallados
+    const [rcTimeConstantCalculations, setRcTimeConstantCalculations] = useState<string[]>([]); // Nuevo estado para los cálculos detallados
 
     // Función para calcular Constante de Tiempo RC
     const calculateRcTimeConstant = () => {
@@ -28,9 +19,7 @@ export default function RCTimeConstant() {
             const calculations: string[] = []; // Array para almacenar los pasos
 
             if (R === null || C === null || R <= 0 || C <= 0) {
-                setRcTimeConstant(
-                    '¡Ups! Ingresa valores positivos válidos para Resistencia y Capacitancia.'
-                );
+                setRcTimeConstant('¡Ups! Ingresa valores positivos válidos para Resistencia y Capacitancia.');
                 setRcTimeConstantCalculations([]);
                 return;
             }
@@ -40,19 +29,13 @@ export default function RCTimeConstant() {
 
             // Añadir pasos al array de cálculos
             calculations.push(`\\tau = R \\times C`);
-            calculations.push(
-                `\\tau = ${R.toFixed(2)} \\Omega \\times ${C.toFixed(6)} \\text{ F}`
-            ); // Usar más decimales para C
+            calculations.push(`\\tau = ${R.toFixed(2)} \\Omega \\times ${C.toFixed(6)} \\text{ F}`); // Usar más decimales para C
             calculations.push(`\\tau = ${tau.toFixed(4)} \\text{ s}`);
 
-            setRcTimeConstant(
-                `Constante de Tiempo (τ): ${tau.toFixed(4)} segundos`
-            );
+            setRcTimeConstant(`Constante de Tiempo (τ): ${tau.toFixed(4)} segundos`);
             setRcTimeConstantCalculations(calculations); // Actualizar el estado con los cálculos
         } catch (error) {
-            setRcTimeConstant(
-                '¡Vaya! Hubo un error en el cálculo. Asegúrate de que los valores sean válidos.'
-            );
+            setRcTimeConstant('¡Vaya! Hubo un error en el cálculo. Asegúrate de que los valores sean válidos.');
             setRcTimeConstantCalculations([]);
         }
     };
@@ -81,8 +64,7 @@ export default function RCTimeConstant() {
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text text-base-content text-base font-semibold flex items-center gap-2">
-                                    <Omega className="h-5 w-5 text-primary" />{' '}
-                                    Resistencia (R)
+                                    <Omega className="h-5 w-5 text-primary" /> Resistencia (R)
                                 </span>
                             </label>
                             <label className="input input-bordered input-sm flex items-center gap-2 shadow-md bg-base-100 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary">
@@ -91,9 +73,7 @@ export default function RCTimeConstant() {
                                     placeholder="Resistencia en ohmios (Ω)"
                                     className="grow text-base placeholder:text-base-content/60"
                                     value={rcResistance}
-                                    onChange={(e) =>
-                                        setRcResistance(e.target.value)
-                                    }
+                                    onChange={(e) => setRcResistance(e.target.value)}
                                 />
                                 <div className="badge badge-md badge-soft badge-warning rounded-sm min-w-[2.5rem]">
                                     Ω
@@ -105,8 +85,7 @@ export default function RCTimeConstant() {
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text text-base-content text-base font-semibold flex items-center gap-2">
-                                    <Zap className="h-5 w-5 text-primary" />{' '}
-                                    Capacitancia (C)
+                                    <Zap className="h-5 w-5 text-primary" /> Capacitancia (C)
                                 </span>
                             </label>
                             <label className="input input-bordered input-sm flex items-center gap-2 shadow-md bg-base-100 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary">
@@ -115,13 +94,9 @@ export default function RCTimeConstant() {
                                     placeholder="Capacitancia en Faradios (F)"
                                     className="grow text-base placeholder:text-base-content/60"
                                     value={rcCapacitance}
-                                    onChange={(e) =>
-                                        setRcCapacitance(e.target.value)
-                                    }
+                                    onChange={(e) => setRcCapacitance(e.target.value)}
                                 />
-                                <div className="badge badge-md badge-soft badge-info rounded-sm min-w-[2.5rem]">
-                                    F
-                                </div>
+                                <div className="badge badge-md badge-soft badge-info rounded-sm min-w-[2.5rem]">F</div>
                             </label>
                         </div>
 
@@ -157,19 +132,12 @@ export default function RCTimeConstant() {
 
                         {/* Sección de Cálculo Detallado (replicando OhmCalculator) */}
                         <div className="pt-5 border-t border-base-content/20 z-10 flex-grow flex flex-col justify-end">
-                            <h3 className="text-xl font-extrabold text-accent text-center mb-3">
-                                Cálculo Detallado
-                            </h3>
+                            <h3 className="text-xl font-extrabold text-accent text-center mb-3">Cálculo Detallado</h3>
                             {rcTimeConstantCalculations.length > 0 ? (
                                 <div className="p-3 space-y-2 bg-base-200 rounded-lg shadow-inner border border-base-content/15 overflow-y-auto custom-scrollbar flex-grow">
-                                    {rcTimeConstantCalculations.map(
-                                        (calc, index) => (
-                                            <BlockMath
-                                                key={index}
-                                                math={calc}
-                                            />
-                                        )
-                                    )}
+                                    {rcTimeConstantCalculations.map((calc, index) => (
+                                        <BlockMath key={index} math={calc} />
+                                    ))}
                                 </div>
                             ) : (
                                 <div className="flex-grow flex items-center justify-center">
@@ -184,15 +152,12 @@ export default function RCTimeConstant() {
                                 <div
                                     role="alert"
                                     className={`alert ${rcTimeConstant.includes('¡Error!') || rcTimeConstant.includes('¡Ups!') ? 'alert-error' : 'alert-success'} shadow-xl mt-4 p-4 rounded-sm border-2 ${rcTimeConstant.includes('¡Error!') || rcTimeConstant.includes('¡Ups!') ? 'border-error/50' : 'border-success/50'}`}>
-                                    {rcTimeConstant.includes('¡Error!') ||
-                                    rcTimeConstant.includes('¡Ups!') ? (
+                                    {rcTimeConstant.includes('¡Error!') || rcTimeConstant.includes('¡Ups!') ? (
                                         <CircleX className="h-6 w-6" />
                                     ) : (
                                         <Timer className="h-6 w-6" />
                                     )}
-                                    <span className="font-bold text-lg">
-                                        {rcTimeConstant}
-                                    </span>
+                                    <span className="font-bold text-lg">{rcTimeConstant}</span>
                                 </div>
                             )}
                         </div>

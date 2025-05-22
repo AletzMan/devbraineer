@@ -8,10 +8,7 @@ export const CSSIcon = (props: SVGProps<SVGSVGElement>) => (
         aria-labelledby="css-logo-title css-logo-description"
         viewBox="0 0 1000 1000"
         {...props}>
-        <path
-            fill="#639"
-            d="M0 0h840a160 160 0 0 1 160 160v680a160 160 0 0 1-160 160H160A160 160 0 0 1 0 840V0Z"
-        />
+        <path fill="#639" d="M0 0h840a160 160 0 0 1 160 160v680a160 160 0 0 1-160 160H160A160 160 0 0 1 0 840V0Z" />
         <path
             fill="#fff"
             d="M816.54 919.9c-32.39 0-57.16-9.42-74.5-28.35-17.15-19.03-26.08-46.18-26.88-81.64h69.8c.4 31.36 11.42 47.08 33.08 47.08 11.04 0 18.86-3.5 23.37-10.42 4.41-6.9 6.72-17.93 6.72-33.05 0-12.02-3.01-22.04-8.83-29.95a73.2 73.2 0 0 0-29.48-21.14L783.95 750c-23.06-11.02-39.81-24.04-50.14-39.27-10.03-15.13-15.04-36.36-15.04-63.5 0-30.36 8.83-55 26.37-73.94 18.05-18.93 42.62-28.34 74-28.34 30.3 0 53.76 9.31 70.3 27.84 16.85 18.64 25.67 45.28 26.38 80.14h-67.19c.4-11.4-1.9-22.72-6.72-33.06-3.8-7.6-11.23-11.41-22.26-11.41-19.65 0-29.48 11.71-29.48 35.05 0 11.83 2.4 21.04 7.22 28.05A65.18 65.18 0 0 0 822.76 689l24.77 10.92c25.57 11.72 44.02 26.05 55.35 43.38 11.43 17.23 17.05 40.27 17.05 69.12 0 34.56-9.03 61.1-27.38 79.63-18.25 18.53-43.62 27.85-76 27.85Zm-225.42 0c-32.4 0-57.16-9.42-74.51-28.35-17.15-19.03-26.07-46.18-26.87-81.64h69.79c.4 31.36 11.43 47.08 33.1 47.08 11.02 0 18.84-3.5 23.25-10.42 4.52-6.9 6.72-17.93 6.72-33.05 0-12.02-2.9-22.04-8.72-29.95a73.2 73.2 0 0 0-29.48-21.14L558.53 750c-23.07-11.02-39.81-24.04-50.14-39.27-10.03-15.13-15.04-36.36-15.04-63.5 0-30.36 8.82-55 26.37-73.94 18.05-18.93 42.62-28.34 74-28.34 30.29 0 53.75 9.31 70.2 27.84 17.05 18.64 25.77 45.28 26.47 80.14h-67.18c.4-11.4-1.9-22.72-6.72-33.06-3.81-7.6-11.23-11.41-22.26-11.41-19.66 0-29.49 11.71-29.49 35.05 0 11.83 2.41 21.04 7.22 28.05A65.18 65.18 0 0 0 597.33 689l24.77 10.92c25.57 11.72 44.02 26.05 55.36 43.38 11.33 17.23 17.04 40.27 17.04 69.12 0 34.56-9.12 61.1-27.37 79.63-18.25 18.53-43.62 27.85-76.01 27.85Zm-234.75 0c-31.7 0-56.86-8.62-75.51-25.85-18.65-17.12-27.88-42.87-27.88-76.93V648.83c0-33.85 9.83-59.5 29.48-77.13 19.96-17.43 46.13-26.24 78.52-26.24 31.39 0 56.15 9.01 74.5 26.84 18.56 17.93 27.88 44.58 27.88 80.14v13.32h-73.9v-12.92c0-13.72-3.01-23.84-8.83-30.45a26.46 26.46 0 0 0-21.66-10.32c-12.03 0-20.55 4.1-25.37 12.42a79.04 79.04 0 0 0-6.72 36.66v146.26c0 30.55 10.74 46.08 32.1 46.38 10.02 0 17.54-3.61 22.76-10.82a51.74 51.74 0 0 0 7.72-30.46V801.6h73.9v11.42c0 23.74-4.61 43.57-13.94 59.4a88.8 88.8 0 0 1-38.2 35.66 121.46 121.46 0 0 1-54.85 11.82Z"
@@ -22,10 +19,7 @@ export const CSSIcon = (props: SVGProps<SVGSVGElement>) => (
 export const ReactIcon = (props: SVGProps<SVGSVGElement>) => (
     <svg width="1em" height="1em" viewBox="0 0 569 512" {...props}>
         <g fill="none" fillRule="evenodd">
-            <g
-                transform="translate(-227, -256)"
-                fill="#58C4DC"
-                fillRule="nonzero">
+            <g transform="translate(-227, -256)" fill="#58C4DC" fillRule="nonzero">
                 <g transform="translate(227, 256)">
                     <path
                         d="M285.5,201 C255.400481,201 231,225.400481 231,255.5 C231,285.599519 255.400481,310 285.5,310 C315.599519,310 340,285.599519 340,255.5 C340,225.400481 315.599519,201 285.5,201"
@@ -42,12 +36,7 @@ export const ReactIcon = (props: SVGProps<SVGSVGElement>) => (
 );
 
 export const TSIcon = (props: SVGProps<SVGSVGElement>) => (
-    <svg
-        viewBox="0 0 256 256"
-        width="1em"
-        height="1em"
-        preserveAspectRatio="xMidYMid"
-        {...props}>
+    <svg viewBox="0 0 256 256" width="1em" height="1em" preserveAspectRatio="xMidYMid" {...props}>
         <path
             d="M20 0h216c11.046 0 20 8.954 20 20v216c0 11.046-8.954 20-20 20H20c-11.046 0-20-8.954-20-20V20C0 8.954 8.954 0 20 0Z"
             fill="#3178C6"
@@ -74,14 +63,8 @@ export const HTML5Icon = (props: SVGProps<SVGSVGElement>) => (
     <svg viewBox="0 0 452 520" width="1em" height="1em" {...props}>
         <path fill="#e34f26" d="M41 460L0 0h451l-41 460-185 52" />
         <path fill="#ef652a" d="M226 472l149-41 35-394H226" />
-        <path
-            fill="#ecedee"
-            d="M226 208h-75l-5-58h80V94H84l15 171h127zm0 147l-64-17-4-45h-56l7 89 117 32z"
-        />
-        <path
-            fill="#fff"
-            d="M226 265h69l-7 73-62 17v59l115-32 16-174H226zm0-171v56h136l5-56z"
-        />
+        <path fill="#ecedee" d="M226 208h-75l-5-58h80V94H84l15 171h127zm0 147l-64-17-4-45h-56l7 89 117 32z" />
+        <path fill="#fff" d="M226 265h69l-7 73-62 17v59l115-32 16-174H226zm0-171v56h136l5-56z" />
     </svg>
 );
 
@@ -96,23 +79,11 @@ export const PythonIcon = (props: SVGProps<SVGSVGElement>) => (
             d="M32.115 47.833c8.124 0 7.617-3.523 7.617-3.523l-.01-3.65H31.97v-1.095h10.832S48 40.155 48 31.958c0-8.197-4.537-7.906-4.537-7.906h-2.708v3.803s.146 4.537-4.465 4.537h-7.688s-4.32-.07-4.32 4.175v7.019s-.656 4.247 7.833 4.247zm4.275-2.454a1.393 1.393 0 0 1-1.395-1.395 1.394 1.394 0 1 1 1.395 1.395z"
         />
         <defs>
-            <linearGradient
-                id="a"
-                x1={19.075}
-                x2={34.898}
-                y1={18.782}
-                y2={34.658}
-                gradientUnits="userSpaceOnUse">
+            <linearGradient id="a" x1={19.075} x2={34.898} y1={18.782} y2={34.658} gradientUnits="userSpaceOnUse">
                 <stop stopColor="#387EB8" />
                 <stop offset={1} stopColor="#366994" />
             </linearGradient>
-            <linearGradient
-                id="b"
-                x1={28.809}
-                x2={45.803}
-                y1={28.882}
-                y2={45.163}
-                gradientUnits="userSpaceOnUse">
+            <linearGradient id="b" x1={28.809} x2={45.803} y1={28.882} y2={45.163} gradientUnits="userSpaceOnUse">
                 <stop stopColor="#FFE052" />
                 <stop offset={1} stopColor="#FFC331" />
             </linearGradient>
@@ -121,32 +92,18 @@ export const PythonIcon = (props: SVGProps<SVGSVGElement>) => (
 );
 
 export const JavaIcon = (props: SVGProps<SVGSVGElement>) => (
-    <svg
-        preserveAspectRatio="xMidYMid"
-        viewBox="0 0 256 346"
-        width="1em"
-        height="1em"
-        {...props}>
+    <svg preserveAspectRatio="xMidYMid" viewBox="0 0 256 346" width="1em" height="1em" {...props}>
         <path
             d="M83 267s-14 8 9 11c27 3 41 2 71-3 0 0 8 5 19 9-67 29-153-2-99-17M74 230s-15 11 8 13c29 3 52 3 92-4 0 0 6 5 15 8-82 24-173 2-115-17"
             fill="#5382A1"
         />
-        <path
-            d="M144 166c17 19-4 36-4 36s42-22 22-49c-18-26-32-38 44-82 0 0-119 29-62 95"
-            fill="#E76F00"
-        />
+        <path d="M144 166c17 19-4 36-4 36s42-22 22-49c-18-26-32-38 44-82 0 0-119 29-62 95" fill="#E76F00" />
         <path
             d="M233 295s10 8-10 15c-39 12-163 15-197 0-12-5 11-13 18-14l12-2c-14-9-89 19-38 28 138 22 251-10 215-27M89 190s-63 15-22 21c17 2 51 2 83-1 26-2 52-7 52-7l-16 9c-64 16-187 8-151-9 30-14 54-13 54-13M202 253c64-33 34-66 13-61l-7 2s2-3 6-5c41-14 73 43-14 66l2-2"
             fill="#5382A1"
         />
-        <path
-            d="M162 0s36 36-34 91c-56 45-12 70 0 99-32-30-56-56-40-80 23-35 89-53 74-110"
-            fill="#E76F00"
-        />
-        <path
-            d="M95 345c62 4 158-3 160-32 0 0-4 11-51 20-53 10-119 9-158 2 0 0 8 7 49 10"
-            fill="#5382A1"
-        />
+        <path d="M162 0s36 36-34 91c-56 45-12 70 0 99-32-30-56-56-40-80 23-35 89-53 74-110" fill="#E76F00" />
+        <path d="M95 345c62 4 158-3 160-32 0 0-4 11-51 20-53 10-119 9-158 2 0 0 8 7 49 10" fill="#5382A1" />
     </svg>
 );
 
@@ -179,12 +136,7 @@ export const CIcon = (props: SVGProps<SVGSVGElement>) => (
 );
 
 export const CPPIcon = (props: SVGProps<SVGSVGElement>) => (
-    <svg
-        width="1em"
-        height="1em"
-        preserveAspectRatio="xMidYMid"
-        viewBox="0 0 256 288"
-        {...props}>
+    <svg width="1em" height="1em" preserveAspectRatio="xMidYMid" viewBox="0 0 256 288" {...props}>
         <path
             fill="#649AD2"
             d="M255.987 84.59c-.002-4.837-1.037-9.112-3.13-12.781-2.054-3.608-5.133-6.632-9.261-9.023-34.08-19.651-68.195-39.242-102.264-58.913-9.185-5.303-18.09-5.11-27.208.27-13.565 8-81.48 46.91-101.719 58.632C4.071 67.6.015 74.984.013 84.58 0 124.101.013 163.62 0 203.141c0 4.73.993 8.923 2.993 12.537 2.056 3.717 5.177 6.824 9.401 9.269 20.24 11.722 88.164 50.63 101.726 58.631 9.121 5.382 18.027 5.575 27.215.27 34.07-19.672 68.186-39.262 102.272-58.913 4.224-2.444 7.345-5.553 9.401-9.267 1.997-3.614 2.992-7.806 2.992-12.539 0 0 0-79.018-.013-118.539"
@@ -209,12 +161,7 @@ export const CPPIcon = (props: SVGProps<SVGSVGElement>) => (
 );
 
 export const CSharpIcon = (props: SVGProps<SVGSVGElement>) => (
-    <svg
-        width="1em"
-        height="1em"
-        preserveAspectRatio="xMidYMid"
-        viewBox="0 -1.43 255.58 290.11"
-        {...props}>
+    <svg width="1em" height="1em" preserveAspectRatio="xMidYMid" viewBox="0 -1.43 255.58 290.11" {...props}>
         <path
             fill="#a179dc"
             d="M255.57 84.45c0-4.83-1.04-9.1-3.13-12.76a24.4 24.4 0 0 0-9.24-9C209.17 43.05 175.1 23.5 141.1 3.86c-9.17-5.3-18.06-5.1-27.16.27-13.54 7.98-81.35 46.83-101.55 58.53C4.06 67.5.02 74.87 0 84.44v118.37c0 4.72 1 8.9 2.99 12.51 2.05 3.72 5.17 6.82 9.38 9.26 20.21 11.7 88.02 50.55 101.56 58.53 9.11 5.38 18 5.57 27.17.27 34.02-19.64 68.08-39.2 102.1-58.81a24.33 24.33 0 0 0 9.4-9.25c1.99-3.61 2.98-7.8 2.98-12.52l-.01-118.35"
@@ -235,12 +182,7 @@ export const CSharpIcon = (props: SVGProps<SVGSVGElement>) => (
 );
 
 export const RubyIcon = (props: SVGProps<SVGSVGElement>) => (
-    <svg
-        preserveAspectRatio="xMidYMid"
-        viewBox="0 0 256 255"
-        width="1em"
-        height="1em"
-        {...props}>
+    <svg preserveAspectRatio="xMidYMid" viewBox="0 0 256 255" width="1em" height="1em" {...props}>
         <defs>
             <linearGradient x1="84.8%" y1="111.4%" x2="58.3%" y2="64.6%" id="a">
                 <stop stopColor="#FB7655" offset="0%" />
@@ -299,12 +241,7 @@ export const RubyIcon = (props: SVGProps<SVGSVGElement>) => (
                 <stop stopColor="#BF190B" offset="99%" />
                 <stop stopColor="#BF190B" offset="100%" />
             </linearGradient>
-            <linearGradient
-                x1="-20.7%"
-                y1="122.3%"
-                x2="104.2%"
-                y2="-6.3%"
-                id="i">
+            <linearGradient x1="-20.7%" y1="122.3%" x2="104.2%" y2="-6.3%" id="i">
                 <stop stopColor="#BD0012" offset="0%" />
                 <stop stopColor="#BD0012" offset="0%" />
                 <stop stopColor="#FFF" offset="7%" />
@@ -349,35 +286,20 @@ export const RubyIcon = (props: SVGProps<SVGSVGElement>) => (
                 <stop stopColor="#791C12" offset="99%" />
                 <stop stopColor="#791C12" offset="100%" />
             </linearGradient>
-            <radialGradient
-                cx="32%"
-                cy="40.2%"
-                fx="32%"
-                fy="40.2%"
-                r="69.6%"
-                id="m">
+            <radialGradient cx="32%" cy="40.2%" fx="32%" fy="40.2%" r="69.6%" id="m">
                 <stop stopColor="#A80D00" offset="0%" />
                 <stop stopColor="#A80D00" offset="0%" />
                 <stop stopColor="#7E0E08" offset="99%" />
                 <stop stopColor="#7E0E08" offset="100%" />
             </radialGradient>
-            <radialGradient
-                cx="13.5%"
-                cy="40.9%"
-                fx="13.5%"
-                fy="40.9%"
-                r="88.4%"
-                id="n">
+            <radialGradient cx="13.5%" cy="40.9%" fx="13.5%" fy="40.9%" r="88.4%" id="n">
                 <stop stopColor="#A30C00" offset="0%" />
                 <stop stopColor="#A30C00" offset="0%" />
                 <stop stopColor="#800E08" offset="99%" />
                 <stop stopColor="#800E08" offset="100%" />
             </radialGradient>
         </defs>
-        <path
-            d="M197.5 167.8 51.9 254.2l188.5-12.8 14.5-190-57.4 116.4Z"
-            fill="url(#a)"
-        />
+        <path d="M197.5 167.8 51.9 254.2l188.5-12.8 14.5-190-57.4 116.4Z" fill="url(#a)" />
         <path d="m240.7 241.3-16.2-111.8-44.1 58.2 60.3 53.6Z" fill="url(#b)" />
         <path d="m240.9 241.3-118.7-9.4-69.6 22 188.3-12.6Z" fill="url(#c)" />
         <path d="m52.7 254 29.7-97.1-65.2 13.9L52.7 254Z" fill="url(#d)" />
@@ -393,38 +315,14 @@ export const RubyIcon = (props: SVGProps<SVGSVGElement>) => (
             d="M54.4 54c37.9-37.4 86.7-59.6 105.4-40.7 18.8 18.9-1 64.8-39 102.3-37.8 37.5-86 61-104.7 42-18.8-18.8.5-66 38.3-103.5Z"
             fill="url(#i)"
         />
-        <path
-            d="m52.7 254 29.5-97.5 97.6 31.4c-35.3 33.1-74.6 61-127 66Z"
-            fill="url(#j)"
-        />
-        <path
-            d="m155 88.6 25.2 99.3c29.5-31 56-64.3 68.9-105.6l-94 6.3Z"
-            fill="url(#k)"
-        />
-        <path
-            d="M248.8 82.8c10-30.2 12.4-73.7-35-81.8l-38.7 21.5 73.7 60.3Z"
-            fill="url(#l)"
-        />
-        <path
-            d="M0 203c1.4 50 37.4 50.7 52.8 51.1l-35.5-82.9L0 203Z"
-            fill="#9E1209"
-        />
-        <path
-            d="m155.2 88.8 69.3 42.4c1.4.8 19.7-30.8 23.8-48.6l-93 6.2Z"
-            fill="url(#m)"
-        />
-        <path
-            d="m82.1 156.5 39.3 75.9c23.3-12.7 41.5-28 58.1-44.5l-97.4-31.4Z"
-            fill="url(#n)"
-        />
-        <path
-            d="m17.2 171.3-5.6 66.4c10.5 14.3 25 15.6 40.1 14.5-11-27.4-32.9-82-34.5-80.9Z"
-            fill="url(#o)"
-        />
-        <path
-            d="m174.8 22.7 78.1 11C248.8 16 236 4.5 214.1 1l-39.3 21.7Z"
-            fill="url(#p)"
-        />
+        <path d="m52.7 254 29.5-97.5 97.6 31.4c-35.3 33.1-74.6 61-127 66Z" fill="url(#j)" />
+        <path d="m155 88.6 25.2 99.3c29.5-31 56-64.3 68.9-105.6l-94 6.3Z" fill="url(#k)" />
+        <path d="M248.8 82.8c10-30.2 12.4-73.7-35-81.8l-38.7 21.5 73.7 60.3Z" fill="url(#l)" />
+        <path d="M0 203c1.4 50 37.4 50.7 52.8 51.1l-35.5-82.9L0 203Z" fill="#9E1209" />
+        <path d="m155.2 88.8 69.3 42.4c1.4.8 19.7-30.8 23.8-48.6l-93 6.2Z" fill="url(#m)" />
+        <path d="m82.1 156.5 39.3 75.9c23.3-12.7 41.5-28 58.1-44.5l-97.4-31.4Z" fill="url(#n)" />
+        <path d="m17.2 171.3-5.6 66.4c10.5 14.3 25 15.6 40.1 14.5-11-27.4-32.9-82-34.5-80.9Z" fill="url(#o)" />
+        <path d="m174.8 22.7 78.1 11C248.8 16 236 4.5 214.1 1l-39.3 21.7Z" fill="url(#p)" />
     </svg>
 );
 
@@ -438,12 +336,7 @@ export const PHPIcon = (props: SVGProps<SVGSVGElement>) => (
 );
 
 export const SwiftIcon = (props: SVGProps<SVGSVGElement>) => (
-    <svg
-        preserveAspectRatio="xMidYMid"
-        viewBox="0 0 256 256"
-        width="1em"
-        height="1em"
-        {...props}>
+    <svg preserveAspectRatio="xMidYMid" viewBox="0 0 256 256" width="1em" height="1em" {...props}>
         <linearGradient
             id="a"
             gradientUnits="userSpaceOnUse"
@@ -469,13 +362,7 @@ export const SwiftIcon = (props: SVGProps<SVGSVGElement>) => (
             fill="url(#a)"
             d="M56.9 0h141.8a56.5 56.5 0 0 1 57.4 59.1V197.4a56.6 56.6 0 0 1-57.5 58.6l-144.2-.1a57 57 0 0 1-54-56.8V56.9A56.8 56.8 0 0 1 53.7.2c1-.2 2.1-.2 3.2-.2z"
         />
-        <linearGradient
-            id="b"
-            gradientUnits="userSpaceOnUse"
-            x1={130.6}
-            y1={4.1}
-            x2={95.2}
-            y2={204.9}>
+        <linearGradient id="b" gradientUnits="userSpaceOnUse" x1={130.6} y1={4.1} x2={95.2} y2={204.9}>
             <stop
                 offset={0}
                 style={{
@@ -501,19 +388,9 @@ export const SwiftIcon = (props: SVGProps<SVGSVGElement>) => (
 );
 
 export const KotlinIcon = (props: SVGProps<SVGSVGElement>) => (
-    <svg
-        viewBox="0 0 256 256"
-        width="1em"
-        height="1em"
-        preserveAspectRatio="xMidYMid"
-        {...props}>
+    <svg viewBox="0 0 256 256" width="1em" height="1em" preserveAspectRatio="xMidYMid" {...props}>
         <defs>
-            <linearGradient
-                x1="99.991%"
-                y1="-.011%"
-                x2=".01%"
-                y2="100.01%"
-                id="a">
+            <linearGradient x1="99.991%" y1="-.011%" x2=".01%" y2="100.01%" id="a">
                 <stop stopColor="#E44857" offset=".344%" />
                 <stop stopColor="#C711E1" offset="46.89%" />
                 <stop stopColor="#7F52FF" offset="100%" />
@@ -541,12 +418,7 @@ export const GoIcon = (props: SVGProps<SVGSVGElement>) => (
 );
 
 export const DartIcon = (props: SVGProps<SVGSVGElement>) => (
-    <svg
-        viewBox="0 0 256 256"
-        width="1em"
-        height="1em"
-        preserveAspectRatio="xMidYMid"
-        {...props}>
+    <svg viewBox="0 0 256 256" width="1em" height="1em" preserveAspectRatio="xMidYMid" {...props}>
         <defs>
             <radialGradient
                 id="a"
@@ -581,11 +453,7 @@ export const DartIcon = (props: SVGProps<SVGSVGElement>) => (
             d="M53.903 205.466c-6.738-6.756-8.413-13.419-8.413-25.257V45.47l-1.675-1.675v136.413c-.02 11.838-.02 15.113 10.088 25.257l5.044 5.044-5.044-5.044Z"
             opacity={0.2}
         />
-        <path
-            fill="#263238"
-            d="M254.325 104.418v104.417h-45.471l1.675 1.694H256V106.093z"
-            opacity={0.2}
-        />
+        <path fill="#263238" d="M254.325 104.418v104.417h-45.471l1.675 1.694H256V106.093z" opacity={0.2} />
         <path
             fill="#FFF"
             d="M202.116 52.209c-8.356-8.357-15.188-8.413-25.257-8.413H43.815l1.675 1.675h131.369c5.025 0 17.71-.847 25.257 6.738Z"
@@ -634,10 +502,7 @@ export const LuaIcon = (props: SVGProps<SVGSVGElement>) => (
                 d="M941.5,111.5c0-58.5-47.5-106-106-106s-106,47.5-106,106c0,58.5,47.5,106,106,106S941.5,170.1,941.5,111.5"
             />
             <g>
-                <path
-                    fill="#FFFFFF"
-                    d="M258.1,627.8h117.3v26.7H227.8V417h30.3V627.8z"
-                />
+                <path fill="#FFFFFF" d="M258.1,627.8h117.3v26.7H227.8V417h30.3V627.8z" />
                 <path
                     fill="#FFFFFF"
                     d="M515.5,654.5v-23.8c-16,22.5-31.9,31.3-57,31.3c-33.2,0-54.4-18.2-54.4-46.6V483.8h27v120.9    c0,20.5,13.7,33.6,35.2,33.6c28.3,0,46.6-22.8,46.6-57.7v-96.8h27v170.7H515.5z"
@@ -660,12 +525,7 @@ export const LuaIcon = (props: SVGProps<SVGSVGElement>) => (
 );
 
 export const ScalaIcon = (props: SVGProps<SVGSVGElement>) => (
-    <svg
-        preserveAspectRatio="xMidYMid"
-        viewBox="0 0 256 416"
-        width="1em"
-        height="1em"
-        {...props}>
+    <svg preserveAspectRatio="xMidYMid" viewBox="0 0 256 416" width="1em" height="1em" {...props}>
         <defs>
             <linearGradient x1="0%" y1="50%" x2="100%" y2="50%" id="a">
                 <stop stopColor="#4F4F4F" offset="0%" />
@@ -691,11 +551,7 @@ export const ScalaIcon = (props: SVGProps<SVGSVGElement>) => (
             fill="url(#b)"
             transform="matrix(1 0 0 -1 0 416)"
         />
-        <path
-            d="M0 96V0c0 8 256 24 256 64v96c0-40-256-56-256-64"
-            fill="url(#b)"
-            transform="matrix(1 0 0 -1 0 160)"
-        />
+        <path d="M0 96V0c0 8 256 24 256 64v96c0-40-256-56-256-64" fill="url(#b)" transform="matrix(1 0 0 -1 0 160)" />
         <path
             d="M0 352v-96c0 8 256 24 256 64v96c0-40-256-56-256-64"
             fill="url(#b)"

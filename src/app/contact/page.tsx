@@ -1,17 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import {
-    Mail,
-    Phone,
-    MessageSquare,
-    MapPin,
-    ArrowRight,
-    Github,
-    Linkedin,
-    Twitter,
-    Instagram,
-} from 'lucide-react';
+import { Mail, Phone, MessageSquare, MapPin, ArrowRight, Github, Linkedin, Twitter, Instagram } from 'lucide-react';
 import { Logo, NameLogo } from '../components/Logo';
 import { FloatingHomeButton } from '../components/FloatingHomeButton';
 import styles from '../home.module.css';
@@ -40,8 +30,7 @@ export default function Contact() {
                                     Contáctanos
                                 </h2>
                                 <p className="mb-10 text-md md:text-xl lg:text-2xl text-neutral-200 max-w-3xl mx-auto drop-shadow-md">
-                                    ¿Tienes alguna pregunta o sugerencia? No
-                                    dudes en ponerte en contacto con nosotros.
+                                    ¿Tienes alguna pregunta o sugerencia? No dudes en ponerte en contacto con nosotros.
                                 </p>
                             </div>
                         </div>
@@ -57,12 +46,8 @@ export default function Contact() {
                                         <div className="p-4 bg-gradient-to-br from-primary to-secondary rounded-full mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
                                             <Mail className="w-8 h-8 text-white" />
                                         </div>
-                                        <h3 className="card-title text-xl font-semibold text-white mb-4">
-                                            Email
-                                        </h3>
-                                        <p className="text-neutral-400 mb-4">
-                                            Para consultas generales
-                                        </p>
+                                        <h3 className="card-title text-xl font-semibold text-white mb-4">Email</h3>
+                                        <p className="text-neutral-400 mb-4">Para consultas generales</p>
                                         <a
                                             href="mailto:alejandro.ga.dev@gmail.com"
                                             className="btn btn-outline btn-primary rounded-full hover:text-white w-full sm:w-auto">
@@ -127,9 +112,7 @@ export default function Contact() {
                                         <h3 className="card-title text-xl font-semibold text-white mb-4">
                                             Soporte Técnico
                                         </h3>
-                                        <p className="text-neutral-400 mb-4">
-                                            Para problemas técnicos
-                                        </p>
+                                        <p className="text-neutral-400 mb-4">Para problemas técnicos</p>
                                         <a
                                             href="mailto:support@devbraineer.com"
                                             className="btn btn-outline btn-info rounded-full hover:text-white w-full sm:w-auto">
@@ -146,21 +129,16 @@ export default function Contact() {
                     <section className="py-20 md:py-32 bg-gradient-to-b from-[#0c1322] via-[#0A0F1A] to-black">
                         <div className="container mx-auto px-4">
                             <div className="text-center mb-16">
-                                <h2 className="text-4xl font-bold text-white mb-6">
-                                    Envíanos un mensaje
-                                </h2>
+                                <h2 className="text-4xl font-bold text-white mb-6">Envíanos un mensaje</h2>
                                 <p className="text-xl text-neutral-300 max-w-3xl mx-auto">
-                                    ¿Tienes alguna pregunta o sugerencia? No
-                                    dudes en ponerte en contacto con nosotros.
+                                    ¿Tienes alguna pregunta o sugerencia? No dudes en ponerte en contacto con nosotros.
                                 </p>
                             </div>
                             <div className="max-w-2xl mx-auto">
                                 <form className="space-y-6">
                                     <div>
                                         <label className="label">
-                                            <span className="label-text text-neutral-300">
-                                                Nombre
-                                            </span>
+                                            <span className="label-text text-neutral-300">Nombre</span>
                                         </label>
                                         <input
                                             type="text"
@@ -170,9 +148,7 @@ export default function Contact() {
                                     </div>
                                     <div>
                                         <label className="label">
-                                            <span className="label-text text-neutral-300">
-                                                Email
-                                            </span>
+                                            <span className="label-text text-neutral-300">Email</span>
                                         </label>
                                         <input
                                             type="email"
@@ -182,9 +158,7 @@ export default function Contact() {
                                     </div>
                                     <div>
                                         <label className="label">
-                                            <span className="label-text text-neutral-300">
-                                                Mensaje
-                                            </span>
+                                            <span className="label-text text-neutral-300">Mensaje</span>
                                         </label>
                                         <textarea
                                             placeholder="Escribe tu mensaje..."

@@ -1,11 +1,4 @@
-import {
-    Calculator,
-    RotateCcw,
-    Bolt,
-    Omega,
-    CircleX,
-    CircleCheck,
-} from 'lucide-react';
+import { Calculator, RotateCcw, Bolt, Omega, CircleX, CircleCheck } from 'lucide-react';
 import { useState } from 'react';
 import { BlockMath } from 'react-katex';
 import SectionCalculator from './SectionCalculator';
@@ -16,8 +9,7 @@ export default function VoltageDivider() {
     const [r1, setR1] = useState('');
     const [r2, setR2] = useState('');
     const [outputVoltage, setOutputVoltage] = useState<string | null>(null);
-    const [voltageDividerCalculations, setVoltageDividerCalculations] =
-        useState<string[]>([]); // Nuevo estado para los cálculos detallados
+    const [voltageDividerCalculations, setVoltageDividerCalculations] = useState<string[]>([]); // Nuevo estado para los cálculos detallados
 
     // Función para calcular divisor de voltaje
     const calculateVoltageDivider = () => {
@@ -34,16 +26,12 @@ export default function VoltageDivider() {
                 return;
             }
             if (resistor1 < 0 || resistor2 < 0 || vin < 0) {
-                setOutputVoltage(
-                    '¡Error! Los valores de voltaje y resistencias deben ser positivos.'
-                );
+                setOutputVoltage('¡Error! Los valores de voltaje y resistencias deben ser positivos.');
                 setVoltageDividerCalculations([]);
                 return;
             }
             if (resistor1 + resistor2 === 0) {
-                setOutputVoltage(
-                    '¡Atención! La suma de R1 y R2 no puede ser cero.'
-                );
+                setOutputVoltage('¡Atención! La suma de R1 y R2 no puede ser cero.');
                 setVoltageDividerCalculations([]);
                 return;
             }
@@ -51,9 +39,7 @@ export default function VoltageDivider() {
             const vout = vin * (resistor2 / (resistor1 + resistor2));
 
             // Añadir pasos al array de cálculos
-            calculations.push(
-                `V_{\\text{out}} = V_{\\text{in}} \\times \\frac{R_2}{R_1 + R_2}`
-            );
+            calculations.push(`V_{\\text{out}} = V_{\\text{in}} \\times \\frac{R_2}{R_1 + R_2}`);
             calculations.push(
                 `V_{\\text{out}} = ${vin.toFixed(2)} V \\times \\frac{${resistor2.toFixed(2)} \\Omega}{${resistor1.toFixed(2)} \\Omega + ${resistor2.toFixed(2)} \\Omega}`
             );
@@ -65,9 +51,7 @@ export default function VoltageDivider() {
             setOutputVoltage(`Voltaje de salida: ${vout.toFixed(2)} V`);
             setVoltageDividerCalculations(calculations); // Actualizar el estado con los cálculos
         } catch (error) {
-            setOutputVoltage(
-                '¡Vaya! Hubo un error en el cálculo. Asegúrate de que los valores sean válidos.'
-            );
+            setOutputVoltage('¡Vaya! Hubo un error en el cálculo. Asegúrate de que los valores sean válidos.');
             setVoltageDividerCalculations([]);
         }
     };
@@ -107,9 +91,7 @@ export default function VoltageDivider() {
                                     placeholder="Vin en voltios"
                                     className="grow text-base placeholder:text-base-content/60"
                                     value={inputVoltage}
-                                    onChange={(e) =>
-                                        setInputVoltage(e.target.value)
-                                    }
+                                    onChange={(e) => setInputVoltage(e.target.value)}
                                 />
                                 <div className="badge badge-md badge-soft badge-accent rounded-sm min-w-[2.5rem]">
                                     V
@@ -193,19 +175,12 @@ export default function VoltageDivider() {
 
                         {/* Sección de Cálculo Detallado (replicando OhmCalculator) */}
                         <div className="pt-5 border-t border-base-content/20 z-10 flex-grow flex flex-col justify-end">
-                            <h3 className="text-xl font-extrabold text-accent text-center mb-3">
-                                Cálculo Detallado
-                            </h3>
+                            <h3 className="text-xl font-extrabold text-accent text-center mb-3">Cálculo Detallado</h3>
                             {voltageDividerCalculations.length > 0 ? (
                                 <div className="p-3 space-y-2 bg-base-200 rounded-lg shadow-inner border border-base-content/15 overflow-y-auto custom-scrollbar flex-grow">
-                                    {voltageDividerCalculations.map(
-                                        (calc, index) => (
-                                            <BlockMath
-                                                key={index}
-                                                math={calc}
-                                            />
-                                        )
-                                    )}
+                                    {voltageDividerCalculations.map((calc, index) => (
+                                        <BlockMath key={index} math={calc} />
+                                    ))}
                                 </div>
                             ) : (
                                 <div className="flex-grow flex items-center justify-center">
@@ -227,9 +202,7 @@ export default function VoltageDivider() {
                                     ) : (
                                         <CircleCheck className="h-6 w-6" />
                                     )}
-                                    <span className="font-bold text-lg">
-                                        {outputVoltage}
-                                    </span>
+                                    <span className="font-bold text-lg">{outputVoltage}</span>
                                 </div>
                             )}
                         </div>

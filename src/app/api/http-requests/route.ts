@@ -1,8 +1,5 @@
 import prisma from '@/lib/db';
-import {
-    SuccessCreate,
-    SuccessResponse,
-} from '../_services/successfulResponses';
+import { SuccessCreate, SuccessResponse } from '../_services/successfulResponses';
 import { NotAuthorizedError, ServerError } from '../_services/errors';
 import { auth } from '@clerk/nextjs/server';
 

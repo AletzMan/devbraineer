@@ -1,15 +1,8 @@
 import { auth } from '@clerk/nextjs/server';
 import prisma from '@/lib/db';
 import { Link } from '@prisma/client';
-import {
-    SuccessCreate,
-    SuccessResponse,
-} from '../_services/successfulResponses';
-import {
-    NotAuthorizedError,
-    ServerError,
-    UnprocessableEntityError,
-} from '../_services/errors';
+import { SuccessCreate, SuccessResponse } from '../_services/successfulResponses';
+import { NotAuthorizedError, ServerError, UnprocessableEntityError } from '../_services/errors';
 import { createLinkSchema } from '@/lib/schemas/link';
 import { ZodError } from 'zod';
 
@@ -54,8 +47,7 @@ export async function POST(req: Request) {
 
     try {
         // Obtiene los datos del link del cuerpo de la solicitud.
-        const { url, title, description, category, thumbnailUrl, tags } =
-            await req.json();
+        const { url, title, description, category, thumbnailUrl, tags } = await req.json();
 
         const validatedData = createLinkSchema.parse({
             url,

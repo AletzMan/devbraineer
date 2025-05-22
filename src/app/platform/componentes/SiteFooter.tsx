@@ -3,10 +3,7 @@ import { Github, LinkIcon } from 'lucide-react';
 export const SiteFooter = () => {
     return (
         <footer className="mt-8 border-t border-base-300 pt-4 text-sm text-center text-gray-500 space-y-2">
-            <div>
-                © {new Date().getFullYear()} DevBraineer&nbsp;·&nbsp;
-                Construye, prueba y aprende con confianza.
-            </div>
+            <div>© {new Date().getFullYear()} DevBraineer&nbsp;·&nbsp; Construye, prueba y aprende con confianza.</div>
             <div className="flex justify-center gap-4 text-gray-400">
                 <a
                     href="https://github.com/AletzMan/devbraineer"

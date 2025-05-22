@@ -20,11 +20,7 @@ export function Sidebar() {
             {
                 <nav className="sticky top-4">
                     {menuData.map((item) => (
-                        <MenuItem
-                            key={item.label}
-                            item={item}
-                            currentPath={path}
-                        />
+                        <MenuItem key={item.label} item={item} currentPath={path} />
                     ))}
                 </nav>
             }

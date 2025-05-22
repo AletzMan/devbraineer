@@ -23,10 +23,7 @@ export const FormattedDate = (date: string) => {
     const birthday = new Date(date).getTime();
     const currentTime = new Date().getTime();
     const age = currentTime - birthday;
-    const formatted = new Date(`${year}-${month}-${day}`).toLocaleDateString(
-        'es-MX',
-        SmallDateLocal
-    );
+    const formatted = new Date(`${year}-${month}-${day}`).toLocaleDateString('es-MX', SmallDateLocal);
     return `${formatted} `;
 };
 

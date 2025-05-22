@@ -24,20 +24,12 @@ export default function CircuitCalculatorPage() {
                             id="calculator-select"
                             className="select select-bordered w-full "
                             value={activeCalculator}
-                            onChange={(e) =>
-                                setActiveCalculator(e.target.value)
-                            }>
+                            onChange={(e) => setActiveCalculator(e.target.value)}>
                             <option value="ohm">Ley de Ohm</option>
-                            <option value="seriesParallel">
-                                Resistencia Total (Serie/Paralelo)
-                            </option>
-                            <option value="voltageDivider">
-                                Divisor de Voltaje
-                            </option>
+                            <option value="seriesParallel">Resistencia Total (Serie/Paralelo)</option>
+                            <option value="voltageDivider">Divisor de Voltaje</option>
                             <option value="reactance">Reactancia</option>
-                            <option value="rcTimeConstant">
-                                Constante de Tiempo RC
-                            </option>
+                            <option value="rcTimeConstant">Constante de Tiempo RC</option>
                         </select>
                     </label>
                 </HeaderSection>

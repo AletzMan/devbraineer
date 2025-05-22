@@ -1,16 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import {
-    ArrowLeftRight,
-    Copy,
-    Check,
-    AlertCircle,
-    FileJson2,
-    CodeXml,
-    BrushCleaning,
-    ShieldCheck,
-} from 'lucide-react';
+import { ArrowLeftRight, Copy, Check, AlertCircle, FileJson2, CodeXml, BrushCleaning, ShieldCheck } from 'lucide-react';
 import jsonToTS from 'json-to-ts';
 import { json2xml, xml2json } from 'xml-js';
 import { Editor } from '@monaco-editor/react';
@@ -29,9 +20,7 @@ export default function ConverterPage() {
     const [activeTab, setActiveTab] = useState('json-to-object');
     const [error, setError] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
-    const [currentLanguage, setCurrentLanguage] = useState<['json' | '', 'ts']>(
-        ['json', 'ts']
-    );
+    const [currentLanguage, setCurrentLanguage] = useState<['json' | '', 'ts']>(['json', 'ts']);
 
     // Para validación con JSON Schema
     const [schemaInput, setSchemaInput] = useState('');
@@ -56,11 +45,7 @@ export default function ConverterPage() {
                     const parsedJsonToObject = JSON.parse(input);
                     const resultObject =
                         typeof parsedJsonToObject === 'object'
-                            ? `const data = ${JSON.stringify(
-                                  parsedJsonToObject,
-                                  null,
-                                  2
-                              )
+                            ? `const data = ${JSON.stringify(parsedJsonToObject, null, 2)
                                   .replace(/"([^"]+)":/g, '$1:') // Quita comillas de las claves
                                   .replace(/"/g, "'")};` // Cambia comillas dobles por simples
                             : `const data = ${JSON.stringify(parsedJsonToObject)};`;
@@ -122,19 +107,13 @@ export default function ConverterPage() {
                     try {
                         schema = JSON.parse(schemaInput);
                     } catch (e) {
-                        setError(
-                            'Error al parsear el JSON Schema: ' +
-                                (e instanceof Error ? e.message : String(e))
-                        );
+                        setError('Error al parsear el JSON Schema: ' + (e instanceof Error ? e.message : String(e)));
                         return;
                     }
                     try {
                         data = JSON.parse(input);
                     } catch (e) {
-                        setError(
-                            'Error al parsear el JSON a validar: ' +
-                                (e instanceof Error ? e.message : String(e))
-                        );
+                        setError('Error al parsear el JSON a validar: ' + (e instanceof Error ? e.message : String(e)));
                         return;
                     }
 
@@ -150,9 +129,7 @@ export default function ConverterPage() {
                             valid: false,
                             errors: validate.errors,
                         });
-                        setOutput(
-                            'JSON NO válido según el esquema. Revisa los errores abajo.'
-                        );
+                        setOutput('JSON NO válido según el esquema. Revisa los errores abajo.');
                     }
                     break;
 
@@ -161,9 +138,7 @@ export default function ConverterPage() {
                     break;
             }
         } catch (err) {
-            setError(
-                `Error al convertir: ${err instanceof Error ? err.message : String(err)}`
-            );
+            setError(`Error al convertir: ${err instanceof Error ? err.message : String(err)}`);
         }
     };
 
@@ -210,12 +185,8 @@ export default function ConverterPage() {
                         <option value="json-to-ts">JSON a TypeScript</option>
                         <option value="json-to-xml">JSON a XML</option>
                         <option value="xml-to-json">XML a JSON</option>
-                        <option value="json-to-schema">
-                            JSON a JSON Schema
-                        </option>
-                        <option value="validate-json">
-                            Validar JSON con JSON Schema
-                        </option>
+                        <option value="json-to-schema">JSON a JSON Schema</option>
+                        <option value="validate-json">Validar JSON con JSON Schema</option>
                     </select>
                 </HeaderSection>
 
@@ -231,9 +202,7 @@ export default function ConverterPage() {
                             <div className="relative border-1 border-gray-700 rounded-b-sm overflow-hidden">
                                 <Editor
                                     value={schemaInput}
-                                    onChange={(value) =>
-                                        setSchemaInput(value || '')
-                                    }
+                                    onChange={(value) => setSchemaInput(value || '')}
                                     height="calc(100svh - 255px)"
                                     defaultLanguage="json"
                                     theme="vs-dark"
@@ -288,10 +257,7 @@ export default function ConverterPage() {
                             <button
                                 className="btn btn-primary btn-sm mt-2 font-light"
                                 onClick={handleConvert}
-                                disabled={
-                                    input.trim() === '' ||
-                                    schemaInput.trim() === ''
-                                }>
+                                disabled={input.trim() === '' || schemaInput.trim() === ''}>
                                 Validar JSON
                             </button>
 
@@ -314,17 +280,13 @@ export default function ConverterPage() {
                                                 JSON NO válido. Errores:
                                             </div>
                                             <ul className="list-disc list-inside max-h-48 overflow-y-auto text-sm">
-                                                {validationResult.errors?.map(
-                                                    (err, i) => (
-                                                        <li key={i}>
-                                                            <code>
-                                                                {err.dataPath ||
-                                                                    '/'}
-                                                                : {err.message}
-                                                            </code>
-                                                        </li>
-                                                    )
-                                                )}
+                                                {validationResult.errors?.map((err, i) => (
+                                                    <li key={i}>
+                                                        <code>
+                                                            {err.dataPath || '/'}: {err.message}
+                                                        </code>
+                                                    </li>
+                                                ))}
                                             </ul>
                                         </>
                                     )}
@@ -333,13 +295,8 @@ export default function ConverterPage() {
 
                             {validationResult && (
                                 <div className="mt-4 rounded-md bg-neutral-800 p-2 overflow-auto max-h-96 border border-gray-700">
-                                    <h3 className="text-gray-300 mb-1">
-                                        Vista JSON Schema:
-                                    </h3>
-                                    <JsonView
-                                        value={JSON.parse(schemaInput)}
-                                        style={monokaiTheme}
-                                    />
+                                    <h3 className="text-gray-300 mb-1">Vista JSON Schema:</h3>
+                                    <JsonView value={JSON.parse(schemaInput)} style={monokaiTheme} />
                                 </div>
                             )}
                         </div>
@@ -353,14 +310,11 @@ export default function ConverterPage() {
                                 disabled={input.trim() === ''}>
                                 Convertir
                             </button>
-                            <button
-                                className="btn btn-secondary btn-sm font-light"
-                                onClick={handleClear}>
+                            <button className="btn btn-secondary btn-sm font-light" onClick={handleClear}>
                                 <BrushCleaning className="size-4" />
                                 Limpiar
                             </button>
-                            {(activeTab === 'json-to-xml' ||
-                                activeTab === 'xml-to-json') && (
+                            {(activeTab === 'json-to-xml' || activeTab === 'xml-to-json') && (
                                 <button
                                     className="btn btn-outline btn-info btn-sm "
                                     onClick={handleSwap}
@@ -398,9 +352,7 @@ export default function ConverterPage() {
                                 <div className="relative border-1 border-gray-700 rounded-b-sm overflow-hidden">
                                     <Editor
                                         value={input}
-                                        onChange={(value) =>
-                                            setInput(value || '')
-                                        }
+                                        onChange={(value) => setInput(value || '')}
                                         height="calc(100svh - 255px)"
                                         defaultLanguage="json"
                                         theme="vs-dark"
@@ -447,12 +399,8 @@ export default function ConverterPage() {
                                     </h2>
                                 </div>
                                 <div className="relative border-1 border-gray-700 rounded-b-sm overflow-hidden">
-                                    {activeTab === 'json-to-object' ||
-                                    activeTab === 'object-to-json' ? (
-                                        <CodeBlock
-                                            code={output}
-                                            language="typescript"
-                                            theme={themes.vsDark}>
+                                    {activeTab === 'json-to-object' || activeTab === 'object-to-json' ? (
+                                        <CodeBlock code={output} language="typescript" theme={themes.vsDark}>
                                             <div className="relative ">
                                                 <CodeBlock.Code className="bg-neutral-900 !p-6 rounded-b-sm shadow-lg border-1 border-gray-700 h-40 overflow-y-auto scrollbar-thin">
                                                     <div className="table-row">
@@ -472,8 +420,7 @@ export default function ConverterPage() {
                                             defaultLanguage={
                                                 activeTab === 'json-to-ts'
                                                     ? 'typescript'
-                                                    : activeTab ===
-                                                        'json-to-xml'
+                                                    : activeTab === 'json-to-xml'
                                                       ? 'xml'
                                                       : 'json'
                                             }
@@ -499,11 +446,7 @@ export default function ConverterPage() {
                     </>
                 )}
 
-                {error && (
-                    <div className="mt-4 text-red-500 font-semibold px-4">
-                        {error}
-                    </div>
-                )}
+                {error && <div className="mt-4 text-red-500 font-semibold px-4">{error}</div>}
 
                 {copied && (
                     <div className="fixed bottom-10 right-10 z-50 bg-green-600 rounded-md p-3 text-white text-sm">

@@ -32,11 +32,7 @@ export default function CreatePost({ type, onClose }: CreatePostProps) {
     }
 
     if (!isLoaded || !isSignedIn) {
-        return (
-            <div className="p-4 text-center text-gray-400">
-                Cargando usuario...
-            </div>
-        );
+        return <div className="p-4 text-center text-gray-400">Cargando usuario...</div>;
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -52,10 +48,7 @@ export default function CreatePost({ type, onClose }: CreatePostProps) {
             language: language || undefined,
             code_snippet: codeSnippet || undefined,
             url: url || undefined,
-            pollOptions:
-                type === PostType.Poll
-                    ? pollOptions.filter((opt) => opt.trim() !== '')
-                    : undefined,
+            pollOptions: type === PostType.Poll ? pollOptions.filter((opt) => opt.trim() !== '') : undefined,
         };
 
         try {
@@ -69,18 +62,12 @@ export default function CreatePost({ type, onClose }: CreatePostProps) {
                 router.push('/');
             } else {
                 console.error('Unexpected API response format:', response.data);
-                setError(
-                    'Failed to create post due to unexpected response format.'
-                );
+                setError('Failed to create post due to unexpected response format.');
             }
         } catch (err: any) {
             console.error('Error creating post:', err);
             if (axios.isAxiosError(err) && err.response && err.response.data) {
-                setError(
-                    err.response.data.message ||
-                        err.response.data ||
-                        'An error occurred.'
-                );
+                setError(err.response.data.message || err.response.data || 'An error occurred.');
             } else {
                 setError('Failed to create post. Please try again.');
             }
@@ -121,13 +108,9 @@ export default function CreatePost({ type, onClose }: CreatePostProps) {
                 {`  ${TypePost[PostType[type]].title}`}
             </h1>
             <div className="divider divider-neutral"></div>
-            <form
-                onSubmit={handleSubmit}
-                className="space-y-2 w-full max-h-[90svh]">
+            <form onSubmit={handleSubmit} className="space-y-2 w-full max-h-[90svh]">
                 <fieldset className="fieldset">
-                    <legend className="fieldset-legend text-start">
-                        Título
-                    </legend>
+                    <legend className="fieldset-legend text-start">Título</legend>
                     <input
                         type="text"
                         placeholder="Escribe aquí el título de tu publicación"
@@ -138,9 +121,7 @@ export default function CreatePost({ type, onClose }: CreatePostProps) {
                     />
                 </fieldset>
                 <fieldset className="fieldset">
-                    <legend className="fieldset-legend text-start">
-                        Descripción
-                    </legend>
+                    <legend className="fieldset-legend text-start">Descripción</legend>
                     <textarea
                         placeholder="Describe aquí los detalles de tu publicación"
                         className="textarea textarea-neutral w-full placeholder:italic"
@@ -153,9 +134,7 @@ export default function CreatePost({ type, onClose }: CreatePostProps) {
                 </fieldset>
                 {type === PostType.Challenge && (
                     <fieldset className="fieldset">
-                        <legend className="fieldset-legend text-start">
-                            Lenguaje
-                        </legend>
+                        <legend className="fieldset-legend text-start">Lenguaje</legend>
                         <select
                             id="language"
                             value={language}
@@ -163,10 +142,7 @@ export default function CreatePost({ type, onClose }: CreatePostProps) {
                             className={`select select-neutral w-full placeholder:italic ${language === '' ? 'italic text-white/50' : 'not-italic'}`}>
                             <option value="">Selecciona un lenguaje</option>
                             {supportedLanguages.map((lang) => (
-                                <option
-                                    key={lang}
-                                    value={lang}
-                                    className="text-white not-italic">
+                                <option key={lang} value={lang} className="text-white not-italic">
                                     {lang}
                                 </option>
                             ))}
@@ -176,9 +152,7 @@ export default function CreatePost({ type, onClose }: CreatePostProps) {
 
                 {type === PostType.Challenge && (
                     <fieldset className="fieldset">
-                        <legend className="fieldset-legend text-start">
-                            Código
-                        </legend>
+                        <legend className="fieldset-legend text-start">Código</legend>
                         <textarea
                             placeholder="Pega aquí el fragmento de código del reto"
                             className="textarea textarea-neutral  w-full placeholder:italic"
@@ -191,12 +165,9 @@ export default function CreatePost({ type, onClose }: CreatePostProps) {
                     </fieldset>
                 )}
 
-                {(type === PostType.Resource ||
-                    type === PostType.EventMeetup) && (
+                {(type === PostType.Resource || type === PostType.EventMeetup) && (
                     <fieldset className="fieldset flex gap-0 flex-col items-start ">
-                        <legend className="fieldset-legend text-start">
-                            URL
-                        </legend>
+                        <legend className="fieldset-legend text-start">URL</legend>
                         <label className="input validator w-full placeholder:italic">
                             <LinkIcon className="opacity-50" />
                             <input
@@ -210,9 +181,7 @@ export default function CreatePost({ type, onClose }: CreatePostProps) {
                                 required
                             />
                         </label>
-                        <p className="validator-hint">
-                            Debe ser una URL válida (ej: https://miweb.com)
-                        </p>
+                        <p className="validator-hint">Debe ser una URL válida (ej: https://miweb.com)</p>
                     </fieldset>
                 )}
 
@@ -225,32 +194,21 @@ export default function CreatePost({ type, onClose }: CreatePostProps) {
                             + Añadir Opción
                         </button>
                         <fieldset className="fieldset h-66 overflow-y-auto">
-                            <legend className="fieldset-legend text-start">
-                                Opciones de Encuesta (Mínimo 2)
-                            </legend>
+                            <legend className="fieldset-legend text-start">Opciones de Encuesta (Mínimo 2)</legend>
                             {pollOptions.map((option, index) => (
-                                <div
-                                    key={index}
-                                    className="flex items-center mb-3 gap-2">
+                                <div key={index} className="flex items-center mb-3 gap-2">
                                     <input
                                         placeholder={`Opción ${index + 1}`}
                                         className="input input-neutral w-full placeholder:italic"
                                         id="codeSnippet"
                                         value={option}
-                                        onChange={(e) =>
-                                            handlePollOptionChange(
-                                                index,
-                                                e.target.value
-                                            )
-                                        }
+                                        onChange={(e) => handlePollOptionChange(index, e.target.value)}
                                         required
                                     />
                                     {pollOptions.length > 2 && (
                                         <button
                                             type="button"
-                                            onClick={() =>
-                                                removePollOption(index)
-                                            }
+                                            onClick={() => removePollOption(index)}
                                             className="btn btn-square btn-error btn-soft btn-xs"
                                             aria-label={`Eliminar opción ${index + 1}`}>
                                             <XIcon />
@@ -270,13 +228,8 @@ export default function CreatePost({ type, onClose }: CreatePostProps) {
                         onClick={handleCancel}>
                         Cancelar
                     </button>
-                    <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="btn btn-primary">
-                        {isSubmitting && (
-                            <span className="loading loading-spinner"></span>
-                        )}
+                    <button type="submit" disabled={isSubmitting} className="btn btn-primary">
+                        {isSubmitting && <span className="loading loading-spinner"></span>}
                         {isSubmitting ? 'Publicando...' : 'Publicar'}
                     </button>
                 </div>

@@ -29,17 +29,14 @@ export async function saveRequestToHistory({
     statusCode?: number;
 }): Promise<RequestHistory | undefined> {
     try {
-        const res = await axios.post<RequestHistoryResponse>(
-            '/api/http-requests',
-            {
-                method,
-                url,
-                headers,
-                body,
-                response,
-                statusCode,
-            }
-        );
+        const res = await axios.post<RequestHistoryResponse>('/api/http-requests', {
+            method,
+            url,
+            headers,
+            body,
+            response,
+            statusCode,
+        });
         if (res.status === 201) {
             return res.data.data;
         }
@@ -52,8 +49,7 @@ export async function saveRequestToHistory({
 
 export async function getRequests(): Promise<RequestHistory[] | undefined> {
     try {
-        const res =
-            await axios.get<GetRequestHistoryResponse>('/api/http-requests');
+        const res = await axios.get<GetRequestHistoryResponse>('/api/http-requests');
         if (res.status === 200) {
             return res.data.response;
         }

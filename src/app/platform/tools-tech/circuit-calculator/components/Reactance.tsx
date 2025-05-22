@@ -1,12 +1,4 @@
-import {
-    Calculator,
-    RotateCcw,
-    Zap,
-    CircleX,
-    CircleCheck,
-    Waves,
-    Sigma,
-} from 'lucide-react';
+import { Calculator, RotateCcw, Zap, CircleX, CircleCheck, Waves, Sigma } from 'lucide-react';
 import { useState } from 'react';
 import { BlockMath } from 'react-katex';
 import SectionCalculator from './SectionCalculator';
@@ -17,9 +9,7 @@ export default function Reactance() {
     const [capacitance, setCapacitance] = useState('');
     const [inductance, setInductance] = useState('');
     const [reactanceResult, setReactanceResult] = useState<string | null>(null);
-    const [reactanceCalculations, setReactanceCalculations] = useState<
-        string[]
-    >([]); // Nuevo estado para los cálculos detallados
+    const [reactanceCalculations, setReactanceCalculations] = useState<string[]>([]); // Nuevo estado para los cálculos detallados
 
     // Función para calcular Reactancia
     const calculateReactance = () => {
@@ -31,9 +21,7 @@ export default function Reactance() {
             const calculations: string[] = []; // Array para almacenar los pasos
 
             if (freq === null || freq <= 0) {
-                setReactanceResult(
-                    '¡Ups! Ingresa una frecuencia válida y positiva.'
-                );
+                setReactanceResult('¡Ups! Ingresa una frecuencia válida y positiva.');
                 setReactanceCalculations([]);
                 return;
             }
@@ -88,9 +76,7 @@ export default function Reactance() {
             setReactanceResult(result.trim());
             setReactanceCalculations(calculations); // Actualizar el estado con los cálculos
         } catch (error) {
-            setReactanceResult(
-                '¡Vaya! Hubo un error en el cálculo. Asegúrate de que los valores sean válidos.'
-            );
+            setReactanceResult('¡Vaya! Hubo un error en el cálculo. Asegúrate de que los valores sean válidos.');
             setReactanceCalculations([]);
         }
     };
@@ -120,8 +106,7 @@ export default function Reactance() {
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text text-base-content text-base font-semibold flex items-center gap-2">
-                                    <Waves className="h-5 w-5 text-primary" />{' '}
-                                    Frecuencia (f)
+                                    <Waves className="h-5 w-5 text-primary" /> Frecuencia (f)
                                 </span>
                             </label>
                             <label className="input input-bordered input-sm flex items-center gap-2 shadow-md bg-base-100 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary">
@@ -130,9 +115,7 @@ export default function Reactance() {
                                     placeholder="Frecuencia en Hertz (Hz)"
                                     className="grow text-base placeholder:text-base-content/60"
                                     value={frequency}
-                                    onChange={(e) =>
-                                        setFrequency(e.target.value)
-                                    }
+                                    onChange={(e) => setFrequency(e.target.value)}
                                 />
                                 <div className="badge badge-md badge-soft badge-accent rounded-sm min-w-[2.5rem]">
                                     Hz
@@ -144,8 +127,7 @@ export default function Reactance() {
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text text-base-content text-base font-semibold flex items-center gap-2">
-                                    <Zap className="h-5 w-5 text-primary" />{' '}
-                                    Capacitancia (C)
+                                    <Zap className="h-5 w-5 text-primary" /> Capacitancia (C)
                                 </span>
                             </label>
                             <label className="input input-bordered input-sm flex items-center gap-2 shadow-md bg-base-100 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary">
@@ -154,13 +136,9 @@ export default function Reactance() {
                                     placeholder="Capacitancia en Faradios (F)"
                                     className="grow text-base placeholder:text-base-content/60"
                                     value={capacitance}
-                                    onChange={(e) =>
-                                        setCapacitance(e.target.value)
-                                    }
+                                    onChange={(e) => setCapacitance(e.target.value)}
                                 />
-                                <div className="badge badge-md badge-soft badge-info rounded-sm min-w-[2.5rem]">
-                                    F
-                                </div>
+                                <div className="badge badge-md badge-soft badge-info rounded-sm min-w-[2.5rem]">F</div>
                             </label>
                         </div>
 
@@ -168,8 +146,7 @@ export default function Reactance() {
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text text-base-content text-base font-semibold flex items-center gap-2">
-                                    <Sigma className="h-5 w-5 text-primary" />{' '}
-                                    Inductancia (L)
+                                    <Sigma className="h-5 w-5 text-primary" /> Inductancia (L)
                                 </span>
                             </label>
                             <label className="input input-bordered input-sm flex items-center gap-2 shadow-md bg-base-100 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary">
@@ -178,9 +155,7 @@ export default function Reactance() {
                                     placeholder="Inductancia en Henrios (H)"
                                     className="grow text-base placeholder:text-base-content/60"
                                     value={inductance}
-                                    onChange={(e) =>
-                                        setInductance(e.target.value)
-                                    }
+                                    onChange={(e) => setInductance(e.target.value)}
                                 />
                                 <div className="badge badge-md badge-soft badge-warning rounded-sm min-w-[2.5rem]">
                                     H
@@ -214,34 +189,23 @@ export default function Reactance() {
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-base-content text-base mb-6 z-10">
                             <div className="bg-base-200 p-3 rounded-md shadow-sm border-dashed border border-base-content/10 flex flex-col items-center justify-center text-center">
-                                <p className="font-bold text-sm mb-2">
-                                    Reactancia Capacitiva ($X_C$):
-                                </p>
+                                <p className="font-bold text-sm mb-2">Reactancia Capacitiva ($X_C$):</p>
                                 <BlockMath math="X_C = \frac{1}{2\pi f C}" />
                             </div>
                             <div className="bg-base-200 p-3 rounded-md shadow-sm border-dashed border border-base-content/10 flex flex-col items-center justify-center text-center">
-                                <p className="font-bold text-sm mb-2">
-                                    Reactancia Inductiva ($X_L$):
-                                </p>
+                                <p className="font-bold text-sm mb-2">Reactancia Inductiva ($X_L$):</p>
                                 <BlockMath math="X_L = 2\pi f L" />
                             </div>
                         </div>
 
                         {/* Sección de Cálculo Detallado (replicando OhmCalculator) */}
                         <div className="pt-5 border-t border-base-content/20 z-10 flex-grow flex flex-col justify-end">
-                            <h3 className="text-xl font-extrabold text-accent text-center mb-3">
-                                Cálculo Detallado
-                            </h3>
+                            <h3 className="text-xl font-extrabold text-accent text-center mb-3">Cálculo Detallado</h3>
                             {reactanceCalculations.length > 0 ? (
                                 <div className="p-3 space-y-2 bg-base-200 rounded-lg shadow-inner border border-base-content/15 overflow-y-auto custom-scrollbar flex-grow">
-                                    {reactanceCalculations.map(
-                                        (calc, index) => (
-                                            <BlockMath
-                                                key={index}
-                                                math={calc}
-                                            />
-                                        )
-                                    )}
+                                    {reactanceCalculations.map((calc, index) => (
+                                        <BlockMath key={index} math={calc} />
+                                    ))}
                                 </div>
                             ) : (
                                 <div className="flex-grow flex items-center justify-center">
@@ -264,15 +228,11 @@ export default function Reactance() {
                                         <CircleCheck className="h-6 w-6" />
                                     )}
                                     <div className="flex flex-col">
-                                        {reactanceResult
-                                            .split('\n')
-                                            .map((line, idx) => (
-                                                <span
-                                                    key={idx}
-                                                    className="font-bold text-lg leading-tight">
-                                                    {line}
-                                                </span>
-                                            ))}
+                                        {reactanceResult.split('\n').map((line, idx) => (
+                                            <span key={idx} className="font-bold text-lg leading-tight">
+                                                {line}
+                                            </span>
+                                        ))}
                                     </div>
                                 </div>
                             )}

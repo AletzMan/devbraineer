@@ -2,25 +2,9 @@
 'use client';
 
 import { useState, useEffect, useMemo, useRef } from 'react';
-import {
-    Plus,
-    Search,
-    AlertCircle,
-    Check,
-    Trash2,
-    Folder,
-    Tag,
-    Save,
-    Code,
-    X,
-} from 'lucide-react';
+import { Plus, Search, AlertCircle, Check, Trash2, Folder, Tag, Save, Code, X } from 'lucide-react';
 import { Snippet } from '@prisma/client'; // Importa el tipo Snippet de Prisma
-import {
-    getSnippets,
-    createSnippet,
-    deleteSnippet,
-    CreateSnippetPayload,
-} from '@/services/snippet.service';
+import { getSnippets, createSnippet, deleteSnippet, CreateSnippetPayload } from '@/services/snippet.service';
 import axios from 'axios';
 import { toast, Toaster } from 'react-hot-toast'; // Para notificaciones
 import SnippetCard from './components/SnippetCard';
@@ -34,9 +18,7 @@ export default function SnippetsPage() {
 
     // Estado para búsqueda y filtros
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(
-        null
-    );
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
     // Estados para el modal de nuevo snippet
@@ -59,9 +41,7 @@ export default function SnippetsPage() {
     // Estados para el modal de eliminación
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
     const deleteConfirmModalRef = useRef<HTMLDialogElement>(null);
-    const [snippetToDelete, setSnippetToDelete] = useState<Snippet | null>(
-        null
-    );
+    const [snippetToDelete, setSnippetToDelete] = useState<Snippet | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
     const [deleteError, setDeleteError] = useState<string | null>(null);
 
@@ -92,34 +72,22 @@ export default function SnippetsPage() {
             currentSnippets = currentSnippets.filter(
                 (s) =>
                     s.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    (s.description?.toLowerCase() || '').includes(
-                        searchTerm.toLowerCase()
-                    ) ||
+                    (s.description?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
                     s.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    s.language
-                        .toLowerCase()
-                        .includes(searchTerm.toLowerCase()) ||
-                    (s.category?.toLowerCase() || '').includes(
-                        searchTerm.toLowerCase()
-                    ) ||
-                    s.tags.some((tag) =>
-                        tag.toLowerCase().includes(searchTerm.toLowerCase())
-                    )
+                    s.language.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    (s.category?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                    s.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
             );
         }
 
         // Filtrar por categoría seleccionada
         if (selectedCategory) {
-            currentSnippets = currentSnippets.filter(
-                (s) => s.category === selectedCategory
-            );
+            currentSnippets = currentSnippets.filter((s) => s.category === selectedCategory);
         }
 
         // Filtrar por etiqueta seleccionada
         if (selectedTag) {
-            currentSnippets = currentSnippets.filter((s) =>
-                s.tags.includes(selectedTag)
-            );
+            currentSnippets = currentSnippets.filter((s) => s.tags.includes(selectedTag));
         }
 
         return currentSnippets;
@@ -165,9 +133,7 @@ export default function SnippetsPage() {
     };
 
     const handleCreateInputChange = (
-        e: React.ChangeEvent<
-            HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-        >
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
     ) => {
         const { name, value } = e.target;
         setNewSnippetData((prev) => ({ ...prev, [name]: value }));
@@ -185,11 +151,7 @@ export default function SnippetsPage() {
     };
 
     const handleSaveNewSnippet = async () => {
-        if (
-            !newSnippetData.title.trim() ||
-            !newSnippetData.code.trim() ||
-            !newSnippetData.language.trim()
-        ) {
+        if (!newSnippetData.title.trim() || !newSnippetData.code.trim() || !newSnippetData.language.trim()) {
             setSaveError('Título, código y lenguaje son obligatorios.');
             return;
         }
@@ -235,9 +197,7 @@ export default function SnippetsPage() {
 
         try {
             await deleteSnippet(snippetToDelete.id);
-            setSnippets((prev) =>
-                prev.filter((s) => s.id !== snippetToDelete.id)
-            );
+            setSnippets((prev) => prev.filter((s) => s.id !== snippetToDelete.id));
             toast.success('Snippet eliminado exitosamente!');
             handleCloseDeleteConfirm();
         } catch (err: any) {
@@ -256,9 +216,7 @@ export default function SnippetsPage() {
                 <HeaderSection
                     title="Snippets de Código"
                     description="Guarda y organiza fragmentos de código para reutilizarlos fácilmente">
-                    <button
-                        className="btn btn-success gap-1 mt-4 sm:mt-0"
-                        onClick={handleOpenCreateModal}>
+                    <button className="btn btn-success gap-1 mt-4 sm:mt-0" onClick={handleOpenCreateModal}>
                         <Plus className="w-4 h-4" />
                         Nuevo Snippet
                     </button>
@@ -273,21 +231,15 @@ export default function SnippetsPage() {
                                     placeholder="Buscar snippets..."
                                     className="w-full pl-9"
                                     value={searchTerm}
-                                    onChange={(e) =>
-                                        setSearchTerm(e.target.value)
-                                    }
+                                    onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </label>
                             <div className=" bg-neutral/50 rounded-md border border-gray-700 p-4">
-                                <h3 className="font-medium mb-3 ">
-                                    Categorías
-                                </h3>
+                                <h3 className="font-medium mb-3 ">Categorías</h3>
                                 <div className="space-y-2">
                                     <button
                                         className={`btn w-full justify-start gap-2 font-normal ${selectedCategory === null ? 'btn-active btn-soft' : 'btn-ghost'}`}
-                                        onClick={() =>
-                                            setSelectedCategory(null)
-                                        }>
+                                        onClick={() => setSelectedCategory(null)}>
                                         <Folder className="h-4 w-4" />
                                         Todas
                                         <span className="ml-auto text-zinc-500 dark:text-zinc-400 text-xs">
@@ -298,19 +250,11 @@ export default function SnippetsPage() {
                                         <button
                                             key={category}
                                             className={`btn w-full justify-start gap-2 font-normal ${selectedCategory === category ? 'btn-active bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'btn-ghost'}`}
-                                            onClick={() =>
-                                                setSelectedCategory(category)
-                                            }>
+                                            onClick={() => setSelectedCategory(category)}>
                                             <Folder className="h-4 w-4" />
                                             {category}
                                             <span className="ml-auto text-zinc-500 dark:text-zinc-400 text-xs">
-                                                {
-                                                    snippets.filter(
-                                                        (s) =>
-                                                            s.category ===
-                                                            category
-                                                    ).length
-                                                }
+                                                {snippets.filter((s) => s.category === category).length}
                                             </span>
                                         </button>
                                     ))}
@@ -340,11 +284,7 @@ export default function SnippetsPage() {
                     </div>
 
                     <div className="md:col-span-3 space-y-4 bg-neutral/40 p-4 rounded-md">
-                        {loading && (
-                            <div className="text-center text-zinc-400 mt-8">
-                                Cargando snippets...
-                            </div>
-                        )}
+                        {loading && <div className="text-center text-zinc-400 mt-8">Cargando snippets...</div>}
                         {error && (
                             <div className="alert alert-error bg-red-800 text-red-200 border-red-700 p-3 rounded-md text-sm flex items-center gap-2 mt-8">
                                 <AlertCircle className="size-4 text-red-400" />
@@ -355,9 +295,7 @@ export default function SnippetsPage() {
                             <div className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-4">
                                 {filteredSnippets.length === 0 ? (
                                     <p className="col-span-full text-center text-zinc-500 text-lg mt-8">
-                                        {searchTerm ||
-                                        selectedCategory ||
-                                        selectedTag
+                                        {searchTerm || selectedCategory || selectedTag
                                             ? 'No se encontraron snippets que coincidan con los filtros.'
                                             : 'Aún no hay snippets guardados.'}
                                     </p>
@@ -376,13 +314,10 @@ export default function SnippetsPage() {
                     </div>
                 </div>
             </div>
-            <dialog
-                ref={createModalRef}
-                className={`modal ${isCreateModalOpen ? 'modal-open' : ''}`}>
+            <dialog ref={createModalRef} className={`modal ${isCreateModalOpen ? 'modal-open' : ''}`}>
                 <div className="modal-box p-6 rounded-lg shadow-xl max-w-2xl w-full bg-base-300">
                     <h3 className="font-bold text-xl  mb-4 flex items-center gap-2">
-                        <Plus className="size-6 text-blue-500" /> Crear Nuevo
-                        Snippet
+                        <Plus className="size-6 text-blue-500" /> Crear Nuevo Snippet
                     </h3>
                     <form method="dialog">
                         <button
@@ -423,10 +358,7 @@ export default function SnippetsPage() {
                                     Selecciona un lenguaje
                                 </option>
                                 {languages.map((language) => (
-                                    <option
-                                        className="capitalize"
-                                        key={language}
-                                        value={language}>
+                                    <option className="capitalize" key={language} value={language}>
                                         {language}
                                     </option>
                                 ))}
@@ -445,9 +377,7 @@ export default function SnippetsPage() {
                                 disabled={isSaving}></textarea>
                         </label>
                         <label className="flex flex-col gap-1 label items-start text-sm">
-                            <span className="label-text ">
-                                Descripción (opcional)
-                            </span>
+                            <span className="label-text ">Descripción (opcional)</span>
                             <textarea
                                 name="description"
                                 placeholder="Una breve explicación del snippet."
@@ -458,9 +388,7 @@ export default function SnippetsPage() {
                                 disabled={isSaving}></textarea>
                         </label>
                         <label className="flex flex-col gap-1 label items-start text-sm">
-                            <span className="label-text ">
-                                Categoría (opcional)
-                            </span>
+                            <span className="label-text ">Categoría (opcional)</span>
                             <input
                                 type="text"
                                 name="category"
@@ -472,9 +400,7 @@ export default function SnippetsPage() {
                             />
                         </label>
                         <label className="flex flex-col gap-1 label items-start text-sm">
-                            <span className="label-text ">
-                                Etiquetas (separadas por comas, opcional)
-                            </span>
+                            <span className="label-text ">Etiquetas (separadas por comas, opcional)</span>
                             <input
                                 type="text"
                                 name="tags"
@@ -508,8 +434,7 @@ export default function SnippetsPage() {
                                     'Guardando...'
                                 ) : (
                                     <>
-                                        <Save className="size-5 mr-2" /> Guardar
-                                        Snippet
+                                        <Save className="size-5 mr-2" /> Guardar Snippet
                                     </>
                                 )}
                             </button>
@@ -518,13 +443,10 @@ export default function SnippetsPage() {
                 </div>
             </dialog>
             {/* --- Modal de Confirmación de Eliminación --- */}
-            <dialog
-                ref={deleteConfirmModalRef}
-                className={`modal ${isDeleteConfirmOpen ? 'modal-open' : ''}`}>
+            <dialog ref={deleteConfirmModalRef} className={`modal ${isDeleteConfirmOpen ? 'modal-open' : ''}`}>
                 <div className="modal-box  p-6 rounded-lg shadow-xl">
                     <h3 className="font-bold text-xl text-zinc-900 dark:text-zinc-50 mb-4 flex items-center gap-2">
-                        <Trash2 className="size-6 text-error" /> Confirmar
-                        Eliminación
+                        <Trash2 className="size-6 text-error" /> Confirmar Eliminación
                     </h3>
                     <form method="dialog">
                         <button
@@ -536,9 +458,7 @@ export default function SnippetsPage() {
                     {snippetToDelete && (
                         <p className="my-6 flex flex-col gap-1 items-center text-zinc-600 dark:text-zinc-400">
                             ¿Estás seguro de que quieres eliminar el snippet?
-                            <strong className="text-error">
-                                {snippetToDelete.title}
-                            </strong>
+                            <strong className="text-error">{snippetToDelete.title}</strong>
                             Esta acción no se puede deshacer.
                         </p>
                     )}
@@ -551,10 +471,7 @@ export default function SnippetsPage() {
                     )}
 
                     <div className="modal-action justify-end mt-4">
-                        <button
-                            type="button"
-                            onClick={handleCloseDeleteConfirm}
-                            className="btn btn-soft ">
+                        <button type="button" onClick={handleCloseDeleteConfirm} className="btn btn-soft ">
                             <X className="size-4" />
                             Cancelar
                         </button>

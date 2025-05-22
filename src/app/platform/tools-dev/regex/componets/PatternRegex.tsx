@@ -25,9 +25,7 @@ export default function PatternRegex({
             key={index}>
             <header className="flex items-center justify-between p-2 border-b border-gray-700">
                 <div className="flex flex-col  gap-1">
-                    <h2 className="text-md text-accent font-semibold">
-                        {item.name}
-                    </h2>
+                    <h2 className="text-md text-accent font-semibold">{item.name}</h2>
                     {visibleDate && (
                         <span className="flex items-center gap-1 text-xs text-gray-400">
                             <Calendar className="size-4" />

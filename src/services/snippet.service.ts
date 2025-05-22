@@ -2,10 +2,7 @@ import axios from 'axios';
 import { Snippet } from '@prisma/client';
 
 // Define un tipo para el payload de creación, excluyendo ID y fechas
-export type CreateSnippetPayload = Omit<
-    Snippet,
-    'id' | 'createdAt' | 'updatedAt'
->;
+export type CreateSnippetPayload = Omit<Snippet, 'id' | 'createdAt' | 'updatedAt'>;
 
 export type SnippetResponseCreate = {
     error?: string;
@@ -35,50 +32,35 @@ export const getSnippets = async (): Promise<Snippet[] | undefined> => {
         return undefined;
     } catch (error: any) {
         console.error('Failed to fetch snippets:', error);
-        throw new Error(
-            error.response?.data?.message || 'Error fetching snippets'
-        );
+        throw new Error(error.response?.data?.message || 'Error fetching snippets');
     }
 };
 
 // Función para crear un nuevo snippet
-export const createSnippet = async (
-    snippetData: CreateSnippetPayload
-): Promise<Snippet | undefined> => {
+export const createSnippet = async (snippetData: CreateSnippetPayload): Promise<Snippet | undefined> => {
     try {
-        const response = await axios.post<SnippetResponseCreate>(
-            '/api/snippets',
-            snippetData
-        );
+        const response = await axios.post<SnippetResponseCreate>('/api/snippets', snippetData);
         if (response.status === 201) {
             return response.data.data as Snippet;
         }
         return undefined;
     } catch (error: any) {
         console.error('Failed to create snippet:', error);
-        throw new Error(
-            error.response?.data?.message || 'Error creating snippet'
-        );
+        throw new Error(error.response?.data?.message || 'Error creating snippet');
     }
 };
 
 // Función para eliminar un snippet por ID
-export const deleteSnippet = async (
-    id: string
-): Promise<Snippet | undefined> => {
+export const deleteSnippet = async (id: string): Promise<Snippet | undefined> => {
     try {
-        const response = await axios.delete<SnippetResponseDelete>(
-            `/api/snippets/${id}`
-        );
+        const response = await axios.delete<SnippetResponseDelete>(`/api/snippets/${id}`);
         if (response.status === 200) {
             return response.data.data as Snippet;
         }
         return undefined;
     } catch (error: any) {
         console.error(`Failed to delete snippet with ID ${id}:`, error);
-        throw new Error(
-            error.response?.data?.message || 'Error deleting snippet'
-        );
+        throw new Error(error.response?.data?.message || 'Error deleting snippet');
     }
 };
 

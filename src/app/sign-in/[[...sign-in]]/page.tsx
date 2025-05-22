@@ -28,8 +28,7 @@ export default function SignInPage() {
                         headerSubtitle: 'text-gray-400',
                         footerActionText: 'text-gray-400',
                         footerActionLink: 'text-blue-400 hover:text-blue-500',
-                        formFieldInput:
-                            'focus:ring-blue-500 focus:border-blue-500', // Resalta el input al enfocar
+                        formFieldInput: 'focus:ring-blue-500 focus:border-blue-500', // Resalta el input al enfocar
                     },
                 }}
             />

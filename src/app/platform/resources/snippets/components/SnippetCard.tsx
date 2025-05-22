@@ -14,11 +14,7 @@ interface SnippetCardProps {
     onEdit?: (snippet: Snippet) => void; // Opcional para editar
 }
 
-export default function SnippetCard({
-    snippet,
-    onDelete,
-    onEdit,
-}: SnippetCardProps) {
+export default function SnippetCard({ snippet, onDelete, onEdit }: SnippetCardProps) {
     const [copied, setCopied] = useState(false);
 
     const handleCopy = () => {
@@ -42,9 +38,7 @@ export default function SnippetCard({
         <div className="bg-base-200 rounded-lg shadow-sm border border-gray-700 p-4 flex flex-col justify-between">
             <div>
                 <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-lg font-semibold text-accent leading-tight">
-                        {snippet.title}
-                    </h3>
+                    <h3 className="text-lg font-semibold text-accent leading-tight">{snippet.title}</h3>
                     <div className="flex gap-1">
                         {onEdit && (
                             <button
@@ -71,15 +65,10 @@ export default function SnippetCard({
                     </div>
                 </div>
                 {snippet.description && (
-                    <p className="text-zinc-600 dark:text-zinc-400 text-sm mb-3">
-                        {snippet.description}
-                    </p>
+                    <p className="text-zinc-600 dark:text-zinc-400 text-sm mb-3">{snippet.description}</p>
                 )}
                 <div className="rounded-md text-sm overflow-x-auto font-mono text-zinc-800 dark:text-zinc-200 mb-3 max-h-48 scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-zinc-700 scrollbar-track-transparent">
-                    <CodeBlock
-                        code={snippet.code}
-                        language="typescript"
-                        theme={themes.oneDark}>
+                    <CodeBlock code={snippet.code} language="typescript" theme={themes.oneDark}>
                         <div className="relative ">
                             <CodeBlock.Code className="bg-neutral-900 !p-6 rounded-b-sm shadow-lg border-1 border-gray-700 h-40 overflow-y-auto scrollbar-thin">
                                 <div className="table-row">
@@ -109,9 +98,7 @@ export default function SnippetCard({
                         <Tag className="h-3 w-3 mr-1" />
                         <div className="flex flex-wrap gap-1">
                             {snippet.tags.map((tag, idx) => (
-                                <span
-                                    key={idx}
-                                    className="badge badge-sm badge-info badge-outline mr-0.5">
+                                <span key={idx} className="badge badge-sm badge-info badge-outline mr-0.5">
                                     {tag}
                                 </span>
                             ))}

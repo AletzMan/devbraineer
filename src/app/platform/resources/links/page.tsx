@@ -2,25 +2,9 @@
 'use client';
 
 import { useState, useEffect, useMemo, useRef } from 'react';
-import {
-    Plus,
-    Search,
-    AlertCircle,
-    Trash2,
-    Edit,
-    Folder,
-    Tag,
-    Save,
-    Link as LinkIcon,
-} from 'lucide-react';
+import { Plus, Search, AlertCircle, Trash2, Edit, Folder, Tag, Save, Link as LinkIcon } from 'lucide-react';
 import { Link } from '@prisma/client'; // Importa el tipo Link de Prisma
-import {
-    getLinks,
-    createLink,
-    updateLink,
-    deleteLink,
-    CreateUpdateLinkPayload,
-} from '@/services/link.service';
+import { getLinks, createLink, updateLink, deleteLink, CreateUpdateLinkPayload } from '@/services/link.service';
 import { toast, Toaster } from 'react-hot-toast';
 import LinkCard from './components/LinkCard'; // Asegúrate de que LinkCard también tenga estilos consistentes
 import HeaderSection from '../../componentes/HeaderSection';
@@ -32,9 +16,7 @@ export default function LinksPage() {
 
     // Estado para búsqueda y filtros
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(
-        null
-    );
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
     // Estados para el modal de creación/edición
@@ -91,28 +73,18 @@ export default function LinksPage() {
                 (l) =>
                     l.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     l.url.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    (l.description?.toLowerCase() || '').includes(
-                        searchTerm.toLowerCase()
-                    ) ||
-                    (l.category?.toLowerCase() || '').includes(
-                        searchTerm.toLowerCase()
-                    ) ||
-                    l.tags.some((tag) =>
-                        tag.toLowerCase().includes(searchTerm.toLowerCase())
-                    )
+                    (l.description?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                    (l.category?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+                    l.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
             );
         }
 
         if (selectedCategory) {
-            currentLinks = currentLinks.filter(
-                (l) => l.category === selectedCategory
-            );
+            currentLinks = currentLinks.filter((l) => l.category === selectedCategory);
         }
 
         if (selectedTag) {
-            currentLinks = currentLinks.filter((l) =>
-                l.tags.includes(selectedTag)
-            );
+            currentLinks = currentLinks.filter((l) => l.tags.includes(selectedTag));
         }
 
         return currentLinks;
@@ -177,9 +149,7 @@ export default function LinksPage() {
     };
 
     const handleFormInputChange = (
-        e: React.ChangeEvent<
-            HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-        >
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
     ) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -210,9 +180,7 @@ export default function LinksPage() {
                 // Editar enlace existente
                 const updated = await updateLink(currentLink.id, formData);
                 if (updated) {
-                    setLinks((prev) =>
-                        prev.map((l) => (l.id === updated.id ? updated : l))
-                    );
+                    setLinks((prev) => prev.map((l) => (l.id === updated.id ? updated : l)));
                 }
                 toast.success('Enlace actualizado exitosamente!');
             } else {
@@ -274,9 +242,7 @@ export default function LinksPage() {
                 <HeaderSection
                     title="Enlaces de Interés"
                     description="Colecciona y organiza tus recursos web favoritos">
-                    <button
-                        className="btn btn-success gap-1 mt-4 sm:mt-0"
-                        onClick={handleOpenCreateModal}>
+                    <button className="btn btn-success gap-1 mt-4 sm:mt-0" onClick={handleOpenCreateModal}>
                         <Plus className="w-4 h-4" />
                         Nuevo Enlace
                     </button>
@@ -291,21 +257,15 @@ export default function LinksPage() {
                                     placeholder="Buscar enlaces..."
                                     className="input input-bordered w-full pl-9"
                                     value={searchTerm}
-                                    onChange={(e) =>
-                                        setSearchTerm(e.target.value)
-                                    }
+                                    onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </div>
                             <div className="bg-neutral/40 rounded-md border border-gray-700 p-4">
-                                <h3 className="font-medium mb-3 ">
-                                    Categorías
-                                </h3>
+                                <h3 className="font-medium mb-3 ">Categorías</h3>
                                 <div className="space-y-2">
                                     <button
                                         className={`btn w-full justify-start gap-2 font-normal ${selectedCategory === null ? 'btn-active btn-soft' : 'btn-ghost'}`}
-                                        onClick={() =>
-                                            setSelectedCategory(null)
-                                        }>
+                                        onClick={() => setSelectedCategory(null)}>
                                         <Folder className="h-4 w-4" />
                                         Todas
                                         <span className="ml-auto text-zinc-500 dark:text-zinc-400 text-xs">
@@ -316,19 +276,11 @@ export default function LinksPage() {
                                         <button
                                             key={category}
                                             className={`btn w-full justify-start gap-2 font-normal ${selectedCategory === category ? 'btn-active btn-soft' : 'btn-ghost'}`}
-                                            onClick={() =>
-                                                setSelectedCategory(category)
-                                            }>
+                                            onClick={() => setSelectedCategory(category)}>
                                             <Folder className="h-4 w-4" />
                                             {category}
                                             <span className="ml-auto text-zinc-500 dark:text-zinc-400 text-xs">
-                                                {
-                                                    links.filter(
-                                                        (l) =>
-                                                            l.category ===
-                                                            category
-                                                    ).length
-                                                }
+                                                {links.filter((l) => l.category === category).length}
                                             </span>
                                         </button>
                                     ))}
@@ -357,11 +309,7 @@ export default function LinksPage() {
                         </div>
                     </div>
                     <div className="md:col-span-3 space-y-4 bg-neutral/40 p-4 rounded-md">
-                        {loading && (
-                            <div className="text-center text-zinc-400 mt-8">
-                                Cargando enlaces...
-                            </div>
-                        )}
+                        {loading && <div className="text-center text-zinc-400 mt-8">Cargando enlaces...</div>}
                         {error && (
                             <div className="alert alert-error bg-red-800 text-red-200 border-red-700 p-3 rounded-md text-sm flex items-center gap-2 mt-8">
                                 <AlertCircle className="size-4 text-red-400" />
@@ -372,9 +320,7 @@ export default function LinksPage() {
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {filteredLinks.length === 0 ? (
                                     <p className="col-span-full text-center text-zinc-500 text-lg mt-8">
-                                        {searchTerm ||
-                                        selectedCategory ||
-                                        selectedTag
+                                        {searchTerm || selectedCategory || selectedTag
                                             ? 'No se encontraron enlaces que coincidan con los filtros.'
                                             : 'Aún no hay enlaces guardados.'}
                                     </p>
@@ -394,20 +340,16 @@ export default function LinksPage() {
                 </div>
             </div>
 
-            <dialog
-                ref={formModalRef}
-                className={`modal ${isFormModalOpen ? 'modal-open' : ''}`}>
+            <dialog ref={formModalRef} className={`modal ${isFormModalOpen ? 'modal-open' : ''}`}>
                 <div className="modal-box shadow-xl max-w-2xl w-full bg-base-300">
                     <h3 className="font-bold text-xl text-zinc-50 mb-4 flex items-center gap-2">
                         {currentLink ? (
                             <>
-                                <Edit className="size-6 text-blue-500" /> Editar
-                                Enlace
+                                <Edit className="size-6 text-blue-500" /> Editar Enlace
                             </>
                         ) : (
                             <>
-                                <Plus className="size-6 text-blue-500" /> Nuevo
-                                Enlace
+                                <Plus className="size-6 text-blue-500" /> Nuevo Enlace
                             </>
                         )}
                     </h3>
@@ -454,9 +396,7 @@ export default function LinksPage() {
                         </div>
                         <div>
                             <label className="label items-start text-sm">
-                                <span className="label-text text-zinc-300">
-                                    Thumbnail URL (opcional)
-                                </span>
+                                <span className="label-text text-zinc-300">Thumbnail URL (opcional)</span>
                             </label>
                             <input
                                 type="url"
@@ -530,19 +470,13 @@ export default function LinksPage() {
                                 type="button"
                                 onClick={handleSaveLink}
                                 className={`btn btn-success  ${isSaving ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                disabled={
-                                    isSaving ||
-                                    !formData.title.trim() ||
-                                    !formData.url.trim()
-                                }>
+                                disabled={isSaving || !formData.title.trim() || !formData.url.trim()}>
                                 {isSaving ? (
                                     'Guardando...'
                                 ) : (
                                     <>
                                         <Save className="size-5 mr-2" />
-                                        {currentLink
-                                            ? 'Actualizar Enlace'
-                                            : 'Guardar Enlace'}
+                                        {currentLink ? 'Actualizar Enlace' : 'Guardar Enlace'}
                                     </>
                                 )}
                             </button>
@@ -551,13 +485,10 @@ export default function LinksPage() {
                 </div>
             </dialog>
 
-            <dialog
-                ref={deleteConfirmModalRef}
-                className={`modal ${isDeleteConfirmOpen ? 'modal-open' : ''}`}>
+            <dialog ref={deleteConfirmModalRef} className={`modal ${isDeleteConfirmOpen ? 'modal-open' : ''}`}>
                 <div className="modal-box  shadow-xl">
                     <h3 className="font-bold text-xl text-zinc-50 mb-4 flex items-center gap-2">
-                        <Trash2 className="size-6 text-error" /> Confirmar
-                        Eliminación
+                        <Trash2 className="size-6 text-error" /> Confirmar Eliminación
                     </h3>
                     <form method="dialog">
                         <button
@@ -569,9 +500,7 @@ export default function LinksPage() {
                     {linkToDelete && (
                         <p className="mb-4 text-zinc-400">
                             ¿Estás seguro de que quieres eliminar el enlace "
-                            <strong className="text-red-400">
-                                {linkToDelete.title}
-                            </strong>
+                            <strong className="text-red-400">{linkToDelete.title}</strong>
                             "? Esta acción no se puede deshacer.
                         </p>
                     )}
@@ -582,10 +511,7 @@ export default function LinksPage() {
                         </div>
                     )}
                     <div className="modal-action justify-end mt-4">
-                        <button
-                            type="button"
-                            onClick={handleCloseDeleteConfirm}
-                            className="btn btn-soft ">
+                        <button type="button" onClick={handleCloseDeleteConfirm} className="btn btn-soft ">
                             Cancelar
                         </button>
                         <button

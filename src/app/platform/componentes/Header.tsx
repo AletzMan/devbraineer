@@ -15,44 +15,29 @@ export default function Header() {
                     {pathSegments.map((item, index) => {
                         const currentHref = `/${pathSegments.slice(0, index + 1).join('/')}`;
 
-                        const currentLinkItem = LinkData.find(
-                            (menuItem) => menuItem.href === currentHref
-                        );
+                        const currentLinkItem = LinkData.find((menuItem) => menuItem.href === currentHref);
 
                         const isFirstSegment = index === 0;
                         const isLastSegment = index === pathSegments.length - 1;
 
-                        const shouldShowIcon =
-                            !isFirstSegment && currentLinkItem?.icon;
+                        const shouldShowIcon = !isFirstSegment && currentLinkItem?.icon;
 
-                        const textColorClass = isLastSegment
-                            ? `${currentLinkItem?.color}`
-                            : 'text-gray-400';
+                        const textColorClass = isLastSegment ? `${currentLinkItem?.color}` : 'text-gray-400';
 
                         const iconColorClass = currentLinkItem?.color || '';
 
                         return (
                             <li key={index} className="capitalize">
-                                {isLastSegment ||
-                                currentLinkItem?.href === '#' ? (
+                                {isLastSegment || currentLinkItem?.href === '#' ? (
                                     <div className="flex items-center gap-0.5">
                                         {currentLinkItem?.icon && (
-                                            <currentLinkItem.icon
-                                                className={`size-4.5 ${iconColorClass}`}
-                                            />
+                                            <currentLinkItem.icon className={`size-4.5 ${iconColorClass}`} />
                                         )}
-                                        <span className={textColorClass}>
-                                            {item}
-                                        </span>
+                                        <span className={textColorClass}>{item}</span>
                                     </div>
                                 ) : (
-                                    <span
-                                        className={`flex items-center ${textColorClass} `}>
-                                        {shouldShowIcon && (
-                                            <currentLinkItem.icon
-                                                className={`size-4.5  `}
-                                            />
-                                        )}
+                                    <span className={`flex items-center ${textColorClass} `}>
+                                        {shouldShowIcon && <currentLinkItem.icon className={`size-4.5  `} />}
                                         {item}
                                     </span>
                                 )}
@@ -61,11 +46,7 @@ export default function Header() {
                     })}
                 </ul>
             </div>
-            <UserButton
-                appearance={{ baseTheme: dark }}
-                userProfileMode="navigation"
-                userProfileUrl="/profile"
-            />
+            <UserButton appearance={{ baseTheme: dark }} userProfileMode="navigation" userProfileUrl="/profile" />
         </header>
     );
 }

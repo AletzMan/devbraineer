@@ -34,8 +34,7 @@ export default function RootLayout({
     return (
         <html lang="en" data-theme="dark">
             <ClerkProvider>
-                <body
-                    className={`${jost.variable} ${josefinSans.variable} ${code.variable} antialiased`}>
+                <body className={`${jost.variable} ${josefinSans.variable} ${code.variable} antialiased`}>
                     {children}
                 </body>
             </ClerkProvider>

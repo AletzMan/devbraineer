@@ -40,8 +40,8 @@ export default function About() {
                             Sobre DevBraineer
                         </h2>
                         <p className="mb-10 text-md md:text-xl lg:text-2xl text-neutral-200 max-w-3xl mx-auto drop-shadow-md">
-                            Una plataforma de herramientas gratuitas y de código
-                            abierto para desarrolladores e ingenieros.
+                            Una plataforma de herramientas gratuitas y de código abierto para desarrolladores e
+                            ingenieros.
                         </p>
                     </div>
                 </div>
@@ -56,15 +56,12 @@ export default function About() {
                                 <div className="p-3 bg-gradient-to-br from-blue-700 to-cyan-600 rounded-full shadow-md">
                                     <Sparkles className="w-6 h-6 text-white" />
                                 </div>
-                                <h3 className="text-3xl font-bold text-white">
-                                    Nuestra Misión
-                                </h3>
+                                <h3 className="text-3xl font-bold text-white">Nuestra Misión</h3>
                             </div>
                             <p className="text-xl text-neutral-300">
-                                Empoderar a la comunidad de desarrolladores e
-                                ingenieros con herramientas de alta calidad,
-                                gratuitas y de código abierto que faciliten su
-                                trabajo diario y fomenten la innovación.
+                                Empoderar a la comunidad de desarrolladores e ingenieros con herramientas de alta
+                                calidad, gratuitas y de código abierto que faciliten su trabajo diario y fomenten la
+                                innovación.
                             </p>
                         </div>
                         <div className="space-y-8">
@@ -72,15 +69,11 @@ export default function About() {
                                 <div className="p-3 bg-gradient-to-br from-purple-700 to-pink-600 rounded-full shadow-md">
                                     <Award className="w-6 h-6 text-white" />
                                 </div>
-                                <h3 className="text-3xl font-bold text-white">
-                                    Nuestra Visión
-                                </h3>
+                                <h3 className="text-3xl font-bold text-white">Nuestra Visión</h3>
                             </div>
                             <p className="text-xl text-neutral-300">
-                                Convertirnos en la plataforma de referencia para
-                                herramientas de desarrollo, donde la
-                                colaboración y el aprendizaje constante sean la
-                                base de nuestra comunidad global.
+                                Convertirnos en la plataforma de referencia para herramientas de desarrollo, donde la
+                                colaboración y el aprendizaje constante sean la base de nuestra comunidad global.
                             </p>
                         </div>
                     </div>
@@ -91,12 +84,9 @@ export default function About() {
             <section className="py-20 md:py-32 bg-gradient-to-b from-[#0c1322] via-[#0A0F1A] to-black">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl font-bold text-white mb-6">
-                            ¿Qué ofrecemos?
-                        </h2>
+                        <h2 className="text-4xl font-bold text-white mb-6">¿Qué ofrecemos?</h2>
                         <p className="text-xl text-neutral-300 max-w-3xl mx-auto">
-                            Una colección completa de herramientas para
-                            desarrolladores e ingenieros
+                            Una colección completa de herramientas para desarrolladores e ingenieros
                         </p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -105,9 +95,7 @@ export default function About() {
                                 <div className="p-4 bg-gradient-to-br from-blue-700 to-cyan-600 rounded-full mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
                                     <Code2 className="w-8 h-8 text-white" />
                                 </div>
-                                <h3 className="card-title text-2xl font-semibold text-white mb-4">
-                                    Desarrollo Web
-                                </h3>
+                                <h3 className="card-title text-2xl font-semibold text-white mb-4">Desarrollo Web</h3>
                                 <ul className="space-y-3 text-neutral-300">
                                     <li className="flex items-center gap-3">
                                         <Terminal className="w-5 h-5 text-cyan-400 flex-shrink-0" />
@@ -165,9 +153,7 @@ export default function About() {
                                 <div className="p-4 bg-gradient-to-br from-yellow-700 to-orange-600 rounded-full mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
                                     <Users className="w-8 h-8 text-white" />
                                 </div>
-                                <h3 className="card-title text-2xl font-semibold text-white mb-4">
-                                    Comunidad
-                                </h3>
+                                <h3 className="card-title text-2xl font-semibold text-white mb-4">Comunidad</h3>
                                 <ul className="space-y-3 text-neutral-300">
                                     <li className="flex items-center gap-3">
                                         <Info className="w-5 h-5 text-yellow-400 flex-shrink-0" />
@@ -188,18 +174,12 @@ export default function About() {
             <section className="py-20 md:py-32 bg-gradient-to-b from-black via-[#0A0F1A] to-slate-950">
                 <div className="container mx-auto px-4">
                     <div className="text-center">
-                        <h2 className="text-4xl font-bold text-white mb-8">
-                            Únete a nuestra comunidad
-                        </h2>
+                        <h2 className="text-4xl font-bold text-white mb-8">Únete a nuestra comunidad</h2>
                         <p className="text-xl text-neutral-300 mb-12 max-w-2xl mx-auto">
-                            Ayúdanos a mejorar DevBraineer. Tu feedback es
-                            valioso para nosotros.
+                            Ayúdanos a mejorar DevBraineer. Tu feedback es valioso para nosotros.
                         </p>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            <Link
-                                href="/suggestions"
-                                passHref
-                                className="group">
+                            <Link href="/suggestions" passHref className="group">
                                 <div className="card bg-neutral-900/50 backdrop-blur-md shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-2 border border-neutral-700/70 hover:border-warning group">
                                     <div className="card-body items-center text-center p-8">
                                         <div className="p-4 bg-gradient-to-br from-warning to-accent rounded-full mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
@@ -208,10 +188,7 @@ export default function About() {
                                         <h3 className="card-title text-xl font-semibold text-white mb-4">
                                             Sugerir herramienta
                                         </h3>
-                                        <p className="text-neutral-400">
-                                            Comparte tus ideas para nuevas
-                                            herramientas
-                                        </p>
+                                        <p className="text-neutral-400">Comparte tus ideas para nuevas herramientas</p>
                                     </div>
                                 </div>
                             </Link>
@@ -221,12 +198,8 @@ export default function About() {
                                         <div className="p-4 bg-gradient-to-br from-primary to-secondary rounded-full mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
                                             <Github className="w-8 h-8 text-white" />
                                         </div>
-                                        <h3 className="card-title text-xl font-semibold text-white mb-4">
-                                            Contribuir
-                                        </h3>
-                                        <p className="text-neutral-400">
-                                            Ayúdanos a mejorar el código
-                                        </p>
+                                        <h3 className="card-title text-xl font-semibold text-white mb-4">Contribuir</h3>
+                                        <p className="text-neutral-400">Ayúdanos a mejorar el código</p>
                                     </div>
                                 </div>
                             </Link>
@@ -236,12 +209,8 @@ export default function About() {
                                         <div className="p-4 bg-gradient-to-br from-accent to-warning rounded-full mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
                                             <User className="w-8 h-8 text-white" />
                                         </div>
-                                        <h3 className="card-title text-xl font-semibold text-white mb-4">
-                                            Contacto
-                                        </h3>
-                                        <p className="text-neutral-400">
-                                            Ponte en contacto con nosotros
-                                        </p>
+                                        <h3 className="card-title text-xl font-semibold text-white mb-4">Contacto</h3>
+                                        <p className="text-neutral-400">Ponte en contacto con nosotros</p>
                                     </div>
                                 </div>
                             </Link>

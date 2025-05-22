@@ -366,8 +366,7 @@ export const FILES_DEFAULT: FileData[] = [
     {
         id: 'python-1',
         name: 'main.py',
-        content:
-            'def myFunction():\n  print("Hello from function in Python!")\n\nmyFunction()',
+        content: 'def myFunction():\n  print("Hello from function in Python!")\n\nmyFunction()',
         language: 'python',
         type: 'python',
         version: '3.10.0',

@@ -1,14 +1,7 @@
 // components/LinkCard.tsx
 'use client';
 
-import {
-    Link as LinkIcon,
-    Copy,
-    Trash2,
-    Edit,
-    Tag,
-    Folder,
-} from 'lucide-react';
+import { Link as LinkIcon, Copy, Trash2, Edit, Tag, Folder } from 'lucide-react';
 import { Link } from '@prisma/client';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -38,8 +31,7 @@ export default function LinkCard({ link, onDelete, onEdit }: LinkCardProps) {
         onEdit(link);
     };
 
-    const displayThumbnailUrl =
-        link.thumbnailUrl || generateThumbnailUrl(link.url);
+    const displayThumbnailUrl = link.thumbnailUrl || generateThumbnailUrl(link.url);
     const faviconUrl = getFavicon(link.url);
     const baseDomain = getBaseDomain(link.url);
 
@@ -62,8 +54,7 @@ export default function LinkCard({ link, onDelete, onEdit }: LinkCardProps) {
                             onError={(e) => {
                                 (e.target as HTMLImageElement).src =
                                     'https://images.pexels.com/photos/4974915/pexels-photo-4974915.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
-                                (e.target as HTMLImageElement).alt =
-                                    'Default thumbnail';
+                                (e.target as HTMLImageElement).alt = 'Default thumbnail';
                             }}
                         />
                     </div>
@@ -100,25 +91,15 @@ export default function LinkCard({ link, onDelete, onEdit }: LinkCardProps) {
                     </div>
                 </div>
                 {link.description && (
-                    <p className="text-zinc-600 dark:text-zinc-400 text-sm mb-3 break-words">
-                        {link.description}
-                    </p>
+                    <p className="text-zinc-600 dark:text-zinc-400 text-sm mb-3 break-words">{link.description}</p>
                 )}
                 <a
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 dark:text-blue-300 text-sm truncate hover:underline mb-3 flex items-center">
-                    {faviconUrl && (
-                        <img
-                            src={faviconUrl}
-                            alt="Favicon"
-                            className="w-4 h-4 mr-1 rounded-sm"
-                        />
-                    )}
-                    <span className="text-zinc-500 dark:text-zinc-400">
-                        Dominio:{' '}
-                    </span>
+                    {faviconUrl && <img src={faviconUrl} alt="Favicon" className="w-4 h-4 mr-1 rounded-sm" />}
+                    <span className="text-zinc-500 dark:text-zinc-400">Dominio: </span>
                     {baseDomain}
                 </a>
             </div>
@@ -138,9 +119,7 @@ export default function LinkCard({ link, onDelete, onEdit }: LinkCardProps) {
                         <Tag className="h-3 w-3 mr-1" />
                         <div className="flex flex-wrap gap-1">
                             {link.tags.map((tag, idx) => (
-                                <span
-                                    key={idx}
-                                    className="badge badge-sm badge-info badge-outline mr-0.5">
+                                <span key={idx} className="badge badge-sm badge-info badge-outline mr-0.5">
                                     {tag}
                                 </span>
                             ))}

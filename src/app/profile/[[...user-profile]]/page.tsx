@@ -20,32 +20,20 @@ export default function DashboardPage() {
                     const email = user.emailAddresses[0]?.emailAddress;
                     const username = user.username;
 
-                    const response = await axios.post(
-                        '/api/users/sync-clerk-user',
-                        {
-                            email,
-                            username,
-                        }
-                    );
+                    const response = await axios.post('/api/users/sync-clerk-user', {
+                        email,
+                        username,
+                    });
 
                     if (response.status !== 200) {
-                        console.error(
-                            'Error al sincronizar usuario con Prisma DB:',
-                            response.statusText
-                        );
+                        console.error('Error al sincronizar usuario con Prisma DB:', response.statusText);
                     } else {
                         const syncedUser = response.data;
                     }
                 } catch (error) {
-                    console.error(
-                        'Error al llamar a la API de sincronización:',
-                        error
-                    );
+                    console.error('Error al llamar a la API de sincronización:', error);
                     if (axios.isAxiosError(error) && error.response) {
-                        console.error(
-                            'Detalles del error de Axios:',
-                            error.response.data
-                        );
+                        console.error('Detalles del error de Axios:', error.response.data);
                     }
                 }
             };
@@ -57,17 +45,11 @@ export default function DashboardPage() {
     }, [isLoaded, isSignedIn, user, router]);
 
     if (!isLoaded) {
-        return (
-            <div className="p-4 text-center">Cargando datos del usuario...</div>
-        );
+        return <div className="p-4 text-center">Cargando datos del usuario...</div>;
     }
 
     if (!isSignedIn) {
-        return (
-            <div className="p-4 text-center">
-                No has iniciado sesión. Redirigiendo...
-            </div>
-        );
+        return <div className="p-4 text-center">No has iniciado sesión. Redirigiendo...</div>;
     }
 
     return (

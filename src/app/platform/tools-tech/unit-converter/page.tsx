@@ -29,36 +29,28 @@ export default function UnitConverterPage() {
     const [fromLengthUnit, setFromLengthUnit] = useState('m');
     const [toLengthUnit, setToLengthUnit] = useState('cm');
     const [lengthResult, setLengthResult] = useState<string | null>(null);
-    const [lengthCalculationDetails, setLengthCalculationDetails] = useState<
-        string[]
-    >([]);
+    const [lengthCalculationDetails, setLengthCalculationDetails] = useState<string[]>([]);
 
     // Peso/Masa
     const [weightValue, setWeightValue] = useState('');
     const [fromWeightUnit, setFromWeightUnit] = useState('kg');
     const [toWeightUnit, setToWeightUnit] = useState('g');
     const [weightResult, setWeightResult] = useState<string | null>(null);
-    const [weightCalculationDetails, setWeightCalculationDetails] = useState<
-        string[]
-    >([]);
+    const [weightCalculationDetails, setWeightCalculationDetails] = useState<string[]>([]);
 
     // Temperatura
     const [tempValue, setTempValue] = useState('');
     const [fromTempUnit, setFromTempUnit] = useState('c');
     const [toTempUnit, setToTempUnit] = useState('f');
     const [tempResult, setTempResult] = useState<string | null>(null);
-    const [tempCalculationDetails, setTempCalculationDetails] = useState<
-        string[]
-    >([]);
+    const [tempCalculationDetails, setTempCalculationDetails] = useState<string[]>([]);
 
     // Datos
     const [dataValue, setDataValue] = useState('');
     const [fromDataUnit, setFromDataUnit] = useState('mb'); // Corregido para usar el mismo patrón que los demás
     const [toDataUnit, setToDataUnit] = useState('kb');
     const [dataResult, setDataResult] = useState<string | null>(null);
-    const [dataCalculationDetails, setDataCalculationDetails] = useState<
-        string[]
-    >([]);
+    const [dataCalculationDetails, setDataCalculationDetails] = useState<string[]>([]);
 
     // --- Definiciones de Unidades ---
     const lengthUnits = [
@@ -127,27 +119,19 @@ export default function UnitConverterPage() {
     };
 
     // --- Funciones auxiliares ---
-    const getUnitLabel = (
-        value: string,
-        units: { value: string; label: string }[]
-    ) => {
+    const getUnitLabel = (value: string, units: { value: string; label: string }[]) => {
         const unit = units.find((u) => u.value === value);
         return unit ? unit.label.split(' ')[0] : value;
     };
 
-    const getRawUnitSymbol = (
-        value: string,
-        units: { value: string; label: string }[]
-    ) => {
+    const getRawUnitSymbol = (value: string, units: { value: string; label: string }[]) => {
         const unit = units.find((u) => u.value === value);
         // Extrae el símbolo dentro de los paréntesis (ej. "km" de "Kilómetro (km)")
         const match = unit?.label.match(/\(([^)]+)\)/);
         return match ? match[1] : value;
     };
 
-    const handleInputChange = (
-        setter: React.Dispatch<React.SetStateAction<string | null>>
-    ) => {
+    const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string | null>>) => {
         setter(null);
     };
 
@@ -173,10 +157,7 @@ export default function UnitConverterPage() {
                 return;
             }
 
-            const fromUnitSymbol = getRawUnitSymbol(
-                fromLengthUnit,
-                lengthUnits
-            );
+            const fromUnitSymbol = getRawUnitSymbol(fromLengthUnit, lengthUnits);
             const toUnitSymbol = getRawUnitSymbol(toLengthUnit, lengthUnits);
 
             const steps: string[] = [];
@@ -230,10 +211,7 @@ export default function UnitConverterPage() {
                 return;
             }
 
-            const fromUnitSymbol = getRawUnitSymbol(
-                fromWeightUnit,
-                weightUnits
-            );
+            const fromUnitSymbol = getRawUnitSymbol(fromWeightUnit, weightUnits);
             const toUnitSymbol = getRawUnitSymbol(toWeightUnit, weightUnits);
 
             const steps: string[] = [];
@@ -298,9 +276,7 @@ export default function UnitConverterPage() {
             if (fromTempUnit === 'c') {
                 celsius = value;
             } else if (fromTempUnit === 'f') {
-                steps.push(
-                    `= \\frac{(${value.toFixed(2)} \\ {}^{\\circ}F - 32) \\times 5}{9}`
-                );
+                steps.push(`= \\frac{(${value.toFixed(2)} \\ {}^{\\circ}F - 32) \\times 5}{9}`);
                 celsius = ((value - 32) * 5) / 9;
                 steps.push(`= ${celsius.toFixed(2)} \\ {}^{\\circ}C`);
             } else if (fromTempUnit === 'k') {
@@ -314,9 +290,7 @@ export default function UnitConverterPage() {
             if (toTempUnit === 'c') {
                 result = celsius;
             } else if (toTempUnit === 'f') {
-                steps.push(
-                    `= \\frac{(${celsius.toFixed(2)} \\ {}^{\\circ}C \\times 9)}{5} + 32`
-                );
+                steps.push(`= \\frac{(${celsius.toFixed(2)} \\ {}^{\\circ}C \\times 9)}{5} + 32`);
                 result = (celsius * 9) / 5 + 32;
                 steps.push(`= ${result.toFixed(2)} \\ {}^{\\circ}F`);
             } else if (toTempUnit === 'k') {
@@ -479,13 +453,7 @@ export default function UnitConverterPage() {
                             units={lengthUnits}
                             onConvert={convertLength}
                             onSwap={swapLengthUnits}
-                            onReset={() =>
-                                resetFields(
-                                    setLengthValue,
-                                    setLengthResult,
-                                    setLengthCalculationDetails
-                                )
-                            }
+                            onReset={() => resetFields(setLengthValue, setLengthResult, setLengthCalculationDetails)}
                             result={lengthResult}
                             calculationDetails={lengthCalculationDetails}
                         />
@@ -506,13 +474,7 @@ export default function UnitConverterPage() {
                             units={weightUnits}
                             onConvert={convertWeight}
                             onSwap={swapWeightUnits}
-                            onReset={() =>
-                                resetFields(
-                                    setWeightValue,
-                                    setWeightResult,
-                                    setWeightCalculationDetails
-                                )
-                            }
+                            onReset={() => resetFields(setWeightValue, setWeightResult, setWeightCalculationDetails)}
                             result={weightResult}
                             calculationDetails={weightCalculationDetails}
                         />
@@ -523,9 +485,7 @@ export default function UnitConverterPage() {
                         <ConversionCard
                             title="Temperatura"
                             description="Convierte entre diferentes unidades de temperatura."
-                            icon={
-                                <ThermometerSnowflake className="h-5 w-5 text-accent" />
-                            }
+                            icon={<ThermometerSnowflake className="h-5 w-5 text-accent" />}
                             value={tempValue}
                             setValue={setTempValue}
                             fromUnit={fromTempUnit}
@@ -535,13 +495,7 @@ export default function UnitConverterPage() {
                             units={tempUnits}
                             onConvert={convertTemperature}
                             onSwap={swapTempUnits}
-                            onReset={() =>
-                                resetFields(
-                                    setTempValue,
-                                    setTempResult,
-                                    setTempCalculationDetails
-                                )
-                            }
+                            onReset={() => resetFields(setTempValue, setTempResult, setTempCalculationDetails)}
                             result={tempResult}
                             calculationDetails={tempCalculationDetails}
                         />
@@ -562,13 +516,7 @@ export default function UnitConverterPage() {
                             units={dataUnits}
                             onConvert={convertData}
                             onSwap={swapDataUnits}
-                            onReset={() =>
-                                resetFields(
-                                    setDataValue,
-                                    setDataResult,
-                                    setDataCalculationDetails
-                                )
-                            }
+                            onReset={() => resetFields(setDataValue, setDataResult, setDataCalculationDetails)}
                             result={dataResult}
                             calculationDetails={dataCalculationDetails}
                         />

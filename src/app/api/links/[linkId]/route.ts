@@ -1,19 +1,12 @@
 import prisma from '@/lib/db';
 import { Link } from '@prisma/client';
-import {
-    NotFoundError,
-    ServerError,
-    UnprocessableEntityError,
-} from '@api/_services/errors';
+import { NotFoundError, ServerError, UnprocessableEntityError } from '@api/_services/errors';
 import { SuccessResponse } from '@api/_services/successfulResponses';
 import { updateLinkSchema } from '@/lib/schemas/link';
 import { ZodError } from 'zod';
 
 // GET /api/links/[linkId]
-export async function GET(
-    req: Request,
-    { params }: { params: Promise<{ linkId: string }> }
-) {
+export async function GET(req: Request, { params }: { params: Promise<{ linkId: string }> }) {
     try {
         const targetLinkId = (await params).linkId;
 
@@ -32,10 +25,7 @@ export async function GET(
     }
 }
 // DELETE /api/links/[linkId]
-export async function DELETE(
-    req: Request,
-    { params }: { params: Promise<{ linkId: string }> }
-) {
+export async function DELETE(req: Request, { params }: { params: Promise<{ linkId: string }> }) {
     try {
         const targetLinkId = (await params).linkId;
 
@@ -58,14 +48,10 @@ export async function DELETE(
 }
 
 // PUT /api/links/[linkId]
-export async function PUT(
-    req: Request,
-    { params }: { params: Promise<{ linkId: string }> }
-) {
+export async function PUT(req: Request, { params }: { params: Promise<{ linkId: string }> }) {
     try {
         const targetLinkId = (await params).linkId;
-        const { url, title, description, category, thumbnailUrl, tags } =
-            await req.json();
+        const { url, title, description, category, thumbnailUrl, tags } = await req.json();
 
         const validatedData = updateLinkSchema.parse({
             url,

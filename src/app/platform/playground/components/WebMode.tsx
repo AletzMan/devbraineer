@@ -1,23 +1,7 @@
 'use client';
-import {
-    CSSIcon,
-    HTML5Icon,
-    JSIcon,
-    ReactIcon,
-    TSIcon,
-} from '@/app/components/Icons';
+import { CSSIcon, HTML5Icon, JSIcon, ReactIcon, TSIcon } from '@/app/components/Icons';
 import { Editor } from '@monaco-editor/react';
-import {
-    Check,
-    Copy,
-    Download,
-    EllipsisVertical,
-    FileCode,
-    Play,
-    RefreshCcw,
-    Terminal,
-    TrashIcon,
-} from 'lucide-react';
+import { Check, Copy, Download, EllipsisVertical, FileCode, Play, RefreshCcw, Terminal, TrashIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 // Definir tipos para los archivos
@@ -606,9 +590,7 @@ li {
     const [webMode, setWebMode] = useState('html-css-js');
     const [output, setOutput] = useState('');
     const [copied, setCopied] = useState(false);
-    const [consoleOutput, setConsoleOutput] = useState<
-        { type: string; content: string }[]
-    >([]);
+    const [consoleOutput, setConsoleOutput] = useState<{ type: string; content: string }[]>([]);
     const [toast, setToast] = useState({
         title: '',
         description: '',
@@ -616,8 +598,7 @@ li {
         open: false,
     });
 
-    const currentFile =
-        files.find((file) => file.id === currentFileId) || files[0];
+    const currentFile = files.find((file) => file.id === currentFileId) || files[0];
 
     const updateCurrentFile = (content: string) => {
         setFiles(
@@ -734,27 +715,14 @@ li {
    `;
 
         if (webMode === 'html-css-js' || webMode === 'html-css-ts') {
-            const htmlFiles = files.filter(
-                (file) => file.extension === 'html' && file.type === webMode
-            );
-            const cssFiles = files.filter(
-                (file) => file.extension === 'css' && file.type === webMode
-            );
-            const scriptFiles = files.filter(
-                (file) =>
-                    file.extension === (webMode === 'html-css-js' ? 'js' : 'ts')
-            );
+            const htmlFiles = files.filter((file) => file.extension === 'html' && file.type === webMode);
+            const cssFiles = files.filter((file) => file.extension === 'css' && file.type === webMode);
+            const scriptFiles = files.filter((file) => file.extension === (webMode === 'html-css-js' ? 'js' : 'ts'));
 
-            const htmlContent =
-                htmlFiles.length > 0 ? htmlFiles[0].content : '';
-            const cssContent =
-                cssFiles.length > 0
-                    ? cssFiles.map((file) => file.content).join('\n')
-                    : '';
-            const scriptContent =
-                scriptFiles.length > 0 ? scriptFiles[0].content : '';
-            const scriptType =
-                webMode === 'html-css-js' ? 'javascript' : 'text/typescript';
+            const htmlContent = htmlFiles.length > 0 ? htmlFiles[0].content : '';
+            const cssContent = cssFiles.length > 0 ? cssFiles.map((file) => file.content).join('\n') : '';
+            const scriptContent = scriptFiles.length > 0 ? scriptFiles[0].content : '';
+            const scriptType = webMode === 'html-css-js' ? 'javascript' : 'text/typescript';
             const combinedOutput = `
        <!DOCTYPE html>
        <html>
@@ -796,18 +764,10 @@ li {
             setOutput(combinedOutput);
         } else if (webMode === 'react-js' || webMode === 'react-ts') {
             const reactFiles = files.filter((file) => file.type === webMode);
-            const cssFiles = files.filter(
-                (file) => file.extension === 'css' && file.type === webMode
-            );
+            const cssFiles = files.filter((file) => file.extension === 'css' && file.type === webMode);
 
-            const mainFile =
-                reactFiles.find((file) =>
-                    file.name.toLowerCase().includes('app')
-                ) || reactFiles[0];
-            const cssContent =
-                cssFiles.length > 0
-                    ? cssFiles.map((file) => file.content).join('\n')
-                    : '';
+            const mainFile = reactFiles.find((file) => file.name.toLowerCase().includes('app')) || reactFiles[0];
+            const cssContent = cssFiles.length > 0 ? cssFiles.map((file) => file.content).join('\n') : '';
             const isTypeScript = webMode === 'react-ts';
 
             const combinedOutput = `
@@ -883,19 +843,14 @@ li {
     // Escuchar mensajes del iframe (para la consola)
     useEffect(() => {
         const handleMessage = (event: MessageEvent) => {
-            if (
-                event.data &&
-                event.data.type &&
-                event.data.type.startsWith('console-')
-            ) {
+            if (event.data && event.data.type && event.data.type.startsWith('console-')) {
                 const { type, content } = event.data;
                 setConsoleOutput((prev) => [...prev, { type, content }]);
 
                 // Auto-scroll de la consola
                 if (consoleRef.current) {
                     setTimeout(() => {
-                        consoleRef.current!.scrollTop =
-                            consoleRef.current!.scrollHeight;
+                        consoleRef.current!.scrollTop = consoleRef.current!.scrollHeight;
                     }, 0);
                 }
             }
@@ -912,11 +867,7 @@ li {
     useEffect(() => {
         const file = files.find((f) => f.id === currentFileId);
         if (file) {
-            if (
-                file.type === 'html' ||
-                file.type === 'css' ||
-                file.type === 'js'
-            ) {
+            if (file.type === 'html' || file.type === 'css' || file.type === 'js') {
                 setWebMode('html-css-js');
             } else if (file.type === 'ts') {
                 setWebMode('html-css-ts');
@@ -935,8 +886,7 @@ li {
 
         setToast({
             title: 'Código copiado',
-            description:
-                'El código HTML completo se ha copiado al portapapeles.',
+            description: 'El código HTML completo se ha copiado al portapapeles.',
             variant: 'info',
             open: true,
         });
@@ -979,9 +929,7 @@ li {
 
     const handleSelectMode = (mode: string) => {
         setWebMode(mode);
-        setCurrentFileId(
-            files.find((file) => file.type === mode)?.id || files[0].id
-        );
+        setCurrentFileId(files.find((file) => file.type === mode)?.id || files[0].id);
     };
 
     const handleSave = () => {
@@ -998,8 +946,7 @@ li {
         } catch (error) {
             setToast({
                 title: 'Error al guardar',
-                description:
-                    'No se pudo guardar el código. Es posible que el almacenamiento esté lleno.',
+                description: 'No se pudo guardar el código. Es posible que el almacenamiento esté lleno.',
                 variant: 'error',
                 open: true,
             });
@@ -1032,10 +979,7 @@ li {
         }
     };
 
-    const renderConsoleItem = (
-        item: { type: string; content: string },
-        index: number
-    ) => {
+    const renderConsoleItem = (item: { type: string; content: string }, index: number) => {
         let className = 'text-gray-400';
         let icon = null;
 
@@ -1134,18 +1078,13 @@ li {
                                     type="checkbox"
                                     className="toggle toggle-info"
                                     checked={useTailwind}
-                                    onChange={() =>
-                                        setUseTailwind(!useTailwind)
-                                    }
+                                    onChange={() => setUseTailwind(!useTailwind)}
                                 />
                                 {useTailwind ? 'Tailwind' : 'CSS'}
                             </label>
                             <div className="flex gap-2">
                                 <div className="dropdown dropdown-start">
-                                    <div
-                                        tabIndex={0}
-                                        role="button"
-                                        className="btn btn-sm">
+                                    <div tabIndex={0} role="button" className="btn btn-sm">
                                         <EllipsisVertical className="size-5" />
                                     </div>
                                     <ul
@@ -1155,14 +1094,8 @@ li {
                                             <button
                                                 className="btn btn-sm btn-ghost justify-start gap-4"
                                                 onClick={handleCopy}>
-                                                {copied ? (
-                                                    <Check className="size-4" />
-                                                ) : (
-                                                    <Copy className="size-4" />
-                                                )}
-                                                {copied
-                                                    ? 'Copiado'
-                                                    : 'Copiar HTML'}
+                                                {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+                                                {copied ? 'Copiado' : 'Copiar HTML'}
                                             </button>
                                         </li>
                                         <li>
@@ -1203,14 +1136,10 @@ li {
                                         <div
                                             key={file.id}
                                             className={`flex w-[150px] items-center justify-between px-2 py-1.5 cursor-pointer transition-all duration-100 border-r-1 border-(--color-gray-700) rounded-t-xs ${currentFileId === file.id ? 'bg-(--color-gray-600) text-gray-100 border-b-2 border-b-(--color-secondary)' : 'bg-(--color-gray-800) hover:bg-gray-600 text-gray-400 hover:text-gray-100 border-b-2 border-(--color-gray-700)'}`}
-                                            onClick={() =>
-                                                setCurrentFileId(file.id)
-                                            }>
+                                            onClick={() => setCurrentFileId(file.id)}>
                                             <div className="flex items-center gap-2">
                                                 {getFileIcon(file.extension)}
-                                                <span className="text-sm">
-                                                    {file.name}
-                                                </span>
+                                                <span className="text-sm">{file.name}</span>
                                             </div>
                                         </div>
                                     ))}
@@ -1224,9 +1153,7 @@ li {
                                     height={'100%'}
                                     language={currentFile.language}
                                     value={currentFile.content}
-                                    onChange={(value) =>
-                                        updateCurrentFile(value || '')
-                                    }
+                                    onChange={(value) => updateCurrentFile(value || '')}
                                     theme={'vs-dark'}
                                     options={{
                                         minimap: { enabled: false },
@@ -1243,37 +1170,23 @@ li {
                                         formatOnPaste: true,
                                     }}
                                     onMount={async (editor, monaco) => {
-                                        monaco.languages.typescript.typescriptDefaults.setCompilerOptions(
-                                            {
-                                                target: monaco.languages
-                                                    .typescript.ScriptTarget
-                                                    .Latest,
-                                                allowNonTsExtensions: true,
-                                                moduleResolution:
-                                                    monaco.languages.typescript
-                                                        .ModuleResolutionKind
-                                                        .NodeJs,
-                                                module: monaco.languages
-                                                    .typescript.ModuleKind
-                                                    .CommonJS,
-                                                noEmit: true,
-                                                esModuleInterop: true,
-                                                jsx: monaco.languages.typescript
-                                                    .JsxEmit.React,
-                                                reactNamespace: 'React',
-                                                allowJs: true,
-                                                typeRoots: [
-                                                    'node_modules/@types',
-                                                ],
-                                            }
-                                        );
+                                        monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+                                            target: monaco.languages.typescript.ScriptTarget.Latest,
+                                            allowNonTsExtensions: true,
+                                            moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+                                            module: monaco.languages.typescript.ModuleKind.CommonJS,
+                                            noEmit: true,
+                                            esModuleInterop: true,
+                                            jsx: monaco.languages.typescript.JsxEmit.React,
+                                            reactNamespace: 'React',
+                                            allowJs: true,
+                                            typeRoots: ['node_modules/@types'],
+                                        });
 
-                                        monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions(
-                                            {
-                                                noSemanticValidation: true,
-                                                noSyntaxValidation: true,
-                                            }
-                                        );
+                                        monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+                                            noSemanticValidation: true,
+                                            noSyntaxValidation: true,
+                                        });
 
                                         monaco.editor.createModel(
                                             currentFile.content,
@@ -1293,9 +1206,7 @@ li {
                                 <h3 className="text-sm font-medium">Consola</h3>
                             </div>
                             <div className="flex items-center gap-1">
-                                <button
-                                    onClick={clearConsole}
-                                    className="btn btn-ghost btn-sm">
+                                <button onClick={clearConsole} className="btn btn-ghost btn-sm">
                                     Limpiar
                                 </button>
                             </div>
@@ -1304,15 +1215,13 @@ li {
                             ref={consoleRef}
                             className={`bg-neutral backdrop-blur-sm rounded-b-sm p-2 overflow-auto  h-50`}>
                             {consoleOutput.length > 0 ? (
-                                consoleOutput.map((item, index) =>
-                                    renderConsoleItem(item, index)
-                                )
+                                consoleOutput.map((item, index) => renderConsoleItem(item, index))
                             ) : (
                                 <div
                                     className="text-muted-foreground text-xs text-gray-400 p-2"
                                     style={{ fontFamily: 'consolas' }}>
-                                    La consola está vacía. Usa console.log() en
-                                    tu código JavaScript para ver mensajes aquí.
+                                    La consola está vacía. Usa console.log() en tu código JavaScript para ver mensajes
+                                    aquí.
                                 </div>
                             )}
                         </div>
@@ -1320,9 +1229,7 @@ li {
                 </div>
                 <div className="flex flex-col gap-2 h-[calc(100vh-135px)]">
                     <div className="flex flex-wrap items-center gap-2">
-                        <button
-                            onClick={handleRun}
-                            className="btn btn-success btn-sm">
+                        <button onClick={handleRun} className="btn btn-success btn-sm">
                             <Play className="size-4" />
                             Ejecutar
                         </button>
@@ -1334,9 +1241,7 @@ li {
                                 <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                                 <div className="w-3 h-3 rounded-full bg-green-500"></div>
                             </div>
-                            <div className="mx-auto text-sm font-light text-muted-foreground">
-                                Vista previa
-                            </div>
+                            <div className="mx-auto text-sm font-light text-muted-foreground">Vista previa</div>
                         </div>
 
                         <iframe

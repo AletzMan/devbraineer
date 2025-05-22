@@ -1,13 +1,4 @@
-import {
-    Calculator,
-    RotateCcw,
-    Lightbulb,
-    Zap,
-    Power,
-    CircleX,
-    CircleCheck,
-    Omega,
-} from 'lucide-react';
+import { Calculator, RotateCcw, Lightbulb, Zap, Power, CircleX, CircleCheck, Omega } from 'lucide-react';
 import { useState } from 'react';
 import { BlockMath } from 'react-katex';
 import SectionCalculator from './SectionCalculator';
@@ -27,14 +18,10 @@ export default function OhmCalculator() {
             const r = ohmResistance ? Number.parseFloat(ohmResistance) : null;
             const p = ohmPower ? Number.parseFloat(ohmPower) : null;
 
-            const valueCount = [v, i, r, p].filter(
-                (val) => val !== null
-            ).length;
+            const valueCount = [v, i, r, p].filter((val) => val !== null).length;
 
             if (valueCount < 2) {
-                setOhmResult(
-                    '¡Ups! Necesitas ingresar al menos dos valores para calcular.'
-                );
+                setOhmResult('¡Ups! Necesitas ingresar al menos dos valores para calcular.');
                 setOhmCalculations([]);
                 return;
             }
@@ -46,102 +33,76 @@ export default function OhmCalculator() {
                 const calculatedV = i * r;
                 result = `Voltaje (V) = ${calculatedV.toFixed(2)} V`;
                 calculations.push(`V = I \\times R`);
-                calculations.push(
-                    `V = ${i.toFixed(2)} A \\times ${r.toFixed(2)} \\Omega`
-                );
+                calculations.push(`V = ${i.toFixed(2)} A \\times ${r.toFixed(2)} \\Omega`);
                 calculations.push(`V = ${calculatedV.toFixed(2)} V`);
             } else if (v === null && p !== null && i !== null) {
                 const calculatedV = p / i;
                 result = `Voltaje (V) = ${calculatedV.toFixed(2)} V`;
                 calculations.push(`V = \\frac{P}{I}`);
-                calculations.push(
-                    `V = \\frac{${p.toFixed(2)} W}{${i.toFixed(2)} A}`
-                );
+                calculations.push(`V = \\frac{${p.toFixed(2)} W}{${i.toFixed(2)} A}`);
                 calculations.push(`V = ${calculatedV.toFixed(2)} V`);
             } else if (v === null && p !== null && r !== null) {
                 const calculatedV = Math.sqrt(p * r);
                 result = `Voltaje (V) = ${calculatedV.toFixed(2)} V`;
                 calculations.push(`V = \\sqrt{P \\times R}`);
-                calculations.push(
-                    `V = \\sqrt{${p.toFixed(2)} W \\times ${r.toFixed(2)} \\Omega}`
-                );
+                calculations.push(`V = \\sqrt{${p.toFixed(2)} W \\times ${r.toFixed(2)} \\Omega}`);
                 calculations.push(`V = ${calculatedV.toFixed(2)} V`);
             } else if (i === null && v !== null && r !== null) {
                 const calculatedI = v / r;
                 result = `Corriente (I) = ${calculatedI.toFixed(2)} A`;
                 calculations.push(`I = \\frac{V}{R}`);
-                calculations.push(
-                    `I = \\frac{${v.toFixed(2)} V}{${r.toFixed(2)} \\Omega}`
-                );
+                calculations.push(`I = \\frac{${v.toFixed(2)} V}{${r.toFixed(2)} \\Omega}`);
                 calculations.push(`I = ${calculatedI.toFixed(2)} A`);
             } else if (i === null && p !== null && v !== null) {
                 const calculatedI = p / v;
                 result = `Corriente (I) = ${calculatedI.toFixed(2)} A`;
                 calculations.push(`I = \\frac{P}{V}`);
-                calculations.push(
-                    `I = \\frac{${p.toFixed(2)} W}{${v.toFixed(2)} V}`
-                );
+                calculations.push(`I = \\frac{${p.toFixed(2)} W}{${v.toFixed(2)} V}`);
                 calculations.push(`I = ${calculatedI.toFixed(2)} A`);
             } else if (i === null && p !== null && r !== null) {
                 const calculatedI = Math.sqrt(p / r);
                 result = `Corriente (I) = ${calculatedI.toFixed(2)} A`;
                 calculations.push(`I = \\sqrt{\\frac{P}{R}}`);
-                calculations.push(
-                    `I = \\sqrt{\\frac{${p.toFixed(2)} W}{${r.toFixed(2)} \\Omega}}`
-                );
+                calculations.push(`I = \\sqrt{\\frac{${p.toFixed(2)} W}{${r.toFixed(2)} \\Omega}}`);
                 calculations.push(`I = ${calculatedI.toFixed(2)} A`);
             } else if (r === null && v !== null && i !== null) {
                 const calculatedR = v / i;
                 result = `Resistencia (R) = ${calculatedR.toFixed(2)} Ω`;
                 calculations.push(`R = \\frac{V}{I}`);
-                calculations.push(
-                    `R = \\frac{${v.toFixed(2)} V}{${i.toFixed(2)} A}`
-                );
+                calculations.push(`R = \\frac{${v.toFixed(2)} V}{${i.toFixed(2)} A}`);
                 calculations.push(`R = ${calculatedR.toFixed(2)} \\Omega`);
             } else if (r === null && p !== null && i !== null) {
                 const calculatedR = p / (i * i);
                 result = `Resistencia (R) = ${calculatedR.toFixed(2)} Ω`;
                 calculations.push(`R = \\frac{P}{I^2}`);
-                calculations.push(
-                    `R = \\frac{${p.toFixed(2)} W}{(${i.toFixed(2)} A)^2}`
-                );
+                calculations.push(`R = \\frac{${p.toFixed(2)} W}{(${i.toFixed(2)} A)^2}`);
                 calculations.push(`R = ${calculatedR.toFixed(2)} \\Omega`);
             } else if (r === null && p !== null && v !== null) {
                 const calculatedR = (v * v) / p;
                 result = `Resistencia (R) = ${calculatedR.toFixed(2)} Ω`;
                 calculations.push(`R = \\frac{V^2}{P}`);
-                calculations.push(
-                    `R = \\frac{(${v.toFixed(2)} V)^2}{${p.toFixed(2)} W}`
-                );
+                calculations.push(`R = \\frac{(${v.toFixed(2)} V)^2}{${p.toFixed(2)} W}`);
                 calculations.push(`R = ${calculatedR.toFixed(2)} \\Omega`);
             } else if (p === null && v !== null && i !== null) {
                 const calculatedP = v * i;
                 result = `Potencia (P) = ${calculatedP.toFixed(2)} W`;
                 calculations.push(`P = V \\times I`);
-                calculations.push(
-                    `P = ${v.toFixed(2)} V \\times ${i.toFixed(2)} A`
-                );
+                calculations.push(`P = ${v.toFixed(2)} V \\times ${i.toFixed(2)} A`);
                 calculations.push(`P = ${calculatedP.toFixed(2)} W`);
             } else if (p === null && i !== null && r !== null) {
                 const calculatedP = i * i * r;
                 result = `Potencia (P) = ${calculatedP.toFixed(2)} W`;
                 calculations.push(`P = I^2 \\times R`);
-                calculations.push(
-                    `P = (${i.toFixed(2)} A)^2 \\times ${r.toFixed(2)} \\Omega`
-                );
+                calculations.push(`P = (${i.toFixed(2)} A)^2 \\times ${r.toFixed(2)} \\Omega`);
                 calculations.push(`P = ${calculatedP.toFixed(2)} W`);
             } else if (p === null && v !== null && r !== null) {
                 const calculatedP = (v * v) / r;
                 result = `Potencia (P) = ${calculatedP.toFixed(2)} W`;
                 calculations.push(`P = \\frac{V^2}{R}`);
-                calculations.push(
-                    `P = \\frac{(${v.toFixed(2)} V)^2}{${r.toFixed(2)} \\Omega}`
-                );
+                calculations.push(`P = \\frac{(${v.toFixed(2)} V)^2}{${r.toFixed(2)} \\Omega}`);
                 calculations.push(`P = ${calculatedP.toFixed(2)} W`);
             } else {
-                setOhmResult(
-                    'No puedo calcular con esa combinación. Intenta con un par de valores diferente.'
-                );
+                setOhmResult('No puedo calcular con esa combinación. Intenta con un par de valores diferente.');
                 setOhmCalculations([]);
                 return;
             }
@@ -149,9 +110,7 @@ export default function OhmCalculator() {
             setOhmResult(result);
             setOhmCalculations(calculations);
         } catch (error) {
-            setOhmResult(
-                '¡Vaya! Hubo un error en el cálculo. Asegúrate de que los valores sean válidos.'
-            );
+            setOhmResult('¡Vaya! Hubo un error en el cálculo. Asegúrate de que los valores sean válidos.');
             setOhmCalculations([]);
         }
     };
@@ -195,9 +154,7 @@ export default function OhmCalculator() {
                                     placeholder="Ej: 12.5"
                                     className="grow text-base placeholder:text-base-content/60"
                                     value={ohmVoltage}
-                                    onChange={(e) =>
-                                        setOhmVoltage(e.target.value)
-                                    }
+                                    onChange={(e) => setOhmVoltage(e.target.value)}
                                 />
                                 <div className="badge badge-md badge-soft badge-warning rounded-sm min-w-[2.5rem]">
                                     V
@@ -217,9 +174,7 @@ export default function OhmCalculator() {
                                     placeholder="Ej: 2.0"
                                     className="grow text-base placeholder:text-base-content/60"
                                     value={ohmCurrent}
-                                    onChange={(e) =>
-                                        setOhmCurrent(e.target.value)
-                                    }
+                                    onChange={(e) => setOhmCurrent(e.target.value)}
                                 />
                                 <div className="badge badge-md badge-soft badge-warning rounded-sm min-w-[2.5rem]">
                                     A
@@ -239,9 +194,7 @@ export default function OhmCalculator() {
                                     placeholder="Ej: 100"
                                     className="grow text-base placeholder:text-base-content/60"
                                     value={ohmResistance}
-                                    onChange={(e) =>
-                                        setOhmResistance(e.target.value)
-                                    }
+                                    onChange={(e) => setOhmResistance(e.target.value)}
                                 />
                                 <div className="badge badge-md badge-soft badge-warning rounded-sm min-w-[2.5rem]">
                                     <Omega className="size-4" />
@@ -262,9 +215,7 @@ export default function OhmCalculator() {
                                     placeholder="Ej: 25.5"
                                     className="grow text-base placeholder:text-base-content/60"
                                     value={ohmPower}
-                                    onChange={(e) =>
-                                        setOhmPower(e.target.value)
-                                    }
+                                    onChange={(e) => setOhmPower(e.target.value)}
                                 />
                                 <div className="badge badge-md badge-soft badge-warning rounded-sm min-w-[2.5rem]">
                                     W
@@ -312,9 +263,7 @@ export default function OhmCalculator() {
                             </div>
                         </div>
                         <div className="mt-auto pt-5 border-t border-base-content/20 z-10 flex-grow flex flex-col justify-end">
-                            <h3 className="text-xl font-extrabold text-accent text-center mb-3">
-                                Cálculo Detallado
-                            </h3>
+                            <h3 className="text-xl font-extrabold text-accent text-center mb-3">Cálculo Detallado</h3>
                             {ohmCalculations.length > 0 ? (
                                 <div className="p-3 space-y-2 bg-base-200 rounded-lg shadow-inner border border-base-content/15 overflow-y-auto custom-scrollbar flex-grow">
                                     {ohmCalculations.map((calc, index) => (
@@ -340,9 +289,7 @@ export default function OhmCalculator() {
                                     ) : (
                                         <CircleCheck className="h-6 w-6" />
                                     )}
-                                    <span className="font-bold text-lg">
-                                        {ohmResult}
-                                    </span>
+                                    <span className="font-bold text-lg">{ohmResult}</span>
                                 </div>
                             )}
                         </div>

@@ -1,20 +1,10 @@
 import { auth } from '@clerk/nextjs/server';
 import prisma from '@/lib/db';
-import {
-    ForbiddenError,
-    NotFoundError,
-    ServerError,
-} from '../../_services/errors';
-import {
-    SuccessResponse,
-    SuccessUpdate,
-} from '../../_services/successfulResponses';
+import { ForbiddenError, NotFoundError, ServerError } from '../../_services/errors';
+import { SuccessResponse, SuccessUpdate } from '../../_services/successfulResponses';
 
 // Obtiene la información pública del perfil de un usuario específico.
-export async function GET(
-    req: Request,
-    { params }: { params: Promise<{ userId: string }> }
-) {
+export async function GET(req: Request, { params }: { params: Promise<{ userId: string }> }) {
     try {
         const targetUserId = (await params).userId;
 
@@ -40,10 +30,7 @@ export async function GET(
     }
 }
 
-export async function PUT(
-    req: Request,
-    { params }: { params: Promise<{ userId: string }> }
-) {
+export async function PUT(req: Request, { params }: { params: Promise<{ userId: string }> }) {
     const { userId: authenticatedUserId } = await auth();
     const targetUserId = (await params).userId;
 
@@ -54,8 +41,7 @@ export async function PUT(
 
     try {
         // Obtiene los datos de actualización del cuerpo de la solicitud
-        const { avatar_url, city, country, description, technologies } =
-            await req.json();
+        const { avatar_url, city, country, description, technologies } = await req.json();
 
         // Actualiza el perfil en la base de datos
         const updatedProfile = await prisma.profile.upsert({

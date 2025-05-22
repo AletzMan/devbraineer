@@ -1,11 +1,7 @@
 import { Sidebar } from './componentes/Sidebar';
 import Header from './componentes/Header';
 
-export default function PlatformLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+export default function PlatformLayout({ children }: { children: React.ReactNode }) {
     return (
         <section className="relative grid grid-cols-[16.75em_1fr] max-2xl:grid-cols-[3.75em_1fr] max-lg:grid-cols-1 min-h-svh bg-(--color-base-300) text-white overflow-hidden w-full  transition-all duration-100">
             <Sidebar />

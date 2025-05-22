@@ -1,11 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export const PaginationResponse = (
-    results: unknown,
-    totalResults: number,
-    totalPages: number,
-    currentPage: number
-) => {
+export const PaginationResponse = (results: unknown, totalResults: number, totalPages: number, currentPage: number) => {
     return NextResponse.json(
         {
             error: false,

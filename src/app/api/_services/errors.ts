@@ -39,8 +39,7 @@ export const BadRequestError = (message: string) => {
         {
             code: 400,
             message: message,
-            description:
-                'The server cannot or will not process the request due to an apparent client error.',
+            description: 'The server cannot or will not process the request due to an apparent client error.',
         },
         { status: 400 }
     );
@@ -51,8 +50,7 @@ export const ForbiddenError = () => {
         {
             code: 403,
             message: 'Forbidden',
-            description:
-                'Sorry, you do not have permission to access this resource.',
+            description: 'Sorry, you do not have permission to access this resource.',
         },
         { status: 403 }
     );
@@ -75,8 +73,7 @@ export const UnprocessableEntityError = (issues: unknown) => {
         {
             code: 422,
             message: 'Unprocessable entity',
-            description:
-                'The request was well-formed but was unable to be followed due to semantic errors.',
+            description: 'The request was well-formed but was unable to be followed due to semantic errors.',
             issues,
         },
         { status: 422 }

@@ -1,16 +1,8 @@
 import { auth } from '@clerk/nextjs/server';
 import prisma from '@/lib/db';
 import { RegexPattern } from '@prisma/client';
-import {
-    SuccessCreate,
-    SuccessResponse,
-} from '../_services/successfulResponses';
-import {
-    BadRequestError,
-    NotAuthorizedError,
-    ServerError,
-    UnprocessableEntityError,
-} from '../_services/errors';
+import { SuccessCreate, SuccessResponse } from '../_services/successfulResponses';
+import { BadRequestError, NotAuthorizedError, ServerError, UnprocessableEntityError } from '../_services/errors';
 import { createRegexPatternSchema } from '@/lib/schemas/regex-pattern';
 import { ZodError } from 'zod';
 
@@ -53,11 +45,7 @@ export async function POST(req: Request) {
             pattern,
             description,
         });
-        const {
-            name: validatedName,
-            pattern: validatedPattern,
-            description: validatedDescription,
-        } = validatedData;
+        const { name: validatedName, pattern: validatedPattern, description: validatedDescription } = validatedData;
 
         // Validación básica (si no usas Zod)
         if (!name || !pattern) {

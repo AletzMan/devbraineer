@@ -55,8 +55,7 @@ export const ConsoleMode = () => {
         open: false,
     });
 
-    const currentFile =
-        files.find((file) => file.id === currentFileId) || files[0];
+    const currentFile = files.find((file) => file.id === currentFileId) || files[0];
 
     const updateCurrentFile = (content: string) => {
         setFiles(
@@ -84,9 +83,7 @@ export const ConsoleMode = () => {
         const fileToDelete = files.find((file) => file.id === id);
         if (!fileToDelete) return;
 
-        const filesOfSameType = files.filter(
-            (file) => file.type === fileToDelete.type
-        );
+        const filesOfSameType = files.filter((file) => file.type === fileToDelete.type);
         if (filesOfSameType.length <= 1) {
             setToast({
                 title: 'Error',
@@ -98,15 +95,9 @@ export const ConsoleMode = () => {
             return;
         }
 
-        if (
-            confirm(
-                `¿Estás seguro de que quieres eliminar el archivo ${fileToDelete.name}?`
-            )
-        ) {
+        if (confirm(`¿Estás seguro de que quieres eliminar el archivo ${fileToDelete.name}?`)) {
             if (currentFileId === id) {
-                const nextFile = files.find(
-                    (file) => file.type === fileToDelete.type && file.id !== id
-                );
+                const nextFile = files.find((file) => file.type === fileToDelete.type && file.id !== id);
                 if (nextFile) {
                     setCurrentFileId(nextFile.id);
                 }
@@ -126,15 +117,10 @@ export const ConsoleMode = () => {
 
     useEffect(() => {
         const handleMessage = (event: MessageEvent) => {
-            if (
-                event.data &&
-                event.data.type &&
-                event.data.type.startsWith('console-')
-            ) {
+            if (event.data && event.data.type && event.data.type.startsWith('console-')) {
                 if (consoleRef.current) {
                     setTimeout(() => {
-                        consoleRef.current!.scrollTop =
-                            consoleRef.current!.scrollHeight;
+                        consoleRef.current!.scrollTop = consoleRef.current!.scrollHeight;
                     }, 0);
                 }
             }
@@ -161,17 +147,9 @@ export const ConsoleMode = () => {
             stderr: '',
             stdout: '',
         });
-        const response = await RunCode(
-            consoleLanguage,
-            currentFile.content,
-            currentFile.version,
-            input
-        );
+        const response = await RunCode(consoleLanguage, currentFile.content, currentFile.version, input);
 
-        if (
-            response.response?.run.code === 1 &&
-            response.response?.run.stderr
-        ) {
+        if (response.response?.run.code === 1 && response.response?.run.stderr) {
             setConsoleOutput(response.response?.run);
         } else {
             if (response.response) setConsoleOutput(response.response?.run);
@@ -185,8 +163,7 @@ export const ConsoleMode = () => {
 
         setToast({
             title: 'Código copiado',
-            description:
-                'El código HTML completo se ha copiado al portapapeles.',
+            description: 'El código HTML completo se ha copiado al portapapeles.',
             variant: 'info',
             open: true,
         });
@@ -241,8 +218,7 @@ export const ConsoleMode = () => {
         } catch (error) {
             setToast({
                 title: 'Error al guardar',
-                description:
-                    'No se pudo guardar el código. Es posible que el almacenamiento esté lleno.',
+                description: 'No se pudo guardar el código. Es posible que el almacenamiento esté lleno.',
                 variant: 'error',
                 open: true,
             });
@@ -333,33 +309,21 @@ export const ConsoleMode = () => {
                                 Lenguaje
                             </option>
                             {FILES_DEFAULT.map((file) => (
-                                <option
-                                    className="capitalize"
-                                    key={file.id}
-                                    value={file.language}>
+                                <option className="capitalize" key={file.id} value={file.language}>
                                     {file.language}
                                 </option>
                             ))}
                         </select>
                         <div className="dropdown dropdown-start">
-                            <div
-                                tabIndex={0}
-                                role="button"
-                                className="btn btn-sm">
+                            <div tabIndex={0} role="button" className="btn btn-sm">
                                 <EllipsisVertical className="size-5" />
                             </div>
                             <ul
                                 tabIndex={0}
                                 className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
                                 <li>
-                                    <button
-                                        className="btn btn-sm btn-ghost justify-start gap-4"
-                                        onClick={handleCopy}>
-                                        {copied ? (
-                                            <Check className="size-4" />
-                                        ) : (
-                                            <Copy className="size-4" />
-                                        )}
+                                    <button className="btn btn-sm btn-ghost justify-start gap-4" onClick={handleCopy}>
+                                        {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
                                         {copied ? 'Copiado' : 'Copiar Codigo'}
                                     </button>
                                 </li>
@@ -372,17 +336,13 @@ export const ConsoleMode = () => {
                                     </button>
                                 </li>
                                 <li>
-                                    <button
-                                        className="btn btn-sm btn-ghost justify-start gap-4"
-                                        onClick={handleLoad}>
+                                    <button className="btn btn-sm btn-ghost justify-start gap-4" onClick={handleLoad}>
                                         <RefreshCcw className="size-4" />
                                         Cargar
                                     </button>
                                 </li>
                                 <li>
-                                    <button
-                                        className="btn btn-sm btn-ghost justify-start gap-4"
-                                        onClick={handleClear}>
+                                    <button className="btn btn-sm btn-ghost justify-start gap-4" onClick={handleClear}>
                                         <TrashIcon className="size-4" />
                                         Limpiar
                                     </button>
@@ -395,22 +355,15 @@ export const ConsoleMode = () => {
                             <div className="flex flex-row divide-x divide-(--color-gray-500) max-w-max">
                                 {/* Mostrar archivos según el modo actual */}
                                 {files
-                                    .filter(
-                                        (file) =>
-                                            file.language === consoleLanguage
-                                    )
+                                    .filter((file) => file.language === consoleLanguage)
                                     .map((file) => (
                                         <div
                                             key={file.id}
                                             className={`flex items-center justify-between px-2 py-1.5 cursor-pointer border-r-1 border-(--color-gray-700) rounded-t-xs ${currentFileId === file.id ? 'bg-gray-600 text-gray-100 border-b-2 border-b-(--color-secondary)' : 'bg-gray-800 hover:bg-gray-600 text-gray-400 hover:text-gray-100 border-b-2 border-(--color-gray-700)'}`}
-                                            onClick={() =>
-                                                setCurrentFileId(file.id)
-                                            }>
+                                            onClick={() => setCurrentFileId(file.id)}>
                                             <div className="flex items-center gap-2">
                                                 {getFileIcon(file.type)}
-                                                <span className="text-sm">
-                                                    {file.name}
-                                                </span>
+                                                <span className="text-sm">{file.name}</span>
                                             </div>
                                         </div>
                                     ))}
@@ -424,9 +377,7 @@ export const ConsoleMode = () => {
                                     height={'100%'}
                                     language={currentFile.type}
                                     value={currentFile.content}
-                                    onChange={(value) =>
-                                        updateCurrentFile(value || '')
-                                    }
+                                    onChange={(value) => updateCurrentFile(value || '')}
                                     theme={'vs-dark'}
                                     options={{
                                         minimap: { enabled: false },
@@ -449,9 +400,7 @@ export const ConsoleMode = () => {
                 </div>
                 <div className="flex flex-col w-full gap-2">
                     <div className="flex flex-wrap items-center gap-2">
-                        <button
-                            onClick={HandleRunCode}
-                            className="btn btn-success btn-sm">
+                        <button onClick={HandleRunCode} className="btn btn-success btn-sm">
                             <Play className="size-4" />
                             Ejecutar
                         </button>
@@ -466,16 +415,12 @@ export const ConsoleMode = () => {
                                             ${consoleOutput.code === 0 && 'bg-green-600'}`}></span>
                                 <div className="flex items-center gap-2">
                                     <Terminal className="h-4 w-4 text-tech-cyan" />
-                                    <h3 className="text-sm font-medium">
-                                        Consola
-                                    </h3>
+                                    <h3 className="text-sm font-medium">Consola</h3>
                                 </div>
                             </div>
 
                             <div className="flex items-center gap-1">
-                                <button
-                                    onClick={clearConsole}
-                                    className="btn btn-ghost btn-sm">
+                                <button onClick={clearConsole} className="btn btn-ghost btn-sm">
                                     Limpiar
                                 </button>
                             </div>
@@ -484,17 +429,12 @@ export const ConsoleMode = () => {
                             <textarea
                                 className={`w-full h-[calc(100svh-300px)] overflow-auto p-4 bg-neutral outline-0 resize-none border-b-1 border-(--color-gray-700)`}
                                 style={{ fontFamily: 'consolas' }}
-                                value={consoleOutput.output.replaceAll(
-                                    /\/piston\/jobs\/[a-f0-9\-]{36}\/file0./g,
-                                    ''
-                                )}
+                                value={consoleOutput.output.replaceAll(/\/piston\/jobs\/[a-f0-9\-]{36}\/file0./g, '')}
                                 spellCheck={false}
                                 readOnly
                             />
                             <div className="flex flex-col gap-1 p-4">
-                                <label
-                                    htmlFor="stdin"
-                                    className="text-sm font-medium text-gray-300">
+                                <label htmlFor="stdin" className="text-sm font-medium text-gray-300">
                                     Entrada estándar (stdin)
                                 </label>
                                 <textarea

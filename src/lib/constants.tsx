@@ -1,10 +1,4 @@
-import {
-    CalendarIcon,
-    ChartBarIcon,
-    CircleHelp,
-    CodeIcon,
-    LightbulbIcon,
-} from 'lucide-react';
+import { CalendarIcon, ChartBarIcon, CircleHelp, CodeIcon, LightbulbIcon } from 'lucide-react';
 
 export const supportedLanguages = [
     'bash',

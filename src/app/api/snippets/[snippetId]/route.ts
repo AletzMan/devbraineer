@@ -1,21 +1,11 @@
 import prisma from '@/lib/db';
 import { Snippet } from '@prisma/client';
-import {
-    NotAuthorizedError,
-    NotFoundError,
-    ServerError,
-} from '../../_services/errors';
-import {
-    SuccessDelete,
-    SuccessResponse,
-} from '../../_services/successfulResponses';
+import { NotAuthorizedError, NotFoundError, ServerError } from '../../_services/errors';
+import { SuccessDelete, SuccessResponse } from '../../_services/successfulResponses';
 import { auth } from '@clerk/nextjs/server';
 
 // GET /api/snippets/[snippetId]
-export async function GET(
-    req: Request,
-    { params }: { params: Promise<{ snippetId: string }> }
-) {
+export async function GET(req: Request, { params }: { params: Promise<{ snippetId: string }> }) {
     try {
         const targetSnippetId = (await params).snippetId;
         const { userId } = await auth();
@@ -46,10 +36,7 @@ export async function GET(
 }
 
 // DELETE /api/snippets/[snippetId]
-export async function DELETE(
-    req: Request,
-    { params }: { params: Promise<{ snippetId: string }> }
-) {
+export async function DELETE(req: Request, { params }: { params: Promise<{ snippetId: string }> }) {
     try {
         const targetSnippetId = (await params).snippetId;
         const deletedSnippet = await prisma.snippet.delete({

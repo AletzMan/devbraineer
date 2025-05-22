@@ -44,9 +44,7 @@ export function ConversionCard({
             <h3 className="text-xl font-extrabold text-secondary text-center mb-5 z-10 flex items-center justify-center gap-2">
                 {icon} {title}
             </h3>
-            <p className="text-base-content/70 text-center mb-6 z-10">
-                {description}
-            </p>
+            <p className="text-base-content/70 text-center mb-6 z-10">{description}</p>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
                 {/* Columna de Inputs y Controles */}
@@ -69,9 +67,7 @@ export function ConversionCard({
                     <div className="grid grid-cols-5 gap-2 items-end">
                         <div className="col-span-2 space-y-2 form-control">
                             <label className="label">
-                                <span className="label-text text-base-content text-base font-semibold">
-                                    De
-                                </span>
+                                <span className="label-text text-base-content text-base font-semibold">De</span>
                             </label>
                             <select
                                 className="select select-bordered select-sm w-full shadow-md bg-base-100 hover:bg-base-50 focus:outline-none focus:ring-3 focus:ring-primary focus:border-primary transition-all duration-300 ease-in-out"
@@ -95,9 +91,7 @@ export function ConversionCard({
 
                         <div className="col-span-2 space-y-2 form-control">
                             <label className="label">
-                                <span className="label-text text-base-content text-base font-semibold">
-                                    A
-                                </span>
+                                <span className="label-text text-base-content text-base font-semibold">A</span>
                             </label>
                             <select
                                 className="select select-bordered select-sm w-full shadow-md bg-base-100 hover:bg-base-50 focus:outline-none focus:ring-3 focus:ring-primary focus:border-primary transition-all duration-300 ease-in-out"
@@ -130,9 +124,7 @@ export function ConversionCard({
 
                 {/* Columna de Cálculo Detallado y Resultado */}
                 <div className="flex flex-col bg-base-200 rounded-sm p-5 lg:p-6 shadow-inner border border-base-content/15 relative overflow-hidden flex-grow">
-                    <h3 className="text-xl font-extrabold text-accent text-center mb-3">
-                        Cálculo Detallado
-                    </h3>
+                    <h3 className="text-xl font-extrabold text-accent text-center mb-3">Cálculo Detallado</h3>
                     {calculationDetails.length > 0 ? (
                         <div className="p-3 space-y-2 bg-base-100 rounded-sm shadow-inner border border-base-content/10 overflow-y-auto custom-scrollbar flex-grow">
                             {calculationDetails.map((calc, index) => (
@@ -151,9 +143,7 @@ export function ConversionCard({
                         <div
                             role="alert"
                             className={`alert ${result.includes('¡Error!') || result.includes('¡Ups!') || result.includes('¡Atención!') ? 'alert-error' : 'alert-success'} shadow-xl mt-4 p-4 rounded-sm border-2 ${result.includes('¡Error!') || result.includes('¡Ups!') || result.includes('¡Atención!') ? 'border-error/50' : 'border-success/50'}`}>
-                            {result.includes('¡Error!') ||
-                            result.includes('¡Ups!') ||
-                            result.includes('¡Atención!') ? (
+                            {result.includes('¡Error!') || result.includes('¡Ups!') || result.includes('¡Atención!') ? (
                                 <CircleX className="h-6 w-6" />
                             ) : (
                                 <CircleCheck className="h-6 w-6" />

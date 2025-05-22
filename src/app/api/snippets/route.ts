@@ -1,15 +1,8 @@
 import { auth } from '@clerk/nextjs/server';
 import prisma from '@/lib/db';
 import { Snippet } from '@prisma/client';
-import {
-    SuccessCreate,
-    SuccessResponse,
-} from '../_services/successfulResponses';
-import {
-    NotAuthorizedError,
-    ServerError,
-    UnprocessableEntityError,
-} from '../_services/errors';
+import { SuccessCreate, SuccessResponse } from '../_services/successfulResponses';
+import { NotAuthorizedError, ServerError, UnprocessableEntityError } from '../_services/errors';
 import { createSnippetSchema } from '@/lib/schemas/snippet';
 import { ZodError } from 'zod';
 
@@ -48,8 +41,7 @@ export async function POST(req: Request) {
     }
 
     try {
-        const { title, description, code, language, category, tags } =
-            await req.json();
+        const { title, description, code, language, category, tags } = await req.json();
 
         const validatedData = createSnippetSchema.parse({
             title,

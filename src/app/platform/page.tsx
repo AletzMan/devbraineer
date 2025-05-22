@@ -68,8 +68,7 @@ const menuData = [
     },
     {
         label: 'Herramientas de Desarrollo',
-        description:
-            'Utilidades para convertir datos, generar expresiones regulares y más.',
+        description: 'Utilidades para convertir datos, generar expresiones regulares y más.',
         href: '/platform/tools-dev',
         icon: SquareTerminalIcon,
         color: 'text-accent',
@@ -148,74 +147,47 @@ export default function PlatformHome() {
             </h1>
 
             <div className="grid gap-8 grid-cols-[repeat(auto-fill,minmax(350px,1fr))]  flex-grow">
-                {menuData.map(
-                    ({
-                        label,
-                        description,
-                        href,
-                        icon: Icon,
-                        color,
-                        children,
-                    }) => (
-                        <div
-                            key={label}
-                            className="bg-base-200 relative rounded-md border border-base-300 shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
-                            <Icon
-                                className="absolute bottom-4 right-4 size-18 opacity-6 pointer-events-none select-none text-gray-300"
-                                aria-hidden="true"
-                            />
-                            <a
-                                href={href}
-                                className={`flex items-center gap-4 mb-2 group ${color} hover:brightness-90 transition duration-300`}>
-                                <Icon
-                                    className={`${color} w-6 h-6 flex-shrink-0`}
-                                />
-                                <h2
-                                    className={`text-xl font-semibold ${color} group-hover:underline`}>
-                                    {label}
-                                </h2>
-                            </a>
+                {menuData.map(({ label, description, href, icon: Icon, color, children }) => (
+                    <div
+                        key={label}
+                        className="bg-base-200 relative rounded-md border border-base-300 shadow-sm p-6 hover:shadow-md transition-shadow duration-300">
+                        <Icon
+                            className="absolute bottom-4 right-4 size-18 opacity-6 pointer-events-none select-none text-gray-300"
+                            aria-hidden="true"
+                        />
+                        <a
+                            href={href}
+                            className={`flex items-center gap-4 mb-2 group ${color} hover:brightness-90 transition duration-300`}>
+                            <Icon className={`${color} w-6 h-6 flex-shrink-0`} />
+                            <h2 className={`text-xl font-semibold ${color} group-hover:underline`}>{label}</h2>
+                        </a>
 
-                            {description && (
-                                <p className="text-sm text-gray-500 mb-4">
-                                    {description}
-                                </p>
-                            )}
+                        {description && <p className="text-sm text-gray-500 mb-4">{description}</p>}
 
-                            {children && (
-                                <ul className="space-y-2">
-                                    {children.map(
-                                        ({
-                                            label: subLabel,
-                                            href: subHref,
-                                            icon: SubIcon,
-                                            color: subColor,
-                                        }) => (
-                                            <li key={subLabel}>
-                                                <a
-                                                    href={subHref}
-                                                    className="flex items-center text-gray-500 hover:text-current hover:text-opacity-90 transition duration-300">
-                                                    <SubIcon
-                                                        className={`${subColor} w-4 h-4 mr-2 flex-shrink-0`}
-                                                    />
-                                                    {subLabel}
-                                                </a>
-                                            </li>
-                                        )
-                                    )}
-                                </ul>
-                            )}
-                        </div>
-                    )
-                )}
+                        {children && (
+                            <ul className="space-y-2">
+                                {children.map(({ label: subLabel, href: subHref, icon: SubIcon, color: subColor }) => (
+                                    <li key={subLabel}>
+                                        <a
+                                            href={subHref}
+                                            className="flex items-center text-gray-500 hover:text-current hover:text-opacity-90 transition duration-300">
+                                            <SubIcon className={`${subColor} w-4 h-4 mr-2 flex-shrink-0`} />
+                                            {subLabel}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+                ))}
 
                 {/* Último recuadro de aviso */}
                 <div className="bg-base-200 rounded-md border border-base-300 shadow-sm p-6 flex flex-col justify-center items-center text-center text-gray-600">
                     <AlertCircle className="w-10 h-10 mb-4 text-gray-400" />
                     <h2 className="text-lg font-semibold mb-2">Próximamente</h2>
                     <p className="text-sm max-w-xs">
-                        Estamos trabajando en nuevas funcionalidades y secciones
-                        que pronto estarán disponibles. ¡Mantente atento!
+                        Estamos trabajando en nuevas funcionalidades y secciones que pronto estarán disponibles.
+                        ¡Mantente atento!
                     </p>
                 </div>
             </div>
