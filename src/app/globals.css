@@ -97,3 +97,9 @@ body {
     font-size: 0.85em !important;
     display: block;
 }
+
+.breadcrumbs > ul > li:last-child {
+    color: var(--color-gray-400) !important;
+    cursor: default !important;
+    pointer-events: none !important;
+}
