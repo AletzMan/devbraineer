@@ -1,4 +1,5 @@
 import { menuData } from '../constants';
+import { Folder } from 'lucide-react';
 
 interface HeaderSectionProps {
     title: string;
@@ -7,14 +8,21 @@ interface HeaderSectionProps {
 }
 
 export default function HeaderSection({ title, description, children }: HeaderSectionProps) {
-    const colorTitle = menuData.find((item) => item.children?.find((child) => child.label === title))?.color;
+    const currentSection = menuData.find((item) =>
+        item.children?.some((child) => window.location.pathname.startsWith(child.href))
+    );
+
+    const colorTitle = currentSection?.children?.[0]?.color || 'text-gray-500';
+    const isResourcesSection = currentSection?.label === 'Recursos';
+
     return (
-        <header className="flex justify-between gap-4 md:flex-row flex-col md:items-center bg-white/3 px-3 py-2 border-b-1 border-gray-700">
+        <header className="flex justify-between gap-4 md:flex-row flex-col md:items-center bg-base-100 px-4 py-3 border-b-1 border-gray-700">
             <div className="flex flex-col">
-                <h1 className={`text-2xl font-bold ${colorTitle}`}>{title}</h1>
-                <p className="text-zinc-500 dark:text-zinc-400">{description}</p>
+                {isResourcesSection && <Folder className={`w-5 h-5 ${colorTitle} mb-1`} />}
+                <h1 className={`text-xl font-semibold ${colorTitle}`}>{title}</h1>
+                <p className="text-sm text-gray-500">{description}</p>
             </div>
-            {children}
+            <div className="flex items-center gap-2">{children}</div>
         </header>
     );
 }
