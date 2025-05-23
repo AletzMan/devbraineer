@@ -2,20 +2,20 @@
 import { createContext, useContext, useState, useLayoutEffect, ReactNode, useCallback } from 'react';
 
 interface ThemeContextProps {
-    theme: 'light' | 'dark';
+    theme: 'cupcake' | 'dark';
     toggleTheme: () => void;
 }
 
 interface ThemeProviderProps {
     children: ReactNode;
-    defaultTheme?: 'light' | 'dark';
+    defaultTheme?: 'dark' | 'cupcake';
 }
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
-export const ThemeProvider = ({ children, defaultTheme = 'light' }: ThemeProviderProps) => {
-    const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-        return (localStorage.getItem('theme') as 'light' | 'dark') || defaultTheme;
+export const ThemeProvider = ({ children, defaultTheme = 'cupcake' }: ThemeProviderProps) => {
+    const [theme, setTheme] = useState<'cupcake' | 'dark'>(() => {
+        return (localStorage.getItem('theme') as 'cupcake' | 'dark') || defaultTheme;
     });
 
     useLayoutEffect(() => {
@@ -23,7 +23,7 @@ export const ThemeProvider = ({ children, defaultTheme = 'light' }: ThemeProvide
     }, [theme]);
     const toggleTheme = useCallback(() => {
         setTheme((prevTheme) => {
-            const newTheme = prevTheme === 'light' ? 'dark' : 'light';
+            const newTheme = prevTheme === 'dark' ? 'cupcake' : 'dark';
             localStorage.setItem('theme', newTheme);
             return newTheme;
         });
