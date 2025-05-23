@@ -1,28 +1,24 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import { menuData } from '../constants'; // Importa menuData
+import { menuData } from '../constants';
 import { UserButton } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
 import Link from 'next/link';
-// ... otras importaciones
+import { ThemeController } from '@/app/components/ThemeController';
 
-// Función para aplanar menuData y crear un mapa de búsqueda rápida
 const flatLinkMap = new Map<string, { label: string; icon?: React.ElementType; color?: string }>();
 
 function flattenMenuData(items: any[]) {
-    // Considera tipar IMenuItem y sus hijos
     items.forEach((item) => {
         if (item.href && item.href !== '#') {
-            // Solo si tiene href y no es un marcador de posición
             flatLinkMap.set(item.href, { label: item.label, icon: item.icon, color: item.color });
         }
         if (item.children) {
-            flattenMenuData(item.children); // Recursivamente aplanar hijos
+            flattenMenuData(item.children);
         }
     });
 }
 
-// Ejecuta la función una vez al inicio del módulo o usa useMemo si la data es dinámica
 flattenMenuData(menuData);
 
 export default function Header() {
@@ -36,7 +32,6 @@ export default function Header() {
                     {pathSegments.map((item, index) => {
                         const currentHref = `/${pathSegments.slice(0, index + 1).join('/')}`;
 
-                        // Buscar en el mapa aplanado
                         const currentLinkItem = flatLinkMap.get(currentHref);
 
                         const isLastSegment = index === pathSegments.length - 1;
@@ -46,7 +41,7 @@ export default function Header() {
 
                         return (
                             <li key={index} className="capitalize">
-                                {isLastSegment ? ( // Necesitas que currentLinkItem también tenga href si lo usas aquí
+                                {isLastSegment ? (
                                     <div className="flex items-center gap-0.5">
                                         {currentLinkItem?.icon && (
                                             <currentLinkItem.icon className={`size-4.5 ${iconColorClass}`} />
@@ -66,7 +61,10 @@ export default function Header() {
                     })}
                 </ul>
             </div>
-            <UserButton appearance={{ baseTheme: dark }} userProfileMode="navigation" userProfileUrl="/profile" />
+            <div className="flex items-center justify-center gap-5">
+                <ThemeController />
+                <UserButton appearance={{ baseTheme: dark }} userProfileMode="navigation" userProfileUrl="/profile" />
+            </div>
         </header>
     );
 }
