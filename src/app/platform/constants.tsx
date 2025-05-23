@@ -24,6 +24,9 @@ import {
     HardDrive,
     Globe,
     FileText,
+    Key,
+    Palette,
+    Binary,
 } from 'lucide-react';
 
 export interface IMenuItem {
@@ -141,6 +144,24 @@ export const menuData: IMenuItem[] = [
                 icon: RegexIcon,
                 color: 'text-accent/65',
             },
+            {
+                label: 'Generador de Degradados CSS',
+                href: '/platform/tools-dev/gradient-generator',
+                icon: Palette,
+                color: 'text-accent/65',
+            },
+            {
+                label: 'Generador de UUID',
+                href: '/platform/tools-dev/uuid-generator',
+                icon: Key,
+                color: 'text-accent/65',
+            },
+            {
+                label: 'Codificador/Decodificador',
+                href: '/platform/tools-dev/encoder-decoder',
+                icon: Binary,
+                color: 'text-accent/65',
+            },
         ],
     },
     {
@@ -158,6 +179,12 @@ export const menuData: IMenuItem[] = [
             {
                 label: 'Convertidor de Unidades',
                 href: '/platform/tools-tech/unit-converter',
+                icon: Sliders,
+                color: 'text-info/65',
+            },
+            {
+                label: 'Simulador de Circuitos',
+                href: '/platform/tools-tech/circuit-simulator',
                 icon: Sliders,
                 color: 'text-info/65',
             },
