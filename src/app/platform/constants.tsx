@@ -46,7 +46,7 @@ export const menuData: IMenuItem[] = [
         icon: LayoutDashboard,
         description:
             'Accede a un conjunto de aplicaciones diseñadas para facilitar tareas técnicas y creativas. Todo lo que necesitas, al alcance de un clic.',
-        color: 'text-gray-400',
+        color: 'text-lime-400',
     },
     /*  {
         label: 'Retos',
