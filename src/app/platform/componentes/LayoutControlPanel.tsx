@@ -16,7 +16,7 @@ export default function LayoutControlPanel({ title }: LayoutSectionProps) {
         <div className="max-(--max-width) mx-auto p-4 flex flex-col h-[calc(100vh-5rem)] overflow-y-auto scrollbar-thin">
             <header className="bg-base-200 p-6 rounded-md mb-10">
                 <h1 className="text-3xl font-semibold mb-5 flex items-center gap-3 text-gray-600">
-                    {Icon && <Icon className="w-7 h-7 text-gray-600" />}
+                    {Icon && <Icon className="w-7 h-7 text-gray-500" />}
                     {title}
                 </h1>
                 <p className="text-sm text-gray-500">{description}</p>
