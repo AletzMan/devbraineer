@@ -27,6 +27,7 @@ import {
     Key,
     Palette,
     Binary,
+    GlobeLock,
 } from 'lucide-react';
 
 export interface IMenuItem {
@@ -34,50 +35,59 @@ export interface IMenuItem {
     href: string;
     icon: React.ComponentType<{ className?: string }>;
     color?: string;
+    description?: string;
     children?: IMenuItem[];
 }
 
 export const menuData: IMenuItem[] = [
     {
-        label: 'Platform',
+        label: 'Panel de Aplicaciones',
         href: '/platform',
         icon: LayoutDashboard,
+        description:
+            'Accede a un conjunto de aplicaciones diseñadas para facilitar tareas técnicas y creativas. Todo lo que necesitas, al alcance de un clic.',
         color: 'text-gray-400',
     },
     /*  {
         label: 'Retos',
         href: '/platform/challenges',
         icon: Code2,
+        description: 'Participa en desafíos para mejorar tus habilidades.',
         color: 'text-gray-400',
     },
     {
         label: 'Eventos',
         href: '/platform/events',
         icon: Calendar,
+        description: 'Participa en eventos para mejorar tus habilidades.',
         color: 'text-gray-400',
     },
     {
-        label: 'Recursos', // Este es el Recurso simple en el primer ul
+        label: 'Recursos', 
         href: '/platform/resources',
         icon: Lightbulb,
+        description: 'Accede y administra tus snippets y enlaces útiles.',
         color: 'text-gray-400',
     },
     {
         label: 'Encuestas',
         href: '/platform/surveys',
         icon: BarChart2,
+        description: 'Participa en encuestas para mejorar tus habilidades.',
         color: 'text-gray-400',
     },
     {
         label: 'Preguntas',
         href: '/platform/questions',
         icon: MessageSquare,
+        description: 'Accede y administra tus preguntas y respuestas.',
         color: 'text-gray-400',
     },*/
     {
         label: 'Playground',
         href: '/platform/playground',
         icon: Layers,
+        description: 'Experimenta en tiempo real con código web y de consola.',
         color: 'text-orange-600',
         children: [
             {
@@ -85,43 +95,52 @@ export const menuData: IMenuItem[] = [
                 href: '/platform/playground/editor-web',
                 icon: Globe,
                 color: 'text-orange-400',
+                description:
+                    'Experimenta y prueba código web en tiempo real con soporte para HTML, CSS, JavaScript y más.',
             },
             {
                 label: 'Ejecutor de Código',
                 href: '/platform/playground/editor-console',
                 icon: SquareTerminalIcon,
                 color: 'text-orange-400',
+                description: 'Ejecuta código de consola en varios lenguajes y visualiza resultados instantáneamente.',
             },
             {
                 label: 'HTTP Client',
                 href: '/platform/playground/http-client',
-                icon: SquareTerminalIcon,
+                icon: GlobeLock,
                 color: 'text-orange-400',
+                description:
+                    'Envía y gestiona tus peticiones HTTP con facilidad. Una herramienta esencial para probar y depurar APIs, permitiéndote interactuar con servicios web de manera ágil y eficiente.',
             },
         ],
     },
     {
         label: 'Gestión de Recursos',
         icon: BoxIcon,
-        color: 'text-secondary', // Color para el icono del resumen
-        href: '#',
+        color: 'text-secondary',
+        href: '/platform/resources',
+        description: 'Accede y administra a tus recursos útiles.',
         children: [
             {
                 label: 'Snippets de Código',
                 href: '/platform/resources/snippets',
                 icon: FileCode,
                 color: 'text-secondary/65',
+                description: 'Almacena y accede a tus snippets de código favoritos.',
             },
             {
                 label: 'Enlaces de Interés',
                 href: '/platform/resources/links',
                 icon: LinkIcon,
                 color: 'text-secondary/65',
+                description: 'Almacena y accede a tus enlaces de interés.',
             },
             {
                 label: 'Notas',
                 href: '/platform/resources/notes',
                 icon: FileText,
+                description: 'Almacena, edita y accede a tus notas.',
                 color: 'text-secondary/65',
             },
         ],
@@ -129,37 +148,43 @@ export const menuData: IMenuItem[] = [
     {
         label: 'Herramientas de Desarrollo',
         icon: SquareTerminalIcon,
-        color: 'text-accent', // Color para el icono del resumen
-        href: '#',
+        color: 'text-accent',
+        href: '/platform/tools-dev',
+        description: 'Utilidades para convertir datos, generar expresiones regulares y más.',
         children: [
             {
                 label: 'Convertidor de Datos',
                 href: '/platform/tools-dev/converter',
                 icon: FileJsonIcon,
+                description: 'Convierte datos entre diferentes formatos.',
                 color: 'text-accent/65',
             },
             {
                 label: 'Generador de RegEx',
                 href: '/platform/tools-dev/regex',
                 icon: RegexIcon,
+                description: 'Genera y prueba expresiones regulares para coincidir con patrones de texto.',
                 color: 'text-accent/65',
             },
             {
                 label: 'Generador de Degradados CSS',
                 href: '/platform/tools-dev/gradient-generator',
                 icon: Palette,
+                description: 'Genera y prueba degradados CSS y Tailwind para tus proyectos.',
                 color: 'text-accent/65',
             },
             {
                 label: 'Generador de UUID',
                 href: '/platform/tools-dev/uuid-generator',
                 icon: Key,
+                description: 'Genera identificadores únicos universales para tus proyectos.',
                 color: 'text-accent/65',
             },
             {
                 label: 'Codificador/Decodificador',
                 href: '/platform/tools-dev/encoder-decoder',
                 icon: Binary,
+                description: 'Codifica y decodifica datos para su transmisión o almacenamiento.',
                 color: 'text-accent/65',
             },
         ],
@@ -167,216 +192,59 @@ export const menuData: IMenuItem[] = [
     {
         label: 'Herramientas Técnicas',
         icon: MonitorCogIcon,
-        color: 'text-info', // Color para el icono del resumen
-        href: '#',
+        color: 'text-info',
+        href: '/platform/tools-tech',
+        description: 'Herramientas técnicas para electrónica y ciencia.',
         children: [
             {
                 label: 'Calculadora de Circuitos',
                 href: '/platform/tools-tech/circuit-calculator',
                 icon: Zap,
+                description:
+                    'Calcula valores de resistencia, corriente y voltaje, entre otros, en circuitos electrónicos.',
                 color: 'text-info/65',
             },
             {
                 label: 'Convertidor de Unidades',
                 href: '/platform/tools-tech/unit-converter',
                 icon: Sliders,
+                description: 'Convierte unidades de medida entre diferentes sistemas.',
                 color: 'text-info/65',
             },
-            {
-                label: 'Simulador de Circuitos',
-                href: '/platform/tools-tech/circuit-simulator',
-                icon: Sliders,
-                color: 'text-info/65',
-            },
-            /* {
-                label: 'Generador de Diagramas',
-                href: '/platform/tools-tech/diagram-maker',
-                icon: Compass,
-                color: 'text-info/65',
-            },
-            {
-                label: 'Simulador de Lógica',
-                href: '/platform/tools-tech/logic-simulator',
-                icon: HardDrive,
-                color: 'text-info/65',
-            },*/
             {
                 label: 'Calculadora de Resistencias',
                 href: '/platform/tools-tech/resistor-calculator',
                 icon: OmegaIcon,
+                description: 'Calcula valores de resistencia en circuitos electrónicos.',
                 color: 'text-info/65',
             },
         ],
     },
     {
-        label: 'Mi Cuenta', // Este parece ser una sección, no un enlace simple
-        icon: User, // Icono para el resumen
-        color: 'text-yellow-600', // Color para el icono del resumen
+        label: 'Mi Cuenta',
+        icon: User,
+        color: 'text-yellow-600',
         href: '#',
+        description: 'Accede a tus datos de cuenta y preferencias.',
         children: [
             {
                 label: 'Guardados',
-                href: '/platform/account/saved', // Placeholder href
+                href: '/platform/account/saved',
                 icon: Bookmark,
+                description: 'Accede a tus datos guardados.',
                 color: 'text-yellow-300',
             },
-            /*{
-                label: 'Configuración',
-                href: '/platform/account/settings', // Placeholder href
-                icon: Settings,
-                color: 'text-yellow-300',
-            },*/
             {
                 label: 'Perfil',
-                href: '/profile', // Placeholder href
-                icon: User, // User icon again
+                href: '/profile',
+                icon: User,
+                description: 'Accede y edita tus datos de perfil.',
                 color: 'text-yellow-300',
             },
         ],
     },
 ];
-export interface ILinkItem {
-    label: string;
-    href: string;
-    icon: React.ComponentType<{ className?: string }>;
-    color: string;
-}
 
-export const LinkData: ILinkItem[] = [
-    {
-        label: 'Platform',
-        href: '/platform',
-        icon: LayoutDashboard,
-        color: 'text-gray-400',
-    },
-
-    // SECCIÓN: Playground
-    // El href debe coincidir con el segmento de la URL para el breadcrumb
-    {
-        label: 'Playground',
-        href: '/platform/playground',
-        icon: Layers,
-        color: 'text-orange-500',
-    },
-    {
-        label: 'Editor Web',
-        href: '/platform/playground/editor-web',
-        icon: Globe,
-        color: 'text-orange-500',
-    },
-    {
-        label: 'Ejecutor de Código',
-        href: '/platform/playground/editor-console',
-        icon: SquareTerminalIcon,
-        color: 'text-orange-500',
-    },
-    {
-        label: 'HTTP Client',
-        href: '/platform/playground/http-client',
-        icon: SquareTerminalIcon,
-        color: 'text-orange-500',
-    },
-
-    // SECCIÓN: Gestión de Recursos
-    // 'resources' es el segmento URL, el href debe coincidir
-    {
-        label: 'Recursos',
-        href: '/platform/resources',
-        icon: BoxIcon,
-        color: 'text-secondary',
-    }, // AGREGADO o MODIFICADO
-    {
-        label: 'Snippets de Código',
-        href: '/platform/resources/snippets',
-        icon: FileCode,
-        color: 'text-secondary',
-    },
-    {
-        label: 'Enlaces de Interés',
-        href: '/platform/resources/links',
-        icon: LinkIcon,
-        color: 'text-secondary',
-    },
-    {
-        label: 'Notas',
-        href: '/platform/resources/notes',
-        icon: FileText,
-        color: 'text-secondary',
-    },
-
-    // SECCIÓN: Herramientas de Desarrollo
-    // 'tools-dev' es el segmento URL, el href debe coincidir
-    {
-        label: 'Herramientas de Desarrollo',
-        href: '/platform/tools-dev',
-        icon: SquareTerminalIcon,
-        color: 'text-accent',
-    }, // AGREGADO o MODIFICADO
-    {
-        label: 'Convertidor de Datos',
-        href: '/platform/tools-dev/converter',
-        icon: FileJsonIcon,
-        color: 'text-accent',
-    },
-    {
-        label: 'Generador de RegEx',
-        href: '/platform/tools-dev/regex',
-        icon: RegexIcon,
-        color: 'text-accent',
-    },
-
-    // SECCIÓN: Herramientas Técnicas
-    // 'tools-tech' es el segmento URL, el href debe coincidir
-    {
-        label: 'Herramientas Técnicas',
-        href: '/platform/tools-tech',
-        icon: MonitorCogIcon,
-        color: 'text-info',
-    }, // AGREGADO o MODIFICADO
-    {
-        label: 'Calculadora de Circuitos',
-        href: '/platform/tools-tech/circuit-calculator',
-        icon: Zap,
-        color: 'text-info',
-    },
-    {
-        label: 'Convertidor de Unidades',
-        href: '/platform/tools-tech/unit-converter',
-        icon: Sliders,
-        color: 'text-info',
-    },
-    {
-        label: 'Calculadora de Resistencias',
-        href: '/platform/tools-tech/resistor-calculator',
-        icon: OmegaIcon,
-        color: 'text-info',
-    },
-
-    // SECCIÓN: Mi Cuenta
-    // 'account' es el segmento URL, el href debe coincidir si lo usas en la URL
-    // Si '/profile' es la URL raíz de mi cuenta y '/platform/account/saved' es la subsección:
-    {
-        label: 'Mi Cuenta',
-        href: '/profile',
-        icon: User,
-        color: 'text-yellow-600',
-    }, // MODIFICADO si estaba en '#'
-    {
-        label: 'Guardados',
-        href: '/platform/account/saved',
-        icon: Bookmark,
-        color: 'text-yellow-600',
-    },
-    { label: 'Perfil', href: '/profile', icon: User, color: 'text-yellow-300' }, // Si ya existe para /profile, esta puede ser redundante o para un caso específico.
-
-    // Si tu URL es /platform/account/saved, necesitarías una entrada para /platform/account
-    {
-        label: 'Cuenta',
-        href: '/platform/account',
-        icon: User,
-        color: 'text-yellow-600',
-    }, // Posiblemente NECESARIA si hay /platform/account/ lo que sea
-];
 export interface FileData {
     id: string;
     name: string;
