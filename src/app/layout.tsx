@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Jost, Josefin_Sans, Inconsolata } from 'next/font/google';
 import './globals.css';
+import '@ihatecode/react-splitter/lib/style.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import { ThemeProvider } from '@/app/components/ThemeProvider';
 const jost = Jost({ variable: '--font-jost', subsets: ['latin'] });

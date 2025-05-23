@@ -1,10 +1,24 @@
 @import 'tailwindcss';
 
 @plugin "daisyui" {
-    themes:
-        light --default,
-        dark,
-        dark;
+    themes: cupcake, dark, business, light;
+}
+
+@plugin "daisyui/theme" {
+    name: 'cupcake';
+    default: false;
+    prefersdark: false;
+    color-scheme: 'light';
+
+    /* Solo redondeos y bordes, no colores */
+    --radius-selector: 2rem;
+    --radius-field: 0.25rem;
+    --radius-box: 0.25rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 2px;
+    --depth: 1;
+    --noise: 0;
 }
 
 :root {
@@ -98,4 +112,26 @@ body {
     color: var(--color-gray-400) !important;
     cursor: default !important;
     pointer-events: none !important;
+}
+
+.preview {
+    background: var(--color-base-100);
+    --gap: 1.85em;
+    --line: 1px;
+    --color: var(--color-base-300);
+
+    background-image:
+        linear-gradient(
+            -90deg,
+            transparent calc(var(--gap) - var(--line)),
+            var(--color) calc(var(--gap) - var(--line) + 1px),
+            var(--color) var(--gap)
+        ),
+        linear-gradient(
+            0deg,
+            transparent calc(var(--gap) - var(--line)),
+            var(--color) calc(var(--gap) - var(--line) + 1px),
+            var(--color) var(--gap)
+        );
+    background-size: var(--gap) var(--gap);
 }
