@@ -2,6 +2,7 @@ import { Calculator, RotateCcw, Lightbulb, Zap, Power, CircleX, CircleCheck, Ome
 import { useState } from 'react';
 import { BlockMath } from 'react-katex';
 import SectionCalculator from './SectionCalculator';
+import { toast } from 'react-hot-toast';
 
 export default function OhmCalculator() {
     const [ohmResult, setOhmResult] = useState<string | null>(null);
@@ -10,19 +11,32 @@ export default function OhmCalculator() {
     const [ohmCurrent, setOhmCurrent] = useState('');
     const [ohmResistance, setOhmResistance] = useState('');
     const [ohmPower, setOhmPower] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [calculationHistory, setCalculationHistory] = useState<{ result: string; calculations: string[] }[]>([]);
 
     const calculateOhm = () => {
+        setIsLoading(true);
+        setOhmResult(null);
+        setOhmCalculations([]);
+
         try {
             const v = ohmVoltage ? Number.parseFloat(ohmVoltage) : null;
             const i = ohmCurrent ? Number.parseFloat(ohmCurrent) : null;
             const r = ohmResistance ? Number.parseFloat(ohmResistance) : null;
             const p = ohmPower ? Number.parseFloat(ohmPower) : null;
 
+            // Validar valores negativos
+            if ([v, i, r, p].some((val) => val !== null && val < 0)) {
+                toast.error('Los valores no pueden ser negativos');
+                setIsLoading(false);
+                return;
+            }
+
             const valueCount = [v, i, r, p].filter((val) => val !== null).length;
 
             if (valueCount < 2) {
-                setOhmResult('¡Ups! Necesitas ingresar al menos dos valores para calcular.');
-                setOhmCalculations([]);
+                toast.error('Necesitas ingresar al menos dos valores para calcular.');
+                setIsLoading(false);
                 return;
             }
 
@@ -67,19 +81,19 @@ export default function OhmCalculator() {
                 calculations.push(`I = ${calculatedI.toFixed(2)} A`);
             } else if (r === null && v !== null && i !== null) {
                 const calculatedR = v / i;
-                result = `Resistencia (R) = ${calculatedR.toFixed(2)} Ω`;
+                result = `Resistencia (R) = ${calculatedR.toFixed(2)} \\Omega`;
                 calculations.push(`R = \\frac{V}{I}`);
                 calculations.push(`R = \\frac{${v.toFixed(2)} V}{${i.toFixed(2)} A}`);
                 calculations.push(`R = ${calculatedR.toFixed(2)} \\Omega`);
             } else if (r === null && p !== null && i !== null) {
                 const calculatedR = p / (i * i);
-                result = `Resistencia (R) = ${calculatedR.toFixed(2)} Ω`;
+                result = `Resistencia (R) = ${calculatedR.toFixed(2)} \\Omega`;
                 calculations.push(`R = \\frac{P}{I^2}`);
                 calculations.push(`R = \\frac{${p.toFixed(2)} W}{(${i.toFixed(2)} A)^2}`);
                 calculations.push(`R = ${calculatedR.toFixed(2)} \\Omega`);
             } else if (r === null && p !== null && v !== null) {
                 const calculatedR = (v * v) / p;
-                result = `Resistencia (R) = ${calculatedR.toFixed(2)} Ω`;
+                result = `Resistencia (R) = ${calculatedR.toFixed(2)} \\Omega`;
                 calculations.push(`R = \\frac{V^2}{P}`);
                 calculations.push(`R = \\frac{(${v.toFixed(2)} V)^2}{${p.toFixed(2)} W}`);
                 calculations.push(`R = ${calculatedR.toFixed(2)} \\Omega`);
@@ -109,9 +123,20 @@ export default function OhmCalculator() {
 
             setOhmResult(result);
             setOhmCalculations(calculations);
+
+            // Agregar al historial
+            setCalculationHistory((prev) => [
+                { result, calculations },
+                ...prev.slice(0, 9), // Mantener solo los últimos 10 cálculos
+            ]);
+
+            toast.success('Cálculo completado');
         } catch (error) {
-            setOhmResult('¡Vaya! Hubo un error en el cálculo. Asegúrate de que los valores sean válidos.');
+            toast.error('Error en el cálculo. Asegúrate de que los valores sean válidos.');
+            setOhmResult(null);
             setOhmCalculations([]);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -133,12 +158,12 @@ export default function OhmCalculator() {
 
     return (
         <SectionCalculator
-            title="Calculadora Avanzada de la Ley de Ohm"
-            description="Explora las relaciones fundamentales de voltaje, corriente, resistencia y potencia. Ingresa al menos dos valores para descubrir los demás.">
-            <div className="card-body p-6 lg:p-8 bg-gradient-to-br from-base-300 to-base-200 rounded-md shadow-2xl border border-base-content/10 transform transition-all duration-300 hover:shadow-3xl">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
-                    <div className="flex flex-col space-y-6">
-                        <h3 className="text-xl font-extrabold text-primary-focus mb-4 border-b-1 border-primary/50 pb-2">
+            title="Calculadora de la Ley de Ohm"
+            description="Calcula valores de voltaje, corriente, resistencia y potencia. Ingresa al menos dos valores para descubrir los demás.">
+            <div className="bg-gradient-to-br from-base-300 to-base-200 rounded-md shadow-2xl border border-base-content/10 transform transition-all duration-300 hover:shadow-3xl">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
+                    <div className="space-y-4">
+                        <h3 className="text-xl font-extrabold text-primary-focus mb-2 border-b-1 border-primary/50 pb-2">
                             Datos de Entrada
                         </h3>
 
@@ -148,18 +173,16 @@ export default function OhmCalculator() {
                                     {inputIcons.voltage} Voltaje (V)
                                 </span>
                             </label>
-                            <label className="input input-bordered input-sm flex items-center gap-2 shadow-md bg-base-100 hover:bg-base-50 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary transition-all duration-300 ease-in-out">
+                            <div className="input-group input-group-sm">
                                 <input
                                     type="number"
                                     placeholder="Ej: 12.5"
-                                    className="grow text-base placeholder:text-base-content/60"
+                                    className="input input-bordered input-sm grow text-base placeholder:text-base-content/60"
                                     value={ohmVoltage}
                                     onChange={(e) => setOhmVoltage(e.target.value)}
                                 />
-                                <div className="badge badge-md badge-soft badge-warning rounded-sm min-w-[2.5rem]">
-                                    V
-                                </div>
-                            </label>
+                                <span className="badge badge-soft badge-warning rounded-sm">V</span>
+                            </div>
                         </div>
 
                         <div className="form-control">
@@ -222,18 +245,23 @@ export default function OhmCalculator() {
                                 </div>
                             </label>
                         </div>
-                        <div className="flex flex-col sm:flex-row gap-4 mt-6">
+                        <div className="flex gap-2">
                             <button
-                                className="btn btn-primary btn-sm flex-1 text-base font-bold shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.1 rounded-sm" // Sombra más sutil
-                                onClick={calculateOhm}>
-                                <Calculator className="h-6 w-6" />
-                                Calcular
+                                onClick={calculateOhm}
+                                className="btn btn-primary btn-sm flex-1"
+                                disabled={isLoading}>
+                                {isLoading ? (
+                                    <span className="loading loading-spinner"></span>
+                                ) : (
+                                    <>
+                                        <Calculator className="h-4 w-4 mr-2" />
+                                        Calcular
+                                    </>
+                                )}
                             </button>
-                            <button
-                                className="btn btn-outline btn-secondary btn-sm flex-1 text-base font-bold shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.1 rounded-sm" // Sombra más sutil
-                                onClick={resetOhm}>
-                                <RotateCcw className="h-6 w-6" />
-                                Resetear
+                            <button onClick={resetOhm} className="btn btn-secondary btn-sm flex-1">
+                                <RotateCcw className="h-4 w-4 mr-2" />
+                                Limpiar
                             </button>
                         </div>
                     </div>
@@ -296,6 +324,37 @@ export default function OhmCalculator() {
                     </div>
                 </div>
             </div>
+
+            {ohmResult && (
+                <div className="space-y-4">
+                    <div className="bg-base-200 p-4 rounded-md">
+                        <div className="font-semibold mb-2">Resultado</div>
+                        <div className="text-sm text-base-content">{ohmResult}</div>
+                        <div className="mt-2 space-y-2">
+                            {ohmCalculations.map((calculation, index) => (
+                                <div key={index} className="text-sm">
+                                    <BlockMath math={calculation} />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {calculationHistory.length > 0 && (
+                <div className="mt-6">
+                    <h3 className="text-xl font-extrabold text-primary-focus mb-2 border-b-1 border-primary/50 pb-2">
+                        Historial de Cálculos
+                    </h3>
+                    <div className="max-h-[200px] overflow-y-auto space-y-2">
+                        {calculationHistory.map((calc, index) => (
+                            <div key={index} className="bg-base-200 p-3 rounded-md">
+                                <div className="text-sm text-base-content">{calc.result}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
         </SectionCalculator>
     );
 }
