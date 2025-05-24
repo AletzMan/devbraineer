@@ -7,6 +7,7 @@ const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
 
 interface RequestFormProps {
     onSend: (request: { method: string; url: string; headers: { [key: string]: string }[]; body: string }) => void;
+    sending?: boolean;
 }
 
 interface RequestFormProps {
@@ -19,7 +20,7 @@ interface RequestFormProps {
     };
 }
 
-export function RequestForm({ onSend, initialValues }: RequestFormProps) {
+export function RequestForm({ onSend, initialValues, sending }: RequestFormProps) {
     const [method, setMethod] = useState('GET');
     const [url, setUrl] = useState('');
     const [headers, setHeaders] = useState<{ key: string; value: string }[]>([{ key: '', value: '' }]);
@@ -46,9 +47,49 @@ export function RequestForm({ onSend, initialValues }: RequestFormProps) {
         }
     }, [initialValues]);
 
+    const handleSend = () => {
+        const updatedHeaders = [...headers];
+
+        if (authType === 'bearer' && authToken) {
+            updatedHeaders.push({
+                key: 'Authorization',
+                value: `Bearer ${authToken}`,
+            });
+        }
+
+        if (authType === 'basic' && basicUser && basicPass) {
+            const credentials = btoa(`${basicUser}:${basicPass}`);
+            updatedHeaders.push({
+                key: 'Authorization',
+                value: `Basic ${credentials}`,
+            });
+        }
+        // Armar la URL con query params
+        const urlObj = new URL(url);
+        queryParams.forEach((p) => {
+            if (p.key) urlObj.searchParams.set(p.key, p.value);
+        });
+
+        onSend({
+            method,
+            url: urlObj.toString(),
+            headers: updatedHeaders,
+            body,
+        });
+    };
+
     return (
-        <div className="space-y-4">
-            <div className="flex gap-2">
+        <div className="space-y-4 bg h-full">
+            <div className="flex items-center gap-2">
+                <div className="inline-grid *:[grid-area:1/1]">
+                    <div
+                        aria-label="status"
+                        className={`status status-xl ${sending ? 'status-warning animate-ping' : 'status-success'}`}></div>
+                    <div
+                        aria-label="status"
+                        className={`status status-xl ${sending ? 'status-warning' : 'status-success'}`}></div>
+                </div>
+
                 <select
                     className="select select-bordered w-24"
                     value={method}
@@ -64,43 +105,12 @@ export function RequestForm({ onSend, initialValues }: RequestFormProps) {
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
                 />
-                <button
-                    className="btn btn-primary"
-                    onClick={() => {
-                        const updatedHeaders = [...headers];
-
-                        if (authType === 'bearer' && authToken) {
-                            updatedHeaders.push({
-                                key: 'Authorization',
-                                value: `Bearer ${authToken}`,
-                            });
-                        }
-
-                        if (authType === 'basic' && basicUser && basicPass) {
-                            const credentials = btoa(`${basicUser}:${basicPass}`);
-                            updatedHeaders.push({
-                                key: 'Authorization',
-                                value: `Basic ${credentials}`,
-                            });
-                        }
-                        // Armar la URL con query params
-                        const urlObj = new URL(url);
-                        queryParams.forEach((p) => {
-                            if (p.key) urlObj.searchParams.set(p.key, p.value);
-                        });
-
-                        onSend({
-                            method,
-                            url: urlObj.toString(),
-                            headers: updatedHeaders,
-                            body,
-                        });
-                    }}>
+                <button className="btn btn-primary" onClick={handleSend} disabled={sending || !url}>
                     Enviar
                 </button>
             </div>
 
-            <div className="flex gap-2 flex-col bg-base-300 rounded-sm px-2 pb-2">
+            <div className="flex gap-2 flex-col bg-base-200 rounded-sm px-2 pb-2  h-full ">
                 <div className="tabs tabs-border">
                     <input
                         type="radio"
@@ -136,9 +146,9 @@ export function RequestForm({ onSend, initialValues }: RequestFormProps) {
                         onChange={() => setActiveTab('auth')}
                     />
                 </div>
-                <div className="flex flex-col gap-2 px-2 py-2 bg-base-200 rounded-sm  h-[225px] overflow-y-auto">
+                <div className="flex flex-col gap-2 px-2 py-2 bg-base-100 rounded-sm h-full">
                     {/* Query Params */}
-                    <div className={activeTab === 'query-params' ? '' : 'hidden'}>
+                    <div className={`${activeTab === 'query-params' ? '' : 'hidden'} h-full`}>
                         <label className="font-semibold">Query Params</label>
                         {queryParams.map((p, i) => (
                             <div className="flex gap-2 my-1" key={i}>
@@ -174,7 +184,7 @@ export function RequestForm({ onSend, initialValues }: RequestFormProps) {
                     </div>
                     {/* Body para POST/PUT */}
                     <div
-                        className={`${activeTab === 'body' ? '' : 'hidden'} overflow-y-auto overflow-x-hidden`}
+                        className={`${activeTab === 'body' ? '' : 'hidden'} overflow-x-hidden`}
                         aria-disabled={activeTab !== 'body'}>
                         <label className="font-semibold">Body (JSON)</label>
                         {clerk.loaded && (
