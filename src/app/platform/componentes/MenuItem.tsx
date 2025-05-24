@@ -24,9 +24,8 @@ export function MenuItem({ item, currentPath }: MenuItemProps) {
                         open={isOpen}
                         onToggle={(e) => setIsOpen(e.currentTarget.open)}
                         name="sidebar-section"
-                        className={`max-2xl:hidden group-hover:max-2xl:block ${isOpen ? 'bg-white/5' : ''}`}>
-                        <summary
-                            className={` cursor-pointer ${isSectionActive ? 'font-semibold text-white ' : 'text-gray-300'} `}>
+                        className={`max-2xl:hidden group-hover:max-2xl:block`}>
+                        <summary className={` cursor-pointer`}>
                             {IconComponent && <IconComponent className={`w-5 h-5 ${iconColorClass}`} />}
                             <span className="group-hover:max-2xl:block max-2xl:hidden">{item.label}</span>
                         </summary>
@@ -61,7 +60,7 @@ export function MenuItem({ item, currentPath }: MenuItemProps) {
         return (
             <ul className={`menu rounded-box max-2xl:w-11 w-66 group-hover:max-2xl:w-66`}>
                 <li>
-                    <Link href={item.href || '#'} className={`${isActive ? 'menu-active' : 'text-gray-400'} `}>
+                    <Link href={item.href || '#'} className={`${isActive ? 'menu-active' : ''} `}>
                         {IconComponent && <IconComponent className={`w-5 h-5 ${iconColorClass}`} />}
                         <span className="max-2xl:hidden group-hover:max-2xl:block">{item.label}</span>
                     </Link>
