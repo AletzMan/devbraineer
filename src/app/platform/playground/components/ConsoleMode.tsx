@@ -372,7 +372,7 @@ export const ConsoleMode = () => {
                         </div>
 
                         <div
-                            className={`rounded-b-sm overflow-hidden h-[calc(100svh-172px)] border border-base-200 rounded-tr-sm`}>
+                            className={`rounded-b-sm overflow-hidden h-[calc(100svh-172px)] border border-base-300 rounded-tr-sm`}>
                             {currentFile && (
                                 <Editor
                                     height={'100%'}
@@ -406,7 +406,7 @@ export const ConsoleMode = () => {
                             Ejecutar
                         </button>
                     </div>
-                    <div className="bg-base-100 border-1 border-base-200 rounded-sm overflow-hidden h-[calc(100svh-140px)]">
+                    <div className="bg-base-100 border-1 border-base-300 rounded-sm overflow-hidden h-[calc(100svh-140px)]">
                         <div className="bg-base-300 flex items-center justify-between px-2 rounded-t-sm">
                             <div className="flex items-center gap-2">
                                 <span
@@ -434,7 +434,7 @@ export const ConsoleMode = () => {
                                 spellCheck={false}
                                 readOnly
                             />
-                            <div className="flex flex-col h-full max-h-50 rounded-b-sm border border-base-200">
+                            <div className="flex flex-col h-full max-h-50 rounded-b-sm border border-base-300">
                                 <label
                                     htmlFor="stdin"
                                     className="text-sm font-medium text-gray-300 bg-base-300 px-2 py-1 rounded-t-sm">

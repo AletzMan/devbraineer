@@ -26,7 +26,7 @@ export default function Header() {
     const pathSegments = path.split('/').filter((segment) => segment !== '');
 
     return (
-        <header className="flex items-center justify-between h-16 w-full bg-base-100 border-b border-base-200 z-50 px-2">
+        <header className="flex items-center justify-between h-16 w-full bg-base-100 border-b border-base-300 z-50 px-2">
             <div className="text-sm breadcrumbs">
                 <ul>
                     {pathSegments.map((item, index) => {

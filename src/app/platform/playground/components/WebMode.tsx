@@ -643,7 +643,7 @@ export const WebMode = () => {
                                         </div>
 
                                         <div
-                                            className={`flex flex-col h-full w-full min-h-0 border-1 border-base-200 rounded-b-sm rounded-tr-sm overflow-hidden`}
+                                            className={`flex flex-col h-full w-full min-h-0 border-1 border-base-300 rounded-b-sm rounded-tr-sm overflow-hidden`}
                                             ref={containerRef}>
                                             {currentFile && (
                                                 <Editor
@@ -721,7 +721,7 @@ export const WebMode = () => {
                                 min: 35,
                                 max: 320,
                                 content: (
-                                    <div className="border-1 border-base-200 rounded-sm h-full">
+                                    <div className="border-1 border-base-300 rounded-sm h-full">
                                         <div className="bg-base-300 flex items-center justify-between px-2 rounded-t-sm">
                                             <div className="flex items-center gap-2">
                                                 <Terminal className="h-4 w-4 text-tech-cyan" />
@@ -761,7 +761,7 @@ export const WebMode = () => {
                         </button>
                     </div>
                     <div className="rounded-t-md overflow-hidden h-full border border-base-300">
-                        <div className="px-2 py-1.5 backdrop-blur-sm border-b border-base-200 bg-base-100 flex items-center">
+                        <div className="px-2 py-1.5 backdrop-blur-sm border-b border-base-300 bg-base-100 flex items-center">
                             <div className="flex space-x-1.5">
                                 <div className="status status-lg status-error"></div>
                                 <div className="status status-lg status-warning"></div>
