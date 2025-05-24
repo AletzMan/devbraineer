@@ -15,7 +15,7 @@ import {
     TrashIcon,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { FileData, FILES_DEFAULT } from '../../constants';
+import { FileData, FILES_DEFAULT, languages } from '../../constants';
 import {
     CIcon,
     CSharpIcon,
@@ -33,6 +33,7 @@ import {
     SwiftIcon,
     TSIcon,
 } from '@/app/components/Icons';
+import { LayoutSubSection } from '../../componentes/LayoutSubSection';
 
 export const ConsoleMode = () => {
     const consoleRef = useRef<HTMLDivElement>(null);
@@ -297,15 +298,15 @@ export const ConsoleMode = () => {
     };
 
     return (
-        <div className="flex flex-col gap-2 h-[calc(100vh-4rem)] w-full bg-neutral/25 scrollbar-thin overflow-y-auto p-2">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 bg-base-200 p-2 rounded-sm">
-                <div className="flex flex-col gap-2">
+        <LayoutSubSection>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="flex flex-col gap-2 bg">
                     <div className="flex items-center justify-between">
                         <select
                             className="select select-bordered w-[150px] select-sm capitalize"
                             value={consoleLanguage}
-                            onChange={(e) => HandleChangeLanguage(e)}>
-                            <option disabled selected>
+                            onChange={HandleChangeLanguage}>
+                            <option disabled value="">
                                 Lenguaje
                             </option>
                             {FILES_DEFAULT.map((file) => (
@@ -314,6 +315,7 @@ export const ConsoleMode = () => {
                                 </option>
                             ))}
                         </select>
+
                         <div className="dropdown dropdown-start">
                             <div tabIndex={0} role="button" className="btn btn-sm">
                                 <EllipsisVertical className="size-5" />
@@ -351,27 +353,26 @@ export const ConsoleMode = () => {
                         </div>
                     </div>
                     <div>
-                        <div className="border-1 bg-slate-900/40 border-gray-700 border-b-0 rounded-t-sm  overflow-hidden overflow-y-auto">
-                            <div className="flex flex-row divide-x divide-gray-500 max-w-max">
-                                {/* Mostrar archivos según el modo actual */}
-                                {files
-                                    .filter((file) => file.language === consoleLanguage)
-                                    .map((file) => (
-                                        <div
-                                            key={file.id}
-                                            className={`flex items-center justify-between px-2 py-1.5 cursor-pointer border-r-1 border-(--color-gray-700) rounded-t-xs ${currentFileId === file.id ? 'bg-gray-600 text-gray-100 border-b-2 border-b-(--color-secondary)' : 'bg-gray-800 hover:bg-gray-600 text-gray-400 hover:text-gray-100 border-b-2 border-(--color-gray-700)'}`}
-                                            onClick={() => setCurrentFileId(file.id)}>
-                                            <div className="flex items-center gap-2">
-                                                {getFileIcon(file.type)}
-                                                <span className="text-sm">{file.name}</span>
-                                            </div>
-                                        </div>
-                                    ))}
+                        <div className="rounded-t-sm overflow-hidden overflow-y-auto">
+                            <div className="tabs tabs-lift tabs-sm">
+                                <label className="tab flex items-center gap-2">
+                                    <input
+                                        type="radio"
+                                        name="files"
+                                        value={currentFile.id}
+                                        aria-label={currentFile.name}
+                                        checked={currentFileId === currentFile.id}
+                                        onChange={() => setCurrentFileId(currentFile.id)}></input>
+                                    <span className={currentFileId === currentFile.id ? 'opacity-100' : 'opacity-30'}>
+                                        {getFileIcon(currentFile.language)}
+                                    </span>
+                                    {currentFile.name}
+                                </label>
                             </div>
                         </div>
 
                         <div
-                            className={`border-1 border-(--color-gray-700) rounded-b-sm overflow-hidden h-[calc(100svh-166px)]`}>
+                            className={`rounded-b-sm overflow-hidden h-[calc(100svh-172px)] border border-base-200 rounded-tr-sm`}>
                             {currentFile && (
                                 <Editor
                                     height={'100%'}
@@ -405,7 +406,7 @@ export const ConsoleMode = () => {
                             Ejecutar
                         </button>
                     </div>
-                    <div className="bg-neutral/50 border-1 border-gray-700 rounded-sm overflow-hidden h-[calc(100svh-130px)]">
+                    <div className="bg-neutral/50 border-1 border-gray-700 rounded-sm overflow-hidden h-[calc(100svh-140px)]">
                         <div className="bg-stone-900/50 flex items-center justify-between px-2 rounded-t-sm">
                             <div className="flex items-center gap-2">
                                 <span
@@ -449,6 +450,6 @@ export const ConsoleMode = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </LayoutSubSection>
     );
 };
