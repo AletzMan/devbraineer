@@ -406,8 +406,8 @@ export const ConsoleMode = () => {
                             Ejecutar
                         </button>
                     </div>
-                    <div className="bg-neutral/50 border-1 border-gray-700 rounded-sm overflow-hidden h-[calc(100svh-140px)]">
-                        <div className="bg-stone-900/50 flex items-center justify-between px-2 rounded-t-sm">
+                    <div className="bg-base-100 border-1 border-base-200 rounded-sm overflow-hidden h-[calc(100svh-140px)]">
+                        <div className="bg-base-300 flex items-center justify-between px-2 rounded-t-sm">
                             <div className="flex items-center gap-2">
                                 <span
                                     className={`w-2.5 h-2.5 rounded-full
@@ -426,21 +426,23 @@ export const ConsoleMode = () => {
                                 </button>
                             </div>
                         </div>
-                        <div className="flex flex-col gap-1 h-[calc(100svh-220px)]">
+                        <div className="flex flex-col gap-1  h-full">
                             <textarea
-                                className={`w-full h-[calc(100svh-300px)] overflow-auto p-4 bg-neutral outline-0 resize-none border-b-1 border-(--color-gray-700)`}
+                                className={`w-full h-[calc(100svh-300px)] overflow-auto p-4 bg-neutral outline-0 resize-none`}
                                 style={{ fontFamily: 'consolas' }}
                                 value={consoleOutput.output.replaceAll(/\/piston\/jobs\/[a-f0-9\-]{36}\/file0./g, '')}
                                 spellCheck={false}
                                 readOnly
                             />
-                            <div className="flex flex-col gap-1 p-4">
-                                <label htmlFor="stdin" className="text-sm font-medium text-gray-300">
+                            <div className="flex flex-col h-full max-h-50 rounded-b-sm border border-base-200">
+                                <label
+                                    htmlFor="stdin"
+                                    className="text-sm font-medium text-gray-300 bg-base-300 px-2 py-1 rounded-t-sm">
                                     Entrada estándar (stdin)
                                 </label>
                                 <textarea
                                     id="stdin"
-                                    className="textarea textarea-bordered resize-none"
+                                    className="textarea textarea-bordered resize-none h-full max-h-34.5 w-full outline-0"
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
                                     placeholder="Escribe la entrada para tu programa aquí..."
