@@ -20,6 +20,15 @@
     --depth: 1;
     --noise: 0;
 }
+@plugin "daisyui/theme" {
+    name: 'dark';
+    default: false;
+    prefersdark: false;
+    color-scheme: 'dark';
+
+    /* Solo redondeos y bordes, no colores */
+    --radius-field: 0.25rem;
+}
 
 :root {
     --max-width: 1650px;

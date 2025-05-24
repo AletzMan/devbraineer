@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     return (
-        <html lang="en">
+        <html lang="en" data-theme="dark" style={{ colorScheme: 'dark' }}>
             <ClerkProvider>
                 <body className={`${jost.variable} ${josefinSans.variable} ${code.variable} antialiased`}>
                     <ThemeProvider attribute="data-theme">{children}</ThemeProvider>
