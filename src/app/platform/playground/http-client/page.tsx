@@ -8,9 +8,13 @@ import { getHistoryFromLocalStorage, saveHistoryToLocalStorage } from '@/lib/sto
 import { RequestHistory } from '@prisma/client';
 import { useAuth } from '@clerk/nextjs';
 import SideBarHistory from './components/SideBarHistory';
+import { LayoutSubSection } from '../../componentes/LayoutSubSection';
+import Splitter from '@ihatecode/react-splitter';
 
 export default function HttpClientPage() {
     const { userId } = useAuth();
+    const [history, setHistory] = useState<RequestHistory[]>([]);
+    const [sending, setSending] = useState(false);
     const [response, setResponse] = useState({
         status: 0,
         statusText: '',
@@ -19,9 +23,6 @@ export default function HttpClientPage() {
         time: 0,
         size: 0,
     });
-
-    const [history, setHistory] = useState<RequestHistory[]>([]);
-
     const [formState, setFormState] = useState<{
         method: string;
         url: string;
@@ -36,6 +37,7 @@ export default function HttpClientPage() {
 
     const sendRequest = async ({ method, url, headers, body }: any) => {
         try {
+            setSending(true);
             const formattedHeaders: Record<string, string> = {};
             headers.forEach((h: any) => {
                 if (h.key && h.value) formattedHeaders[h.key] = h.value;
@@ -91,23 +93,44 @@ export default function HttpClientPage() {
                 time: 0,
                 size: 0,
             });
+        } finally {
+            setSending(false);
         }
     };
 
     return (
-        <div className="max-w-(--max-width) mx-auto flex flex-col h-[calc(100svh-3.8rem)] flex-grow overflow-y-auto scrollbar-thin">
-            <HeaderSection title="HTTP Client" description="Envía y gestiona tus peticiones HTTP con facilidad." />
-            <div className="grid grid-cols-[300px_1fr_1fr] gap-2 p-2 max-md:flex max-md:flex-col">
+        <LayoutSubSection>
+            <div className="grid grid-cols-[375px_1fr] gap-2 max-md:flex max-md:flex-col h-[calc(100svh-6.4rem)]">
                 <SideBarHistory history={history} setHistory={setHistory} setFormState={setFormState} />
-                <div className="flex flex-col gap-2 ">
-                    <section className="bg-base-100 shadow-md rounded-sm p-4 space-y-4">
-                        <RequestForm onSend={sendRequest} initialValues={formState || undefined} />
-                    </section>
-                </div>
-                <section className="bg-base-100 shadow-md rounded-sm p-4 ">
-                    <ResponseViewer response={response} />
-                </section>
+
+                <Splitter
+                    className="overflow-hidden h-full"
+                    direction="vertical"
+                    splitbar={{ color: '#595959', size: 3 }}
+                    items={[
+                        {
+                            min: 200,
+                            content: (
+                                <section className="bg-base-100 shadow-md rounded-sm p-2 space-y-4 h-full overflow-y-auto scrollbar-thin border border-base-300">
+                                    <RequestForm
+                                        onSend={sendRequest}
+                                        initialValues={formState || undefined}
+                                        sending={sending}
+                                    />
+                                </section>
+                            ),
+                        },
+                        {
+                            min: 275,
+                            content: (
+                                <section className="shadow-md rounded-sm p-2 h-full overflow-y-auto scrollbar-thin bg-base-100 border border-base-300">
+                                    <ResponseViewer response={response} />
+                                </section>
+                            ),
+                        },
+                    ]}
+                />
             </div>
-        </div>
+        </LayoutSubSection>
     );
 }
