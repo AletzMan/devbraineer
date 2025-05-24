@@ -489,10 +489,15 @@ background: #f4f4f4;
 margin: 0;
 }
 
+h1{
+  color: #06abf7;
+  text-shadow: 0 0 3px #696969;
+}
+
 .card {
 background: white;
 padding: 30px 40px;
-border-radius: 16px;
+border-radius: 6px;
 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 text-align: center;
 }
@@ -505,9 +510,9 @@ color: #333;
 
 .botones button {
 font-size: 20px;
-padding: 10px 20px;
+padding: 6px 20px;
 margin: 10px 5px;
-border-radius: 8px;
+border-radius: 4px;
 border: none;
 cursor: pointer;
 transition: transform 0.1s ease;
@@ -520,6 +525,7 @@ transform: scale(0.95);
 .incrementar { background-color: #4CAF50; color: white; }
 .decrementar { background-color: #f44336; color: white; }
 .resetear    { background-color: #555;    color: white; }
+
 
 `,
         language: 'css',
