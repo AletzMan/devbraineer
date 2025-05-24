@@ -3,7 +3,7 @@ import { Jost, Josefin_Sans, Inconsolata } from 'next/font/google';
 import './globals.css';
 import '@ihatecode/react-splitter/lib/style.css';
 import { ClerkProvider } from '@clerk/nextjs';
-import { ThemeProvider } from '@/app/components/ThemeProvider';
+import { ThemeProvider } from 'next-themes';
 const jost = Jost({ variable: '--font-jost', subsets: ['latin'] });
 const josefinSans = Josefin_Sans({ variable: '--font-josefin-sans', subsets: ['latin'] });
 const code = Inconsolata({ variable: '--font-code', subsets: ['latin'] });
@@ -20,11 +20,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     return (
         <html lang="en">
             <ClerkProvider>
-                <ThemeProvider>
-                    <body className={`${jost.variable} ${josefinSans.variable} ${code.variable} antialiased`}>
-                        {children}
-                    </body>
-                </ThemeProvider>
+                <body className={`${jost.variable} ${josefinSans.variable} ${code.variable} antialiased`}>
+                    <ThemeProvider attribute="data-theme">{children}</ThemeProvider>
+                </body>
             </ClerkProvider>
         </html>
     );

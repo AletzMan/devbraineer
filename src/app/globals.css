@@ -116,7 +116,7 @@ body {
 
 .preview {
     background: var(--color-base-100);
-    --gap: 1.85em;
+    --gap: 1.5em;
     --line: 1px;
     --color: var(--color-base-300);
 

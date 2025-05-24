@@ -9,4 +9,5 @@ module.exports = {
         themes: ['cupcake', 'dark', 'business', 'light'],
         darkTheme: 'dark',
     },
+    darkMode: 'class',
 };
