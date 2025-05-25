@@ -33,6 +33,7 @@ model User {
   links          Link[] // <-- ¡Nueva relación a Link!
   requestHistory RequestHistory[] // <-- ¡Nueva relación a RequestHistory!
   notes        Note[]
+  collections  Collection[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -159,8 +160,24 @@ model RequestHistory {
   headers  Json // Guarda los headers como objeto JSON
   body     String? @db.Text
   response String? @db.Text
+  collectionId String?
+  collection Collection? @relation(fields: [collectionId], references: [id], onDelete: Cascade)
 
   created_at DateTime @default(now())
 
   @@map("request_history")
+}
+
+
+model Collection {
+  id         String            @id @default(uuid())
+  userId     String
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name       String
+  requests   RequestHistory[]
+
+  created_at DateTime          @default(now())
+
+  @@unique([name, userId])     // ✅ Esta línea es clave
+  @@map("collections")
 }
