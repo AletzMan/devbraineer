@@ -64,11 +64,12 @@ export default function HttpClientPage() {
                 method,
                 url,
                 headers,
-                body,
+                body: JSON.stringify(body),
                 response: JSON.stringify(responseData),
                 created_at: new Date(),
                 id: crypto.randomUUID(),
                 userId: userId || '',
+                collectionId: null,
             });
 
             setHistory((prev) => [
@@ -77,11 +78,12 @@ export default function HttpClientPage() {
                     method,
                     url,
                     headers,
-                    body,
+                    body: JSON.stringify(body),
                     response: JSON.stringify(responseData),
                     created_at: new Date(),
                     id: crypto.randomUUID(),
                     userId: userId || '',
+                    collectionId: null,
                 },
             ]);
         } catch (err: any) {

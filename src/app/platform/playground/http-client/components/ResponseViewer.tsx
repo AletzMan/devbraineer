@@ -40,9 +40,6 @@ export function ResponseViewer({ response }: ResponseViewerProps) {
     const looksLikeHTML = (str: string) => /<\/?[a-z][\s\S]*>/i.test(str);
     const looksLikeXML = (str: string) => /<\/?[a-z][\s\S]*>/i.test(str);
     const isXML = looksLikeXML(body);
-    console.log(body);
-    console.log(isXML);
-
     const isArray = Array.isArray(body);
 
     return (
