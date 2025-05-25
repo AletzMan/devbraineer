@@ -11,6 +11,12 @@
     color-scheme: 'light';
 
     /* Solo redondeos y bordes, no colores */
+    --color-primary: oklch(58% 0.233 277.117);
+    --color-primary-content: oklch(25% 0.09 281.288);
+    --color-secondary: oklch(71% 0.202 349.761);
+    --color-secondary-content: oklch(40% 0.153 2.432);
+    --color-accent: oklch(85% 0.138 181.071);
+    --color-accent-content: oklch(38% 0.063 188.416);
     --radius-selector: 2rem;
     --radius-field: 0.25rem;
     --radius-box: 0.25rem;
@@ -102,7 +108,7 @@ body {
 
 .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: var(--color-primary) var(--color-base-100);
+    scrollbar-color: --color-primary var(--color-base-100);
 }
 
 .monaco-editor .margin,
