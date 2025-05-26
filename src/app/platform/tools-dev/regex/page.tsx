@@ -7,6 +7,7 @@ import MyPatternsRegex from './componets/MyPatternsRegex';
 import PatternRegex from './componets/PatternRegex';
 import { RegexPattern } from '@prisma/client';
 import HeaderSection from '../../componentes/HeaderSection';
+import { LayoutSubSection } from '../../componentes/LayoutSubSection';
 
 const commonPatterns: RegexPattern[] = [
     {
@@ -200,26 +201,20 @@ export default function RegexPage() {
     };
 
     return (
-        <div className="flex min-h-screen w-[--max-width] bg-neutral/50">
+        <LayoutSubSection>
             <div className="flex flex-col gap-2 flex-1 ">
-                <HeaderSection
-                    title="Generador de RegEx"
-                    description="Crea, prueba y valida expresiones regulares fácilmente"
-                />
-
-                {/* name of each tab group should be unique */}
-                <div className="tabs tabs-lift p-2 h-[calc(100svh-11.5em)]">
+                <div className="tabs tabs-lift h-[calc(100svh-8.6em)]">
                     <input
                         type="radio"
                         name="regexTabs"
-                        className="tab  [--tab-border-color:#454545] "
+                        className="tab"
                         aria-label="Probar RegEx"
                         checked={activeTab === 'tester'}
                         onChange={() => setActiveTab('tester')}
                     />
-                    <div className="tab-content p-4 border-1 border-gray-700 bg-base-100 h-full scrollbar-thin overflow-y-auto">
+                    <div className="tab-content p-2 border-1 border-base-300 bg-base-100 h-full">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full ">
-                            <div className="bg-neutral/50 px-4 py-2 rounded-sm">
+                            <div className="bg-base-200 px-4 py-2 rounded-sm">
                                 <div>
                                     <label className="label text-sm" htmlFor="pattern">
                                         Expresión Regular
@@ -353,25 +348,27 @@ export default function RegexPage() {
                                 </div>
                             </div>
 
-                            <div className="flex flex-col gap-2 bg-neutral/50 px-4 py-2 rounded-sm">
-                                <div className="card bg-zinc-900 border border-dashed border-zinc-700 rounded-sm overflow-hidden">
-                                    <header className="p-4 border-b border-dashed border-gray-700 bg-neutral/80">
-                                        <h2 className="text-lg font-semibold text-white">Guía rápida</h2>
-                                        <p className="text-sm text-zinc-400">Caracteres especiales y su significado</p>
+                            <div className="flex flex-col gap-2 bg-base-200 px-4 py-2 rounded-sm h-[calc(100svh-9.8em)] scrollbar-thin overflow-y-auto">
+                                <div className="card bg-base-300/50  border  border-dashed border-base-content/20 rounded-sm ">
+                                    <header className="p-4 border-b border-dashed border-base-content/20 bg-accent/10">
+                                        <h2 className="text-lg font-semibold text-base-content">Guía rápida</h2>
+                                        <p className="text-sm text-base-content/70">
+                                            Caracteres especiales y su significado
+                                        </p>
                                     </header>
-                                    <div className="grid grid-cols-2 gap-4 text-sm p-4">
+                                    <div className="grid grid-cols-2 gap-4 text-sm p-4 h-max">
                                         {simbolos.map((item, idx) => (
                                             <div key={idx} className="grid grid-cols-[4.5em_1fr] gap-2">
                                                 <span className="justify-self-end self-center font-mono badge badge-soft badge-accent rounded-sm badge-sm">
                                                     {item.simbolo}
                                                 </span>
-                                                <span className="text-gray-300 text-xs">{item.descripcion}</span>
+                                                <span className="text-base-content/70 text-xs">{item.descripcion}</span>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
 
-                                <div className="bg-base-200 border-zinc-700 text-zinc-200 p-6 rounded-sm shadow-xl space-y-4">
+                                <div className="bg-info/7 border border-base-content/20 text-base-content p-6 rounded-sm shadow-xl space-y-4">
                                     <div className="flex items-center gap-3">
                                         <InfoIcon className="text-blue-400" />
                                         <h2 className="text-xl font-semibold">Consejos para expresiones regulares</h2>
@@ -382,7 +379,7 @@ export default function RegexPage() {
                                             const parts = tip.split(/(`[^`]+`)/g);
 
                                             return (
-                                                <li key={i} className="text-sm text-zinc-300 leading-relaxed">
+                                                <li key={i} className="text-sm text-base-content/70 leading-relaxed">
                                                     {parts.map((part, j) =>
                                                         /^`[^`]+`$/.test(part) ? (
                                                             <code
@@ -411,13 +408,13 @@ export default function RegexPage() {
                     <input
                         type="radio"
                         name="regexTabs"
-                        className="tab   [--tab-border-color:#454545] "
+                        className="tab"
                         aria-label="Patrones comunes"
                         checked={activeTab === 'patterns'}
                         onChange={() => setActiveTab('patterns')}
                     />
-                    <div className="tab-content border-1 border-gray-700 bg-base-100 p-4 h-full scrollbar-thin overflow-y-auto">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-2 rounded-sm">
+                    <div className="tab-content border-1 border-base-300 bg-base-100 p-4 h-full scrollbar-thin overflow-y-auto">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-2 rounded-sm bg-lines border border-base-300">
                             {commonPatterns.map((item, index) => (
                                 <PatternRegex
                                     key={index}
@@ -433,16 +430,16 @@ export default function RegexPage() {
                     <input
                         type="radio"
                         name="regexTabs"
-                        className="tab   [--tab-border-color:#454545] "
+                        className="tab"
                         aria-label="Mis patrones"
                         checked={activeTab === 'myPatterns'}
                         onChange={() => setActiveTab('myPatterns')}
                     />
-                    <div className="tab-content border-1 border-gray-700 bg-base-100 p-4 h-full scrollbar-thin overflow-y-auto">
+                    <div className="tab-content border-1 border-base-300 bg-base-100 p-4 h-full scrollbar-thin overflow-y-auto">
                         <MyPatternsRegex setPattern={setPattern} setActiveTab={setActiveTab} />
                     </div>
                 </div>
             </div>
-        </div>
+        </LayoutSubSection>
     );
 }
