@@ -248,11 +248,11 @@ export default function MyPatternsPage({ setPattern, setActiveTab }: MyPatternsP
     };
 
     return (
-        <div className="flex bg-neutral/50 text-gray-200 overflow-y-auto rounded-sm border-1 border-gray-700 h-[calc(100svh-14.75rem)]">
-            <div className="flex flex-col flex-1 gap-2 mx-auto w-full">
-                <header className="flex flex-col md:flex-row justify-between items-center gap-4 p-4 bg-neutral/65 border-b-1 border-gray-700">
+        <div className="flex bg-lines overflow-y-auto rounded-sm border-1 border-base-300 h-[calc(100svh-9.8rem)]">
+            <div className="flex flex-col flex-1 mx-auto w-full">
+                <header className="flex flex-col md:flex-row justify-between items-center gap-4 p-4 bg-base-200 border-b-1 border-base-300">
                     <label className="input flex items-center gap-2 w-full md:w-auto min-w-[20rem]">
-                        <Search className="size-5 text-gray-400" />
+                        <Search className="size-5 text-base-content/60" />
                         <input
                             type="search"
                             value={searchTerm}
@@ -264,7 +264,7 @@ export default function MyPatternsPage({ setPattern, setActiveTab }: MyPatternsP
                         <PlusCircle className="size-5 mr-2" /> Agregar Nuevo Patrón
                     </button>
                 </header>
-                {loadingPatterns && <div className="text-center text-gray-400 mt-8">Cargando patrones...</div>}
+                {loadingPatterns && <div className="text-center text-base-content/60 mt-8">Cargando patrones...</div>}
                 {patternsError && (
                     <div className="alert alert-error bg-red-800 text-red-200 border-red-700 p-3 rounded-md text-sm flex items-center gap-2 mt-8">
                         <AlertCircle className="size-4 text-red-400" />
@@ -274,7 +274,7 @@ export default function MyPatternsPage({ setPattern, setActiveTab }: MyPatternsP
                 {!loadingPatterns && !patternsError && (
                     <div className="flex flex-col">
                         {filteredPatterns.length === 0 ? (
-                            <div className="text-center text-gray-500 text-lg mt-8">
+                            <div className="text-center text-base-content/60 text-lg mt-8">
                                 {searchTerm
                                     ? 'No se encontraron patrones que coincidan con la búsqueda.'
                                     : 'Aún no hay patrones guardados.'}
