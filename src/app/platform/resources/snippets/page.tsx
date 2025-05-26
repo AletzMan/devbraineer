@@ -13,6 +13,7 @@ import HeaderSection from '../../componentes/HeaderSection';
 import { CodeBlock } from 'react-code-block';
 import { themes } from 'prism-react-renderer';
 import { r } from 'node_modules/framer-motion/dist/types.d-CtuPurYT';
+import { LayoutSubSection } from '../../componentes/LayoutSubSection';
 
 export default function SnippetsPage() {
     const [snippets, setSnippets] = useState<Snippet[]>([]);
@@ -231,58 +232,58 @@ export default function SnippetsPage() {
     };
 
     return (
-        <div className="flex h-[calc(100svh-4rem)]bg-neutral/50 text-zinc-900 dark:text-zinc-50">
+        <LayoutSubSection>
             <Toaster position="top-right" />
-            <div className="flex flex-col gap-4 flex-1 max-w-(--max-width) mx-auto ">
-                <HeaderSection
-                    title="Snippets de Código"
-                    description="Guarda y organiza fragmentos de código para reutilizarlos fácilmente">
-                    <button className="btn btn-success gap-1 mt-4 sm:mt-0" onClick={handleOpenCreateModal}>
-                        <Plus className="w-4 h-4" />
-                        Nuevo Snippet
-                    </button>
-                </HeaderSection>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 overflow-y-auto h-[calc(100svh-10.5rem)] pb-4 px-4">
-                    <div className="md:col-span-1  bg-neutral/40 rounded-sm  p-4">
+            <div className="flex flex-col gap-2 flex-1 max-w-(--max-width) w-full mx-auto bg">
+                <button className="btn btn-success max-w-fit self-start" onClick={handleOpenCreateModal}>
+                    <Plus className="w-4 h-4" />
+                    Nuevo Snippet
+                </button>
+                <div className="grid grid-cols-1 gap-2 md:grid-cols-4 overflow-y-auto h-full w-full ">
+                    <div className="bg-base-200 border border-base-300 rounded-sm  p-4">
                         <div className="sticky top-4 space-y-4">
-                            <label className="input w-full border-0">
+                            <label className="input input-sm w-full border-1 border-base-content/15">
                                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-zinc-500 dark:text-zinc-400" />
                                 <input
                                     type="search"
                                     placeholder="Buscar snippets..."
-                                    className="w-full pl-9 border-0"
+                                    className="w-full pl-9"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </label>
-                            <div className=" bg-base-100 rounded-md  p-4">
-                                <h3 className="font-medium mb-3 ">Categorías</h3>
+                            <div className=" bg-base-100 border border-base-300 rounded-md  p-4">
+                                <h3 className="font-medium mb-3 border-b border-base-content/15 pb-2 border-dashed">
+                                    Categorías
+                                </h3>
                                 <div className="space-y-2">
                                     <button
-                                        className={`btn w-full justify-start gap-2 font-normal ${selectedCategory === null ? 'btn-active btn-soft' : 'btn-ghost'}`}
+                                        className={`btn w-full justify-start gap-2 font-normal border-0 ${selectedCategory === null ? 'btn-active btn-soft bg-info/30' : 'btn-ghost bg-base-content/5'}`}
                                         onClick={() => setSelectedCategory(null)}>
                                         <Folder className="h-4 w-4" />
                                         Todas
-                                        <span className="ml-auto text-zinc-500 dark:text-zinc-400 text-xs">
+                                        <span className="badge badge-default bg-base/40 border-0 badge-sm ml-auto">
                                             {snippets.length}
                                         </span>
                                     </button>
                                     {uniqueCategories.map((category) => (
                                         <button
                                             key={category}
-                                            className={`btn w-full justify-start gap-2 font-normal ${selectedCategory === category ? 'btn-active bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'btn-ghost'}`}
+                                            className={`btn w-full justify-start gap-2 font-normal border-0 ${selectedCategory === category ? 'btn-active btn-soft bg-info/30' : 'btn-ghost bg-base-content/5'}`}
                                             onClick={() => setSelectedCategory(category)}>
                                             <Folder className="h-4 w-4" />
                                             {category}
-                                            <span className="ml-auto text-zinc-500 dark:text-zinc-400 text-xs">
+                                            <span className="badge badge-default bg-base/40 border-0 badge-sm ml-auto">
                                                 {snippets.filter((s) => s.category === category).length}
                                             </span>
                                         </button>
                                     ))}
                                 </div>
                             </div>
-                            <div className=" bg-base-100 rounded-md p-4">
-                                <h3 className="font-medium mb-3 ">Etiquetas</h3>
+                            <div className=" bg-base-100 border border-base-300 rounded-md p-4">
+                                <h3 className="font-medium mb-3 border-b border-base-content/15 pb-2 border-dashed">
+                                    Etiquetas
+                                </h3>
                                 <div className="flex flex-wrap gap-2">
                                     <button
                                         className={`btn btn-sm btn-soft btn-info gap-1 h-7 ${selectedTag === null ? 'btn-active' : 'btn-ghost'}`}
@@ -303,8 +304,7 @@ export default function SnippetsPage() {
                             </div>
                         </div>
                     </div>
-
-                    <div className="md:col-span-3 space-y-4 bg-neutral/40 p-4 rounded-md">
+                    <div className="md:col-span-3 space-y-4 bg-base-100 border border-base-300 rounded-sm p-4 bg-lines">
                         {loading && <div className="text-center text-zinc-400 mt-8">Cargando snippets...</div>}
                         {error && (
                             <div className="alert alert-error bg-red-800 text-red-200 border-red-700 p-3 rounded-md text-sm flex items-center gap-2 mt-8">
@@ -359,7 +359,7 @@ export default function SnippetsPage() {
                                     type="text"
                                     name="title"
                                     placeholder="Ej: Función para Debounce"
-                                    className="input w-full"
+                                    className="input input-sm w-full"
                                     value={newSnippetData.title}
                                     onChange={handleCreateInputChange}
                                     disabled={isSaving}
@@ -372,7 +372,7 @@ export default function SnippetsPage() {
                             </span>
                             <select
                                 name="language"
-                                className="select select-bordered capitalize  w-full"
+                                className="select select-sm capitalize  w-full"
                                 value={newSnippetData.language}
                                 onChange={handleCreateInputChange}
                                 disabled={isSaving}>
@@ -415,7 +415,7 @@ export default function SnippetsPage() {
                                 type="text"
                                 name="category"
                                 placeholder="Ej: Frontend, Backend, Utilidades"
-                                className="input w-full  resize-none"
+                                className="input input-sm w-full  resize-none"
                                 value={newSnippetData.category || ''}
                                 onChange={handleCreateInputChange}
                                 disabled={isSaving}
@@ -427,7 +427,7 @@ export default function SnippetsPage() {
                                 type="text"
                                 name="tags"
                                 placeholder="Ej: react, hooks, forms"
-                                className="input w-full "
+                                className="input input-sm w-full "
                                 value={newSnippetData.tags.join(', ')}
                                 onChange={handleTagsChange}
                                 disabled={isSaving}
@@ -532,6 +532,6 @@ export default function SnippetsPage() {
                     </CodeBlock>
                 </div>
             </dialog>
-        </div>
+        </LayoutSubSection>
     );
 }
