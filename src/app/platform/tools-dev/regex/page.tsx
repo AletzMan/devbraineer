@@ -435,7 +435,7 @@ export default function RegexPage() {
                         checked={activeTab === 'myPatterns'}
                         onChange={() => setActiveTab('myPatterns')}
                     />
-                    <div className="tab-content border-1 border-base-300 bg-base-100 p-4 h-full scrollbar-thin overflow-y-auto">
+                    <div className="tab-content border-1 border-base-300 bg-base-100 p-2 h-full scrollbar-thin overflow-y-auto">
                         <MyPatternsRegex setPattern={setPattern} setActiveTab={setActiveTab} />
                     </div>
                 </div>
