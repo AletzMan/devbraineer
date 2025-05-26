@@ -216,14 +216,6 @@ export default function TailwindGradientGenerator() {
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                    <Sparkles className="h-6 w-6 text-primary" />
-                    <h2 className="text-2xl font-bold">Generador de Gradientes Tailwind</h2>
-                </div>
-                <p className="text-sm text-muted-foreground">Crea gradientes usando clases de Tailwind CSS</p>
-            </div>
-
             <div className="card bg-base-100 shadow-xl">
                 <div className="card-body">
                     <div className="flex flex-col gap-4 mb-6">
