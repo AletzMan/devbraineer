@@ -6,12 +6,11 @@ import {
     deleteCollectionsService,
     getCollectionsService,
 } from '@/services/collection-request.service';
-import { RequestHistory } from '@prisma/client';
 import { useEffect, useMemo, useState } from 'react';
 import { useHTTPClientStore } from '../hooks/storeHTTPClient';
 
 export const useCollections = () => {
-    const { setOpenModal, setEntry, collectionName, setCollectionName, entry } = useHTTPClientStore();
+    const { setOpenModal, collectionName, setCollectionName, request } = useHTTPClientStore();
     const [collections, setCollections] = useState<CollectionsResponse[]>([]);
 
     useEffect(() => {
@@ -48,21 +47,25 @@ export const useCollections = () => {
         }));
     }, [collections]);
 
-    const deleteCollection = async (name: string) => {
+    const deleteCollection = async (name: string): Promise<boolean> => {
         const deleted = await deleteCollectionService(name);
         if (deleted) {
             setCollections((prev) => prev.filter((collection) => collection.name !== name));
+            return true;
         }
+        return false;
     };
 
-    const deleteCollections = async () => {
+    const deleteCollections = async (): Promise<boolean> => {
         const deleted = await deleteCollectionsService();
         if (deleted) {
             setCollections([]);
+            return true;
         }
+        return false;
     };
 
-    const deleteRequestById = async (id: string) => {
+    const deleteRequestById = async (id: string): Promise<boolean> => {
         const deleted = await deleteCollectionByIdService(id);
         console.log('deleted', deleted);
         if (deleted) {
@@ -72,17 +75,32 @@ export const useCollections = () => {
                     requests: collection.requests.filter((request) => request.id !== id),
                 }))
             );
+            return true;
         }
+        return false;
     };
 
-    const saveCollection = async () => {
-        if (!entry) return;
-        const response = await addToCollectionService(entry, collectionName);
+    const saveCollection = async (): Promise<boolean> => {
+        if (!request) return false;
+        const response = await addToCollectionService(request, collectionName);
         if (response) {
             setCollections((prev) => [...prev, response]);
             setOpenModal(false);
             setCollectionName('');
+            return true;
         }
+        return false;
+    };
+
+    const createCollection = async (): Promise<boolean> => {
+        const response = await addToCollectionService(undefined, collectionName);
+        if (response) {
+            setCollections((prev) => [...prev, response]);
+            setOpenModal(false);
+            setCollectionName('');
+            return true;
+        }
+        return false;
     };
 
     return {
@@ -91,5 +109,6 @@ export const useCollections = () => {
         deleteCollections,
         deleteRequestById,
         saveCollection,
+        createCollection,
     };
 };
