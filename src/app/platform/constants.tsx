@@ -454,7 +454,7 @@ export const languages = [
     'other',
 ];
 
-export const noteColors = ['primary', 'success', 'error', 'warning', 'accent', 'info', 'neutral'];
+export const noteColors = ['bg-primary', 'bg-success', 'bg-error', 'bg-warning', 'bg-accent', 'bg-info', 'bg-neutral'];
 
 export const FilesWeb: FileDataWeb[] = [
     {
