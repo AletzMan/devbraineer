@@ -15,7 +15,7 @@ import {
     TrashIcon,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { FileData, FILES_DEFAULT, languages } from '../../constants';
+import { FileData, FILES_DEFAULT } from '../../constants';
 import {
     CIcon,
     CSharpIcon,
@@ -78,42 +78,6 @@ export const ConsoleMode = () => {
                 open: false,
             });
         }, 5000);
-    };
-
-    const deleteFile = (id: string) => {
-        const fileToDelete = files.find((file) => file.id === id);
-        if (!fileToDelete) return;
-
-        const filesOfSameType = files.filter((file) => file.type === fileToDelete.type);
-        if (filesOfSameType.length <= 1) {
-            setToast({
-                title: 'Error',
-                description: 'No puedes eliminar el único archivo de este tipo',
-                variant: 'error',
-                open: true,
-            });
-            timeOutToast();
-            return;
-        }
-
-        if (confirm(`¿Estás seguro de que quieres eliminar el archivo ${fileToDelete.name}?`)) {
-            if (currentFileId === id) {
-                const nextFile = files.find((file) => file.type === fileToDelete.type && file.id !== id);
-                if (nextFile) {
-                    setCurrentFileId(nextFile.id);
-                }
-            }
-
-            setFiles(files.filter((file) => file.id !== id));
-
-            setToast({
-                title: 'Archivo eliminado',
-                description: `Se ha eliminado el archivo ${fileToDelete.name}`,
-                variant: 'success',
-                open: true,
-            });
-            timeOutToast();
-        }
     };
 
     useEffect(() => {
@@ -303,7 +267,7 @@ export const ConsoleMode = () => {
                 <div className="flex flex-col gap-2 bg">
                     <div className="flex items-center justify-between">
                         <select
-                            className="select select-bordered w-[150px] select-sm capitalize"
+                            className="select select-ghost border-base-300 bg-base-content/3 w-[150px] select-sm capitalize"
                             value={consoleLanguage}
                             onChange={HandleChangeLanguage}>
                             <option disabled value="">
@@ -315,41 +279,27 @@ export const ConsoleMode = () => {
                                 </option>
                             ))}
                         </select>
-
-                        <div className="dropdown dropdown-start">
-                            <div tabIndex={0} role="button" className="btn btn-sm">
-                                <EllipsisVertical className="size-5" />
+                        <div className="flex flex-row gap-2">
+                            <div className="tooltip tooltip-soft tooltip-bottom" data-tip="Copiar codigo">
+                                <button className="btn btn-sm btn-soft justify-start gap-4" onClick={handleCopy}>
+                                    {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+                                </button>
                             </div>
-                            <ul
-                                tabIndex={0}
-                                className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-                                <li>
-                                    <button className="btn btn-sm btn-ghost justify-start gap-4" onClick={handleCopy}>
-                                        {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-                                        {copied ? 'Copiado' : 'Copiar Codigo'}
-                                    </button>
-                                </li>
-                                <li>
-                                    <button
-                                        className="btn btn-sm btn-ghost justify-start gap-4"
-                                        onClick={handleDownload}>
-                                        <Download className="size-4" />
-                                        Descargar
-                                    </button>
-                                </li>
-                                <li>
-                                    <button className="btn btn-sm btn-ghost justify-start gap-4" onClick={handleLoad}>
-                                        <RefreshCcw className="size-4" />
-                                        Cargar
-                                    </button>
-                                </li>
-                                <li>
-                                    <button className="btn btn-sm btn-ghost justify-start gap-4" onClick={handleClear}>
-                                        <TrashIcon className="size-4" />
-                                        Limpiar
-                                    </button>
-                                </li>
-                            </ul>
+                            <div className="tooltip tooltip-soft tooltip-bottom" data-tip="Descargar codigo">
+                                <button className="btn btn-sm btn-soft justify-start gap-4" onClick={handleDownload}>
+                                    <Download className="size-4" />
+                                </button>
+                            </div>
+                            <div className="tooltip tooltip-soft tooltip-bottom" data-tip="Cargar codigo">
+                                <button className="btn btn-sm btn-soft justify-start gap-4" onClick={handleLoad}>
+                                    <RefreshCcw className="size-4" />
+                                </button>
+                            </div>
+                            <div className="tooltip tooltip-soft tooltip-bottom" data-tip="Limpiar codigo">
+                                <button className="btn btn-sm btn-soft justify-start gap-4" onClick={handleClear}>
+                                    <TrashIcon className="size-4" />
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div>
