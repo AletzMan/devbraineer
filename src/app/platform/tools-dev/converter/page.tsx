@@ -13,6 +13,7 @@ import Ajv from 'ajv';
 import generateSchema from 'json-schema-generator';
 import JsonView from '@uiw/react-json-view';
 import { monokaiTheme } from '@uiw/react-json-view/monokai';
+import { LayoutSubSection } from '../../componentes/LayoutSubSection';
 
 export default function ConverterPage() {
     const [input, setInput] = useState('');
@@ -166,32 +167,28 @@ export default function ConverterPage() {
     };
 
     return (
-        <div className="flex h-[calc(100svh-4.5em)] bg-neutral/40 text-gray-200  overflow-hidden">
+        <LayoutSubSection>
+            <select
+                className="select border-base-300 bg-base-content/2"
+                value={activeTab}
+                onChange={(e) => {
+                    setActiveTab(e.target.value);
+                    setError(null);
+                    setOutput('');
+                    setValidationResult(null);
+                }}>
+                <option value="json-to-object">JSON a JS Objeto</option>
+                <option value="object-to-json">JS Objeto a JSON</option>
+                <option value="json-to-ts">JSON a TypeScript</option>
+                <option value="json-to-xml">JSON a XML</option>
+                <option value="xml-to-json">XML a JSON</option>
+                <option value="json-to-schema">JSON a JSON Schema</option>
+                <option value="validate-json">Validar JSON con JSON Schema</option>
+            </select>
             <div className="flex flex-col flex-1 gap-4 max-w-[1650px] mx-auto w-full">
-                <HeaderSection
-                    title="Convertidor de Datos"
-                    description="Convierte entre diferentes formatos de datos como JSON, JavaScript, TypeScript y XML, y valida JSON con JSON Schema.">
-                    <select
-                        className="select select-primary"
-                        value={activeTab}
-                        onChange={(e) => {
-                            setActiveTab(e.target.value);
-                            setError(null);
-                            setOutput('');
-                            setValidationResult(null);
-                        }}>
-                        <option value="json-to-object">JSON a JS Objeto</option>
-                        <option value="object-to-json">JS Objeto a JSON</option>
-                        <option value="json-to-ts">JSON a TypeScript</option>
-                        <option value="json-to-xml">JSON a XML</option>
-                        <option value="xml-to-json">XML a JSON</option>
-                        <option value="json-to-schema">JSON a JSON Schema</option>
-                        <option value="validate-json">Validar JSON con JSON Schema</option>
-                    </select>
-                </HeaderSection>
-                <div className="flex flex-col gap-4 px-2 h-[calc(100svh-10rem)] overflow-y-auto">
+                <div className="flex flex-col gap-4 h-[calc(100svh-9.3rem)] overflow-y-auto">
                     {activeTab === 'validate-json' ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-2 bg-neutral-900 h-[calc(100svh-m)] overflow-hidden rounded-sm border border-gray-700">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-2 h-[calc(100svh-m)] overflow-hidden rounded-sm border border-gray-700">
                             <div className="flex flex-col ">
                                 <div className="flex items-center justify-between h-10 bg-base-300 px-4 rounded-t-sm border border-gray-700 border-b-0">
                                     <h2 className="flex items-center gap-2 text-sm font-medium text-gray-300">
@@ -325,10 +322,10 @@ export default function ConverterPage() {
                                 )}
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-2 bg-base-100 rounded-sm h-[calc(100svh-10.5rem)] scrollbar-thin overflow-y-auto">
-                                <div className="flex flex-col ">
-                                    <div className="flex items-center justify-between h-10 bg-base-300 px-4 rounded-t-sm border border-gray-700 border-b-0">
-                                        <h2 className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-sm h-[calc(100svh-12.2rem)] scrollbar-thin overflow-y-auto">
+                                <div className="flex flex-col">
+                                    <div className="flex items-center justify-between h-10 bg-base-200 px-4 rounded-t-sm border border-base-300 border-b-0">
+                                        <h2 className="flex items-center gap-2 text-sm font-medium text-base-content/80">
                                             {activeTab === 'json-to-object' ||
                                             activeTab === 'json-to-ts' ||
                                             activeTab === 'json-to-xml' ? (
@@ -349,11 +346,11 @@ export default function ConverterPage() {
                                                       : 'XML de entrada'}
                                         </h2>
                                     </div>
-                                    <div className="relative border-1 border-gray-700 rounded-b-sm h-[calc(100svh-17.25em)] overflow-hidden">
+                                    <div className="relative border-1 border-base-300 rounded-b-sm h-[calc(100svh-14.8em)] overflow-hidden">
                                         <Editor
                                             value={input}
                                             onChange={(value) => setInput(value || '')}
-                                            height="calc(100svh - 255px)"
+                                            height="calc(100svh - 14.8em)"
                                             defaultLanguage="json"
                                             theme="vs-dark"
                                             options={{
@@ -374,8 +371,8 @@ export default function ConverterPage() {
                                     </div>
                                 </div>
                                 <div className="flex flex-col">
-                                    <div className="flex items-center justify-between h-10 bg-base-300 px-4 rounded-t-sm border border-gray-700 border-b-0">
-                                        <h2 className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                                    <div className="flex items-center justify-between h-10 bg-base-200 px-4 rounded-t-sm border border-base-300 border-b-0">
+                                        <h2 className="flex items-center gap-2 text-sm font-medium text-base-content/80">
                                             {activeTab === 'json-to-object' ? (
                                                 <JSIcon className="h-5 w-5" />
                                             ) : activeTab === 'object-to-json' ? (
@@ -398,7 +395,7 @@ export default function ConverterPage() {
                                                       : 'JSON generado'}
                                         </h2>
                                     </div>
-                                    <div className="relative border-1 border-gray-700 h-[calc(100svh-17.25em)] rounded-b-sm overflow-hidden">
+                                    <div className="relative border-1 border-base-300 h-[calc(100svh-14.8em)] rounded-b-sm overflow-hidden">
                                         {activeTab === 'json-to-object' || activeTab === 'object-to-json' ? (
                                             <div className="relative h-full">
                                                 <CodeBlock code={output} language="typescript" theme={themes.vsDark}>
@@ -457,6 +454,6 @@ export default function ConverterPage() {
                     )}
                 </div>
             </div>
-        </div>
+        </LayoutSubSection>
     );
 }
