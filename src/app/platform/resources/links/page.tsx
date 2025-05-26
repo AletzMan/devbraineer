@@ -239,7 +239,7 @@ export default function LinksPage() {
     return (
         <LayoutSubSection>
             <Toaster position="top-right" />
-            <div className="flex flex-col flex-1 max-w-(--max-width) mx-auto w-full gap-4">
+            <div className="flex flex-col flex-1 max-w-(--max-width) mx-auto w-full gap-2">
                 <button className="btn btn-success gap-1 w-fit" onClick={handleOpenCreateModal}>
                     <Plus className="w-4 h-4" />
                     Nuevo Enlace
