@@ -44,6 +44,12 @@ export function RequestForm({ onSend, initialValues, sending }: RequestFormProps
                 }))
             );
             setBody(initialValues.body);
+            const urlObj = new URL(initialValues.url);
+            const queryParams = Array.from(urlObj.searchParams.entries()).map(([key, value]) => ({
+                key,
+                value,
+            }));
+            setQueryParams(queryParams);
         }
     }, [initialValues]);
 
@@ -75,6 +81,30 @@ export function RequestForm({ onSend, initialValues, sending }: RequestFormProps
             url: urlObj.toString(),
             headers: updatedHeaders,
             body,
+        });
+    };
+
+    const handleQueryParams = (e: React.ChangeEvent<HTMLInputElement>, type: 'key' | 'value', index: number) => {
+        const { value } = e.target;
+
+        setQueryParams((prev) => {
+            const updatedParams = [...prev];
+            updatedParams[index][type] = value;
+
+            // Actualizar la URL con los nuevos parámetros
+            const urlObj = new URL(url);
+            // Primero limpia todos los parámetros existentes
+            urlObj.search = '';
+
+            updatedParams.forEach((p) => {
+                if (p.key) {
+                    urlObj.searchParams.set(p.key, p.value);
+                }
+            });
+
+            setUrl(urlObj.toString());
+
+            return updatedParams;
         });
     };
 
@@ -150,29 +180,21 @@ export function RequestForm({ onSend, initialValues, sending }: RequestFormProps
                     {/* Query Params */}
                     <div className={`${activeTab === 'query-params' ? '' : 'hidden'} h-full`}>
                         <label className="font-semibold">Query Params</label>
-                        {queryParams.map((p, i) => (
+                        {queryParams.map((param, i) => (
                             <div className="flex gap-2 my-1" key={i}>
                                 <input
                                     type="text"
                                     className="input input-bordered w-1/2"
                                     placeholder="Clave"
-                                    value={p.key}
-                                    onChange={(e) => {
-                                        const newParams = [...queryParams];
-                                        newParams[i].key = e.target.value;
-                                        setQueryParams(newParams);
-                                    }}
+                                    value={param.key}
+                                    onChange={(e) => handleQueryParams(e, 'key', i)}
                                 />
                                 <input
                                     type="text"
                                     className="input input-bordered w-1/2"
                                     placeholder="Valor"
-                                    value={p.value}
-                                    onChange={(e) => {
-                                        const newParams = [...queryParams];
-                                        newParams[i].value = e.target.value;
-                                        setQueryParams(newParams);
-                                    }}
+                                    value={param.value}
+                                    onChange={(e) => handleQueryParams(e, 'value', i)}
                                 />
                             </div>
                         ))}
@@ -187,23 +209,22 @@ export function RequestForm({ onSend, initialValues, sending }: RequestFormProps
                         className={`${activeTab === 'body' ? '' : 'hidden'} overflow-x-hidden`}
                         aria-disabled={activeTab !== 'body'}>
                         <label className="font-semibold">Body (JSON)</label>
-                        {clerk.loaded && (
-                            <div className="h-[180px] max-w-250 w-full">
-                                <Editor
-                                    value={body}
-                                    onChange={(value) => setBody(value || '')}
-                                    language="json"
-                                    theme="vs-dark"
-                                    options={{
-                                        readOnly: method !== 'POST' && method !== 'PUT' && method !== 'PATCH',
-                                        minimap: {
-                                            enabled: false,
-                                        },
-                                        automaticLayout: true,
-                                    }}
-                                />
-                            </div>
-                        )}
+
+                        <div className="h-[180px] max-w-250 w-full">
+                            <Editor
+                                value={body}
+                                onChange={(value) => setBody(value || '')}
+                                language="json"
+                                theme="vs-dark"
+                                options={{
+                                    readOnly: method !== 'POST' && method !== 'PUT' && method !== 'PATCH',
+                                    minimap: {
+                                        enabled: false,
+                                    },
+                                    automaticLayout: true,
+                                }}
+                            />
+                        </div>
                     </div>
                     {/* Headers dinámicos */}
                     <div className={activeTab === 'headers' ? '' : 'hidden'}>
