@@ -17,7 +17,7 @@ export function NoteDialog({ isOpen, onClose, onSubmit, note }: NoteDialogProps)
     const [formData, setFormData] = useState({
         title: note?.title || '',
         content: note?.content || '',
-        color: note?.color || 'primary',
+        color: note?.color || 'bg-primary',
     });
 
     useEffect(() => {
@@ -55,7 +55,7 @@ export function NoteDialog({ isOpen, onClose, onSubmit, note }: NoteDialogProps)
             />
             <div className="modal">
                 <div className={`modal-box rounded-md max-w-[425px] overflow-hidden`}>
-                    <div className={`absolute -top-5 -right-12 w-30 h-15 rotate-45 bg-${formData.color}`} />
+                    <div className={`absolute -top-5 -right-12 w-30 h-15 rotate-45  ${formData.color}`} />
                     <h3 className="font-bold text-lg mb-4 relative z-10">{note ? 'Editar nota' : 'Nueva nota'}</h3>
                     <form
                         onSubmit={async (e) => {
@@ -90,7 +90,7 @@ export function NoteDialog({ isOpen, onClose, onSubmit, note }: NoteDialogProps)
                                     onClick={() => setFormData((prev) => ({ ...prev, color }))}
                                     className={`w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-all hover:scale-105 ${
                                         formData.color === color ? 'ring-1 ring-offset-1' : ''
-                                    } bg-${color}`}>
+                                    } ${color}`}>
                                     {formData.color === color && <span className="text-white">✓</span>}
                                 </button>
                             ))}
