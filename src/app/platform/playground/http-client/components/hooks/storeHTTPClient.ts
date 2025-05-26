@@ -1,31 +1,25 @@
 import { RequestHistory } from '@prisma/client';
 import { create } from 'zustand';
 
+export type ModalType =
+    | 'add-collection'
+    | 'save-collection'
+    | 'delete-collection'
+    | 'delete-history'
+    | 'delete-all-history'
+    | 'delete-all-collections'
+    | 'delete-history-by-date'
+    | 'delete-collection-by-id';
+
 export interface HTTPClientStore {
     openModal: boolean;
     setOpenModal: (open: boolean) => void;
     collectionName: string;
     setCollectionName: (name: string) => void;
-    entry: RequestHistory | null;
-    setEntry: (entry: RequestHistory | null) => void;
-    typeModal:
-        | 'save-collection'
-        | 'delete-collection'
-        | 'delete-history'
-        | 'delete-all-history'
-        | 'delete-all-collections'
-        | 'delete-history-by-date'
-        | 'delete-collection-by-id';
-    setTypeModal: (
-        type:
-            | 'save-collection'
-            | 'delete-collection'
-            | 'delete-history'
-            | 'delete-all-history'
-            | 'delete-all-collections'
-            | 'delete-history-by-date'
-            | 'delete-collection-by-id'
-    ) => void;
+    request: RequestHistory | null;
+    setRequest: (entry: RequestHistory | null) => void;
+    typeModal: ModalType;
+    setTypeModal: (type: ModalType) => void;
 }
 
 export const useHTTPClientStore = create<HTTPClientStore>((set) => ({
@@ -33,17 +27,21 @@ export const useHTTPClientStore = create<HTTPClientStore>((set) => ({
     setOpenModal: (open: boolean) => set({ openModal: open }),
     collectionName: '',
     setCollectionName: (name: string) => set({ collectionName: name }),
-    entry: null,
-    setEntry: (entry: RequestHistory | null) => set({ entry: entry }),
+    request: null,
+    setRequest: (entry: RequestHistory | null) => set({ request: entry }),
     typeModal: 'save-collection',
-    setTypeModal: (
-        type:
-            | 'save-collection'
-            | 'delete-collection'
-            | 'delete-history'
-            | 'delete-all-history'
-            | 'delete-all-collections'
-            | 'delete-history-by-date'
-            | 'delete-collection-by-id'
-    ) => set({ typeModal: type }),
+    setTypeModal: (type: ModalType) =>
+        set({
+            typeModal: type,
+        }),
+}));
+
+interface HistoryStore {
+    history: RequestHistory[];
+    setHistory: (history: RequestHistory[]) => void;
+}
+
+export const useHistoryStore = create<HistoryStore>((set) => ({
+    history: [],
+    setHistory: (history: RequestHistory[]) => set({ history: history }),
 }));
