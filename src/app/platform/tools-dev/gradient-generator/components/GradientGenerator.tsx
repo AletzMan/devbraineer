@@ -186,16 +186,6 @@ export default function GradientGenerator() {
     return (
         <DndProvider backend={HTML5Backend}>
             <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2">
-                        <Sparkles className="h-6 w-6 text-primary" />
-                        <h2 className="text-2xl font-bold">Generador de Gradientes</h2>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                        Crea y personaliza hermosos gradientes con múltiples puntos de color
-                    </p>
-                </div>
-
                 <div className="card bg-base-100 shadow-xl">
                     <div className="card-body">
                         <div className="flex items-center gap-4 mb-6">
