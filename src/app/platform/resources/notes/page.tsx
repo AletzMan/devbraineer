@@ -8,6 +8,7 @@ import { createNote, CreateNotePayload, deleteNote, getNoteByUser, updateNote } 
 import { Note } from '@prisma/client';
 import { toast } from 'react-hot-toast';
 import { NoteDialog } from './components/NoteDialog';
+import { LayoutSubSection } from '../../componentes/LayoutSubSection';
 
 export default function NotesPage() {
     const { userId } = useAuth();
@@ -95,27 +96,26 @@ export default function NotesPage() {
     };
 
     return (
-        <section className="flex flex-col h-[calc(100svh-4rem)] scrollbar-thin overflow-y-auto bg-neutral/5">
-            <HeaderSection title="Notas" description="Gestiona tus notas y recordatorios aquí" />
-            <div className="flex-grow p-4 space-y-6">
+        <LayoutSubSection>
+            <div className="flex-grow p-2 space-y-6">
                 <div className="space-y-4">
                     <div className="flex justify-between items-center">
                         <div className="flex-1">
                             <input
-                                type="text"
+                                type="search"
                                 placeholder="Buscar notas..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 className="input input-bordered w-full max-w-md"
                             />
                         </div>
-                        <button onClick={() => setIsModalOpen(true)} className="btn btn-primary btn-sm">
+                        <button onClick={() => setIsModalOpen(true)} className="btn btn-success btn-sm">
                             <PlusIcon className="w-4 h-4 mr-2" />
                             Nueva nota
                         </button>
                     </div>
 
-                    <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
+                    <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4 bg-lines h-full p-2 border border-base-300 rounded-sm">
                         {filteredNotes.length === 0 ? (
                             <p className="text-gray-400 text-center py-4">No hay notas que coincidan con la búsqueda</p>
                         ) : (
@@ -126,14 +126,14 @@ export default function NotesPage() {
                                     initial={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -20 }}
                                     className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow duration-300">
-                                    <div className={`p-4 rounded-sm bg-${note.color} text-white`}>
+                                    <div className={`p-4 rounded-t-sm ${note.color} text-white`}>
                                         <h3 className="font-semibold mb-2">{note.title}</h3>
-                                        <p className="text-sm mb-2">
+                                        <pre className="text-sm mb-2 line-clamp-2 font-[var(--font-jost)] overflow-hidden text-ellipsis">
                                             {note.content.substring(0, 100)}
                                             {note.content.length > 100 && '...'}
-                                        </p>
+                                        </pre>
                                     </div>
-                                    <div className="card-body p-4">
+                                    <div className="card-body p-4 border border-base-300 rounded-b-sm">
                                         <div className="flex justify-between items-center">
                                             <p className="text-xs text-gray-500">
                                                 {new Date(note.updatedAt).toLocaleString()}
@@ -175,6 +175,6 @@ export default function NotesPage() {
                 }}
                 note={editingNote}
             />
-        </section>
+        </LayoutSubSection>
     );
 }
