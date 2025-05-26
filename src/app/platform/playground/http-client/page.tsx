@@ -3,17 +3,17 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { RequestForm } from './components/RequestForm';
 import { ResponseViewer } from './components/ResponseViewer';
-import HeaderSection from '../../componentes/HeaderSection';
 import { getHistoryFromLocalStorage, saveHistoryToLocalStorage } from '@/lib/storage';
-import { RequestHistory } from '@prisma/client';
 import { useAuth } from '@clerk/nextjs';
 import SideBarHistory from './components/SideBarHistory';
 import { LayoutSubSection } from '../../componentes/LayoutSubSection';
 import Splitter from '@ihatecode/react-splitter';
+import { useHistory } from './components/hooks/useHistory';
+import { Toaster } from 'react-hot-toast';
 
 export default function HttpClientPage() {
     const { userId } = useAuth();
-    const [history, setHistory] = useState<RequestHistory[]>([]);
+    const { history, setHistory } = useHistory();
     const [sending, setSending] = useState(false);
     const [response, setResponse] = useState({
         status: 0,
@@ -35,7 +35,7 @@ export default function HttpClientPage() {
         setHistory(savedHistory);
     }, []);
 
-    const sendRequest = async ({ method, url, headers, body }: any) => {
+    const sendRequest = async ({ method, url, headers, body, queryParams }: any) => {
         try {
             setSending(true);
             const formattedHeaders: Record<string, string> = {};
@@ -54,38 +54,40 @@ export default function HttpClientPage() {
             setResponse({
                 status: responseData.status,
                 statusText: responseData.statusText,
-                headers: responseData.headers,
-                body: responseData.data,
+                headers: headers,
+                body: body,
                 time: responseData.time,
                 size: responseData.size,
             });
-
+            console.log(headers);
+            console.log(body);
             saveHistoryToLocalStorage({
                 method,
                 url,
-                headers,
-                body: JSON.stringify(body),
-                response: JSON.stringify(responseData),
-                created_at: new Date(),
+                headers: headers,
+                body: body,
+                response: JSON.stringify(responseData.data),
+                created_at: new Date(new Date().getTime() - 150000000),
                 id: crypto.randomUUID(),
                 userId: userId || '',
                 collectionId: null,
             });
 
-            setHistory((prev) => [
-                ...prev,
+            const updatedHistory = [
+                ...history,
                 {
                     method,
                     url,
-                    headers,
-                    body: JSON.stringify(body),
-                    response: JSON.stringify(responseData),
-                    created_at: new Date(),
+                    headers: headers,
+                    body: body,
+                    response: responseData.data,
+                    created_at: new Date(new Date().getTime() - 150000000),
                     id: crypto.randomUUID(),
                     userId: userId || '',
                     collectionId: null,
                 },
-            ]);
+            ];
+            setHistory(updatedHistory);
         } catch (err: any) {
             setResponse({
                 status: 0,
@@ -102,8 +104,9 @@ export default function HttpClientPage() {
 
     return (
         <LayoutSubSection>
+            <Toaster position="top-center" toastOptions={{ duration: 5000 }} />
             <div className="grid grid-cols-[375px_1fr] gap-2 max-md:flex max-md:flex-col h-[calc(100svh-6.4rem)]">
-                <SideBarHistory history={history} setHistory={setHistory} setFormState={setFormState} />
+                <SideBarHistory setFormState={setFormState} />
 
                 <Splitter
                     className="overflow-hidden h-full"
