@@ -21,8 +21,14 @@ interface RequestCollectionsResponse {
     response?: CollectionsResponse[];
 }
 
+interface RequestCollectionsData {
+    error: boolean;
+    message?: string;
+    data?: CollectionsResponse;
+}
+
 export const addToCollectionService = async (
-    request: RequestHistory,
+    request: RequestHistory | undefined,
     name: string
 ): Promise<CollectionsResponse | undefined> => {
     try {
@@ -66,11 +72,11 @@ export const deleteCollectionService = async (name: string): Promise<Collections
     }
 };
 
-export const deleteCollectionsService = async (): Promise<CollectionsResponse[] | undefined> => {
+export const deleteCollectionsService = async (): Promise<boolean | undefined> => {
     try {
-        const response = await axios.delete<RequestCollectionsResponse>('/api/collections-request');
+        const response = await axios.delete<RequestCollectionResponse>('/api/collections-request');
         if (response.status === 200) {
-            return response.data.response;
+            return true;
         }
         return undefined;
     } catch (error) {
