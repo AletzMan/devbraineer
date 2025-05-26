@@ -8,6 +8,7 @@ import { getLinks, createLink, updateLink, deleteLink, CreateUpdateLinkPayload }
 import { toast, Toaster } from 'react-hot-toast';
 import LinkCard from './components/LinkCard'; // Asegúrate de que LinkCard también tenga estilos consistentes
 import HeaderSection from '../../componentes/HeaderSection';
+import { LayoutSubSection } from '../../componentes/LayoutSubSection';
 
 export default function LinksPage() {
     const [links, setLinks] = useState<Link[]>([]);
@@ -236,21 +237,17 @@ export default function LinksPage() {
     };
 
     return (
-        <div className="flex flex-col  min-h-[calc(100svh-4rem)]">
+        <LayoutSubSection>
             <Toaster position="top-right" />
             <div className="flex flex-col flex-1 max-w-(--max-width) mx-auto w-full gap-4">
-                <HeaderSection
-                    title="Enlaces de Interés"
-                    description="Colecciona y organiza tus recursos web favoritos">
-                    <button className="btn btn-success gap-1 mt-4 sm:mt-0" onClick={handleOpenCreateModal}>
-                        <Plus className="w-4 h-4" />
-                        Nuevo Enlace
-                    </button>
-                </HeaderSection>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 overflow-y-auto h-[calc(100svh-10.5rem)] pb-4 px-4 ">
-                    <div className="md:col-span-1 bg-neutral/30 p-4 rounded-md">
+                <button className="btn btn-success gap-1 w-fit" onClick={handleOpenCreateModal}>
+                    <Plus className="w-4 h-4" />
+                    Nuevo Enlace
+                </button>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-2 h-full">
+                    <div className="md:col-span-1 bg-base-200 border border-base-300 p-4 rounded-md">
                         <div className="sticky top-4 space-y-4">
-                            <label className="input border-0 w-full">
+                            <label className="input input-sm border-0 w-full">
                                 <Search className="size-4" />
                                 <input
                                     type="search"
@@ -260,34 +257,40 @@ export default function LinksPage() {
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </label>
-                            <div className="bg-base-200 rounded-md p-4">
-                                <h3 className="font-medium mb-3 ">Categorías</h3>
+                            <div className="bg-base-100 border border-base-300 rounded-md p-4">
+                                <h3 className="font-medium mb-3 border-b border-base-content/20 pb-2 border-dashed">
+                                    Categorías
+                                </h3>
                                 <div className="space-y-2">
                                     <button
-                                        className={`btn w-full justify-start gap-2 font-normal ${selectedCategory === null ? 'btn-active btn-soft' : 'btn-ghost'}`}
+                                        className={`btn w-full justify-between gap-2 border-0 font-normal btn-soft ${selectedCategory === null ? 'btn-active bg-info/30' : 'btn-base-content/5'}`}
                                         onClick={() => setSelectedCategory(null)}>
-                                        <Folder className="h-4 w-4" />
-                                        Todas
-                                        <span className="ml-auto text-zinc-500 dark:text-zinc-400 text-xs">
-                                            {links.length}
-                                        </span>
+                                        <div className="flex items-center gap-2">
+                                            <Folder className="h-4 w-4" />
+                                            Todas
+                                        </div>
+                                        <span className="badge badge-sm">{links.length}</span>
                                     </button>
                                     {uniqueCategories.map((category) => (
                                         <button
                                             key={category}
-                                            className={`btn w-full justify-start gap-2 font-normal ${selectedCategory === category ? 'btn-active btn-soft' : 'btn-ghost'}`}
+                                            className={`btn w-full justify-between gap-2 border-0 font-normal btn-soft ${selectedCategory === category ? 'btn-active bg-info/30' : 'btn-base-content/5'}`}
                                             onClick={() => setSelectedCategory(category)}>
-                                            <Folder className="h-4 w-4" />
-                                            {category}
-                                            <span className="ml-auto text-zinc-500 dark:text-zinc-400 text-xs">
+                                            <div className="flex items-center gap-2">
+                                                <Folder className="h-4 w-4" />
+                                                {category}
+                                            </div>
+                                            <span className="badge badge-sm">
                                                 {links.filter((l) => l.category === category).length}
                                             </span>
                                         </button>
                                     ))}
                                 </div>
                             </div>
-                            <div className="bg-base-200 rounded-md p-4">
-                                <h3 className="font-medium mb-3 ">Etiquetas</h3>
+                            <div className="bg-base-100 border border-base-300 rounded-md p-4">
+                                <h3 className="font-medium mb-3 border-b border-base-content/20 pb-2 border-dashed">
+                                    Etiquetas
+                                </h3>
                                 <div className="flex flex-wrap gap-2">
                                     <button
                                         className={`btn btn-sm btn-soft btn-info gap-1 h-7 ${selectedTag === null ? 'btn-active' : 'btn-ghost'}`}
@@ -308,7 +311,7 @@ export default function LinksPage() {
                             </div>
                         </div>
                     </div>
-                    <div className="md:col-span-3 space-y-4 bg-neutral/30 p-4 rounded-md">
+                    <div className="md:col-span-3 space-y-4 p-4 rounded-md bg-lines border border-base-300">
                         {loading && <div className="text-center text-zinc-400 mt-8">Cargando enlaces...</div>}
                         {error && (
                             <div className="alert alert-error bg-red-800 text-red-200 border-red-700 p-3 rounded-md text-sm flex items-center gap-2 mt-8">
@@ -530,6 +533,6 @@ export default function LinksPage() {
                     </div>
                 </div>
             </dialog>
-        </div>
+        </LayoutSubSection>
     );
 }
