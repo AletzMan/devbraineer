@@ -1,10 +1,24 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import chroma from 'chroma-js';
-import { Sparkles, Eye, Code, Download, RotateCcw, RotateCw, Trash2 } from 'lucide-react';
+import {
+    Sparkles,
+    Eye,
+    Code,
+    Download,
+    RotateCcw,
+    RotateCw,
+    Trash2,
+    RefreshCw,
+    RefreshCcw,
+    GripHorizontal,
+    GripVertical,
+    Plus,
+} from 'lucide-react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-
+import { useDebounce } from '@/app/hooks/useDebounce';
+import Slider from 'rc-slider';
 interface GradientStop {
     color: string;
     position: number;
@@ -17,18 +31,40 @@ export default function GradientGenerator() {
     ]);
     const [gradientType, setGradientType] = useState<'linear' | 'radial'>('linear');
     const [direction, setDirection] = useState('to right');
-    const [previewSize, setPreviewSize] = useState(300);
     const [copied, setCopied] = useState(false);
     const [rotation, setRotation] = useState(0);
     const [centerX, setCenterX] = useState(50);
     const [centerY, setCenterY] = useState(50);
+    const debouncedUpdateStops = useMemo(
+        () =>
+            useDebounce((stops: GradientStop[]) => {
+                setGradientStops(stops);
+            }, 300),
+        []
+    );
+
+    useEffect(() => {
+        const handlers = document.querySelectorAll('.handler_positions .rc-slider-handle');
+        handlers?.forEach((child, index) => {
+            (child as HTMLInputElement).style.backgroundColor = gradientStops[index].color;
+        });
+    }, [gradientStops]);
 
     const handleAddStop = () => {
         const newStop: GradientStop = {
             color: chroma.random().hex(),
-            position: Math.random(),
+            position: 1,
         };
-        setGradientStops([...gradientStops, newStop].sort((a, b) => a.position - b.position));
+        const allStops = [...gradientStops.map((s) => ({ ...s })), newStop];
+
+        const redistributed = allStops
+            .sort((a, b) => a.position - b.position)
+            .map((stop, index, arr) => ({
+                ...stop,
+                position: index / (arr.length - 1),
+            }));
+
+        setGradientStops(redistributed);
     };
 
     const handleRemoveStop = (index: number) => {
@@ -40,29 +76,21 @@ export default function GradientGenerator() {
     const handleColorChange = (index: number, color: string) => {
         const newStops = [...gradientStops];
         newStops[index].color = color;
-        setGradientStops(newStops);
-    };
-
-    const handlePositionChange = (index: number, position: number) => {
-        const newStops = [...gradientStops];
-        newStops[index].position = position;
-        setGradientStops(newStops.sort((a, b) => a.position - b.position));
+        debouncedUpdateStops(newStops);
     };
 
     const DraggableStop = ({
         index,
         stop,
         onColorChange,
-        onPositionChange,
         onRemove,
     }: {
         index: number;
         stop: GradientStop;
         onColorChange: (color: string) => void;
-        onPositionChange: (position: number) => void;
         onRemove: () => void;
     }) => {
-        const [{ isDragging }, drag] = useDrag({
+        const [{ isDragging }, drag, preview] = useDrag({
             type: 'stop',
             item: { index },
             collect: (monitor) => ({
@@ -94,38 +122,35 @@ export default function GradientGenerator() {
         return (
             <div
                 ref={(node) => {
-                    drag(drop(node));
+                    if (node) preview(node);
                 }}
-                className="flex items-center space-x-4 border-2 border-dashed rounded-lg p-2 transition-all duration-200"
+                className="flex items-center space-x-4 border-1 border-base-content/40 border-dashed rounded-md p-1 transition-all duration-200"
                 style={{
                     opacity: isDragging ? 0.5 : 1,
-                    cursor: 'move',
-                    backgroundColor: isDragging ? '#f3f4f6' : 'transparent',
+                    backgroundColor: isDragging ? '#f3f4f630' : 'var(--color-base-300)',
                 }}>
-                <input
-                    type="color"
-                    value={stop.color}
-                    onChange={(e) => onColorChange(e.target.value)}
-                    className="w-12 h-12"
-                />
-                <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    value={stop.position}
-                    onChange={(e) => onPositionChange(parseFloat(e.target.value))}
-                    className="flex-1"
-                />
-                <button onClick={onRemove} className="btn btn-error btn-sm">
-                    Eliminar
+                <div
+                    className="flex items-center justify-center size-6 border-1 border-base-content/10 bg-base-content/10 rounded-sm cursor-move"
+                    ref={(node) => {
+                        if (node) drag(drop(node));
+                    }}>
+                    <GripVertical className="size-5 text-base-content/50" />
+                </div>
+                <div
+                    className="border-1 border-base-content/40 p-0 rounded-sm size-6"
+                    style={{ backgroundColor: stop.color }}>
+                    <input
+                        type="color"
+                        value={stop.color}
+                        onInput={(e) => onColorChange(e.currentTarget.value)}
+                        className="input size-6 opacity-0 cursor-pointer"
+                    />
+                </div>
+                <button onClick={onRemove} className="btn btn-soft btn-error btn-xs">
+                    <Trash2 className="size-4" />
                 </button>
             </div>
         );
-    };
-
-    const handleRotate = (degrees: number) => {
-        setRotation((prev) => (prev + degrees) % 360);
     };
 
     const handleReset = () => {
@@ -134,7 +159,6 @@ export default function GradientGenerator() {
             { color: '#00FF00', position: 1 },
         ]);
         setDirection('to right');
-        setPreviewSize(300);
         setRotation(0);
         setCenterX(50);
         setCenterY(50);
@@ -148,10 +172,10 @@ export default function GradientGenerator() {
         }
 
         // Para gradientes radiales, calculamos la posición del centro y aplicamos la rotación
-        const angle = (rotation * Math.PI) / 180; // Convertir a radianes
+        const angle = (rotation * Math.PI) / 180;
 
         // Calcular el desplazamiento basado en la rotación
-        const displacement = 10; // Desplazamiento máximo
+        const displacement = 10;
         const offsetX = Math.cos(angle) * displacement;
         const offsetY = Math.sin(angle) * displacement;
 
@@ -166,17 +190,6 @@ export default function GradientGenerator() {
         return `radial-gradient(circle at ${finalX.toFixed(2)}% ${finalY.toFixed(2)}%, ${stops})`;
     };
 
-    const generatePreviewStyle = () => {
-        return {
-            background: generateCSS(),
-            transition: 'background 0.3s ease',
-            width: `${previewSize}px`,
-            height: `${previewSize}px`,
-            padding: '1rem',
-            borderRadius: '0.5rem',
-        };
-    };
-
     const handleCopy = () => {
         navigator.clipboard.writeText(generateCSS());
         setCopied(true);
@@ -186,125 +199,152 @@ export default function GradientGenerator() {
     return (
         <DndProvider backend={HTML5Backend}>
             <div className="flex flex-col gap-4">
-                <div className="card bg-base-100 shadow-xl">
-                    <div className="card-body">
-                        <div className="flex items-center gap-4 mb-6">
-                            <Eye className="h-5 w-5 text-muted-foreground" />
-                            <h3 className="font-semibold">Vista Previa</h3>
-                        </div>
-
-                        <div className="space-y-4 mb-8">
-                            {gradientStops.map((stop, index) => (
-                                <DraggableStop
-                                    key={index}
-                                    index={index}
-                                    stop={stop}
-                                    onColorChange={(color) => handleColorChange(index, color)}
-                                    onPositionChange={(position) => handlePositionChange(index, position)}
-                                    onRemove={() => handleRemoveStop(index)}
-                                />
-                            ))}
-                            <button onClick={handleAddStop} className="btn btn-primary btn-sm">
-                                + Agregar Punto de Color
-                            </button>
-                        </div>
-
-                        <div className="flex items-center gap-4 mb-8">
-                            <select
-                                value={gradientType}
-                                onChange={(e) => setGradientType(e.target.value as 'linear' | 'radial')}
-                                className="select select-bordered">
-                                <option value="linear">Lineal</option>
-                                <option value="radial">Radial</option>
-                            </select>
-                            {gradientType === 'linear' && (
-                                <select
-                                    value={direction}
-                                    onChange={(e) => setDirection(e.target.value)}
-                                    className="select select-bordered">
-                                    <option value="to right">Izquierda a Derecha</option>
-                                    <option value="to left">Derecha a Izquierda</option>
-                                    <option value="to top">Abajo a Arriba</option>
-                                    <option value="to bottom">Arriba a Abajo</option>
-                                    <option value="to top right">Diagonal (Arriba Derecha)</option>
-                                    <option value="to top left">Diagonal (Arriba Izquierda)</option>
-                                    <option value="to bottom right">Diagonal (Abajo Derecha)</option>
-                                    <option value="to bottom left">Diagonal (Abajo Izquierda)</option>
-                                </select>
-                            )}
-                            {gradientType === 'radial' && (
-                                <>
-                                    <button onClick={() => handleRotate(90)} className="btn btn-outline btn-sm">
-                                        <RotateCw className="h-4 w-4" />
-                                    </button>
-                                    <button onClick={() => handleRotate(-90)} className="btn btn-outline btn-sm">
-                                        <RotateCcw className="h-4 w-4" />
-                                    </button>
-                                </>
-                            )}
-                        </div>
-
-                        <div className="mb-8">
-                            <div className="flex items-center gap-4">
-                                <label className="label">
-                                    <span className="label-text">Tamaño de Vista Previa</span>
-                                    <input
-                                        type="range"
-                                        min="100"
-                                        max="500"
-                                        value={previewSize}
-                                        onChange={(e) => setPreviewSize(parseInt(e.target.value))}
-                                        className="range"
+                <div className="flex flex-col gap-2 bg-base-100 shadow-xl h-[calc(100svh-10rem)] overflow-hidden">
+                    <div className="p-0">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="flex flex-col gap-4 bg-base-200 p-4 rounded-sm">
+                                <div className="flex items-center gap-4 mb-8">
+                                    <select
+                                        value={gradientType}
+                                        onChange={(e) => setGradientType(e.target.value as 'linear' | 'radial')}
+                                        className="select select-bordered">
+                                        <option value="linear">Lineal</option>
+                                        <option value="radial">Radial</option>
+                                    </select>
+                                    {gradientType === 'linear' && (
+                                        <select
+                                            value={direction}
+                                            onChange={(e) => setDirection(e.target.value)}
+                                            className="select select-bordered">
+                                            <option value="to right">Izquierda a Derecha</option>
+                                            <option value="to left">Derecha a Izquierda</option>
+                                            <option value="to top">Abajo a Arriba</option>
+                                            <option value="to bottom">Arriba a Abajo</option>
+                                            <option value="to top right">Diagonal (Arriba Derecha)</option>
+                                            <option value="to top left">Diagonal (Arriba Izquierda)</option>
+                                            <option value="to bottom right">Diagonal (Abajo Derecha)</option>
+                                            <option value="to bottom left">Diagonal (Abajo Izquierda)</option>
+                                        </select>
+                                    )}
+                                    {gradientType === 'radial' && (
+                                        <div className="mb-8">
+                                            <label className="label">
+                                                <span className="label-text">Centro del gradiente</span>
+                                                <div className="flex gap-2">
+                                                    <input
+                                                        type="range"
+                                                        min="0"
+                                                        max="100"
+                                                        value={centerX}
+                                                        onChange={(e) => setCenterX(parseInt(e.target.value))}
+                                                        className="range"
+                                                    />
+                                                    <input
+                                                        type="range"
+                                                        min="0"
+                                                        max="100"
+                                                        value={centerY}
+                                                        onChange={(e) => setCenterY(parseInt(e.target.value))}
+                                                        className="range"
+                                                    />
+                                                </div>
+                                                <span className="text-sm text-muted-foreground">
+                                                    {centerX}% x {centerY}%
+                                                </span>
+                                            </label>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="">
+                                    <Slider
+                                        className="handler_positions"
+                                        min={0}
+                                        styles={{
+                                            handle: {
+                                                backgroundColor: 'var(--color-base-200)',
+                                                borderColor: 'var(--color-base-content)',
+                                                opacity: 1,
+                                                borderRadius: '2px',
+                                                borderWidth: '1px',
+                                                height: '24px',
+                                                width: '8px',
+                                                transform: 'translateY(-5px) translateX(-4px)',
+                                            },
+                                            track: {
+                                                backgroundColor: 'var(--color-primary)',
+                                                height: '4px',
+                                            },
+                                            rail: {
+                                                backgroundColor: 'var(--color-base-content)',
+                                                height: '4px',
+                                            },
+                                        }}
+                                        range={{ draggableTrack: true }}
+                                        allowCross={false}
+                                        max={1}
+                                        value={gradientStops.map((stop) => stop.position)}
+                                        onChange={(values) => {
+                                            if (!Array.isArray(values)) {
+                                                return;
+                                            }
+                                            setGradientStops(
+                                                gradientStops.map((stop, index) => ({
+                                                    ...stop,
+                                                    position: values[index],
+                                                }))
+                                            );
+                                        }}
+                                        step={0.01}
                                     />
-                                    <span className="text-sm text-muted-foreground">{previewSize}px</span>
-                                </label>
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <button onClick={handleAddStop} className="btn btn-accent btn-sm w-full">
+                                        <Plus className="size-4 mr-2" />
+                                        Agregar Punto de Color
+                                    </button>
+                                    <button onClick={handleReset} className="btn btn-soft btn-sm w-full">
+                                        <RefreshCcw className="size-4 mr-2" />
+                                        Resetear
+                                    </button>
+                                </div>
+                                <div className="space-y-2 h-[calc(100svh-36.5rem)] overflow-y-auto scrollbar-thin border border-base-content/10 p-2 rounded-sm">
+                                    {gradientStops.map((stop, index) => (
+                                        <DraggableStop
+                                            key={index}
+                                            index={index}
+                                            stop={stop}
+                                            onColorChange={(color) => handleColorChange(index, color)}
+                                            onRemove={() => handleRemoveStop(index)}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="mb-8 bg-base-200 p-2 rounded-sm h-full">
+                                <div className="flex items-center gap-4 mb-6">
+                                    <Eye className="h-5 w-5 text-muted-foreground" />
+                                    <h3 className="font-semibold">Vista Previa</h3>
+                                </div>
+
+                                <div className="mb-8 p-2 bg-lines border border-base-300 rounded-sm">
+                                    <div
+                                        className="preview-container h-70 w-full rounded-sm"
+                                        style={{ background: generateCSS() }}
+                                    />
+                                </div>
                             </div>
                         </div>
-
-                        {gradientType === 'radial' && (
-                            <div className="mb-8">
-                                <label className="label">
-                                    <span className="label-text">Centro del gradiente</span>
-                                    <div className="flex gap-2">
-                                        <input
-                                            type="range"
-                                            min="0"
-                                            max="100"
-                                            value={centerX}
-                                            onChange={(e) => setCenterX(parseInt(e.target.value))}
-                                            className="range"
-                                        />
-                                        <input
-                                            type="range"
-                                            min="0"
-                                            max="100"
-                                            value={centerY}
-                                            onChange={(e) => setCenterY(parseInt(e.target.value))}
-                                            className="range"
-                                        />
-                                    </div>
-                                    <span className="text-sm text-muted-foreground">
-                                        {centerX}% x {centerY}%
-                                    </span>
-                                </label>
-                            </div>
-                        )}
                     </div>
-
-                    <div className="mb-8">
-                        <div className="preview-container" style={generatePreviewStyle()} />
-                    </div>
-
                     <div className="flex flex-col gap-2">
-                        <pre className="p-4 bg-base-200 rounded-lg">{`background: ${generateCSS()};`}</pre>
-                        <div className="flex gap-2">
-                            <button onClick={handleCopy} className="btn btn-secondary btn-sm flex-1">
-                                {copied ? 'Copiado!' : 'Copiar CSS'}
-                            </button>
-                            <button onClick={handleReset} className="btn btn-ghost btn-sm">
-                                <Trash2 className="h-4 w-4 mr-2" />
-                                Resetear
-                            </button>
+                        <div className="mockup-code max-w-[100ch]">
+                            <textarea
+                                className="w-full h-24 p-4 rounded-lg text-base-gray-950 font-mono outline-0 resize-none"
+                                value={generateCSS()}
+                            />
+                            <div className="flex gap-2 pt-4 px-2">
+                                <button onClick={handleCopy} className="btn btn-secondary btn-sm flex-1">
+                                    {copied ? 'Copiado!' : 'Copiar CSS'}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
