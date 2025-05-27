@@ -45,8 +45,48 @@ export default function GradientGenerator() {
 
     useEffect(() => {
         const handlers = document.querySelectorAll('.handler_positions .rc-slider-handle');
+
         handlers?.forEach((child, index) => {
-            (child as HTMLInputElement).style.backgroundColor = gradientStops[index].color;
+            const input = child as HTMLInputElement;
+
+            // Aplica color al "handler"
+            input.style.backgroundColor = gradientStops[index].color;
+            input.style.borderColor = chroma(gradientStops[index].color).darken(0.9).hex();
+
+            // Verifica si ya tiene un hijo span con clase "arrow-indicator"
+            const existingArrow = input.querySelector('.arrow-indicator');
+            let beforeEl: HTMLSpanElement | null = input.querySelector('.arrow-indicator');
+            if (!existingArrow && !beforeEl) {
+                beforeEl = document.createElement('span');
+                beforeEl.textContent = `${(gradientStops[index].position * 100).toFixed(0)}%`;
+                beforeEl.className = 'arrow-indicator';
+                beforeEl.style.position = 'absolute';
+                beforeEl.style.left = '50%';
+                beforeEl.style.top = '-25px';
+                beforeEl.style.transform = 'translateX(-50%)';
+                beforeEl.style.color = 'text-base-content';
+                beforeEl.style.backgroundColor = 'var(--color-base-100)';
+                beforeEl.style.border = '1px solid var(--color-gray-600)';
+                beforeEl.style.alignItems = 'center';
+                beforeEl.style.justifyContent = 'center';
+                beforeEl.style.textAlign = 'center';
+                beforeEl.style.borderRadius = '4px';
+                beforeEl.style.width = '30px';
+                beforeEl.style.height = '20px';
+                beforeEl.style.pointerEvents = 'none';
+                beforeEl.style.fontSize = '12px';
+                beforeEl.style.transition = 'color 0.3s ease';
+                beforeEl.style.display = 'none';
+                input.appendChild(beforeEl);
+                input.addEventListener('mouseenter', () => {
+                    beforeEl!.style.display = 'block';
+                });
+                input.addEventListener('mouseleave', () => {
+                    beforeEl!.style.display = 'none';
+                });
+            } else {
+                beforeEl!.textContent = `${(gradientStops[index].position * 100).toFixed(0)}%`;
+            }
         });
     }, [gradientStops]);
 
