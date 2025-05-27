@@ -7,6 +7,7 @@ import { ThemeProvider } from 'next-themes';
 const jost = Jost({ variable: '--font-jost', subsets: ['latin'] });
 const josefinSans = Josefin_Sans({ variable: '--font-josefin-sans', subsets: ['latin'] });
 const code = Inconsolata({ variable: '--font-code', subsets: ['latin'] });
+import 'rc-slider/assets/index.css';
 
 export const metadata: Metadata = {
     title: 'DevBraineer',
