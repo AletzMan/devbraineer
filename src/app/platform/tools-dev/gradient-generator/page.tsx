@@ -4,6 +4,7 @@ import TailwindGradientGenerator from './components/TailwindGradientGenerator';
 import { LayoutSubSection } from '../../componentes/LayoutSubSection';
 import { useState, useEffect, useLayoutEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { Toaster } from 'react-hot-toast';
 
 export default function GradientGeneratorPage() {
     const [tabGradient, setTabGradient] = useState<'css' | 'tailwind'>('css');
@@ -26,6 +27,7 @@ export default function GradientGeneratorPage() {
 
     return (
         <LayoutSubSection>
+            <Toaster position="top-center" />
             <div className="tabs tabs-box">
                 <input
                     type="radio"
