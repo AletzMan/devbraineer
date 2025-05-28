@@ -16,11 +16,15 @@ import {
     Plus,
     Check,
     Copy,
+    ArrowUpDown,
+    CircleSmall,
+    ClipboardPasteIcon,
 } from 'lucide-react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useDebounce } from '@/app/hooks/useDebounce';
 import Slider from 'rc-slider';
+import toast from 'react-hot-toast';
 interface GradientStop {
     color: string;
     position: number;
@@ -168,31 +172,58 @@ export default function GradientGenerator() {
                 ref={(node) => {
                     if (node) preview(node);
                 }}
-                className="flex items-center space-x-4 border-1 border-base-content/40 border-dashed rounded-md p-1 transition-all duration-200"
+                className="flex items-center space-x-2 transition-all duration-200"
                 style={{
-                    opacity: isDragging ? 0.5 : 1,
-                    backgroundColor: isDragging ? '#f3f4f630' : 'var(--color-base-300)',
+                    opacity: isDragging ? 0.7 : 1,
                 }}>
+                <CircleSmall className="size-4 ml-2 text-base-content/40" />
                 <div
-                    className="flex items-center justify-center size-6 border-1 border-base-content/10 bg-base-content/10 rounded-sm cursor-move"
-                    ref={(node) => {
-                        if (node) drag(drop(node));
+                    className="flex items-center gap-2 border-1 border-base-content/40 border-dashed rounded-md p-1 w-full"
+                    style={{
+                        backgroundColor: isDragging ? '#f3f4f630' : 'var(--color-base-300)',
                     }}>
-                    <GripVertical className="size-5 text-base-content/50" />
+                    <div
+                        className="flex items-center justify-center size-6 border-1 border-base-content/10 bg-base-content/10 rounded-sm cursor-move"
+                        ref={(node) => {
+                            if (node) drag(drop(node));
+                        }}>
+                        <GripVertical className="size-5 text-base-content/50" />
+                    </div>
+                    <div
+                        className="border-1 border-base-content/40 p-0 rounded-sm h-6 w-12 cursor-pointer"
+                        style={{ backgroundColor: stop.color }}>
+                        <input
+                            type="color"
+                            value={stop.color}
+                            onInput={(e) => onColorChange(e.currentTarget.value)}
+                            className="input size-6 opacity-0 cursor-pointer "
+                        />
+                    </div>
+                    <label className="input input-xs w-24 ">
+                        <ClipboardPasteIcon className=" text-base-content/50 " />
+                        <input
+                            type="text"
+                            value={stop.color}
+                            onFocus={(e) => e.currentTarget.select()}
+                            onChange={(e) => {
+                                const inputValue = e.currentTarget.value;
+                                try {
+                                    const validHexColor = chroma(inputValue).hex();
+                                    onColorChange(validHexColor);
+                                } catch (error) {
+                                    toast.error('Color inválido ingrese un color en formato hexadecimal');
+                                }
+                            }}
+                            className=" text-center"
+                        />
+                    </label>
+                    <div className="flex items-center justify-center text-xs w-12 text-center bg-base-content/10 rounded-sm h-6">
+                        {stop.position * 100}%
+                    </div>
+                    <button onClick={onRemove} className="btn btn-soft btn-error btn-xs">
+                        <Trash2 className="size-4" />
+                    </button>
                 </div>
-                <div
-                    className="border-1 border-base-content/40 p-0 rounded-sm size-6"
-                    style={{ backgroundColor: stop.color }}>
-                    <input
-                        type="color"
-                        value={stop.color}
-                        onInput={(e) => onColorChange(e.currentTarget.value)}
-                        className="input size-6 opacity-0 cursor-pointer"
-                    />
-                </div>
-                <button onClick={onRemove} className="btn btn-soft btn-error btn-xs">
-                    <Trash2 className="size-4" />
-                </button>
             </div>
         );
     };
@@ -374,7 +405,7 @@ export default function GradientGenerator() {
                                         Resetear
                                     </button>
                                 </div>
-                                <div className="space-y-2 h-[calc(100svh-36.5rem)] overflow-y-auto scrollbar-thin border border-base-content/10 p-2 rounded-sm">
+                                <div className="space-y-2 h-[calc(100svh-24.5rem)] overflow-y-auto scrollbar-thin border border-base-content/10 p-2 rounded-sm">
                                     {gradientStops.map((stop, index) => (
                                         <DraggableStop
                                             key={index}
@@ -398,8 +429,8 @@ export default function GradientGenerator() {
                                         style={{ background: generateCSS() }}>
                                         <div className="absolute inset-0 p-4 bg-black/50 opacity-0 hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center">
                                             <div className="flex flex-col gap-2">
-                                                <pre className="text-center text-sm text-muted-foreground p-4 max-w-[45ch] text-pretty">
-                                                    {`background: ${generateCSS().replace(/, /g, ',\n')}`}
+                                                <pre className="text-center text-sm text-muted-foreground p-4 max-w-[65ch] text-pretty max-h-55 overflow-y-auto scrollbar-thin">
+                                                    {`background: ${generateCSS().replace(/((?:[^,]+, ){2})/g, '$1\n')}`}
                                                 </pre>
                                                 <button onClick={handleCopy} className="btn btn-secondary btn-sm">
                                                     {copied ? 'Copiado!' : 'Copiar Clases'}
