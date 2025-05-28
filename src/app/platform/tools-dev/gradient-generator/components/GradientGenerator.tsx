@@ -14,6 +14,8 @@ import {
     GripHorizontal,
     GripVertical,
     Plus,
+    Check,
+    Copy,
 } from 'lucide-react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -29,7 +31,7 @@ export default function GradientGenerator() {
         { color: '#FF0000', position: 0 },
         { color: '#00FF00', position: 1 },
     ]);
-    const [gradientType, setGradientType] = useState<'linear' | 'radial'>('linear');
+    const [gradientType, setGradientType] = useState<'linear' | 'radial' | 'conic'>('linear');
     const [direction, setDirection] = useState('to right');
     const [copied, setCopied] = useState(false);
     const [rotation, setRotation] = useState(0);
@@ -91,7 +93,7 @@ export default function GradientGenerator() {
     }, [gradientStops]);
 
     const handleAddStop = () => {
-        const newStop: GradientStop = {
+        const newStop = {
             color: chroma.random().hex(),
             position: 1,
         };
@@ -101,12 +103,14 @@ export default function GradientGenerator() {
             .sort((a, b) => a.position - b.position)
             .map((stop, index, arr) => ({
                 ...stop,
-                position: index / (arr.length - 1),
+                // Calcula la posición y la redondea a 2 decimales
+                // Convertir a número con parseFloat() si necesitas que sea un número,
+                // de lo contrario toFixed() devuelve una cadena.
+                position: parseFloat((index / (arr.length - 1)).toFixed(2)),
             }));
 
         setGradientStops(redistributed);
     };
-
     const handleRemoveStop = (index: number) => {
         const newStops = [...gradientStops];
         newStops.splice(index, 1);
@@ -211,15 +215,12 @@ export default function GradientGenerator() {
             return `linear-gradient(${direction}, ${stops})`;
         }
 
-        // Para gradientes radiales, calculamos la posición del centro y aplicamos la rotación
         const angle = (rotation * Math.PI) / 180;
 
-        // Calcular el desplazamiento basado en la rotación
-        const displacement = 10;
+        const displacement = 0;
         const offsetX = Math.cos(angle) * displacement;
         const offsetY = Math.sin(angle) * displacement;
 
-        // Calcular nuevas coordenadas
         const newX = centerX + offsetX;
         const newY = centerY + offsetY;
 
@@ -227,7 +228,11 @@ export default function GradientGenerator() {
         const finalX = Math.max(0, Math.min(100, newX));
         const finalY = Math.max(0, Math.min(100, newY));
 
-        return `radial-gradient(circle at ${finalX.toFixed(2)}% ${finalY.toFixed(2)}%, ${stops})`;
+        if (gradientType === 'conic') {
+            return `conic-gradient(from ${rotation}deg, ${stops})`;
+        }
+
+        return `radial-gradient(circle at ${finalX.toFixed(0)}% ${finalY.toFixed(0)}%, ${stops})`;
     };
 
     const handleCopy = () => {
@@ -243,33 +248,42 @@ export default function GradientGenerator() {
                     <div className="p-0">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="flex flex-col gap-4 bg-base-200 p-4 rounded-sm">
-                                <div className="flex items-center gap-4 mb-8">
-                                    <select
-                                        value={gradientType}
-                                        onChange={(e) => setGradientType(e.target.value as 'linear' | 'radial')}
-                                        className="select select-bordered">
-                                        <option value="linear">Lineal</option>
-                                        <option value="radial">Radial</option>
-                                    </select>
-                                    {gradientType === 'linear' && (
+                                <div className="grid grid-cols-2 gap-4 mb-8 w-full">
+                                    <label className="label flex flex-col items-start ">
+                                        <span className="label-text text-sm">Tipo de gradiente</span>
                                         <select
-                                            value={direction}
-                                            onChange={(e) => setDirection(e.target.value)}
+                                            value={gradientType}
+                                            onChange={(e) =>
+                                                setGradientType(e.target.value as 'linear' | 'radial' | 'conic')
+                                            }
                                             className="select select-bordered">
-                                            <option value="to right">Izquierda a Derecha</option>
-                                            <option value="to left">Derecha a Izquierda</option>
-                                            <option value="to top">Abajo a Arriba</option>
-                                            <option value="to bottom">Arriba a Abajo</option>
-                                            <option value="to top right">Diagonal (Arriba Derecha)</option>
-                                            <option value="to top left">Diagonal (Arriba Izquierda)</option>
-                                            <option value="to bottom right">Diagonal (Abajo Derecha)</option>
-                                            <option value="to bottom left">Diagonal (Abajo Izquierda)</option>
+                                            <option value="linear">Lineal</option>
+                                            <option value="radial">Radial</option>
+                                            <option value="conic">Conica</option>
                                         </select>
+                                    </label>
+                                    {gradientType === 'linear' && (
+                                        <label className="label flex flex-col items-start ">
+                                            <span className="label-text text-sm">Dirección</span>
+                                            <select
+                                                value={direction}
+                                                onChange={(e) => setDirection(e.target.value)}
+                                                className="select select-bordered">
+                                                <option value="to right">Izquierda a Derecha</option>
+                                                <option value="to left">Derecha a Izquierda</option>
+                                                <option value="to top">Abajo a Arriba</option>
+                                                <option value="to bottom">Arriba a Abajo</option>
+                                                <option value="to top right">Diagonal (Arriba Derecha)</option>
+                                                <option value="to top left">Diagonal (Arriba Izquierda)</option>
+                                                <option value="to bottom right">Diagonal (Abajo Derecha)</option>
+                                                <option value="to bottom left">Diagonal (Abajo Izquierda)</option>
+                                            </select>
+                                        </label>
                                     )}
                                     {gradientType === 'radial' && (
-                                        <div className="mb-8">
-                                            <label className="label">
-                                                <span className="label-text">Centro del gradiente</span>
+                                        <label className="label flex flex-col items-start ">
+                                            <span className="label-text text-sm">Centro del gradiente</span>
+                                            <div className="flex flex-col bg-base-content/5 rounded-sm p-0.5">
                                                 <div className="flex gap-2">
                                                     <input
                                                         type="range"
@@ -277,7 +291,7 @@ export default function GradientGenerator() {
                                                         max="100"
                                                         value={centerX}
                                                         onChange={(e) => setCenterX(parseInt(e.target.value))}
-                                                        className="range"
+                                                        className="range range-xs"
                                                     />
                                                     <input
                                                         type="range"
@@ -285,14 +299,27 @@ export default function GradientGenerator() {
                                                         max="100"
                                                         value={centerY}
                                                         onChange={(e) => setCenterY(parseInt(e.target.value))}
-                                                        className="range"
+                                                        className="range range-xs"
                                                     />
                                                 </div>
-                                                <span className="text-sm text-muted-foreground">
+                                                <span className="text-sm text-muted-foreground w-full text-center">
                                                     {centerX}% x {centerY}%
                                                 </span>
-                                            </label>
-                                        </div>
+                                            </div>
+                                        </label>
+                                    )}
+                                    {gradientType === 'conic' && (
+                                        <label className="label flex flex-col items-start ">
+                                            <span className="label-text text-sm">Rotación</span>
+                                            <input
+                                                type="range"
+                                                min="0"
+                                                max="360"
+                                                value={rotation}
+                                                onChange={(e) => setRotation(parseInt(e.target.value))}
+                                                className="range range-xs"
+                                            />
+                                        </label>
                                     )}
                                 </div>
                                 <div className="">
@@ -367,23 +394,25 @@ export default function GradientGenerator() {
 
                                 <div className="mb-8 p-2 bg-lines border border-base-300 rounded-sm">
                                     <div
-                                        className="preview-container h-70 w-full rounded-sm"
-                                        style={{ background: generateCSS() }}
-                                    />
+                                        className="relative preview-container h-70 w-full rounded-sm"
+                                        style={{ background: generateCSS() }}>
+                                        <div className="absolute inset-0 p-4 bg-black/50 opacity-0 hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center">
+                                            <div className="flex flex-col gap-2">
+                                                <pre className="text-center text-sm text-muted-foreground p-4 max-w-[45ch] text-pretty">
+                                                    {`background: ${generateCSS().replace(/, /g, ',\n')}`}
+                                                </pre>
+                                                <button onClick={handleCopy} className="btn btn-secondary btn-sm">
+                                                    {copied ? 'Copiado!' : 'Copiar Clases'}
+                                                    {copied ? (
+                                                        <Check className="h-4 w-4 ml-2" />
+                                                    ) : (
+                                                        <Copy className="h-4 w-4 ml-2" />
+                                                    )}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        <div className="mockup-code max-w-[100ch]">
-                            <textarea
-                                className="w-full h-24 p-4 rounded-lg text-base-gray-950 font-mono outline-0 resize-none"
-                                value={generateCSS()}
-                            />
-                            <div className="flex gap-2 pt-4 px-2">
-                                <button onClick={handleCopy} className="btn btn-secondary btn-sm flex-1">
-                                    {copied ? 'Copiado!' : 'Copiar CSS'}
-                                </button>
                             </div>
                         </div>
                     </div>
