@@ -17,6 +17,7 @@ import { BlockMath } from 'react-katex'; // Para mostrar los cálculos detallado
 import SectionCalculator from '../circuit-calculator/components/SectionCalculator';
 import { ConversionCard } from './components/ConversionCard';
 import HeaderSection from '../../componentes/HeaderSection';
+import { LayoutSubSection } from '../../componentes/LayoutSubSection';
 
 export default function UnitConverterPage() {
     // Estado para gestionar la pestaña activa
@@ -397,132 +398,120 @@ export default function UnitConverterPage() {
     };
 
     return (
-        <div className="flex flex-col min-h-screen bg-neutral/50">
-            <HeaderSection
-                title="Convertidor de Unidades"
-                description="Convierte entre diferentes unidades de medida (longitud, peso/masa, temperatura, datos)."
-            />
+        <LayoutSubSection>
+            <div role="tablist" className="tabs tabs-box mb-2 gap-1">
+                <button
+                    role="tab"
+                    className={`tab flex items-center gap-2 rounded-sm  px-4 py-2 text-sm ${activeTab === 'length' ? 'tab-active bg-primary text-primary-content' : ''}`}
+                    onClick={() => setActiveTab('length')}>
+                    <Ruler className="h-4 w-4" />
+                    Longitud
+                </button>
+                <button
+                    role="tab"
+                    className={`tab flex items-center gap-2 rounded-sm duration-300 px-4 py-2 text-sm ${activeTab === 'weight' ? 'tab-active bg-primary text-primary-content' : ''}`}
+                    onClick={() => setActiveTab('weight')}>
+                    <Weight className="h-4 w-4" />
+                    Peso/Masa
+                </button>
+                <button
+                    role="tab"
+                    className={`tab flex items-center gap-2 rounded-sm duration-300 px-4 py-2 text-sm ${activeTab === 'temperature' ? 'tab-active bg-primary text-primary-content' : ''}`}
+                    onClick={() => setActiveTab('temperature')}>
+                    <ThermometerSnowflake className="h-4 w-4" />
+                    Temperatura
+                </button>
+                <button
+                    role="tab"
+                    className={`tab flex items-center gap-2 rounded-sm duration-300 px-4 py-2 text-sm ${activeTab === 'data' ? 'tab-active bg-primary text-primary-content' : ''}`}
+                    onClick={() => setActiveTab('data')}>
+                    <Database className="h-4 w-4" />
+                    Datos
+                </button>
+            </div>
+            {/* --- Contenido de Conversor de Longitud --- */}
+            {activeTab === 'length' && (
+                <ConversionCard
+                    title="Longitud"
+                    description="Convierte entre diferentes unidades de longitud."
+                    icon={<Ruler className="h-5 w-5 text-accent" />}
+                    value={lengthValue}
+                    setValue={setLengthValue}
+                    fromUnit={fromLengthUnit}
+                    setFromUnit={setFromLengthUnit}
+                    toUnit={toLengthUnit}
+                    setToUnit={setToLengthUnit || ''}
+                    units={lengthUnits}
+                    onConvert={convertLength}
+                    onSwap={swapLengthUnits}
+                    onReset={() => resetFields(setLengthValue, setLengthResult, setLengthCalculationDetails)}
+                    result={lengthResult}
+                    calculationDetails={lengthCalculationDetails}
+                />
+            )}
 
-            <SectionCalculator>
-                <div className="card-body p-6 lg:p-8 bg-gradient-to-br from-base-300 to-base-200 rounded-sm shadow-2xl border border-base-content/10 transform transition-all duration-300 hover:shadow-3xl">
-                    {/* INICIO DE LAS PESTAÑAS DAISYUI */}
-                    <div
-                        role="tablist"
-                        className="tabs tabs-boxed mb-6 bg-base-100 rounded-md shadow-inner border border-base-content/10 p-1">
-                        <a
-                            role="tab"
-                            className={`tab flex items-center gap-2 rounded-sm  px-4 py-2 text-sm font-semibold text-base-content/70 hover:text-base-content hover:bg-base-200 ${activeTab === 'length' ? 'tab-active bg-primary text-primary-content shadow-lg' : ''}`}
-                            onClick={() => setActiveTab('length')}>
-                            <Ruler className="h-4 w-4" />
-                            Longitud
-                        </a>
-                        <a
-                            role="tab"
-                            className={`tab flex items-center gap-2 rounded-sm duration-300 px-4 py-2 text-sm font-semibold text-base-content/70 hover:text-base-content hover:bg-base-200 ${activeTab === 'weight' ? 'tab-active bg-primary text-primary-content shadow-lg' : ''}`}
-                            onClick={() => setActiveTab('weight')}>
-                            <Weight className="h-4 w-4" />
-                            Peso/Masa
-                        </a>
-                        <a
-                            role="tab"
-                            className={`tab flex items-center gap-2 rounded-sm duration-300 px-4 py-2 text-sm font-semibold text-base-content/70 hover:text-base-content hover:bg-base-200 ${activeTab === 'temperature' ? 'tab-active bg-primary text-primary-content shadow-lg' : ''}`}
-                            onClick={() => setActiveTab('temperature')}>
-                            <ThermometerSnowflake className="h-4 w-4" />
-                            Temperatura
-                        </a>
-                        <a
-                            role="tab"
-                            className={`tab flex items-center gap-2 rounded-sm duration-300 px-4 py-2 text-sm font-semibold text-base-content/70 hover:text-base-content hover:bg-base-200 ${activeTab === 'data' ? 'tab-active bg-primary text-primary-content shadow-lg' : ''}`}
-                            onClick={() => setActiveTab('data')}>
-                            <Database className="h-4 w-4" />
-                            Datos
-                        </a>
-                    </div>
-                    {/* --- Contenido de Conversor de Longitud --- */}
-                    {activeTab === 'length' && (
-                        <ConversionCard
-                            title="Longitud"
-                            description="Convierte entre diferentes unidades de longitud."
-                            icon={<Ruler className="h-5 w-5 text-accent" />}
-                            value={lengthValue}
-                            setValue={setLengthValue}
-                            fromUnit={fromLengthUnit}
-                            setFromUnit={setFromLengthUnit}
-                            toUnit={toLengthUnit}
-                            setToUnit={setToLengthUnit || ''}
-                            units={lengthUnits}
-                            onConvert={convertLength}
-                            onSwap={swapLengthUnits}
-                            onReset={() => resetFields(setLengthValue, setLengthResult, setLengthCalculationDetails)}
-                            result={lengthResult}
-                            calculationDetails={lengthCalculationDetails}
-                        />
-                    )}
+            {/* --- Contenido de Conversor de Peso/Masa --- */}
+            {activeTab === 'weight' && (
+                <ConversionCard
+                    title="Peso/Masa"
+                    description="Convierte entre diferentes unidades de peso y masa."
+                    icon={<Weight className="h-5 w-5 text-accent" />}
+                    value={weightValue}
+                    setValue={setWeightValue}
+                    fromUnit={fromWeightUnit}
+                    setFromUnit={setFromWeightUnit}
+                    toUnit={toWeightUnit}
+                    setToUnit={setToWeightUnit}
+                    units={weightUnits}
+                    onConvert={convertWeight}
+                    onSwap={swapWeightUnits}
+                    onReset={() => resetFields(setWeightValue, setWeightResult, setWeightCalculationDetails)}
+                    result={weightResult}
+                    calculationDetails={weightCalculationDetails}
+                />
+            )}
 
-                    {/* --- Contenido de Conversor de Peso/Masa --- */}
-                    {activeTab === 'weight' && (
-                        <ConversionCard
-                            title="Peso/Masa"
-                            description="Convierte entre diferentes unidades de peso y masa."
-                            icon={<Weight className="h-5 w-5 text-accent" />}
-                            value={weightValue}
-                            setValue={setWeightValue}
-                            fromUnit={fromWeightUnit}
-                            setFromUnit={setFromWeightUnit}
-                            toUnit={toWeightUnit}
-                            setToUnit={setToWeightUnit}
-                            units={weightUnits}
-                            onConvert={convertWeight}
-                            onSwap={swapWeightUnits}
-                            onReset={() => resetFields(setWeightValue, setWeightResult, setWeightCalculationDetails)}
-                            result={weightResult}
-                            calculationDetails={weightCalculationDetails}
-                        />
-                    )}
+            {/* --- Contenido de Conversor de Temperatura --- */}
+            {activeTab === 'temperature' && (
+                <ConversionCard
+                    title="Temperatura"
+                    description="Convierte entre diferentes unidades de temperatura."
+                    icon={<ThermometerSnowflake className="h-5 w-5 text-accent" />}
+                    value={tempValue}
+                    setValue={setTempValue}
+                    fromUnit={fromTempUnit}
+                    setFromUnit={setFromTempUnit}
+                    toUnit={toTempUnit}
+                    setToUnit={setToTempUnit}
+                    units={tempUnits}
+                    onConvert={convertTemperature}
+                    onSwap={swapTempUnits}
+                    onReset={() => resetFields(setTempValue, setTempResult, setTempCalculationDetails)}
+                    result={tempResult}
+                    calculationDetails={tempCalculationDetails}
+                />
+            )}
 
-                    {/* --- Contenido de Conversor de Temperatura --- */}
-                    {activeTab === 'temperature' && (
-                        <ConversionCard
-                            title="Temperatura"
-                            description="Convierte entre diferentes unidades de temperatura."
-                            icon={<ThermometerSnowflake className="h-5 w-5 text-accent" />}
-                            value={tempValue}
-                            setValue={setTempValue}
-                            fromUnit={fromTempUnit}
-                            setFromUnit={setFromTempUnit}
-                            toUnit={toTempUnit}
-                            setToUnit={setToTempUnit}
-                            units={tempUnits}
-                            onConvert={convertTemperature}
-                            onSwap={swapTempUnits}
-                            onReset={() => resetFields(setTempValue, setTempResult, setTempCalculationDetails)}
-                            result={tempResult}
-                            calculationDetails={tempCalculationDetails}
-                        />
-                    )}
-
-                    {/* --- Contenido de Conversor de Datos --- */}
-                    {activeTab === 'data' && (
-                        <ConversionCard
-                            title="Datos"
-                            description="Convierte entre diferentes unidades de almacenamiento de datos."
-                            icon={<Database className="h-5 w-5 text-accent" />}
-                            value={dataValue}
-                            setValue={setDataValue}
-                            fromUnit={fromDataUnit}
-                            setFromUnit={setFromDataUnit}
-                            toUnit={toDataUnit}
-                            setToUnit={setToDataUnit}
-                            units={dataUnits}
-                            onConvert={convertData}
-                            onSwap={swapDataUnits}
-                            onReset={() => resetFields(setDataValue, setDataResult, setDataCalculationDetails)}
-                            result={dataResult}
-                            calculationDetails={dataCalculationDetails}
-                        />
-                    )}
-                </div>
-            </SectionCalculator>
-        </div>
+            {/* --- Contenido de Conversor de Datos --- */}
+            {activeTab === 'data' && (
+                <ConversionCard
+                    title="Datos"
+                    description="Convierte entre diferentes unidades de almacenamiento de datos."
+                    icon={<Database className="h-5 w-5 text-accent" />}
+                    value={dataValue}
+                    setValue={setDataValue}
+                    fromUnit={fromDataUnit}
+                    setFromUnit={setFromDataUnit}
+                    toUnit={toDataUnit}
+                    setToUnit={setToDataUnit}
+                    units={dataUnits}
+                    onConvert={convertData}
+                    onSwap={swapDataUnits}
+                    onReset={() => resetFields(setDataValue, setDataResult, setDataCalculationDetails)}
+                    result={dataResult}
+                    calculationDetails={dataCalculationDetails}
+                />
+            )}
+        </LayoutSubSection>
     );
 }
