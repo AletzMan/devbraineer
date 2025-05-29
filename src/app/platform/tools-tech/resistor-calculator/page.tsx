@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Wifi, Calculator, RotateCcw } from 'lucide-react';
 import HeaderSection from '../../componentes/HeaderSection';
 import SectionCalculator from '../circuit-calculator/components/SectionCalculator';
+import { LayoutSubSection } from '../../componentes/LayoutSubSection';
 
 export default function ResistorCalculatorPage() {
     // Estado para el calculador de código de colores
@@ -193,396 +194,376 @@ export default function ResistorCalculatorPage() {
     }, [resistance, selectedTolerance]);
 
     return (
-        <div className="w-[--max-width] mx-auto scrollbar-thin overflow-y-auto h-[calc(100vh-4.3rem)] bg-neutral/50">
-            <HeaderSection
-                title="Calculadora de Resistencias"
-                description="Calcula el valor de resistencias usando el código de colores"
-            />
-            <SectionCalculator>
-                <div role="tablist" className="tabs tabs-box bg-base-300">
-                    <input
-                        type="radio"
-                        name="resistor_tabs"
-                        role="tab"
-                        className="tab [--tab-bg:var(--color-secondary)]"
-                        aria-label="Colores a Valor"
-                        defaultChecked
-                    />
-                    <div role="tabpanel" className="tab-content rounded-sm p-6 bg-base-100 mt-1">
-                        <div className="card rounded-sm shadow-xl bg-base-200">
-                            <div className="card-body">
-                                <h2 className="card-title rounded-sm text-2xl flex items-center gap-2">
-                                    <Calculator className="h-6 w-6 text-accent" />
-                                    Código de Colores
-                                </h2>
-                                <p className="text-base-content text-opacity-70">
-                                    Selecciona los colores de las bandas para calcular el valor de la resistencia
-                                </p>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                                    <div className="space-y-4">
-                                        <div className="form-control w-full">
-                                            <label className="label">
-                                                <span className="label-text">Primera Banda</span>
-                                            </label>
-                                            <select
-                                                className="select rounded-sm select-bordered w-full"
-                                                value={band1}
-                                                onChange={(e) => setBand1(e.target.value)}>
-                                                {Object.entries(colorValues).map(([color, value]) => (
-                                                    <option key={color} value={color}>
-                                                        {color.charAt(0).toUpperCase() + color.slice(1)} ({value})
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-
-                                        <div className="form-control w-full">
-                                            <label className="label">
-                                                <span className="label-text">Segunda Banda</span>
-                                            </label>
-                                            <select
-                                                className="select select-bordered w-full"
-                                                value={band2}
-                                                onChange={(e) => setBand2(e.target.value)}>
-                                                {Object.entries(colorValues).map(([color, value]) => (
-                                                    <option key={color} value={color}>
-                                                        {color.charAt(0).toUpperCase() + color.slice(1)} ({value})
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-
-                                        <div className="form-control w-full">
-                                            <label className="label">
-                                                <span className="label-text">Tercera Banda</span>
-                                            </label>
-                                            <select
-                                                className="select select-bordered w-full"
-                                                value={band3}
-                                                onChange={(e) => setBand3(e.target.value)}>
-                                                {Object.entries(colorValues).map(([color, value]) => (
-                                                    <option key={color} value={color}>
-                                                        {color.charAt(0).toUpperCase() + color.slice(1)} ({value})
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-
-                                        <div className="form-control w-full">
-                                            <label className="label">
-                                                <span className="label-text">Multiplicador</span>
-                                            </label>
-                                            <select
-                                                className="select select-bordered w-full"
-                                                value={multiplier}
-                                                onChange={(e) => setMultiplier(e.target.value)}>
-                                                {Object.entries(multiplierValues).map(([color, value]) => (
-                                                    <option key={color} value={color}>
-                                                        {color.charAt(0).toUpperCase() + color.slice(1)} (×{value})
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-
-                                        <div className="form-control w-full">
-                                            <label className="label">
-                                                <span className="label-text">Tolerancia</span>
-                                            </label>
-                                            <select
-                                                className="select select-bordered w-full"
-                                                value={tolerance}
-                                                onChange={(e) => setTolerance(e.target.value)}>
-                                                {Object.entries(toleranceValues).map(([color, value]) => (
-                                                    <option key={color} value={color}>
-                                                        {color.charAt(0).toUpperCase() + color.slice(1)} ({value})
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
+        <LayoutSubSection>
+            <div role="tablist" className="tabs tabs-box">
+                <input
+                    type="radio"
+                    name="resistor_tabs"
+                    role="tab"
+                    className="tab "
+                    aria-label="Colores a Valor"
+                    defaultChecked
+                />
+                <div role="tabpanel" className="tab-content rounded-sm p-6 bg-base-100 mt-1">
+                    <div className="card rounded-sm shadow-xl bg-base-200">
+                        <div className="card-body">
+                            <h2 className="card-title rounded-sm text-2xl flex items-center gap-2">
+                                <Calculator className="h-6 w-6 text-accent" />
+                                Código de Colores
+                            </h2>
+                            <p className="text-base-content text-opacity-70">
+                                Selecciona los colores de las bandas para calcular el valor de la resistencia
+                            </p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                                <div className="space-y-4">
+                                    <div className="form-control w-full">
+                                        <label className="label">
+                                            <span className="label-text">Primera Banda</span>
+                                        </label>
+                                        <select
+                                            className="select rounded-sm select-bordered w-full"
+                                            value={band1}
+                                            onChange={(e) => setBand1(e.target.value)}>
+                                            {Object.entries(colorValues).map(([color, value]) => (
+                                                <option key={color} value={color}>
+                                                    {color.charAt(0).toUpperCase() + color.slice(1)} ({value})
+                                                </option>
+                                            ))}
+                                        </select>
                                     </div>
 
-                                    <div className="flex flex-col items-center justify-center bg-base-100 rounded-lg p-4 border-1 border-gray-700 border-dashed">
-                                        <h3 className="text-xl font-semibold mb-4">Visualización de Resistencia</h3>
-                                        <div className="relative w-64 h-24 mb-6">
-                                            <div className="absolute top-10 left-0 right-0 h-4 bg-[#707070] rounded-sm"></div>
-                                            <div className="absolute top-[calc(50%-24px)] left-[calc(50%-90px)] w-45 h-12 rounded-sm bg-[#a58053]"></div>
+                                    <div className="form-control w-full">
+                                        <label className="label">
+                                            <span className="label-text">Segunda Banda</span>
+                                        </label>
+                                        <select
+                                            className="select select-bordered w-full"
+                                            value={band2}
+                                            onChange={(e) => setBand2(e.target.value)}>
+                                            {Object.entries(colorValues).map(([color, value]) => (
+                                                <option key={color} value={color}>
+                                                    {color.charAt(0).toUpperCase() + color.slice(1)} ({value})
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
 
-                                            {/* Resistor body and bands */}
-                                            <div
-                                                className="absolute top-6 left-16 w-4 h-12 rounded-sm"
-                                                style={{
-                                                    backgroundColor: band1 === 'white' ? '#f8f9fa' : band1,
-                                                }}></div>
-                                            <div
-                                                className="absolute top-6 left-24 w-4 h-12 rounded-sm"
-                                                style={{
-                                                    backgroundColor: band2 === 'white' ? '#f8f9fa' : band2,
-                                                }}></div>
-                                            <div
-                                                className="absolute top-6 left-32 w-4 h-12 rounded-sm"
-                                                style={{
-                                                    backgroundColor: band3 === 'white' ? '#f8f9fa' : band3,
-                                                }}></div>
-                                            <div
-                                                className="absolute top-6 left-40 w-4 h-12 rounded-sm"
-                                                style={{
-                                                    backgroundColor: multiplier === 'white' ? '#f8f9fa' : multiplier,
-                                                }}></div>
-                                            <div
-                                                className={
-                                                    tolerance === 'none'
-                                                        ? 'absolute top-6 left-48 w-4 h-12 rounded-sm border border-gray-400'
-                                                        : 'absolute top-6 left-48 w-4 h-12 rounded-sm'
-                                                }
-                                                style={{
-                                                    backgroundColor:
-                                                        tolerance === 'none'
-                                                            ? 'transparent'
-                                                            : tolerance === 'white'
-                                                              ? '#f8f9fa'
-                                                              : tolerance,
-                                                }}></div>
-                                        </div>
+                                    <div className="form-control w-full">
+                                        <label className="label">
+                                            <span className="label-text">Tercera Banda</span>
+                                        </label>
+                                        <select
+                                            className="select select-bordered w-full"
+                                            value={band3}
+                                            onChange={(e) => setBand3(e.target.value)}>
+                                            {Object.entries(colorValues).map(([color, value]) => (
+                                                <option key={color} value={color}>
+                                                    {color.charAt(0).toUpperCase() + color.slice(1)} ({value})
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
 
-                                        <div className="alert alert-info shadow-lg w-full max-w-sm mt-auto">
-                                            <div>
-                                                <h4 className="font-bold">Valor: {resistanceValue}</h4>
-                                                <p className="text-sm">Tolerancia: {toleranceValue}</p>
-                                            </div>
-                                        </div>
+                                    <div className="form-control w-full">
+                                        <label className="label">
+                                            <span className="label-text">Multiplicador</span>
+                                        </label>
+                                        <select
+                                            className="select select-bordered w-full"
+                                            value={multiplier}
+                                            onChange={(e) => setMultiplier(e.target.value)}>
+                                            {Object.entries(multiplierValues).map(([color, value]) => (
+                                                <option key={color} value={color}>
+                                                    {color.charAt(0).toUpperCase() + color.slice(1)} (×{value})
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
 
-                                        <div className="text-sm text-base-content text-opacity-70 mt-4">
-                                            <p>Fórmula: (Banda1 × 100 + Banda2 × 10 + Banda3) × Multiplicador</p>
-                                            <p>
-                                                Ejemplo: ({colorValues[band1]} × 100 + {colorValues[band2]} × 10 +{' '}
-                                                {colorValues[band3]}) × {multiplierValues[multiplier]}
-                                            </p>
-                                        </div>
+                                    <div className="form-control w-full">
+                                        <label className="label">
+                                            <span className="label-text">Tolerancia</span>
+                                        </label>
+                                        <select
+                                            className="select select-bordered w-full"
+                                            value={tolerance}
+                                            onChange={(e) => setTolerance(e.target.value)}>
+                                            {Object.entries(toleranceValues).map(([color, value]) => (
+                                                <option key={color} value={color}>
+                                                    {color.charAt(0).toUpperCase() + color.slice(1)} ({value})
+                                                </option>
+                                            ))}
+                                        </select>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <input
-                        type="radio"
-                        name="resistor_tabs"
-                        role="tab "
-                        className="tab  [--tab-bg:var(--color-secondary)]"
-                        aria-label="Valor a Colores"
-                    />
-                    <div role="tabpanel" className="tab-content rounded-sm p-6 bg-base-100 mt-1">
-                        <div className="card rounded-sm shadow-xl bg-base-200">
-                            <div className="card-body">
-                                <h2 className="card-title text-2xl flex items-center gap-2">
-                                    <Calculator className="h-6 w-6 text-accent" />
-                                    Valor a Colores
-                                </h2>
-                                <p className="text-base-content text-opacity-70">
-                                    Ingresa el valor de la resistencia para obtener los colores correspondientes
-                                </p>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 ">
-                                    <div className="space-y-4">
-                                        <div className="form-control w-full">
-                                            <label className="label">
-                                                <span className="label-text">Valor de la Resistencia (Ω)</span>
-                                            </label>
-                                            <input
-                                                id="resistance-value"
-                                                type="number"
-                                                placeholder="Ingresa el valor en ohmios"
-                                                className="input input-bordered w-full"
-                                                value={resistance}
-                                                onChange={(e) => setResistance(e.target.value)}
-                                            />
-                                        </div>
+                                <div className="flex flex-col items-center justify-center bg-base-100 rounded-lg p-4 border-1 border-gray-700 border-dashed">
+                                    <h3 className="text-xl font-semibold mb-4">Visualización de Resistencia</h3>
+                                    <div className="relative w-64 h-24 mb-6">
+                                        <div className="absolute top-10 left-0 right-0 h-4 bg-[#707070] rounded-sm"></div>
+                                        <div className="absolute top-[calc(50%-24px)] left-[calc(50%-90px)] w-45 h-12 rounded-sm bg-[#a58053]"></div>
 
-                                        <div className="form-control w-full">
-                                            <label className="label">
-                                                <span className="label-text">Tolerancia</span>
-                                            </label>
-                                            <select
-                                                className="select select-bordered w-full"
-                                                value={selectedTolerance}
-                                                onChange={(e) => setSelectedTolerance(e.target.value)}>
-                                                {toleranceOptions.map((option) => (
-                                                    <option key={option.value} value={option.value}>
-                                                        {option.label}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
+                                        {/* Resistor body and bands */}
+                                        <div
+                                            className="absolute top-6 left-16 w-4 h-12 rounded-sm"
+                                            style={{
+                                                backgroundColor: band1 === 'white' ? '#f8f9fa' : band1,
+                                            }}></div>
+                                        <div
+                                            className="absolute top-6 left-24 w-4 h-12 rounded-sm"
+                                            style={{
+                                                backgroundColor: band2 === 'white' ? '#f8f9fa' : band2,
+                                            }}></div>
+                                        <div
+                                            className="absolute top-6 left-32 w-4 h-12 rounded-sm"
+                                            style={{
+                                                backgroundColor: band3 === 'white' ? '#f8f9fa' : band3,
+                                            }}></div>
+                                        <div
+                                            className="absolute top-6 left-40 w-4 h-12 rounded-sm"
+                                            style={{
+                                                backgroundColor: multiplier === 'white' ? '#f8f9fa' : multiplier,
+                                            }}></div>
+                                        <div
+                                            className={
+                                                tolerance === 'none'
+                                                    ? 'absolute top-6 left-48 w-4 h-12 rounded-sm border border-gray-400'
+                                                    : 'absolute top-6 left-48 w-4 h-12 rounded-sm'
+                                            }
+                                            style={{
+                                                backgroundColor:
+                                                    tolerance === 'none'
+                                                        ? 'transparent'
+                                                        : tolerance === 'white'
+                                                          ? '#f8f9fa'
+                                                          : tolerance,
+                                            }}></div>
+                                    </div>
 
-                                        <div className="alert alert-info rounded-md shadow-md text-sm">
-                                            <div className="flex flex-col gap-2">
-                                                <p className="font-semibold text-base text-info-content">
-                                                    📘 Instrucciones
-                                                </p>
-                                                <ul className="list-disc list-inside space-y-1 text-info-content">
-                                                    <li>
-                                                        Ingresa el valor de la resistencia en{' '}
-                                                        <span className="font-semibold">ohmios (Ω)</span>
-                                                    </li>
-                                                    <li>
-                                                        Selecciona la{' '}
-                                                        <span className="font-semibold">tolerancia deseada</span>
-                                                    </li>
-                                                    <li>
-                                                        Los colores se mostrarán{' '}
-                                                        <span className="font-semibold">automáticamente</span>
-                                                    </li>
-                                                    <li>Para valores decimales, usa (.) como separador</li>
-                                                </ul>
-                                            </div>
+                                    <div className="alert alert-info shadow-lg w-full max-w-sm mt-auto">
+                                        <div>
+                                            <h4 className="font-bold">Valor: {resistanceValue}</h4>
+                                            <p className="text-sm">Tolerancia: {toleranceValue}</p>
                                         </div>
                                     </div>
 
-                                    <div className="flex flex-col items-center justify-center bg-base-100 rounded-lg p-4 bg border-1 border-gray-700 border-dashed">
-                                        <h3 className="text-xl font-semibold mb-4">Colores de la Resistencia</h3>
-
-                                        <div className="relative w-64 h-24 mb-6">
-                                            <div className="absolute top-10 left-0 right-0 h-4 bg-[#707070] rounded-sm"></div>
-                                            <div className="absolute top-[calc(50%-24px)] left-[calc(50%-90px)] w-45 h-12 rounded-sm bg-[#a58053]"></div>
-
-                                            {colorBands.length >= 5 ? (
-                                                <>
-                                                    <div
-                                                        className="absolute top-6 left-16 w-4 h-12 rounded-sm"
-                                                        style={{
-                                                            backgroundColor:
-                                                                colorBands[0] === 'white' ? '#f8f9fa' : colorBands[0],
-                                                        }}></div>
-                                                    <div
-                                                        className="absolute top-6 left-24 w-4 h-12 rounded-sm"
-                                                        style={{
-                                                            backgroundColor:
-                                                                colorBands[1] === 'white' ? '#f8f9fa' : colorBands[1],
-                                                        }}></div>
-                                                    <div
-                                                        className="absolute top-6 left-32 w-4 h-12 rounded-sm"
-                                                        style={{
-                                                            backgroundColor:
-                                                                colorBands[2] === 'white' ? '#fabling' : colorBands[2],
-                                                        }}></div>
-                                                    <div
-                                                        className="absolute top-6 left-40 w-4 h-12 rounded-sm"
-                                                        style={{
-                                                            backgroundColor:
-                                                                colorBands[3] === 'white' ? '#f8f9fa' : colorBands[3],
-                                                        }}></div>
-                                                    <div
-                                                        className={
-                                                            colorBands[4] === 'none'
-                                                                ? 'absolute top-6 left-48 w-4 h-12 rounded-sm border border-gray-400'
-                                                                : 'absolute top-6 left-48 w-4 h-12 rounded-sm'
-                                                        }
-                                                        style={{
-                                                            backgroundColor:
-                                                                colorBands[4] === 'none'
-                                                                    ? 'transparent'
-                                                                    : colorBands[4] === 'white'
-                                                                      ? '#f8f9fa'
-                                                                      : colorBands[4],
-                                                        }}></div>
-                                                </>
-                                            ) : (
-                                                <div className="flex items-center justify-center h-full text-base-content text-opacity-50">
-                                                    Ingresa un valor para ver los colores
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        {colorBands.length >= 5 && (
-                                            <div className="space-y-2">
-                                                <div className="grid grid-cols-5 gap-2">
-                                                    <div className="text-center">
-                                                        <div
-                                                            className="w-6 h-6 rounded-full mx-auto"
-                                                            style={{
-                                                                backgroundColor:
-                                                                    colorBands[0] === 'white'
-                                                                        ? '#f8f9fa'
-                                                                        : colorBands[0],
-                                                            }}></div>
-                                                        <p className="text-xs mt-1 capitalize">{colorBands[0]}</p>
-                                                    </div>
-
-                                                    <div className="text-center">
-                                                        <div
-                                                            className="w-6 h-6 rounded-full mx-auto"
-                                                            style={{
-                                                                backgroundColor:
-                                                                    colorBands[1] === 'white'
-                                                                        ? '#f8f9fa'
-                                                                        : colorBands[1],
-                                                            }}></div>
-                                                        <p className="text-xs mt-1 capitalize">{colorBands[1]}</p>
-                                                    </div>
-
-                                                    <div className="text-center">
-                                                        <div
-                                                            className="w-6 h-6 rounded-full mx-auto"
-                                                            style={{
-                                                                backgroundColor:
-                                                                    colorBands[2] === 'white'
-                                                                        ? '#f8f9fa'
-                                                                        : colorBands[2],
-                                                            }}></div>
-                                                        <p className="text-xs mt-1 capitalize">{colorBands[2]}</p>
-                                                    </div>
-
-                                                    <div className="text-center">
-                                                        <div
-                                                            className="w-6 h-6 rounded-full mx-auto"
-                                                            style={{
-                                                                backgroundColor:
-                                                                    colorBands[3] === 'white'
-                                                                        ? '#f8f9fa'
-                                                                        : colorBands[3],
-                                                            }}></div>
-                                                        <p className="text-xs mt-1 capitalize">{colorBands[3]}</p>
-                                                    </div>
-
-                                                    <div className="text-center">
-                                                        {colorBands[4] === 'none' ? (
-                                                            <div className="w-6 h-6 rounded-full mx-auto border border-gray-400"></div>
-                                                        ) : (
-                                                            <div
-                                                                className="w-6 h-6 rounded-full mx-auto"
-                                                                style={{
-                                                                    backgroundColor:
-                                                                        colorBands[4] === 'white'
-                                                                            ? '#f8f9fa'
-                                                                            : colorBands[4],
-                                                                }}></div>
-                                                        )}
-                                                        <p className="text-xs mt-1 capitalize">{colorBands[4]}</p>
-                                                    </div>
-                                                </div>
-
-                                                <div className="text-center text-sm text-base-content text-opacity-70 mt-4">
-                                                    <p>
-                                                        Valor: {resistance} Ω ±{selectedTolerance}%
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        )}
-                                        <button
-                                            className="btn btn-outline mt-6 gap-1"
-                                            onClick={() => {
-                                                setResistance('');
-                                                setColorBands([]);
-                                            }}>
-                                            <RotateCcw className="h-4 w-4" />
-                                            Limpiar
-                                        </button>
+                                    <div className="text-sm text-base-content text-opacity-70 mt-4">
+                                        <p>Fórmula: (Banda1 × 100 + Banda2 × 10 + Banda3) × Multiplicador</p>
+                                        <p>
+                                            Ejemplo: ({colorValues[band1]} × 100 + {colorValues[band2]} × 10 +{' '}
+                                            {colorValues[band3]}) × {multiplierValues[multiplier]}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </SectionCalculator>
-        </div>
+
+                <input type="radio" name="resistor_tabs" role="tab " className="tab" aria-label="Valor a Colores" />
+                <div role="tabpanel" className="tab-content rounded-sm p-6 bg-base-100 mt-1">
+                    <div className="card rounded-sm shadow-xl bg-base-200">
+                        <div className="card-body">
+                            <h2 className="card-title text-2xl flex items-center gap-2">
+                                <Calculator className="h-6 w-6 text-accent" />
+                                Valor a Colores
+                            </h2>
+                            <p className="text-base-content text-opacity-70">
+                                Ingresa el valor de la resistencia para obtener los colores correspondientes
+                            </p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 ">
+                                <div className="space-y-4">
+                                    <div className="form-control w-full">
+                                        <label className="label">
+                                            <span className="label-text">Valor de la Resistencia (Ω)</span>
+                                        </label>
+                                        <input
+                                            id="resistance-value"
+                                            type="number"
+                                            placeholder="Ingresa el valor en ohmios"
+                                            className="input input-bordered w-full"
+                                            value={resistance}
+                                            onChange={(e) => setResistance(e.target.value)}
+                                        />
+                                    </div>
+
+                                    <div className="form-control w-full">
+                                        <label className="label">
+                                            <span className="label-text">Tolerancia</span>
+                                        </label>
+                                        <select
+                                            className="select select-bordered w-full"
+                                            value={selectedTolerance}
+                                            onChange={(e) => setSelectedTolerance(e.target.value)}>
+                                            {toleranceOptions.map((option) => (
+                                                <option key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div className="alert alert-info rounded-md shadow-md text-sm">
+                                        <div className="flex flex-col gap-2">
+                                            <p className="font-semibold text-base text-info-content">
+                                                📘 Instrucciones
+                                            </p>
+                                            <ul className="list-disc list-inside space-y-1 text-info-content">
+                                                <li>
+                                                    Ingresa el valor de la resistencia en{' '}
+                                                    <span className="font-semibold">ohmios (Ω)</span>
+                                                </li>
+                                                <li>
+                                                    Selecciona la{' '}
+                                                    <span className="font-semibold">tolerancia deseada</span>
+                                                </li>
+                                                <li>
+                                                    Los colores se mostrarán{' '}
+                                                    <span className="font-semibold">automáticamente</span>
+                                                </li>
+                                                <li>Para valores decimales, usa (.) como separador</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col items-center justify-center bg-base-100 rounded-lg p-4 bg border-1 border-gray-700 border-dashed">
+                                    <h3 className="text-xl font-semibold mb-4">Colores de la Resistencia</h3>
+
+                                    <div className="relative w-64 h-24 mb-6">
+                                        <div className="absolute top-10 left-0 right-0 h-4 bg-[#707070] rounded-sm"></div>
+                                        <div className="absolute top-[calc(50%-24px)] left-[calc(50%-90px)] w-45 h-12 rounded-sm bg-[#a58053]"></div>
+
+                                        {colorBands.length >= 5 ? (
+                                            <>
+                                                <div
+                                                    className="absolute top-6 left-16 w-4 h-12 rounded-sm"
+                                                    style={{
+                                                        backgroundColor:
+                                                            colorBands[0] === 'white' ? '#f8f9fa' : colorBands[0],
+                                                    }}></div>
+                                                <div
+                                                    className="absolute top-6 left-24 w-4 h-12 rounded-sm"
+                                                    style={{
+                                                        backgroundColor:
+                                                            colorBands[1] === 'white' ? '#f8f9fa' : colorBands[1],
+                                                    }}></div>
+                                                <div
+                                                    className="absolute top-6 left-32 w-4 h-12 rounded-sm"
+                                                    style={{
+                                                        backgroundColor:
+                                                            colorBands[2] === 'white' ? '#fabling' : colorBands[2],
+                                                    }}></div>
+                                                <div
+                                                    className="absolute top-6 left-40 w-4 h-12 rounded-sm"
+                                                    style={{
+                                                        backgroundColor:
+                                                            colorBands[3] === 'white' ? '#f8f9fa' : colorBands[3],
+                                                    }}></div>
+                                                <div
+                                                    className={
+                                                        colorBands[4] === 'none'
+                                                            ? 'absolute top-6 left-48 w-4 h-12 rounded-sm border border-gray-400'
+                                                            : 'absolute top-6 left-48 w-4 h-12 rounded-sm'
+                                                    }
+                                                    style={{
+                                                        backgroundColor:
+                                                            colorBands[4] === 'none'
+                                                                ? 'transparent'
+                                                                : colorBands[4] === 'white'
+                                                                  ? '#f8f9fa'
+                                                                  : colorBands[4],
+                                                    }}></div>
+                                            </>
+                                        ) : (
+                                            <div className="flex items-center justify-center h-full text-base-content text-opacity-50">
+                                                Ingresa un valor para ver los colores
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {colorBands.length >= 5 && (
+                                        <div className="space-y-2">
+                                            <div className="grid grid-cols-5 gap-2">
+                                                <div className="text-center">
+                                                    <div
+                                                        className="w-6 h-6 rounded-full mx-auto"
+                                                        style={{
+                                                            backgroundColor:
+                                                                colorBands[0] === 'white' ? '#f8f9fa' : colorBands[0],
+                                                        }}></div>
+                                                    <p className="text-xs mt-1 capitalize">{colorBands[0]}</p>
+                                                </div>
+
+                                                <div className="text-center">
+                                                    <div
+                                                        className="w-6 h-6 rounded-full mx-auto"
+                                                        style={{
+                                                            backgroundColor:
+                                                                colorBands[1] === 'white' ? '#f8f9fa' : colorBands[1],
+                                                        }}></div>
+                                                    <p className="text-xs mt-1 capitalize">{colorBands[1]}</p>
+                                                </div>
+
+                                                <div className="text-center">
+                                                    <div
+                                                        className="w-6 h-6 rounded-full mx-auto"
+                                                        style={{
+                                                            backgroundColor:
+                                                                colorBands[2] === 'white' ? '#f8f9fa' : colorBands[2],
+                                                        }}></div>
+                                                    <p className="text-xs mt-1 capitalize">{colorBands[2]}</p>
+                                                </div>
+
+                                                <div className="text-center">
+                                                    <div
+                                                        className="w-6 h-6 rounded-full mx-auto"
+                                                        style={{
+                                                            backgroundColor:
+                                                                colorBands[3] === 'white' ? '#f8f9fa' : colorBands[3],
+                                                        }}></div>
+                                                    <p className="text-xs mt-1 capitalize">{colorBands[3]}</p>
+                                                </div>
+
+                                                <div className="text-center">
+                                                    {colorBands[4] === 'none' ? (
+                                                        <div className="w-6 h-6 rounded-full mx-auto border border-gray-400"></div>
+                                                    ) : (
+                                                        <div
+                                                            className="w-6 h-6 rounded-full mx-auto"
+                                                            style={{
+                                                                backgroundColor:
+                                                                    colorBands[4] === 'white'
+                                                                        ? '#f8f9fa'
+                                                                        : colorBands[4],
+                                                            }}></div>
+                                                    )}
+                                                    <p className="text-xs mt-1 capitalize">{colorBands[4]}</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="text-center text-sm text-base-content text-opacity-70 mt-4">
+                                                <p>
+                                                    Valor: {resistance} Ω ±{selectedTolerance}%
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )}
+                                    <button
+                                        className="btn btn-outline mt-6 gap-1"
+                                        onClick={() => {
+                                            setResistance('');
+                                            setColorBands([]);
+                                        }}>
+                                        <RotateCcw className="h-4 w-4" />
+                                        Limpiar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </LayoutSubSection>
     );
 }
