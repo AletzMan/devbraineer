@@ -1,7 +1,21 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import chroma from 'chroma-js';
-import { Sparkles, Eye, Code, Download, Trash2, Check, Copy, Plus, RefreshCcw } from 'lucide-react';
+import {
+    Sparkles,
+    Eye,
+    Code,
+    Download,
+    Trash2,
+    Check,
+    Copy,
+    Plus,
+    RefreshCcw,
+    RectangleHorizontal,
+    Square,
+    Expand,
+    Circle,
+} from 'lucide-react';
 import Slider from 'rc-slider';
 
 interface ColorStop {
@@ -402,6 +416,8 @@ export default function TailwindGradientGenerator() {
     const [angle, setAngle] = useState(0);
     const [centerX, setCenterX] = useState(50);
     const [centerY, setCenterY] = useState(50);
+    const [typeView, setTypeView] = useState<'rectangle' | 'circle' | 'square' | 'ellipse'>('rectangle');
+    const [sizeView, setSizeView] = useState(1);
 
     useEffect(() => {
         const newColorsArray: string[] = gradientStops.map((stop) => {
@@ -641,10 +657,9 @@ export default function TailwindGradientGenerator() {
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="bg-radial-[at_15%_18%] from-red-500 from-0% to-green-500 to-100%   size-24"></div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex flex-col gap-4 bg-base-100 border border-base-300 p-2 rounded-sm">
-                    <div className="grid grid-cols-2 gap-2 border-b border-base-content/20 pb-4">
+                <div className="flex flex-col gap-2 bg-base-100 border border-base-300 p-2 rounded-sm">
+                    <div className="grid grid-cols-2 gap-6 bg-base-200 p-2 pb-6">
                         <label className="flex flex-col items-start label">
                             <span className="label-text text-sm">Tipo</span>
                             <select
@@ -672,10 +687,10 @@ export default function TailwindGradientGenerator() {
                             </label>
                         )}
                         {gradientType === 'radial' && (
-                            <div className="mb-8">
+                            <div className="w-full">
                                 <label className="label flex flex-col items-start">
                                     <span className="label-text text-sm">Centro del gradiente</span>
-                                    <div className="flex gap-2">
+                                    <div className="flex gap-2 w-full">
                                         <input
                                             type="range"
                                             min="0"
@@ -715,47 +730,51 @@ export default function TailwindGradientGenerator() {
                             </label>
                         )}
                     </div>
-                    <Slider
-                        className="handler_positions"
-                        min={0}
-                        styles={{
-                            handle: {
-                                backgroundColor: 'var(--color-base-200)',
-                                borderColor: 'var(--color-base-content)',
-                                opacity: 1,
-                                borderRadius: '2px',
-                                borderWidth: '1px',
-                                height: '24px',
-                                width: '8px',
-                                transform: 'translateY(-5px) translateX(-4px)',
-                            },
-                            track: {
-                                backgroundColor: 'var(--color-primary)',
-                                height: '4px',
-                            },
-                            rail: {
-                                backgroundColor: 'var(--color-base-content)',
-                                height: '4px',
-                            },
-                        }}
-                        range={{ draggableTrack: true }}
-                        allowCross={false}
-                        max={1}
-                        value={gradientStops.map((stop) => stop.position)}
-                        onChange={(values) => {
-                            if (!Array.isArray(values)) {
-                                return;
-                            }
-                            setGradientStops(
-                                gradientStops.map((stop, index) => ({
-                                    ...stop,
-                                    position: values[index],
-                                }))
-                            );
-                        }}
-                        step={0.01}
-                    />
-                    <div className="grid grid-cols-2 gap-2 border-b border-base-content/20 pb-4">
+                    <label className="label flex flex-col gap-7 rounded-sm p-4 pb-6 bg-base-200">
+                        <span className="label-text text-sm">Posiciones</span>
+
+                        <Slider
+                            className="handler_positions"
+                            min={0}
+                            styles={{
+                                handle: {
+                                    backgroundColor: 'var(--color-base-200)',
+                                    borderColor: 'var(--color-base-content)',
+                                    opacity: 1,
+                                    borderRadius: '2px',
+                                    borderWidth: '1px',
+                                    height: '24px',
+                                    width: '8px',
+                                    transform: 'translateY(-5px) translateX(-4px)',
+                                },
+                                track: {
+                                    backgroundColor: 'var(--color-primary)',
+                                    height: '4px',
+                                },
+                                rail: {
+                                    backgroundColor: 'var(--color-base-content)',
+                                    height: '4px',
+                                },
+                            }}
+                            range={{ draggableTrack: true }}
+                            allowCross={false}
+                            max={1}
+                            value={gradientStops.map((stop) => stop.position)}
+                            onChange={(values) => {
+                                if (!Array.isArray(values)) {
+                                    return;
+                                }
+                                setGradientStops(
+                                    gradientStops.map((stop, index) => ({
+                                        ...stop,
+                                        position: values[index],
+                                    }))
+                                );
+                            }}
+                            step={0.01}
+                        />
+                    </label>
+                    <div className="grid grid-cols-2 gap-2 border-b border-base-content/20 pb-4 mb-4">
                         <button
                             onClick={handleAddStop}
                             className="btn btn-accent btn-sm w-full"
@@ -772,71 +791,79 @@ export default function TailwindGradientGenerator() {
                     <div className="space-y-4">
                         {gradientStops.map((stop, index) => {
                             const stopType = stop.type;
-
                             return (
                                 <div
                                     key={index}
-                                    className="grid grid-cols-[2.5em_2em_0.85fr_2.5fr_2em] gap-2 items-center bg-base-200 border-1 border-dashed border-base-content/20 rounded-sm p-2">
-                                    <span className="w-12 text-center text-sm font-semibold">{stopType}</span>
-                                    <div
-                                        className="size-8 rounded-sm"
-                                        style={{ backgroundColor: currentColor[index] }}
-                                    />
-                                    <div className="flex flex-col gap-2 flex-1">
-                                        {/* SELECT para el nombre del color */}
-                                        <select
-                                            value={stop.colorName}
-                                            onChange={(e) => handleColorNameChange(index, e.target.value as ColorName)}
-                                            className="select select-sm">
-                                            {colorOptions.map((color) => (
-                                                <option key={color.value} value={color.value}>
-                                                    {color.name}
-                                                </option>
-                                            ))}
-                                        </select>
+                                    className="relative flex flex-col w-full gap-1 items-center bg-base-200 border-1 border-dashed border-base-content/20 rounded-sm p-2 pb-3">
+                                    <span className="absolute -top-2 bg-base-300 rounded-sm border border-base-content/20 border-dashed left-[calc(50%-1.5rem)] w-12 text-secondary  text-center text-sm font-semibold">
+                                        {stopType}
+                                    </span>
+                                    <div className="flex justify-center items-center gap-2 w-full mt-4">
+                                        <div
+                                            className="size-8 rounded-sm"
+                                            style={{ backgroundColor: currentColor[index] }}
+                                        />
+                                        <div className="flex flex-col gap-2 flex-1">
+                                            {/* SELECT para el nombre del color */}
+                                            <select
+                                                value={stop.colorName}
+                                                onChange={(e) =>
+                                                    handleColorNameChange(index, e.target.value as ColorName)
+                                                }
+                                                className="select select-sm">
+                                                {colorOptions.map((color) => (
+                                                    <option key={color.value} value={color.value}>
+                                                        {color.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+
+                                        {gradientStops.length === 3 && stop.type === 'via' && (
+                                            <button
+                                                onClick={() => handleRemoveStop(index)}
+                                                className="btn btn-error btn-sm absolute top-2 right-2">
+                                                <Trash2 className="size-4" />
+                                            </button>
+                                        )}
                                     </div>
                                     {/* SLIDER para el tono */}
-                                    <div className="flex gap-2 items-center">
-                                        <input
-                                            type="range"
-                                            min="50"
-                                            max="950"
-                                            step="50"
-                                            value={stop.tone}
-                                            onChange={(e) => handleToneChange(index, parseInt(e.target.value))}
-                                            className="range range-xs flex-1"
-                                        />
-                                        <Slider
-                                            min={50}
-                                            max={950}
-                                            step={null}
-                                            defaultValue={stop.tone}
-                                            onChange={(value) => handleToneChange(index, value as number)}
-                                            marks={{
-                                                50: 50,
-                                                100: 100,
-                                                200: 200,
-                                                300: 300,
-                                                400: 400,
-                                                500: 500,
-                                                600: 600,
-                                                700: 700,
-                                                800: 800,
-                                                900: 900,
-                                                950: 950,
-                                            }}
-                                        />
-                                        {/* Mostrar el tono actual */}
-                                        <span className="w-12 text-center text-sm font-semibold">{stop.tone}</span>
+                                    <div className="flex gap-2 items-center w-full p-2">
+                                        <div className="flex flex-col gap-2 items-center w-full pb-2">
+                                            {/* Mostrar el tono actual */}
+                                            <span className="w-12 text-center text-sm font-semibold">{stop.tone}</span>
+                                            <Slider
+                                                min={50}
+                                                max={950}
+                                                step={null}
+                                                defaultValue={stop.tone}
+                                                onChange={(value) => handleToneChange(index, value as number)}
+                                                marks={{
+                                                    50: 50,
+                                                    100: 100,
+                                                    200: 200,
+                                                    300: 300,
+                                                    400: 400,
+                                                    500: 500,
+                                                    600: 600,
+                                                    700: 700,
+                                                    800: 800,
+                                                    900: 900,
+                                                    950: 950,
+                                                }}
+                                                styles={{
+                                                    track: {
+                                                        backgroundColor: 'var(--color-primary)',
+                                                        height: '4px',
+                                                    },
+                                                    rail: {
+                                                        backgroundColor: 'var(--color-base-content)',
+                                                        height: '4px',
+                                                    },
+                                                }}
+                                            />
+                                        </div>
                                     </div>
-
-                                    {gradientStops.length === 3 && stop.type === 'via' && (
-                                        <button
-                                            onClick={() => handleRemoveStop(index)}
-                                            className="btn btn-error btn-sm p-0">
-                                            <Trash2 className="size-4" />
-                                        </button>
-                                    )}
                                 </div>
                             );
                         })}
@@ -844,32 +871,82 @@ export default function TailwindGradientGenerator() {
                 </div>
                 <div className="flex flex-col gap-4 bg-base-100 border border-base-300 rounded-sm h-full">
                     <div className="flex flex-col gap-2 p-2 rounded-lg h-full">
-                        <div className="flex gap-4">
-                            <Eye className="h-5 w-5 text-muted-foreground " />
-                            <h3 className="font-semibold">Vista Previa</h3>
+                        <div className="flex gap-4 w-full">
+                            <div className="flex items-center gap-2 w-full ">
+                                <Eye className="h-5 w-5 text-muted-foreground " />
+                                <h3 className="font-semibold w-full">Vista Previa</h3>
+                            </div>
+                            <label className="label flex flex-col items-start w-full">
+                                <span className="label-text text-sm">Tamaño</span>
+                                <input
+                                    type="range"
+                                    min="0.1"
+                                    max="1"
+                                    step="0.1"
+                                    value={sizeView}
+                                    className="range range-primary w-full"
+                                    onChange={(e) => setSizeView(Number(e.target.value))}
+                                />
+                            </label>
+                            <label className="label flex flex-col items-start">
+                                <span className="label-text text-sm">Tipo de Vista</span>
+                                <div className="join">
+                                    <button
+                                        className={`join-item btn btn-sm btn-soft ${typeView === 'rectangle' ? 'btn-active btn-primary' : 'btn-default'}`}
+                                        type="button"
+                                        name="options"
+                                        onClick={() => setTypeView('rectangle')}>
+                                        <RectangleHorizontal className="size-4" />
+                                    </button>
+                                    <button
+                                        className={`join-item btn btn-sm btn-soft ${typeView === 'circle' ? 'btn-active btn-primary' : 'btn-default'}`}
+                                        type="button"
+                                        name="options"
+                                        onClick={() => setTypeView('circle')}>
+                                        <Circle className="size-4" />
+                                    </button>
+                                    <button
+                                        className={`join-item btn btn-sm btn-soft ${typeView === 'square' ? 'btn-active btn-primary' : 'btn-default'}`}
+                                        type="button"
+                                        name="options"
+                                        onClick={() => setTypeView('square')}>
+                                        <Square className="size-4" />
+                                    </button>
+                                </div>
+                            </label>
                         </div>
-                        <div className="bg-lines p-2 rounded-sm border border-base-300 h-full">
+                        <div className="relative bg-lines p-2 rounded-sm border border-base-300 ">
                             <div
                                 className={`w-full h-full relative  rounded-sm overflow-hidden`}
                                 style={{
                                     transition: 'background 0.3s ease',
                                     overflow: 'hidden',
                                     background: generateCSS(),
-                                }}>
-                                <div className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center">
-                                    <div className="flex flex-col gap-2">
-                                        <div className="text-center text-sm text-muted-foreground p-4">
-                                            {generateTailwindClasses()}
-                                        </div>
-                                        <button onClick={handleCopy} className="btn btn-secondary btn-sm">
-                                            {copied ? 'Copiado!' : 'Copiar Clases'}
-                                            {copied ? (
-                                                <Check className="h-4 w-4 ml-2" />
-                                            ) : (
-                                                <Copy className="h-4 w-4 ml-2" />
-                                            )}
-                                        </button>
+                                    transform: `scale(${sizeView})`,
+                                    borderRadius: typeView === 'circle' ? '50%' : '0.25em',
+                                    aspectRatio:
+                                        typeView === 'rectangle'
+                                            ? '2/1'
+                                            : typeView === 'square' || typeView === 'circle'
+                                              ? '1/1'
+                                              : 'auto',
+                                    height: typeView === 'rectangle' ? '50%' : '100%',
+                                    marginTop: typeView === 'rectangle' ? '17%' : '0',
+                                }}
+                            />
+                            <div className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center">
+                                <div className="flex flex-col gap-2">
+                                    <div className="text-center text-sm text-muted-foreground p-4">
+                                        {generateTailwindClasses()}
                                     </div>
+                                    <button onClick={handleCopy} className="btn btn-secondary btn-sm">
+                                        {copied ? 'Copiado!' : 'Copiar Clases'}
+                                        {copied ? (
+                                            <Check className="h-4 w-4 ml-2" />
+                                        ) : (
+                                            <Copy className="h-4 w-4 ml-2" />
+                                        )}
+                                    </button>
                                 </div>
                             </div>
                         </div>
