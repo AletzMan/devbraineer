@@ -105,47 +105,16 @@ export default function RCTimeConstant() {
                     </div>
                 </div>
             }
-            sectionRight={
-                <div className="flex flex-col bg-base-100 rounded-sm p-5 lg:p-6 shadow-xl border border-primary/20 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent opacity-20 pointer-events-none rounded-sm"></div>
-
-                    <h3 className="text-xl font-extrabold text-secondary text-center mb-5 z-10">
-                        Fórmula de Constante de Tiempo RC
-                    </h3>
-                    <div className="flex justify-center items-center h-full mb-6 z-10">
-                        <div className="bg-base-200 p-3 rounded-md shadow-sm border-dashed border border-base-content/10 flex items-center justify-center">
-                            <BlockMath math="\tau = R \times C" />
-                        </div>
-                    </div>
-
-                    {/* Sección de Cálculo Detallado (replicando OhmCalculator) */}
-                    <div className="pt-5 border-t border-base-content/20 z-10 flex-grow flex flex-col justify-end">
-                        <h3 className="text-xl font-extrabold text-accent text-center mb-3">Cálculo Detallado</h3>
-                        <div className="p-3 space-y-2 bg-lines rounded-sm shadow-inner border border-base-content/15 overflow-y-auto custom-scrollbar flex-grow">
-                            {rcTimeConstantCalculations.length > 0 ? (
-                                rcTimeConstantCalculations.map((calc, index) => <BlockMath key={index} math={calc} />)
-                            ) : (
-                                <p className="text-center text-base-content/70 italic text-sm">
-                                    Aquí aparecerán los pasos del cálculo.
-                                </p>
-                            )}
-                        </div>
-
-                        {/* Sección de Resultado */}
-                        {rcTimeConstant && (
-                            <div
-                                role="alert"
-                                className={`alert ${rcTimeConstant.includes('¡Error!') || rcTimeConstant.includes('¡Ups!') ? 'alert-error' : 'alert-success'} shadow-xl mt-4 p-4 rounded-sm border-2 ${rcTimeConstant.includes('¡Error!') || rcTimeConstant.includes('¡Ups!') ? 'border-error/50' : 'border-success/50'}`}>
-                                {rcTimeConstant.includes('¡Error!') || rcTimeConstant.includes('¡Ups!') ? (
-                                    <CircleX className="h-6 w-6" />
-                                ) : (
-                                    <Timer className="h-6 w-6" />
-                                )}
-                                <span className="font-bold text-lg">{rcTimeConstant}</span>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            }></SectionCalculator>
+            sectionRight={{
+                formula: {
+                    title: 'Fórmula de Constante de Tiempo RC',
+                    formulas: ['\\tau = R \\times C'],
+                },
+                result: {
+                    calculations: rcTimeConstantCalculations,
+                    result: rcTimeConstant,
+                },
+            }}
+        />
     );
 }
