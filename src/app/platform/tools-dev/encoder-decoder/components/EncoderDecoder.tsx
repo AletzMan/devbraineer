@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Copy, RefreshCw, Download, Clipboard, Lock, LockOpen, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Copy, ArrowRight, CheckCircle, Unlock, LockIcon, UnlockIcon, ArrowRightLeft } from 'lucide-react';
 import CryptoJS from 'crypto-js';
 
 export default function EncoderDecoder() {
@@ -10,7 +10,8 @@ export default function EncoderDecoder() {
         'base64' | 'base64url' | 'hex' | 'url' | 'unicode' | 'rot13' | 'morse' | 'md5' | 'sha256'
     >('base64');
     const [direction, setDirection] = useState<'encode' | 'decode'>('encode');
-    const [copied, setCopied] = useState(false);
+    const [copiedInput, setCopiedInput] = useState(false);
+    const [copiedOutput, setCopiedOutput] = useState(false);
 
     const formatOptions = [
         { value: 'base64', label: 'Base64' },
@@ -291,10 +292,15 @@ export default function EncoderDecoder() {
         }
     };
 
-    const handleCopy = (text: string) => {
+    const handleCopy = (text: string, type: 'input' | 'output') => {
         navigator.clipboard.writeText(text);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        if (type === 'input') {
+            setCopiedInput(true);
+            setTimeout(() => setCopiedInput(false), 2000);
+        } else {
+            setCopiedOutput(true);
+            setTimeout(() => setCopiedOutput(false), 2000);
+        }
     };
 
     const handleSwap = () => {
@@ -305,84 +311,71 @@ export default function EncoderDecoder() {
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                    <Copy className="h-6 w-6 text-primary" />
-                    <h2 className="text-2xl font-bold">Codificador/Decodificador</h2>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                    Convierte texto entre diferentes formatos de codificación
-                </p>
-            </div>
-
-            <div className="card bg-base-100 shadow-xl">
-                <div className="card-body">
+            <div className="bg-base-100 shadow-xl">
+                <div className="">
                     <div className="flex flex-col gap-4">
                         <div className="flex gap-2">
-                            <select
-                                value={format}
-                                onChange={(e) => setFormat(e.target.value as any)}
-                                className="select select-bordered flex-1">
-                                {formatOptions.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
-
-                            <select
-                                value={direction}
-                                onChange={(e) => setDirection(e.target.value as any)}
-                                className="select select-bordered flex-1">
-                                <option value="encode">Codificar</option>
-                                <option value="decode">Decodificar</option>
-                            </select>
-
-                            <button onClick={handleSwap} className="btn btn-ghost flex-1">
-                                <ArrowRight className="h-4 w-4 mr-2" />
-                                Intercambiar
-                            </button>
+                            <label className="label flex flex-col items-start">
+                                <span>Formato</span>
+                                <select
+                                    value={format}
+                                    onChange={(e) => setFormat(e.target.value as any)}
+                                    className="select select-md">
+                                    {formatOptions.map((option) => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
                         </div>
 
-                        <div className="flex gap-4">
-                            <div className="flex-1">
+                        <div className="grid md:grid-cols-[1fr_0.5fr_1fr] gap-4">
+                            <div className="relative pt-12 bg-base-200 p-2 rounded-sm">
                                 <textarea
                                     value={inputText}
                                     onChange={(e) => setInputText(e.target.value)}
                                     placeholder="Ingresa el texto..."
-                                    className="textarea textarea-bordered h-48"
+                                    className="textarea textarea-bordered h-48 w-full"
                                 />
-                                <div className="flex justify-end gap-2 mt-2">
-                                    <button onClick={() => handleCopy(inputText)} className="btn btn-ghost">
-                                        <Copy className="h-4 w-4 mr-2" />
-                                        Copiar
-                                    </button>
-                                </div>
+                                <button
+                                    onClick={() => handleCopy(inputText, 'input')}
+                                    className="absolute top-2 right-2 btn btn-sm btn-soft">
+                                    {copiedInput ? <CheckCircle className="size-4" /> : <Copy className="size-4" />}
+                                    {copiedInput ? 'Copiado' : 'Copiar'}
+                                </button>
                             </div>
-
-                            <div className="flex flex-col justify-center items-center">
+                            <div className="flex flex-col gap-2 justify-center items-center">
+                                <button onClick={handleSwap} className="btn btn-soft w-36">
+                                    <ArrowRightLeft className="size-4" />
+                                    Intercambiar
+                                </button>
                                 <button
                                     onClick={async () =>
                                         direction === 'encode' ? await handleEncode() : handleDecode()
                                     }
-                                    className="btn btn-primary">
+                                    className="btn btn-primary w-36">
+                                    {direction === 'encode' ? (
+                                        <LockIcon className="size-4" />
+                                    ) : (
+                                        <UnlockIcon className="size-4" />
+                                    )}
                                     {direction === 'encode' ? 'Codificar' : 'Decodificar'}
                                 </button>
                             </div>
-
-                            <div className="flex-1">
+                            <div className="relative bg-base-200 p-2 pt-12  rounded-sm">
                                 <textarea
                                     value={outputText}
                                     readOnly
                                     placeholder="Resultado..."
-                                    className="textarea textarea-bordered h-48"
+                                    className="textarea textarea-bordered h-48 w-full"
                                 />
-                                <div className="flex justify-end gap-2 mt-2">
-                                    <button onClick={() => handleCopy(outputText)} className="btn btn-ghost">
-                                        <Copy className="h-4 w-4 mr-2" />
-                                        Copiar
-                                    </button>
-                                </div>
+                                <button
+                                    onClick={() => handleCopy(outputText, 'output')}
+                                    className="absolute top-2 right-2 btn btn-sm btn-soft">
+                                    {copiedOutput ? <CheckCircle className="size-4" /> : <Copy className="size-4" />}
+                                    {copiedOutput ? 'Copiado' : 'Copiar'}
+                                </button>
                             </div>
                         </div>
                     </div>
