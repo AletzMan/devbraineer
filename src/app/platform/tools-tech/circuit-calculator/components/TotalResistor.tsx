@@ -139,14 +139,13 @@ export default function TotalResistor() {
             sectionLeft={
                 <div className="flex flex-col space-y-6">
                     {/* Campo Tipo de Circuito */}
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text text-base-content text-base font-semibold flex items-center gap-2">
-                                <Omega className="h-5 w-5 text-primary" /> Tipo de circuito
-                            </span>
-                        </label>
+                    <label className="label flex flex-col items-start">
+                        <span className="text-sm flex items-center gap-2">
+                            <Omega className="h-5 w-5 text-primary" /> Tipo de circuito
+                        </span>
+
                         <select
-                            className="select select-bordered select-sm w-full shadow-md bg-base-100 hover:bg-base-50 focus:outline-none focus:ring-3 focus:ring-primary focus:border-primary transition-all duration-300 ease-in-out"
+                            className="select text-base-content select-md shadow-md bg-base-100 hover:bg-base-50 focus:outline-none focus:ring-3 focus:ring-primary focus:border-primary transition-all duration-300 ease-in-out"
                             value={circuitType}
                             onChange={(e) => {
                                 setCircuitType(e.target.value);
@@ -155,7 +154,7 @@ export default function TotalResistor() {
                             <option value="series">Serie</option>
                             <option value="parallel">Paralelo</option>
                         </select>
-                    </div>
+                    </label>
 
                     {/* Campos de Resistencia */}
                     <div className="form-control space-y-4">
@@ -165,9 +164,7 @@ export default function TotalResistor() {
                                     <Omega className="h-5 w-5 text-primary" /> Resistencias (Ω)
                                 </span>
                             </label>
-                            <button
-                                className="btn btn-ghost btn-sm text-primary hover:text-primary-focus transition-colors duration-200"
-                                onClick={addResistor}>
+                            <button className="btn btn-sm btn-soft" onClick={addResistor}>
                                 <Plus className="h-5 w-5" />
                                 Añadir
                             </button>
@@ -176,7 +173,7 @@ export default function TotalResistor() {
                             {' '}
                             {resistors.map((resistor, index) => (
                                 <div key={index} className="flex gap-2 items-center">
-                                    <label className="input input-bordered input-sm flex items-center gap-2 flex-1 shadow-md bg-base-100 hover:bg-base-50 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary transition-all duration-300 ease-in-out">
+                                    <label className="input input-md flex items-center gap-2 flex-1">
                                         <input
                                             type="number"
                                             placeholder={`R${index + 1} en ohmios`}
@@ -190,9 +187,9 @@ export default function TotalResistor() {
                                     </label>
                                     {resistors.length > 2 && (
                                         <button
-                                            className="btn btn-error btn-square btn-sm shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 rounded-sm"
+                                            className="btn btn-error btn-soft btn-sm"
                                             onClick={() => removeResistor(index)}>
-                                            <Minus className="h-5 w-5" />
+                                            <Minus className="size-4" />
                                         </button>
                                     )}
                                 </div>
@@ -213,51 +210,19 @@ export default function TotalResistor() {
                     </div>
                 </div>
             }
-            sectionRight={
-                <div className="flex flex-col bg-base-100 rounded-sm p-5 lg:p-6 shadow-xl border border-primary/20 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent opacity-20 pointer-events-none rounded-sm"></div>
-
-                    <h3 className="text-xl font-extrabold text-secondary text-center mb-5 z-10">Fórmulas Clave</h3>
-                    <div className="grid grid-cols-[repeat(auto-fill,minmax(130px,1fr))] gap-3 text-base-content text-base mb-6 z-10">
-                        <div className="bg-base-200 p-2 rounded-md shadow-sm border-dashed border border-base-content/10 flex items-center justify-center">
-                            <BlockMath math="R_{\text{serie}} = \sum_{i=1}^{n} R_i" />
-                        </div>
-                        <div className="bg-base-200 p-2 rounded-md shadow-sm border-dashed border border-base-content/10 flex items-center justify-center">
-                            <BlockMath math="\frac{1}{R_{\text{paralelo}}} = \sum_{i=1}^{n} \frac{1}{R_i}" />
-                        </div>
-                    </div>
-
-                    {/* Sección de Cálculo Detallado */}
-                    <div className="mt-auto pt-5 border-t border-base-content/20 z-10 flex-grow flex flex-col justify-end">
-                        <h3 className="text-xl font-extrabold text-accent text-center mb-3">Cálculo Detallado</h3>
-                        <div className="p-3 space-y-2 bg-lines rounded-sm shadow-inner border border-base-content/15 overflow-y-auto custom-scrollbar flex-grow">
-                            {calculationDetails.length > 0 ? (
-                                calculationDetails.map((calc, index) => <BlockMath key={index} math={calc} />)
-                            ) : (
-                                <p className="text-center text-base-content/70 italic text-sm">
-                                    Aquí aparecerán los pasos del cálculo.
-                                </p>
-                            )}
-                        </div>
-
-                        {/* El alert solo se muestra si hay un mensaje de resultado o de error */}
-                        {totalResistanceResult && (
-                            <div
-                                role="alert"
-                                className={`alert ${totalResistanceResult.includes('¡Error!') || totalResistanceResult.includes('¡Ups!') || totalResistanceResult.includes('¡Atención!') || totalResistanceResult.includes('Debes tener') ? 'alert-error' : 'alert-success'} shadow-xl mt-4 p-4 rounded-sm border-2 ${totalResistanceResult.includes('¡Error!') || totalResistanceResult.includes('¡Ups!') || totalResistanceResult.includes('¡Atención!') || totalResistanceResult.includes('Debes tener') ? 'border-error/50' : 'border-success/50'}`}>
-                                {totalResistanceResult.includes('¡Error!') ||
-                                totalResistanceResult.includes('¡Ups!') ||
-                                totalResistanceResult.includes('¡Atención!') ||
-                                totalResistanceResult.includes('Debes tener') ? (
-                                    <CircleX className="h-6 w-6" />
-                                ) : (
-                                    <CircleCheck className="h-6 w-6" />
-                                )}
-                                <span className="font-bold text-lg">{totalResistanceResult}</span>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            }></SectionCalculator>
+            sectionRight={{
+                formula: {
+                    title: 'Fórmulas Fundamentales',
+                    formulas: [
+                        'R_{\\text{serie}} = \\sum_{i=1}^{n} R_i',
+                        '\\\\frac{1}{R_{\\text{paralelo}}} = \\sum_{i=1}^{n} \\frac{1}{R_i}',
+                    ],
+                },
+                result: {
+                    calculations: calculationDetails,
+                    result: totalResistanceResult,
+                },
+            }}
+        />
     );
 }
