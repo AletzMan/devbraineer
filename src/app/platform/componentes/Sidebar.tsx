@@ -8,7 +8,7 @@ import Link from 'next/link';
 export function Sidebar() {
     const path = usePathname();
     return (
-        <aside className="relative z-50 w-75 hidden lg:block max-2xl:w-15 bg-base-100 h-svh overflow-y-auto overflow-x-hidden border-r-1 border-base-300 scrollbar-thin transition-all duration-100 group hover:max-2xl:w-75">
+        <aside className="relative z-50 w-[305px] hidden lg:block max-2xl:w-15 bg-base-100 h-svh overflow-y-auto overflow-x-hidden border-r-1 border-base-300 scrollbar-thin transition-all duration-100 group hover:max-2xl:w-[305px]">
             <Link
                 href="/"
                 aria-label="DevBraineer"

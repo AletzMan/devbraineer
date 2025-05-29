@@ -18,7 +18,7 @@ export function MenuItem({ item, currentPath }: MenuItemProps) {
 
     if (item.children) {
         return (
-            <ul className={`menu rounded-box max-2xl:w-11 w-75 group-hover:max-2xl:w-75`}>
+            <ul className={`menu rounded-box max-2xl:w-11 w-[305px] group-hover:max-2xl:w-[305px]`}>
                 <li>
                     <details
                         open={isOpen}
