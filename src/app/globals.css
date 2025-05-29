@@ -139,6 +139,14 @@ body {
     background-size: 19px 19px;
 }
 
+.bg-squares {
+    background-color: var(--color-base-100);
+    background-image:
+        linear-gradient(var(--color-base-300) 1px, transparent 1px),
+        linear-gradient(to right, var(--color-base-300) 1px, var(--color-base-100) 1px);
+    background-size: 10px 10px;
+}
+
 .bg-lines {
     background-color: var(--color-base-100);
     background-size: 10px 10px;
@@ -148,5 +156,17 @@ body {
         var(--color-base-300) 1px,
         var(--color-base-100) 0,
         var(--color-base-100) 50%
+    );
+}
+
+.bg-lines-inverted {
+    background-color: var(--color-base-300);
+    background-size: 10px 10px;
+    background-image: repeating-linear-gradient(
+        -45deg,
+        var(--color-base-100) 0,
+        var(--color-base-100) 1px,
+        var(--color-base-300) 0,
+        var(--color-base-300) 50%
     );
 }
