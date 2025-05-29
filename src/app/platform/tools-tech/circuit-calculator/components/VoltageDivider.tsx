@@ -144,48 +144,15 @@ export default function VoltageDivider() {
                     </div>
                 </div>
             }
-            sectionRight={
-                <div className="flex flex-col bg-base-100 rounded-sm p-5 lg:p-6 shadow-xl border border-primary/20 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent opacity-20 pointer-events-none rounded-sm"></div>
-
-                    <h3 className="text-xl font-extrabold text-secondary text-center mb-5 z-10">
-                        Fórmula de Divisor de Voltaje
-                    </h3>
-                    <div className="flex justify-center items-center h-full mb-6 z-10">
-                        <div className="bg-base-200 p-3 rounded-md shadow-sm border-dashed border border-base-content/10 flex items-center justify-center">
-                            <BlockMath math="V_{\text{out}} = V_{\text{in}} \times \frac{R_2}{R_1 + R_2}" />
-                        </div>
-                    </div>
-
-                    {/* Sección de Cálculo Detallado (replicando OhmCalculator) */}
-                    <div className="pt-5 border-t border-base-content/20 z-10 flex-grow flex flex-col justify-end">
-                        <h3 className="text-xl font-extrabold text-accent text-center mb-3">Cálculo Detallado</h3>
-                        <div className="p-3 space-y-2 bg-lines rounded-sm shadow-inner border border-base-content/15 overflow-y-auto custom-scrollbar flex-grow">
-                            {voltageDividerCalculations.length > 0 ? (
-                                voltageDividerCalculations.map((calc, index) => <BlockMath key={index} math={calc} />)
-                            ) : (
-                                <p className="text-center text-base-content/70 italic text-sm">
-                                    Aquí aparecerán los pasos del cálculo.
-                                </p>
-                            )}
-                        </div>
-                        {/* Sección de Resultado */}
-                        {outputVoltage && (
-                            <div
-                                role="alert"
-                                className={`alert ${outputVoltage.includes('¡Error!') || outputVoltage.includes('¡Ups!') || outputVoltage.includes('¡Atención!') ? 'alert-error' : 'alert-success'} shadow-xl mt-4 p-4 rounded-sm border-2 ${outputVoltage.includes('¡Error!') || outputVoltage.includes('¡Ups!') || outputVoltage.includes('¡Atención!') ? 'border-error/50' : 'border-success/50'}`}>
-                                {outputVoltage.includes('¡Error!') ||
-                                outputVoltage.includes('¡Ups!') ||
-                                outputVoltage.includes('¡Atención!') ? (
-                                    <CircleX className="h-6 w-6" />
-                                ) : (
-                                    <CircleCheck className="h-6 w-6" />
-                                )}
-                                <span className="font-bold text-lg">{outputVoltage}</span>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            }></SectionCalculator>
+            sectionRight={{
+                formula: {
+                    title: 'Fórmula de Divisor de Voltaje',
+                    formulas: ['V_{out} = V_{in} \\times \\frac{R_2}{R_1 + R_2}'],
+                },
+                result: {
+                    calculations: voltageDividerCalculations,
+                    result: outputVoltage,
+                },
+            }}></SectionCalculator>
     );
 }
