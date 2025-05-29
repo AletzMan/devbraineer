@@ -181,7 +181,7 @@ export default function OhmCalculator() {
                         <label className="label text-sm flex items-center gap-2">
                             {inputIcons.current} Corriente (I)
                         </label>
-                        <label className="input input-md flex items-center gap-2 shadow-md bg-base-100 hover:bg-base-50 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary transition-all duration-300 ease-in-out">
+                        <label className="input input-md flex items-center gap-2">
                             <input
                                 type="number"
                                 placeholder="Ej: 2.0"
@@ -197,7 +197,7 @@ export default function OhmCalculator() {
                         <label className="label text-sm flex items-center gap-2">
                             {inputIcons.resistance} Resistencia (R)
                         </label>
-                        <label className="input input-md flex items-center shadow-md bg-base-100 hover:bg-base-50 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary transition-all duration-300 ease-in-out">
+                        <label className="input input-md flex items-center">
                             <input
                                 type="number"
                                 placeholder="Ej: 100"
@@ -213,7 +213,7 @@ export default function OhmCalculator() {
 
                     <div className="flex flex-col items-start gap-1">
                         <label className="label text-sm flex items-center gap-2">{inputIcons.power} Potencia (P)</label>
-                        <label className="input input-md flex items-center gap-2 shadow-md bg-base-100 hover:bg-base-50 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary transition-all duration-300 ease-in-out">
+                        <label className="input input-md flex items-center gap-2">
                             <input
                                 type="number"
                                 placeholder="Ej: 25.5"
@@ -223,22 +223,6 @@ export default function OhmCalculator() {
                             />
                             <div className="badge badge-md badge-soft badge-warning rounded-sm min-w-[2.5rem]">W</div>
                         </label>
-                    </div>
-                    <div className="flex gap-2">
-                        <button onClick={calculateOhm} className="btn btn-primary btn-sm flex-1" disabled={isLoading}>
-                            {isLoading ? (
-                                <span className="loading loading-spinner"></span>
-                            ) : (
-                                <>
-                                    <Calculator className="size-5" />
-                                    Calcular
-                                </>
-                            )}
-                        </button>
-                        <button onClick={resetOhm} className="btn btn-outline btn-secondary btn-sm flex-1">
-                            <RotateCcw className="size-5" />
-                            Resetear
-                        </button>
                     </div>
                 </div>
             }
@@ -253,6 +237,8 @@ export default function OhmCalculator() {
                         'P = I^2 \\times R',
                         'P = \\frac{V^2}{R}',
                     ],
+                    calculate: calculateOhm,
+                    reset: resetOhm,
                 },
                 result: {
                     calculations: ohmCalculations,

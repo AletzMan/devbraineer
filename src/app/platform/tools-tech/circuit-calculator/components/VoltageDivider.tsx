@@ -79,7 +79,7 @@ export default function VoltageDivider() {
                                 Voltaje de Entrada (Vin)
                             </span>
                         </label>
-                        <label className="input input-bordered input-sm flex items-center gap-2 shadow-md bg-base-100 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary">
+                        <label className="input input-bordered input-sm flex items-center gap-2">
                             <input
                                 type="number"
                                 placeholder="Vin en voltios"
@@ -99,7 +99,7 @@ export default function VoltageDivider() {
                                 Resistencia 1 (R1)
                             </span>
                         </label>
-                        <label className="input input-bordered input-sm flex items-center gap-2 shadow-md bg-base-100 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary">
+                        <label className="input input-bordered input-sm flex items-center gap-2">
                             <input
                                 type="number"
                                 placeholder="R1 en ohmios"
@@ -119,7 +119,7 @@ export default function VoltageDivider() {
                                 Resistencia 2 (R2)
                             </span>
                         </label>
-                        <label className="input input-bordered input-sm flex items-center gap-2 shadow-md bg-base-100 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary">
+                        <label className="input input-bordered input-sm flex items-center gap-2">
                             <input
                                 type="number"
                                 placeholder="R2 en ohmios"
@@ -130,24 +130,14 @@ export default function VoltageDivider() {
                             <div className="badge badge-md badge-soft badge-warning rounded-sm min-w-[2.5rem]">Ω</div>
                         </label>
                     </div>
-
-                    {/* Botones de acción (sin animaciones, btn-sm, rounded-sm) */}
-                    <div className="flex flex-col sm:flex-row gap-4 mt-6">
-                        <button className="btn btn-primary btn-sm flex-1" onClick={calculateVoltageDivider}>
-                            <Calculator className="size-5" />
-                            Calcular
-                        </button>
-                        <button className="btn btn-outline btn-secondary btn-sm flex-1" onClick={resetVoltageDivider}>
-                            <RotateCcw className="size-5" />
-                            Resetear
-                        </button>
-                    </div>
                 </div>
             }
             sectionRight={{
                 formula: {
                     title: 'Fórmula de Divisor de Voltaje',
                     formulas: ['V_{out} = V_{in} \\times \\frac{R_2}{R_1 + R_2}'],
+                    calculate: calculateVoltageDivider,
+                    reset: resetVoltageDivider,
                 },
                 result: {
                     calculations: voltageDividerCalculations,

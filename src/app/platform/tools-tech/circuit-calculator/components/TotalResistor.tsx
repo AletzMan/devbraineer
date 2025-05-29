@@ -7,7 +7,8 @@ import {
     RotateCcw,
     CircleX,
     CircleCheck,
-    Omega, // Importar el icono Omega
+    Omega,
+    CircuitBoard, // Importar el icono Omega
 } from 'lucide-react';
 import { useState } from 'react';
 import { BlockMath } from 'react-katex'; // Importar BlockMath
@@ -141,11 +142,11 @@ export default function TotalResistor() {
                     {/* Campo Tipo de Circuito */}
                     <label className="label flex flex-col items-start">
                         <span className="text-sm flex items-center gap-2">
-                            <Omega className="h-5 w-5 text-primary" /> Tipo de circuito
+                            <CircuitBoard className="h-5 w-5 text-primary" /> Tipo de circuito
                         </span>
 
                         <select
-                            className="select text-base-content select-md shadow-md bg-base-100 hover:bg-base-50 focus:outline-none focus:ring-3 focus:ring-primary focus:border-primary transition-all duration-300 ease-in-out"
+                            className="select text-base-content select-md shadow-md bg-base-100"
                             value={circuitType}
                             onChange={(e) => {
                                 setCircuitType(e.target.value);
@@ -196,18 +197,6 @@ export default function TotalResistor() {
                             ))}
                         </div>
                     </div>
-
-                    {/* Botones de acción */}
-                    <div className="flex gap-2">
-                        <button className="btn btn-primary btn-sm flex-1" onClick={calculateTotalResistance}>
-                            <Calculator className="size-5" />
-                            Calcular
-                        </button>
-                        <button className="btn btn-outline btn-secondary btn-sm flex-1" onClick={resetSeriesParallel}>
-                            <RotateCcw className="size-5" />
-                            Resetear
-                        </button>
-                    </div>
                 </div>
             }
             sectionRight={{
@@ -215,8 +204,10 @@ export default function TotalResistor() {
                     title: 'Fórmulas Fundamentales',
                     formulas: [
                         'R_{\\text{serie}} = \\sum_{i=1}^{n} R_i',
-                        '\\\\frac{1}{R_{\\text{paralelo}}} = \\sum_{i=1}^{n} \\frac{1}{R_i}',
+                        '\\frac{1}{R_{\\text{paralelo}}} = \\sum_{i=1}^{n} \\frac{1}{R_i}',
                     ],
+                    calculate: calculateTotalResistance,
+                    reset: resetSeriesParallel,
                 },
                 result: {
                     calculations: calculationDetails,

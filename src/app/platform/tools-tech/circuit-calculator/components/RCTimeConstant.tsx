@@ -61,7 +61,7 @@ export default function RCTimeConstant() {
                                 <Omega className="h-5 w-5 text-primary" /> Resistencia (R)
                             </span>
                         </label>
-                        <label className="input input-bordered input-sm flex items-center gap-2 shadow-md bg-base-100 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary">
+                        <label className="input input-bordered input-sm flex items-center gap-2">
                             <input
                                 type="number"
                                 placeholder="Resistencia en ohmios (Ω)"
@@ -80,7 +80,7 @@ export default function RCTimeConstant() {
                                 <Zap className="h-5 w-5 text-primary" /> Capacitancia (C)
                             </span>
                         </label>
-                        <label className="input input-bordered input-sm flex items-center gap-2 shadow-md bg-base-100 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary">
+                        <label className="input input-bordered input-sm flex items-center gap-2">
                             <input
                                 type="number"
                                 placeholder="Capacitancia en Faradios (F)"
@@ -91,24 +91,14 @@ export default function RCTimeConstant() {
                             <div className="badge badge-md badge-soft badge-info rounded-sm min-w-[2.5rem]">F</div>
                         </label>
                     </div>
-
-                    {/* Botones de acción (sin animaciones, btn-sm, rounded-sm) */}
-                    <div className="flex flex-col sm:flex-row gap-4 mt-6">
-                        <button className="btn btn-primary btn-sm flex-1" onClick={calculateRcTimeConstant}>
-                            <Calculator className="h-5 w-5" />
-                            Calcular
-                        </button>
-                        <button className="btn btn-outline btn-secondary btn-sm flex-1" onClick={resetRcTimeConstant}>
-                            <RotateCcw className="h-5 w-5" />
-                            Resetear
-                        </button>
-                    </div>
                 </div>
             }
             sectionRight={{
                 formula: {
                     title: 'Fórmula de Constante de Tiempo RC',
                     formulas: ['\\tau = R \\times C'],
+                    calculate: calculateRcTimeConstant,
+                    reset: resetRcTimeConstant,
                 },
                 result: {
                     calculations: rcTimeConstantCalculations,

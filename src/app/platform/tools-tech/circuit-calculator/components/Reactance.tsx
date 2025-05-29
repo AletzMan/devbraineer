@@ -103,7 +103,7 @@ export default function Reactance() {
                                 <Waves className="h-5 w-5 text-primary" /> Frecuencia (f)
                             </span>
                         </label>
-                        <label className="input input-bordered input-sm flex items-center gap-2 shadow-md bg-base-100 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary">
+                        <label className="input input-bordered input-sm flex items-center gap-2">
                             <input
                                 type="number"
                                 placeholder="Frecuencia en Hertz (Hz)"
@@ -122,7 +122,7 @@ export default function Reactance() {
                                 <Zap className="h-5 w-5 text-primary" /> Capacitancia (C)
                             </span>
                         </label>
-                        <label className="input input-bordered input-sm flex items-center gap-2 shadow-md bg-base-100 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary">
+                        <label className="input input-bordered input-sm flex items-center gap-2">
                             <input
                                 type="number"
                                 placeholder="Capacitancia en Faradios (F)"
@@ -141,7 +141,7 @@ export default function Reactance() {
                                 <Sigma className="h-5 w-5 text-primary" /> Inductancia (L)
                             </span>
                         </label>
-                        <label className="input input-bordered input-sm flex items-center gap-2 shadow-md bg-base-100 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary">
+                        <label className="input input-bordered input-sm flex items-center gap-2">
                             <input
                                 type="number"
                                 placeholder="Inductancia en Henrios (H)"
@@ -152,24 +152,14 @@ export default function Reactance() {
                             <div className="badge badge-md badge-soft badge-warning rounded-sm min-w-[2.5rem]">H</div>
                         </label>
                     </div>
-
-                    {/* Botones de acción (sin animaciones, btn-sm, rounded-sm) */}
-                    <div className="flex flex-col sm:flex-row gap-4 mt-6">
-                        <button className="btn btn-primary btn-sm flex-1" onClick={calculateReactance}>
-                            <Calculator className="size-5" />
-                            Calcular
-                        </button>
-                        <button className="btn btn-outline btn-secondary btn-sm flex-1" onClick={resetReactance}>
-                            <RotateCcw className="size-5" />
-                            Resetear
-                        </button>
-                    </div>
                 </div>
             }
             sectionRight={{
                 formula: {
                     title: 'Fórmulas de Reactancia',
                     formulas: ['X_C = \\frac{1}{2\\pi f C}', 'X_L = 2\\pi f L'],
+                    calculate: calculateReactance,
+                    reset: resetReactance,
                 },
                 result: {
                     calculations: reactanceCalculations,
