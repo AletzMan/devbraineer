@@ -40,20 +40,20 @@ export default function Header() {
                         const iconColorClass = currentLinkItem?.color || '';
 
                         return (
-                            <li key={index} className="capitalize">
+                            <li key={index} className="">
                                 {isLastSegment ? (
                                     <div className="flex items-center gap-0.5">
                                         {currentLinkItem?.icon && (
                                             <currentLinkItem.icon className={`size-4.5 ${iconColorClass}`} />
                                         )}
-                                        <span className={textColorClass}>{item}</span>
+                                        <span className={textColorClass}>{currentLinkItem?.label ?? item}</span>
                                     </div>
                                 ) : (
                                     <Link
                                         href={currentHref}
                                         className={`flex items-center ${textColorClass} hover:text-gray-600 transition-colors`}>
-                                        {currentLinkItem?.icon && <currentLinkItem.icon className={`size-4.5`} />}
-                                        {item}
+                                        {currentLinkItem?.icon && <currentLinkItem.icon className="size-4.5" />}
+                                        {currentLinkItem?.label ?? item}
                                     </Link>
                                 )}
                             </li>
