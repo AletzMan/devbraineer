@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Copy, RefreshCw, Download, Clipboard } from 'lucide-react';
+import { Copy, RefreshCw, Download, Clipboard, Trash, BrushCleaning, Check, CheckCircle } from 'lucide-react';
 
 export default function UUIDGenerator() {
     const [uuid, setUUID] = useState('');
@@ -37,31 +37,19 @@ export default function UUIDGenerator() {
         }
     };
 
-    return (
-        <div className="card bg-base-100 shadow-xl">
-            <div className="card-body">
-                <div className="flex flex-col gap-4">
-                    <div className="flex gap-2">
-                        <button onClick={generateUUID} className="btn btn-primary flex-1">
-                            <RefreshCw className="h-4 w-4 mr-2" />
-                            Generar UUID
-                        </button>
-                        <button onClick={handleCopy} className="btn btn-secondary flex-1">
-                            {copied ? 'Copiado!' : <Copy className="h-4 w-4 mr-2" />}
-                            Copiar
-                        </button>
-                        <button
-                            onClick={handleDownload}
-                            className="btn btn-ghost flex-1"
-                            disabled={isDownloading || !uuid}>
-                            <Download className="h-4 w-4 mr-2" />
-                            Descargar
-                        </button>
-                    </div>
+    const handleReset = () => {
+        setUUID('');
+        setCount(1);
+        setFormat('string');
+    };
 
-                    <div className="flex flex-col gap-2">
-                        <div className="flex items-center gap-2">
-                            <span className="label-text">Formato:</span>
+    return (
+        <div className=" bg-base-100 shadow-xl">
+            <div className="">
+                <div className="flex flex-col gap-2">
+                    <div className="flex flex-row gap-2 bg-base-200 p-2 rounded-sm">
+                        <label className="label flex flex-col items-start">
+                            <span className="label-text text-sm">Formato:</span>
                             <select
                                 value={format}
                                 onChange={(e) => setFormat(e.target.value as 'string' | 'number' | 'hex' | 'buffer')}
@@ -71,10 +59,10 @@ export default function UUIDGenerator() {
                                 <option value="hex">Hex</option>
                                 <option value="buffer">Buffer</option>
                             </select>
-                        </div>
+                        </label>
 
-                        <div className="flex items-center gap-2">
-                            <span className="label-text">Cantidad:</span>
+                        <label className="label flex flex-col items-start">
+                            <span className="label-text text-sm">Cantidad:</span>
                             <input
                                 type="number"
                                 value={count}
@@ -83,14 +71,41 @@ export default function UUIDGenerator() {
                                 max="100"
                                 className="input input-bordered"
                             />
-                        </div>
+                        </label>
                     </div>
-
-                    {uuid && (
-                        <div className="flex flex-col gap-2">
-                            <pre className="p-4 bg-base-200 rounded-lg overflow-x-auto">{uuid}</pre>
+                    <div className="flex gap-2 bg-base-200 p-2 rounded-sm">
+                        <button onClick={generateUUID} className="btn btn-primary flex-1">
+                            <RefreshCw className="h-4 w-4 mr-2" />
+                            Generar UUID
+                        </button>
+                    </div>
+                    {
+                        <div className="relative flex flex-col gap-2">
+                            <div className="absolute top-2 right-2 flex gap-2">
+                                <div className="tooltip" data-tip="Copiar">
+                                    <button onClick={handleCopy} className="btn btn-xs btn-secondary">
+                                        {copied ? <CheckCircle className="size-4" /> : <Copy className="size-4" />}
+                                    </button>
+                                </div>
+                                <div className="tooltip" data-tip="Descargar">
+                                    <button
+                                        onClick={handleDownload}
+                                        className="btn btn-xs btn-info"
+                                        disabled={isDownloading || !uuid}>
+                                        <Download className="size-4" />
+                                    </button>
+                                </div>
+                                <div className="tooltip" data-tip="Reset">
+                                    <button onClick={handleReset} className="btn btn-xs btn-warning">
+                                        <BrushCleaning className="size-4" />
+                                    </button>
+                                </div>
+                            </div>
+                            <pre className="p-4 pt-10 bg-base-200 text-sm rounded-lg overflow-x-auto min-h-[10rem]">
+                                {uuid}
+                            </pre>
                         </div>
-                    )}
+                    }
                 </div>
             </div>
         </div>
