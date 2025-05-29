@@ -162,30 +162,26 @@ export default function OhmCalculator() {
             description="Calcula valores de voltaje, corriente, resistencia y potencia. Ingresa al menos dos valores para descubrir los demás."
             sectionLeft={
                 <div className="space-y-4">
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text text-base-content text-base font-semibold flex items-center gap-2">
-                                {inputIcons.voltage} Voltaje (V)
-                            </span>
+                    <div className="flex flex-col items-start gap-1">
+                        <label className="label text-sm flex items-center gap-2">
+                            {inputIcons.voltage} Voltaje (V)
                         </label>
-                        <div className="input-group input-group-sm">
+                        <label className="input">
                             <input
                                 type="number"
                                 placeholder="Ej: 12.5"
-                                className="input input-bordered input-sm grow text-base placeholder:text-base-content/60"
+                                className="grow text-base placeholder:text-base-content/60"
                                 value={ohmVoltage}
                                 onChange={(e) => setOhmVoltage(e.target.value)}
                             />
                             <span className="badge badge-soft badge-warning rounded-sm">V</span>
-                        </div>
-                    </div>
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text text-base-content text-base font-semibold flex items-center gap-2">
-                                {inputIcons.current} Corriente (I)
-                            </span>
                         </label>
-                        <label className="input input-bordered input-sm flex items-center gap-2 shadow-md bg-base-100 hover:bg-base-50 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary transition-all duration-300 ease-in-out">
+                    </div>
+                    <div className="flex flex-col items-start gap-1">
+                        <label className="label text-sm flex items-center gap-2">
+                            {inputIcons.current} Corriente (I)
+                        </label>
+                        <label className="input input-md flex items-center gap-2 shadow-md bg-base-100 hover:bg-base-50 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary transition-all duration-300 ease-in-out">
                             <input
                                 type="number"
                                 placeholder="Ej: 2.0"
@@ -197,13 +193,11 @@ export default function OhmCalculator() {
                         </label>
                     </div>
 
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text text-base-content text-base font-semibold flex items-center gap-2">
-                                {inputIcons.resistance} Resistencia (R)
-                            </span>
+                    <div className="flex flex-col items-start gap-1">
+                        <label className="label text-sm flex items-center gap-2">
+                            {inputIcons.resistance} Resistencia (R)
                         </label>
-                        <label className="input input-bordered input-sm flex items-center gap-2 shadow-md bg-base-100 hover:bg-base-50 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary transition-all duration-300 ease-in-out">
+                        <label className="input input-md flex items-center shadow-md bg-base-100 hover:bg-base-50 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary transition-all duration-300 ease-in-out">
                             <input
                                 type="number"
                                 placeholder="Ej: 100"
@@ -217,14 +211,9 @@ export default function OhmCalculator() {
                         </label>
                     </div>
 
-                    {/* Campo Potencia */}
-                    <div className="form-control">
-                        <label className="label">
-                            <span className="label-text text-base-content text-base font-semibold flex items-center gap-2">
-                                {inputIcons.power} Potencia (P)
-                            </span>
-                        </label>
-                        <label className="input input-bordered input-sm flex items-center gap-2 shadow-md bg-base-100 hover:bg-base-50 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary transition-all duration-300 ease-in-out">
+                    <div className="flex flex-col items-start gap-1">
+                        <label className="label text-sm flex items-center gap-2">{inputIcons.power} Potencia (P)</label>
+                        <label className="input input-md flex items-center gap-2 shadow-md bg-base-100 hover:bg-base-50 focus-within:ring-3 focus-within:ring-primary focus-within:border-primary transition-all duration-300 ease-in-out">
                             <input
                                 type="number"
                                 placeholder="Ej: 25.5"
@@ -253,59 +242,23 @@ export default function OhmCalculator() {
                     </div>
                 </div>
             }
-            sectionRight={
-                <div className="flex flex-col bg-base-100 rounded-sm p-5 lg:p-6 shadow-xl border border-primary/20 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent opacity-20 pointer-events-none rounded-sm"></div>
-                    <h3 className="text-xl font-extrabold text-secondary text-center mb-5 z-10">
-                        Fórmulas Fundamentales
-                    </h3>
-                    <div className="grid grid-cols-[repeat(auto-fill,minmax(90px,1fr))] gap-3 text-base-content text-base mb-6 z-10">
-                        <div className="bg-base-200 p-1 flex items-center justify-center rounded-md shadow-sm border-dashed border border-base-content/10">
-                            <BlockMath math="V = I \times R" />
-                        </div>
-                        <div className="bg-base-200 p-1 flex items-center justify-center rounded-md shadow-sm border-dashed border border-base-content/10">
-                            <BlockMath math="I = \frac{V}{R}" />
-                        </div>
-                        <div className="bg-base-200 p-1 flex items-center justify-center rounded-md shadow-sm border-dashed border border-base-content/10">
-                            <BlockMath math="R = \frac{V}{I}" />
-                        </div>
-                        <div className="bg-base-200 p-1 flex items-center justify-center rounded-md shadow-sm border-dashed border border-base-content/10">
-                            <BlockMath math="P = V \times I" />
-                        </div>
-                        <div className="bg-base-200 p-1 flex items-center justify-center rounded-md shadow-sm border-dashed border border-base-content/10">
-                            <BlockMath math="P = I^2 \times R" />
-                        </div>
-                        <div className="bg-base-200 p-1 flex items-center justify-center rounded-md shadow-sm border-dashed border border-base-content/10">
-                            <BlockMath math="P = \frac{V^2}{R}" />
-                        </div>
-                    </div>
-                    <div className="mt-auto pt-5 border-t border-base-content/20 z-10 flex-grow flex flex-col justify-end">
-                        <h3 className="text-xl font-extrabold text-accent text-center mb-3">Cálculo Detallado</h3>
-                        <div className="p-3 space-y-2 bg-lines rounded-sm shadow-inner border border-base-content/15 overflow-y-auto custom-scrollbar flex-grow">
-                            {ohmCalculations.length > 0 ? (
-                                ohmCalculations.map((calc, index) => <BlockMath key={index} math={calc} />)
-                            ) : (
-                                <p className="text-center text-base-content/70 italic text-sm">
-                                    Aquí aparecerán los pasos del cálculo.
-                                </p>
-                            )}
-                        </div>
-                        {ohmResult && (
-                            <div
-                                role="alert"
-                                className={`alert ${ohmResult.includes('Error') || ohmResult.includes('No puedo calcular') || ohmResult.includes('¡Ups!') ? 'alert-error' : 'alert-success'} shadow-xl mt-4 p-4 rounded-sm border-2 ${ohmResult.includes('Error') || ohmResult.includes('No puedo calcular') || ohmResult.includes('¡Ups!') ? 'border-error/50' : 'border-success/50'} `}>
-                                {ohmResult.includes('Error') ||
-                                ohmResult.includes('No puedo calcular') ||
-                                ohmResult.includes('¡Ups!') ? (
-                                    <CircleX className="h-6 w-6" />
-                                ) : (
-                                    <CircleCheck className="h-6 w-6" />
-                                )}
-                                <span className="font-bold text-lg">{ohmResult}</span>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            }></SectionCalculator>
+            sectionRight={{
+                formula: {
+                    title: 'Fórmulas Fundamentales',
+                    formulas: [
+                        'V = I \\times R',
+                        'I = \\frac{V}{R}',
+                        'R = \\frac{V}{I}',
+                        'P = V \\times I',
+                        'P = I^2 \\times R',
+                        'P = \\frac{V^2}{R}',
+                    ],
+                },
+                result: {
+                    calculations: ohmCalculations,
+                    result: ohmResult,
+                },
+            }}
+        />
     );
 }
