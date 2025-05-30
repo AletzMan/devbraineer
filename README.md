@@ -156,7 +156,7 @@ Este proyecto está bajo la licencia [MIT License](LICENSE).
 
 Explora **DevBrainner** en vivo:
 
-[https://devbraineer.vercel.app/](https://devbraineer.vercel.app/)
+[DevBraineer](https://devbraineer.alejandro-garcia.dev/)
 
 ---
 
