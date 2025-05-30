@@ -2,7 +2,7 @@
 import GradientGenerator from './components/GradientGenerator';
 import TailwindGradientGenerator from './components/TailwindGradientGenerator';
 import { LayoutSubSection } from '../../componentes/LayoutSubSection';
-import { useState, useEffect, useLayoutEffect } from 'react';
+import { useState, useEffect, useLayoutEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Toaster } from 'react-hot-toast';
 
@@ -46,10 +46,12 @@ export default function GradientGeneratorPage() {
                     onChange={() => handleChangeTab('tailwind')}
                 />
             </div>
-            <div className="flex flex-col gap-2">
-                {tabGradient === 'css' && <GradientGenerator />}
-                {tabGradient === 'tailwind' && <TailwindGradientGenerator />}
-            </div>
+            <Suspense fallback={<div>Loading...</div>}>
+                <div className="flex flex-col gap-2">
+                    {tabGradient === 'css' && <GradientGenerator />}
+                    {tabGradient === 'tailwind' && <TailwindGradientGenerator />}
+                </div>
+            </Suspense>
         </LayoutSubSection>
     );
 }
