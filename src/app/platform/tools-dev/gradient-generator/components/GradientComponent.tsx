@@ -1,15 +1,12 @@
-import { ReadonlyURLSearchParams } from 'next/navigation';
+import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 import { useState, useLayoutEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import GradientGenerator from './GradientGenerator';
 import TailwindGradientGenerator from './TailwindGradientGenerator';
 
-interface Props {
-    params: ReadonlyURLSearchParams;
-}
-
-export default function GradientComponent({ params }: Props) {
+export default function GradientComponent() {
     const [tabGradient, setTabGradient] = useState<'css' | 'tailwind'>('css');
+    const params = useSearchParams();
 
     useLayoutEffect(() => {
         const type = params.get('type');
